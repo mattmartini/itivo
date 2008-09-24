@@ -1,0 +1,641 @@
+// !$*UTF8*$!
+{
+	089C165DFE840E0CC02AAC07 /* English */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {945, 608}}";
+			sepNavSelRange = "{101, 0}";
+			sepNavVisRect = "{{0, 0}, {945, 608}}";
+			sepNavWindowFrame = "{{67, 15}, {984, 737}}";
+		};
+	};
+	257572C2072881A4000BE9CA /* TiVoDecode */ = {
+		activeExec = 0;
+		executables = (
+			25D9445407B1533600FF306F /* TiVoDecode */,
+		);
+	};
+	257572D5072881A4000BE9CA /* Info.plist */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {945, 608}}";
+			sepNavSelRange = "{755, 0}";
+			sepNavVisRect = "{{0, 0}, {945, 608}}";
+			sepNavWindowFrame = "{{143, 36}, {984, 737}}";
+		};
+	};
+	25D9445407B1533600FF306F /* TiVoDecode */ = {
+		isa = PBXExecutable;
+		activeArgIndex = 2147483647;
+		activeArgIndices = (
+		);
+		argumentStrings = (
+		);
+		autoAttachOnCrash = 1;
+		configStateDict = {
+			"PBXLSLaunchAction-1" = {
+				PBXLSLaunchAction = 1;
+				PBXLSLaunchStartAction = 1;
+				PBXLSLaunchStdioStyle = 2;
+				PBXLSLaunchStyle = 0;
+				class = ASKDebuggerLaunchConfig;
+				displayName = "AppleScript Debugger";
+				identifier = com.apple.AppleScriptStudio.ASKDebugLaunchConfig;
+				remoteHostInfo = "";
+				startActionInfo = "";
+			};
+		};
+		customDataFormattersEnabled = 1;
+		debuggerPlugin = ASKDebugger;
+		disassemblyDisplayState = 0;
+		dylibVariantSuffix = "";
+		enableDebugStr = 1;
+		environmentEntries = (
+			{
+				active = NO;
+				name = AEDebug;
+				value = 1;
+			},
+			{
+				active = NO;
+				name = AEDebugSends;
+				value = 1;
+			},
+			{
+				active = NO;
+				name = AEDebugReceives;
+				value = 1;
+			},
+			{
+				active = NO;
+				name = AEDebugVerbose;
+				value = 1;
+			},
+		);
+		executableSystemSymbolLevel = 0;
+		executableUserSymbolLevel = 0;
+		libgmallocEnabled = 0;
+		name = TiVoDecode;
+		sourceDirectories = (
+		);
+	};
+	25D9445A07B1533700FF306F /* Source Control */ = {
+		isa = PBXSourceControlManager;
+		fallbackIsa = XCSourceControlManager;
+		isSCMEnabled = 0;
+		scmConfiguration = {
+		};
+		scmType = "";
+	};
+	25D9445B07B1533700FF306F /* Code sense */ = {
+		isa = PBXCodeSenseManager;
+		indexTemplatePath = "";
+	};
+	29B97313FDCFA39411CA2CEA /* Project object */ = {
+		activeBuildConfigurationName = Release;
+		activeExecutable = 25D9445407B1533600FF306F /* TiVoDecode */;
+		activeTarget = 257572C2072881A4000BE9CA /* TiVoDecode */;
+		addToTargets = (
+			257572C2072881A4000BE9CA /* TiVoDecode */,
+		);
+		breakpoints = (
+			61A72CD70B44F4B800276A2F /* TiVoDecode.applescript:540 */,
+			61A72CD90B44F4BC00276A2F /* TiVoDecode.applescript:540 */,
+			61A72CDB0B44F4C100276A2F /* TiVoDecode.applescript:540 */,
+			61A72CDD0B44F4C200276A2F /* TiVoDecode.applescript:540 */,
+			61A72D0F0B44FA9C00276A2F /* TiVoDecode.applescript:540 */,
+			6148BE740B45D92B00482C8F /* TiVoDecode.applescript:164 */,
+			61C381630B46EC9100BB4A95 /* TiVoDecode.applescript:540 */,
+			61C381650B46EC9500BB4A95 /* TiVoDecode.applescript:540 */,
+			613F26660B47654E0026F574 /* TiVoDecode.applescript:540 */,
+			613F26A30B477E4D0026F574 /* TiVoDecode.applescript:450 */,
+			613F26A50B477E4E0026F574 /* TiVoDecode.applescript:451 */,
+			613F26D50B4781AA0026F574 /* TiVoDecode.applescript:164 */,
+			613F26F20B4783BD0026F574 /* TiVoDecode.applescript:540 */,
+			6174B6590B4833D0007A450C /* TiVoDecode.applescript:242 */,
+			616ECBB00B4839C8002AA643 /* TiVoDecode.applescript:217 */,
+			616ECBC60B483B3F002AA643 /* TiVoDecode.applescript:217 */,
+			61C8ED7F0B485A65006AC547 /* TiVoDecode.applescript:225 */,
+			61C8ED9E0B485BC3006AC547 /* TiVoDecode.applescript:230 */,
+		);
+		breakpointsGroup = 6100B70F0B2A6E8B00088B05 /* XCBreakpointsBucket */;
+		codeSenseManager = 25D9445B07B1533700FF306F /* Code sense */;
+		executables = (
+			25D9445407B1533600FF306F /* TiVoDecode */,
+		);
+		perUserDictionary = {
+			"PBXConfiguration.PBXBreakpointsDataSource.v1:1CA1AED706398EBD00589147" = {
+				PBXFileTableDataSourceColumnSortingDirectionKey = "-1";
+				PBXFileTableDataSourceColumnSortingKey = PBXBreakpointsDataSource_BreakpointID;
+				PBXFileTableDataSourceColumnWidthsKey = (
+					20,
+					20,
+					210,
+					20,
+					110,
+					109,
+					20,
+				);
+				PBXFileTableDataSourceColumnsKey = (
+					PBXBreakpointsDataSource_ActionID,
+					PBXBreakpointsDataSource_TypeID,
+					PBXBreakpointsDataSource_BreakpointID,
+					PBXBreakpointsDataSource_UseID,
+					PBXBreakpointsDataSource_LocationID,
+					PBXBreakpointsDataSource_ConditionID,
+					PBXBreakpointsDataSource_ContinueID,
+				);
+			};
+			PBXConfiguration.PBXFileTableDataSource3.PBXExecutablesDataSource = {
+				PBXFileTableDataSourceColumnSortingDirectionKey = "-1";
+				PBXFileTableDataSourceColumnSortingKey = PBXExecutablesDataSource_NameID;
+				PBXFileTableDataSourceColumnWidthsKey = (
+					22,
+					300,
+					131,
+				);
+				PBXFileTableDataSourceColumnsKey = (
+					PBXExecutablesDataSource_ActiveFlagID,
+					PBXExecutablesDataSource_NameID,
+					PBXExecutablesDataSource_CommentsID,
+				);
+			};
+			PBXConfiguration.PBXFileTableDataSource3.PBXFileTableDataSource = {
+				PBXFileTableDataSourceColumnSortingDirectionKey = "-1";
+				PBXFileTableDataSourceColumnSortingKey = PBXFileDataSource_Filename_ColumnID;
+				PBXFileTableDataSourceColumnWidthsKey = (
+					20,
+					472,
+					20,
+					48,
+					43,
+					43,
+					20,
+				);
+				PBXFileTableDataSourceColumnsKey = (
+					PBXFileDataSource_FiletypeID,
+					PBXFileDataSource_Filename_ColumnID,
+					PBXFileDataSource_Built_ColumnID,
+					PBXFileDataSource_ObjectSize_ColumnID,
+					PBXFileDataSource_Errors_ColumnID,
+					PBXFileDataSource_Warnings_ColumnID,
+					PBXFileDataSource_Target_ColumnID,
+				);
+			};
+			PBXConfiguration.PBXTargetDataSource.PBXTargetDataSource = {
+				PBXFileTableDataSourceColumnSortingDirectionKey = "-1";
+				PBXFileTableDataSourceColumnSortingKey = PBXFileDataSource_Filename_ColumnID;
+				PBXFileTableDataSourceColumnWidthsKey = (
+					20,
+					200,
+					63,
+					20,
+					48,
+					43,
+					43,
+				);
+				PBXFileTableDataSourceColumnsKey = (
+					PBXFileDataSource_FiletypeID,
+					PBXFileDataSource_Filename_ColumnID,
+					PBXTargetDataSource_PrimaryAttribute,
+					PBXFileDataSource_Built_ColumnID,
+					PBXFileDataSource_ObjectSize_ColumnID,
+					PBXFileDataSource_Errors_ColumnID,
+					PBXFileDataSource_Warnings_ColumnID,
+				);
+			};
+			PBXPerProjectTemplateStateSaveDate = 190605815;
+			PBXWorkspaceStateSaveDate = 190605815;
+		};
+		perUserProjectItems = {
+			610BE2CA0B5C6A250031EDDA /* PBXTextBookmark */ = 610BE2CA0B5C6A250031EDDA /* PBXTextBookmark */;
+			61C90AF10B5C69EA00A0EA7A /* PBXTextBookmark */ = 61C90AF10B5C69EA00A0EA7A /* PBXTextBookmark */;
+			61F6C1AB0B533C9800D4866D /* PBXTextBookmark */ = 61F6C1AB0B533C9800D4866D /* PBXTextBookmark */;
+			61F6C1AD0B533C9800D4866D /* PBXTextBookmark */ = 61F6C1AD0B533C9800D4866D /* PBXTextBookmark */;
+		};
+		sourceControlManager = 25D9445A07B1533700FF306F /* Source Control */;
+		userBookmarkGroup = 615DD5E60B27CA9B006D0B7B /* PBXBookmarkGroup */;
+		userBuildSettings = {
+		};
+	};
+	29B97316FDCFA39411CA2CEA /* main.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {945, 608}}";
+			sepNavSelRange = "{192, 4}";
+			sepNavVisRect = "{{0, 0}, {945, 608}}";
+			sepNavWindowFrame = "{{44, 36}, {984, 737}}";
+		};
+	};
+	6100B70F0B2A6E8B00088B05 /* XCBreakpointsBucket */ = {
+		isa = XCBreakpointsBucket;
+		name = "Project Breakpoints";
+		objects = (
+			61A72CD70B44F4B800276A2F /* TiVoDecode.applescript:540 */,
+			61A72CD90B44F4BC00276A2F /* TiVoDecode.applescript:540 */,
+			61A72CDB0B44F4C100276A2F /* TiVoDecode.applescript:540 */,
+			61A72CDD0B44F4C200276A2F /* TiVoDecode.applescript:540 */,
+			61A72D0F0B44FA9C00276A2F /* TiVoDecode.applescript:540 */,
+			6148BE740B45D92B00482C8F /* TiVoDecode.applescript:164 */,
+			61C381630B46EC9100BB4A95 /* TiVoDecode.applescript:540 */,
+			61C381650B46EC9500BB4A95 /* TiVoDecode.applescript:540 */,
+			613F26660B47654E0026F574 /* TiVoDecode.applescript:540 */,
+			613F26A30B477E4D0026F574 /* TiVoDecode.applescript:450 */,
+			613F26A50B477E4E0026F574 /* TiVoDecode.applescript:451 */,
+			613F26D50B4781AA0026F574 /* TiVoDecode.applescript:164 */,
+			613F26F20B4783BD0026F574 /* TiVoDecode.applescript:540 */,
+			6174B6590B4833D0007A450C /* TiVoDecode.applescript:242 */,
+			616ECBB00B4839C8002AA643 /* TiVoDecode.applescript:217 */,
+			616ECBC60B483B3F002AA643 /* TiVoDecode.applescript:217 */,
+			61C8ED7F0B485A65006AC547 /* TiVoDecode.applescript:225 */,
+			61C8ED9E0B485BC3006AC547 /* TiVoDecode.applescript:230 */,
+		);
+	};
+	610BE2CA0B5C6A250031EDDA /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 61D69A490B4C753500D69E4C /* download3.pl */;
+		name = "download3.pl: 19";
+		rLen = 0;
+		rLoc = 758;
+		rType = 0;
+		vrLen = 0;
+		vrLoc = 0;
+	};
+	612EF59B0B4459F000ACBBBF /* ParseDetail.pl */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1214, 1960}}";
+			sepNavSelRange = "{777, 29}";
+			sepNavVisRect = "{{0, 0}, {1214, 649}}";
+			sepNavWindowFrame = "{{46, -5}, {1253, 778}}";
+		};
+	};
+	61354C050B273C3C00EEF96F /* ParseXML.pl */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1142, 1470}}";
+			sepNavSelRange = "{2349, 0}";
+			sepNavVisRect = "{{0, 862}, {945, 608}}";
+			sepNavWindowFrame = "{{211, 33}, {984, 737}}";
+		};
+	};
+	61354C060B273C3C00EEF96F /* download.pl */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1484, 623}}";
+			sepNavSelRange = "{446, 0}";
+			sepNavVisRect = "{{0, 0}, {1140, 623}}";
+			sepNavWindowFrame = "{{67, -1}, {1179, 752}}";
+		};
+	};
+	61354C8A0B2741D800EEF96F /* English */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {945, 1568}}";
+			sepNavSelRange = "{855, 0}";
+			sepNavVisRect = "{{0, 0}, {945, 623}}";
+			sepNavWindowFrame = "{{66, 15}, {984, 737}}";
+		};
+	};
+	613F26660B47654E0026F574 /* TiVoDecode.applescript:540 */ = {
+		isa = PBXFileBreakpoint;
+		actions = (
+		);
+		breakpointStyle = 0;
+		continueAfterActions = 0;
+		delayBeforeContinue = 0;
+		fileReference = DA206CF3015C4E8B03C91932 /* TiVoDecode.applescript */;
+		functionName = "on downloadItem";
+		hitCount = 1;
+		lineNumber = 540;
+		modificationTime = 189837817.146658;
+		state = 1;
+	};
+	613F26A30B477E4D0026F574 /* TiVoDecode.applescript:450 */ = {
+		isa = PBXFileBreakpoint;
+		actions = (
+		);
+		breakpointStyle = 0;
+		continueAfterActions = 0;
+		delayBeforeContinue = 0;
+		fileReference = DA206CF3015C4E8B03C91932 /* TiVoDecode.applescript */;
+		functionName = "on clicked";
+		hitCount = 1;
+		lineNumber = 450;
+		modificationTime = 189837817.146663;
+		state = 1;
+	};
+	613F26A50B477E4E0026F574 /* TiVoDecode.applescript:451 */ = {
+		isa = PBXFileBreakpoint;
+		actions = (
+		);
+		breakpointStyle = 0;
+		continueAfterActions = 0;
+		delayBeforeContinue = 0;
+		fileReference = DA206CF3015C4E8B03C91932 /* TiVoDecode.applescript */;
+		functionName = "on clicked";
+		hitCount = 1;
+		lineNumber = 451;
+		modificationTime = 189837817.146668;
+		state = 1;
+	};
+	613F26D50B4781AA0026F574 /* TiVoDecode.applescript:164 */ = {
+		isa = PBXFileBreakpoint;
+		actions = (
+		);
+		breakpointStyle = 0;
+		continueAfterActions = 0;
+		delayBeforeContinue = 0;
+		fileReference = DA206CF3015C4E8B03C91932 /* TiVoDecode.applescript */;
+		functionName = "on readSettings";
+		hitCount = 1;
+		lineNumber = 164;
+		modificationTime = 189837817.146673;
+		state = 1;
+	};
+	613F26F20B4783BD0026F574 /* TiVoDecode.applescript:540 */ = {
+		isa = PBXFileBreakpoint;
+		actions = (
+		);
+		breakpointStyle = 0;
+		continueAfterActions = 0;
+		delayBeforeContinue = 0;
+		fileReference = DA206CF3015C4E8B03C91932 /* TiVoDecode.applescript */;
+		functionName = "on downloadItem";
+		hitCount = 1;
+		lineNumber = 540;
+		modificationTime = 189837817.146679;
+		state = 1;
+	};
+	6148BE740B45D92B00482C8F /* TiVoDecode.applescript:164 */ = {
+		isa = PBXFileBreakpoint;
+		actions = (
+		);
+		breakpointStyle = 0;
+		continueAfterActions = 0;
+		delayBeforeContinue = 0;
+		fileReference = DA206CF3015C4E8B03C91932 /* TiVoDecode.applescript */;
+		functionName = "on readSettings";
+		hitCount = 1;
+		lineNumber = 164;
+		modificationTime = 189837817.146642;
+		state = 1;
+	};
+	6156A9C20B4CA01B000373DF /* killProcesses.pl */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1211, 649}}";
+			sepNavSelRange = "{42, 0}";
+			sepNavVisRect = "{{0, 0}, {1211, 649}}";
+			sepNavWindowFrame = "{{45, -5}, {1250, 778}}";
+		};
+	};
+	615DD5E60B27CA9B006D0B7B /* PBXBookmarkGroup */ = {
+		isa = PBXBookmarkGroup;
+		children = (
+			615DD5F80B27CADC006D0B7B /* PBXBookmark */,
+		);
+		name = Root;
+	};
+	615DD5F80B27CADC006D0B7B /* PBXBookmark */ = {
+		isa = PBXBookmark;
+		fRef = 257572D6072881A4000BE9CA /* TiVoDecode.app */;
+	};
+	616ECBB00B4839C8002AA643 /* TiVoDecode.applescript:217 */ = {
+		isa = PBXFileBreakpoint;
+		actions = (
+		);
+		breakpointStyle = 0;
+		continueAfterActions = 0;
+		delayBeforeContinue = 0;
+		fileReference = DA206CF3015C4E8B03C91932 /* TiVoDecode.applescript */;
+		functionName = "on readSettings";
+		hitCount = 1;
+		lineNumber = 217;
+		modificationTime = 189837817.1467;
+		state = 1;
+	};
+	616ECBC60B483B3F002AA643 /* TiVoDecode.applescript:217 */ = {
+		isa = PBXFileBreakpoint;
+		actions = (
+		);
+		breakpointStyle = 0;
+		continueAfterActions = 0;
+		delayBeforeContinue = 0;
+		fileReference = DA206CF3015C4E8B03C91932 /* TiVoDecode.applescript */;
+		functionName = "on readSettings";
+		hitCount = 1;
+		lineNumber = 217;
+		modificationTime = 189837817.146705;
+		state = 1;
+	};
+	6174B6590B4833D0007A450C /* TiVoDecode.applescript:242 */ = {
+		isa = PBXFileBreakpoint;
+		actions = (
+		);
+		breakpointStyle = 0;
+		continueAfterActions = 0;
+		delayBeforeContinue = 0;
+		fileReference = DA206CF3015C4E8B03C91932 /* TiVoDecode.applescript */;
+		functionName = "on readSettings";
+		hitCount = 1;
+		lineNumber = 242;
+		modificationTime = 189837817.146692;
+		state = 1;
+	};
+	61A5D8A10B2B12530030FBD5 /* TiVoDecode Manager.icns */ = {
+		uiCtxt = {
+			sepNavWindowFrame = "{{44, -5}, {1253, 778}}";
+		};
+	};
+	61A72CD70B44F4B800276A2F /* TiVoDecode.applescript:540 */ = {
+		isa = PBXFileBreakpoint;
+		actions = (
+		);
+		breakpointStyle = 0;
+		continueAfterActions = 0;
+		delayBeforeContinue = 0;
+		fileReference = DA206CF3015C4E8B03C91932 /* TiVoDecode.applescript */;
+		functionName = "on downloadItem";
+		hitCount = 1;
+		lineNumber = 540;
+		modificationTime = 189837817.146545;
+		state = 1;
+	};
+	61A72CD90B44F4BC00276A2F /* TiVoDecode.applescript:540 */ = {
+		isa = PBXFileBreakpoint;
+		actions = (
+		);
+		breakpointStyle = 0;
+		continueAfterActions = 0;
+		delayBeforeContinue = 0;
+		fileReference = DA206CF3015C4E8B03C91932 /* TiVoDecode.applescript */;
+		functionName = "on downloadItem";
+		hitCount = 1;
+		lineNumber = 540;
+		modificationTime = 189837817.146616;
+		state = 1;
+	};
+	61A72CDB0B44F4C100276A2F /* TiVoDecode.applescript:540 */ = {
+		isa = PBXFileBreakpoint;
+		actions = (
+		);
+		breakpointStyle = 0;
+		continueAfterActions = 0;
+		delayBeforeContinue = 0;
+		fileReference = DA206CF3015C4E8B03C91932 /* TiVoDecode.applescript */;
+		functionName = "on downloadItem";
+		hitCount = 1;
+		lineNumber = 540;
+		modificationTime = 189837817.146625;
+		state = 1;
+	};
+	61A72CDD0B44F4C200276A2F /* TiVoDecode.applescript:540 */ = {
+		isa = PBXFileBreakpoint;
+		actions = (
+		);
+		breakpointStyle = 0;
+		continueAfterActions = 0;
+		delayBeforeContinue = 0;
+		fileReference = DA206CF3015C4E8B03C91932 /* TiVoDecode.applescript */;
+		functionName = "on downloadItem";
+		hitCount = 1;
+		lineNumber = 540;
+		modificationTime = 189837817.146631;
+		state = 1;
+	};
+	61A72D0F0B44FA9C00276A2F /* TiVoDecode.applescript:540 */ = {
+		isa = PBXFileBreakpoint;
+		actions = (
+		);
+		breakpointStyle = 0;
+		continueAfterActions = 0;
+		delayBeforeContinue = 0;
+		fileReference = DA206CF3015C4E8B03C91932 /* TiVoDecode.applescript */;
+		functionName = "on clicked";
+		hitCount = 1;
+		lineNumber = 540;
+		modificationTime = 189837817.146636;
+		state = 1;
+	};
+	61C381630B46EC9100BB4A95 /* TiVoDecode.applescript:540 */ = {
+		isa = PBXFileBreakpoint;
+		actions = (
+		);
+		breakpointStyle = 0;
+		continueAfterActions = 0;
+		delayBeforeContinue = 0;
+		fileReference = DA206CF3015C4E8B03C91932 /* TiVoDecode.applescript */;
+		functionName = "on downloadItem";
+		hitCount = 1;
+		lineNumber = 540;
+		modificationTime = 189837817.146647;
+		state = 1;
+	};
+	61C381650B46EC9500BB4A95 /* TiVoDecode.applescript:540 */ = {
+		isa = PBXFileBreakpoint;
+		actions = (
+		);
+		breakpointStyle = 0;
+		continueAfterActions = 0;
+		delayBeforeContinue = 0;
+		fileReference = DA206CF3015C4E8B03C91932 /* TiVoDecode.applescript */;
+		functionName = "on downloadItem";
+		hitCount = 1;
+		lineNumber = 540;
+		modificationTime = 189837817.146652;
+		state = 1;
+	};
+	61C8ED7F0B485A65006AC547 /* TiVoDecode.applescript:225 */ = {
+		isa = PBXFileBreakpoint;
+		actions = (
+		);
+		breakpointStyle = 0;
+		continueAfterActions = 0;
+		delayBeforeContinue = 0;
+		fileReference = DA206CF3015C4E8B03C91932 /* TiVoDecode.applescript */;
+		functionName = "on readSettings";
+		hitCount = 1;
+		lineNumber = 225;
+		modificationTime = 189837817.146723;
+		state = 1;
+	};
+	61C8ED9E0B485BC3006AC547 /* TiVoDecode.applescript:230 */ = {
+		isa = PBXFileBreakpoint;
+		actions = (
+		);
+		breakpointStyle = 0;
+		continueAfterActions = 0;
+		delayBeforeContinue = 0;
+		fileReference = DA206CF3015C4E8B03C91932 /* TiVoDecode.applescript */;
+		functionName = "on readSettings";
+		hitCount = 1;
+		lineNumber = 230;
+		modificationTime = 189837817.146729;
+		state = 1;
+	};
+	61C90AF10B5C69EA00A0EA7A /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 61D69A490B4C753500D69E4C /* download3.pl */;
+		name = "download3.pl: 19";
+		rLen = 0;
+		rLoc = 758;
+		rType = 0;
+		vrLen = 0;
+		vrLoc = 0;
+	};
+	61D699FF0B4C50BF00D69E4C /* curlSize.pl */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1211, 649}}";
+			sepNavSelRange = "{602, 0}";
+			sepNavVisRect = "{{0, 0}, {1211, 649}}";
+			sepNavWindowFrame = "{{46, -5}, {1250, 778}}";
+		};
+	};
+	61D69A480B4C753500D69E4C /* download2.pl */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1211, 649}}";
+			sepNavSelRange = "{869, 0}";
+			sepNavVisRect = "{{0, 0}, {1211, 649}}";
+			sepNavWindowFrame = "{{46, -5}, {1250, 778}}";
+		};
+	};
+	61D69A490B4C753500D69E4C /* download3.pl */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {2372, 462}}";
+			sepNavSelRange = "{758, 0}";
+			sepNavVisRect = "{{0, 0}, {0, 0}}";
+			sepNavWindowFrame = "{{46, -5}, {1250, 778}}";
+		};
+	};
+	61E28DAD0B3FA5B800D6DD59 /* TDM.pict */ = {
+		uiCtxt = {
+			sepNavWindowFrame = "{{45, -5}, {1253, 778}}";
+		};
+	};
+	61F6C1AB0B533C9800D4866D /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DA206CF3015C4E8B03C91932 /* TiVoDecode.applescript */;
+		name = "TiVoDecode.applescript: 1540";
+		rLen = 0;
+		rLoc = 70986;
+		rType = 0;
+		vrLen = 324;
+		vrLoc = 64975;
+	};
+	61F6C1AD0B533C9800D4866D /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DA206CF3015C4E8B03C91932 /* TiVoDecode.applescript */;
+		name = "TiVoDecode.applescript: 1540";
+		rLen = 0;
+		rLoc = 70986;
+		rType = 0;
+		vrLen = 324;
+		vrLoc = 64975;
+	};
+	65359356078DD41800E8BB2F /* AppleScriptKit.sdef */ = {
+		uiCtxt = {
+			sepNavWindowFrame = "{{44, 21}, {1179, 752}}";
+		};
+	};
+	DA206CF3015C4E8B03C91932 /* TiVoDecode.applescript */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {2137, 23100}}";
+			sepNavSelRange = "{70986, 0}";
+			sepNavVisRect = "{{0, 15825}, {1211, 649}}";
+			sepNavWindowFrame = "{{30, 0}, {1250, 778}}";
+		};
+	};
+}

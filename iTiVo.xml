@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle" version="2.0">
+  <channel>
+    <title>iTiVo</title>
+    <link>http://yoav.org/iTiVo/iTiVo.xml</link>
+    <description>A MAC interface to your TiVo</description>
+    <generator></generator>
+    <docs>http://blogs.law.harvard.edu/tech/rss</docs>
+    <language>en</language>
+    <pubDate>Fri, 12 Sep 2008 11:35:15 +0900</pubDate>
+    <lastBuildDate>Fri, 12 Sep 2008 11:35:15 +0900</lastBuildDate>
+    <atom:link href="http://yoav.org/iTiVo/iTiVo.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>Version 0.9.1</title>
+      <pubDate>Fri, 12 Sep 2008 11:24:54 +0900</pubDate>
+      <enclosure url="http://yoav.org/iTiVo/iTiVo-0.9.6.zip" length="3994855" type="application/octet-stream" sparkle:version="0.9.6"/>
+      <guid isPermaLink="false">version-09-no-useful-changes</guid>
+      <sparkle:releaseNotesLink>http://yoav.org/iTiVo/iTiVo-0.9.6.html</sparkle:releaseNotesLink>
+    </item>
+  </channel>
+</rss>
