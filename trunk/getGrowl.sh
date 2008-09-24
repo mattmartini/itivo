@@ -1,0 +1,1 @@
+ps -Aww -o command | grep -e 'GrowlHelperApp.app'

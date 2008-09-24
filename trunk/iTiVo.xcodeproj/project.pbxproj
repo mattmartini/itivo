@@ -1,0 +1,397 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 45;
+	objects = {
+
+/* Begin PBXAppleScriptBuildPhase section */
+		257572C4072881A4000BE9CA /* AppleScript */ = {
+			isa = PBXAppleScriptBuildPhase;
+			buildActionMask = 2147483647;
+			contextName = "";
+			files = (
+				257572C5072881A4000BE9CA /* iTiVo.applescript in AppleScript */,
+			);
+			isSharedContext = 0;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXAppleScriptBuildPhase section */
+
+/* Begin PBXBuildFile section */
+		257572C5072881A4000BE9CA /* iTiVo.applescript in AppleScript */ = {isa = PBXBuildFile; fileRef = DA206CF3015C4E8B03C91932 /* iTiVo.applescript */; settings = {ATTRIBUTES = (Debug, ); }; };
+		257572C7072881A4000BE9CA /* MainMenu.nib in Resources */ = {isa = PBXBuildFile; fileRef = 29B97318FDCFA39411CA2CEA /* MainMenu.nib */; };
+		257572C8072881A4000BE9CA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
+		257572CA072881A4000BE9CA /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
+		257572CC072881A4000BE9CA /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
+		257572CD072881A4000BE9CA /* AppleScriptKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA206CF1015C4E2903C91932 /* AppleScriptKit.framework */; };
+		5304AD990E4CBDBF00E77CA0 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5304AD980E4CBDBF00E77CA0 /* Sparkle.framework */; };
+		5304ADC30E4CBDFE00E77CA0 /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 5304AD980E4CBDBF00E77CA0 /* Sparkle.framework */; };
+		6100670D0B470D4700E38A87 /* mencoder in Resources */ = {isa = PBXBuildFile; fileRef = 6100670C0B470D4700E38A87 /* mencoder */; };
+		612EF59C0B4459F000ACBBBF /* ParseDetail.pl in Resources */ = {isa = PBXBuildFile; fileRef = 612EF59B0B4459F000ACBBBF /* ParseDetail.pl */; };
+		61354C080B273C3C00EEF96F /* ParseXML.pl in Resources */ = {isa = PBXBuildFile; fileRef = 61354C050B273C3C00EEF96F /* ParseXML.pl */; };
+		61354C090B273C3C00EEF96F /* download.pl in Resources */ = {isa = PBXBuildFile; fileRef = 61354C060B273C3C00EEF96F /* download.pl */; };
+		61354C8B0B2741D800EEF96F /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 61354C890B2741D800EEF96F /* Credits.rtf */; };
+		6156A9C30B4CA01B000373DF /* killProcesses.pl in Resources */ = {isa = PBXBuildFile; fileRef = 6156A9C20B4CA01B000373DF /* killProcesses.pl */; };
+		6172867A0B350D0200C39347 /* tivodecode in Resources */ = {isa = PBXBuildFile; fileRef = 617286790B350D0200C39347 /* tivodecode */; };
+		61A5D8A20B2B12530030FBD5 /* iTiVo.icns in Resources */ = {isa = PBXBuildFile; fileRef = 61A5D8A10B2B12530030FBD5 /* iTiVo.icns */; };
+		61D69A000B4C50BF00D69E4C /* curlSize.pl in Resources */ = {isa = PBXBuildFile; fileRef = 61D699FF0B4C50BF00D69E4C /* curlSize.pl */; };
+		61D69A4A0B4C753500D69E4C /* download2.pl in Resources */ = {isa = PBXBuildFile; fileRef = 61D69A480B4C753500D69E4C /* download2.pl */; };
+		61D69A4B0B4C753500D69E4C /* download3.pl in Resources */ = {isa = PBXBuildFile; fileRef = 61D69A490B4C753500D69E4C /* download3.pl */; };
+		61E28DAE0B3FA5B800D6DD59 /* iTiVo.pict in Resources */ = {isa = PBXBuildFile; fileRef = 61E28DAD0B3FA5B800D6DD59 /* iTiVo.pict */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		53C2B8670E4CA0BD00AB4EBC /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				5304ADC30E4CBDFE00E77CA0 /* Sparkle.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		089C165DFE840E0CC02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
+		257572D5072881A4000BE9CA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		257572D6072881A4000BE9CA /* iTiVo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iTiVo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		29B97319FDCFA39411CA2CEA /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/MainMenu.nib; sourceTree = "<group>"; };
+		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
+		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
+		5304AD980E4CBDBF00E77CA0 /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Sparkle.framework; sourceTree = "<group>"; };
+		5304ADD30E4CF50900E77CA0 /* iTiVo.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = iTiVo.xml; sourceTree = "<group>"; };
+		6100670C0B470D4700E38A87 /* mencoder */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; name = mencoder; path = "External Software/mencoder"; sourceTree = "<group>"; };
+		612EF59B0B4459F000ACBBBF /* ParseDetail.pl */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.script.perl; path = ParseDetail.pl; sourceTree = "<group>"; };
+		61354C050B273C3C00EEF96F /* ParseXML.pl */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.script.perl; path = ParseXML.pl; sourceTree = "<group>"; };
+		61354C060B273C3C00EEF96F /* download.pl */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.script.perl; path = download.pl; sourceTree = "<group>"; };
+		61354C8A0B2741D800EEF96F /* English */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = English; path = English.lproj/Credits.rtf; sourceTree = "<group>"; };
+		6156A9C20B4CA01B000373DF /* killProcesses.pl */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.script.perl; path = killProcesses.pl; sourceTree = "<group>"; };
+		617286790B350D0200C39347 /* tivodecode */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; name = tivodecode; path = "External Software/tivodecode"; sourceTree = "<group>"; };
+		61A5D8A10B2B12530030FBD5 /* iTiVo.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = iTiVo.icns; sourceTree = "<group>"; };
+		61D699FF0B4C50BF00D69E4C /* curlSize.pl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.perl; path = curlSize.pl; sourceTree = "<group>"; };
+		61D69A480B4C753500D69E4C /* download2.pl */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.script.perl; path = download2.pl; sourceTree = "<group>"; };
+		61D69A490B4C753500D69E4C /* download3.pl */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.script.perl; path = download3.pl; sourceTree = "<group>"; };
+		61E28DAD0B3FA5B800D6DD59 /* iTiVo.pict */ = {isa = PBXFileReference; lastKnownFileType = image.pict; path = iTiVo.pict; sourceTree = "<group>"; };
+		65359356078DD41800E8BB2F /* AppleScriptKit.sdef */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.sdef; name = AppleScriptKit.sdef; path = /System/Library/Frameworks/AppleScriptKit.framework/Versions/A/Resources/AppleScriptKit.sdef; sourceTree = "<absolute>"; };
+		DA206CF1015C4E2903C91932 /* AppleScriptKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppleScriptKit.framework; path = /System/Library/Frameworks/AppleScriptKit.framework; sourceTree = "<absolute>"; };
+		DA206CF3015C4E8B03C91932 /* iTiVo.applescript */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.applescript; path = iTiVo.applescript; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		257572CB072881A4000BE9CA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				257572CC072881A4000BE9CA /* Cocoa.framework in Frameworks */,
+				257572CD072881A4000BE9CA /* AppleScriptKit.framework in Frameworks */,
+				5304AD990E4CBDBF00E77CA0 /* Sparkle.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		080E96DDFE201D6D7F000001 /* Scripts */ = {
+			isa = PBXGroup;
+			children = (
+				DA206CF3015C4E8B03C91932 /* iTiVo.applescript */,
+			);
+			name = Scripts;
+			sourceTree = "<group>";
+		};
+		1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				5304AD980E4CBDBF00E77CA0 /* Sparkle.framework */,
+				1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */,
+				DA206CF1015C4E2903C91932 /* AppleScriptKit.framework */,
+			);
+			name = "Linked Frameworks";
+			sourceTree = "<group>";
+		};
+		1058C7A2FEA54F0111CA2CBB /* Other Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				29B97325FDCFA39411CA2CEA /* Foundation.framework */,
+				29B97324FDCFA39411CA2CEA /* AppKit.framework */,
+			);
+			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+		19C28FACFE9D520D11CA2CBB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				257572D6072881A4000BE9CA /* iTiVo.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		29B97314FDCFA39411CA2CEA /* TiVoDecode */ = {
+			isa = PBXGroup;
+			children = (
+				080E96DDFE201D6D7F000001 /* Scripts */,
+				29B97317FDCFA39411CA2CEA /* Resources */,
+				29B97315FDCFA39411CA2CEA /* Other Sources */,
+				29B97323FDCFA39411CA2CEA /* Frameworks */,
+				19C28FACFE9D520D11CA2CBB /* Products */,
+				257572D5072881A4000BE9CA /* Info.plist */,
+				61354C890B2741D800EEF96F /* Credits.rtf */,
+			);
+			name = TiVoDecode;
+			sourceTree = "<group>";
+		};
+		29B97315FDCFA39411CA2CEA /* Other Sources */ = {
+			isa = PBXGroup;
+			children = (
+				6156A9C20B4CA01B000373DF /* killProcesses.pl */,
+				61D69A480B4C753500D69E4C /* download2.pl */,
+				61D69A490B4C753500D69E4C /* download3.pl */,
+				61D699FF0B4C50BF00D69E4C /* curlSize.pl */,
+				612EF59B0B4459F000ACBBBF /* ParseDetail.pl */,
+				617286790B350D0200C39347 /* tivodecode */,
+				6100670C0B470D4700E38A87 /* mencoder */,
+				61354C050B273C3C00EEF96F /* ParseXML.pl */,
+				61354C060B273C3C00EEF96F /* download.pl */,
+				29B97316FDCFA39411CA2CEA /* main.m */,
+			);
+			name = "Other Sources";
+			sourceTree = "<group>";
+		};
+		29B97317FDCFA39411CA2CEA /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				29B97318FDCFA39411CA2CEA /* MainMenu.nib */,
+				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
+				65359356078DD41800E8BB2F /* AppleScriptKit.sdef */,
+				61A5D8A10B2B12530030FBD5 /* iTiVo.icns */,
+				5304ADD30E4CF50900E77CA0 /* iTiVo.xml */,
+				61E28DAD0B3FA5B800D6DD59 /* iTiVo.pict */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */,
+				1058C7A2FEA54F0111CA2CBB /* Other Frameworks */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		257572C3072881A4000BE9CA /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		257572C2072881A4000BE9CA /* iTiVo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4E71A80508A2C90C0034BBD9 /* Build configuration list for PBXNativeTarget "iTiVo" */;
+			buildPhases = (
+				257572C3072881A4000BE9CA /* Headers */,
+				257572C4072881A4000BE9CA /* AppleScript */,
+				257572C6072881A4000BE9CA /* Resources */,
+				257572C9072881A4000BE9CA /* Sources */,
+				257572CB072881A4000BE9CA /* Frameworks */,
+				53C2B8670E4CA0BD00AB4EBC /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = iTiVo;
+			productInstallPath = "$(HOME)/Applications";
+			productName = TiVoDecode;
+			productReference = 257572D6072881A4000BE9CA /* iTiVo.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		29B97313FDCFA39411CA2CEA /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = 4E71A80908A2C90C0034BBD9 /* Build configuration list for PBXProject "iTiVo" */;
+			compatibilityVersion = "Xcode 3.1";
+			hasScannedForEncodings = 1;
+			mainGroup = 29B97314FDCFA39411CA2CEA /* TiVoDecode */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				257572C2072881A4000BE9CA /* iTiVo */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		257572C6072881A4000BE9CA /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				257572C7072881A4000BE9CA /* MainMenu.nib in Resources */,
+				257572C8072881A4000BE9CA /* InfoPlist.strings in Resources */,
+				61354C080B273C3C00EEF96F /* ParseXML.pl in Resources */,
+				61354C090B273C3C00EEF96F /* download.pl in Resources */,
+				61354C8B0B2741D800EEF96F /* Credits.rtf in Resources */,
+				61A5D8A20B2B12530030FBD5 /* iTiVo.icns in Resources */,
+				6172867A0B350D0200C39347 /* tivodecode in Resources */,
+				61E28DAE0B3FA5B800D6DD59 /* iTiVo.pict in Resources */,
+				612EF59C0B4459F000ACBBBF /* ParseDetail.pl in Resources */,
+				6100670D0B470D4700E38A87 /* mencoder in Resources */,
+				61D69A000B4C50BF00D69E4C /* curlSize.pl in Resources */,
+				61D69A4A0B4C753500D69E4C /* download2.pl in Resources */,
+				61D69A4B0B4C753500D69E4C /* download3.pl in Resources */,
+				6156A9C30B4CA01B000373DF /* killProcesses.pl in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		257572C9072881A4000BE9CA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				257572CA072881A4000BE9CA /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		089C165CFE840E0CC02AAC07 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				089C165DFE840E0CC02AAC07 /* English */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		29B97318FDCFA39411CA2CEA /* MainMenu.nib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				29B97319FDCFA39411CA2CEA /* English */,
+			);
+			name = MainMenu.nib;
+			sourceTree = "<group>";
+		};
+		61354C890B2741D800EEF96F /* Credits.rtf */ = {
+			isa = PBXVariantGroup;
+			children = (
+				61354C8A0B2741D800EEF96F /* English */,
+			);
+			name = Credits.rtf;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		4E71A80608A2C90C0034BBD9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_2)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_3)",
+				);
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)\"";
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_2 = "\"$(SRCROOT)/../../Desktop\"";
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_3 = "\"$(SRCROOT)\"";
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_PATH = "$(HOME)/Applications";
+				PRODUCT_NAME = iTiVo;
+				WRAPPER_EXTENSION = app;
+				ZERO_LINK = YES;
+			};
+			name = Debug;
+		};
+		4E71A80708A2C90C0034BBD9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					ppc,
+					i386,
+				);
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_2)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_3)",
+				);
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)\"";
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_2 = "\"$(SRCROOT)/../../Desktop\"";
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_3 = "\"$(SRCROOT)\"";
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_MODEL_TUNING = G5;
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_PATH = "$(HOME)/Applications";
+				OTHER_OSAFLAGS = "-x";
+				PRODUCT_NAME = iTiVo;
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+		4E71A80A08A2C90C0034BBD9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				PREBINDING = NO;
+				SDKROOT = macosx10.4;
+			};
+			name = Debug;
+		};
+		4E71A80B08A2C90C0034BBD9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				PREBINDING = NO;
+				SDKROOT = macosx10.4;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		4E71A80508A2C90C0034BBD9 /* Build configuration list for PBXNativeTarget "iTiVo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4E71A80608A2C90C0034BBD9 /* Debug */,
+				4E71A80708A2C90C0034BBD9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		4E71A80908A2C90C0034BBD9 /* Build configuration list for PBXProject "iTiVo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4E71A80A08A2C90C0034BBD9 /* Debug */,
+				4E71A80B08A2C90C0034BBD9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 29B97313FDCFA39411CA2CEA /* Project object */;
+}
