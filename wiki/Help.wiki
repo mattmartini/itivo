@@ -1,0 +1,53 @@
+= Help =
+
+This document is a basic "help" documentation.  It is incomplete.
+
+= Meaning of Options =
+  * TiVo IP Address
+    The IP address to connect to for your tivo.  Only use this if you failed to automatically find your tivo in the "My TiVos" dropdown.
+
+  * My TiVos dropdown
+    This will attempt to use bonjour to find your tivo if it's on the local network.  If it is a remote tivo, you will need to specify an IP address, which you can find from the network settings of your tivo.
+
+  * Update from TiVo
+    Clicking this button will attempt to connect to your tivo, and download show information.  This goes much faster if you are using a wired instead of wireless connection, and can also be slow if this is an old tivo with a LOT of shows.
+
+  * Subscribe
+    Selecting a show and clicking "subscribe" will add the show to your subscription list.  Read further on subscription lists below.
+
+  * Add to queue
+    Add the show to the download queue for later downloading.  Read below for more info.
+
+  * Download show
+    Immediately download the selected show.  This is only available if iTiVo is not already busy downloading something.
+
+  * Now Playing
+    Shows what shows are available to download from your tivo.
+
+  * Remove from queue
+    Delete the selected show from the download queue.
+
+  * Download Queue
+    Start processing the download queue now.
+
+  * Delete (subscription)
+    Remove the selected subscription from the subscriptions list.
+
+
+= Download Queue =
+The download queue is simply a list of shows scheduled for downloading.  Since the tivo only allows you to download one show at a time, it's sometimes easied to make a list of shows you wanted downloaded, and then have them all go at once while you go out for a while.  The list is processed top-to-bottom.  Although there is no mechanism for moving shows around the list, you can "cheat".  Adding a show already on the queue will push that show to the bottom.  Even if you do not select to 'download queue', if the program has been idle for an hour, it will attempt to download the queue (this is to support subscriptions).
+
+= Subscriptions =
+If there is a show you always choose to download from your tivo (daily news for example, or a show you always watch on your iphone) you can 'subscribe' to that show.  When a subscription exists, the iTiVo program checks hourly for shows on that list.  If a new show with that title has become available, it will add it to the queue automatically.  A show only gets added once (so if you cancel, or quit iTiVo, you will need to manually add the show to the queue again if you still want it).
+
+
+= F.A.Q. =
+  # My program crashes / I get 'mencoder' errors.
+    iTiVo is actually a front-end for several programs written by multiple people.  Many of these programs are not perfect (and iTiVo has its own bugs).  If you report bugs in the interface above (under Issues), I will hopefully get around to fixing it.  However, it may be related to underlying programs which I have no control over. The short version:  sorry.
+
+  # This program is buggy!
+    I only have a tivo 3 and an intel iMac running Leopard to test with.  I appreciate bug reports.
+
+  # How do I get "The Daily Show" onto my iPhone daily?
+    First, configure iTiVo so that it can download from your tivo.  Then, select an episode of the daily show, and "subscribe".  Under Preferences, select "iPhone low-res" and "import to iTunes".  Download an episode.  
+    Then go to iTunes.  Connect your iPhone
