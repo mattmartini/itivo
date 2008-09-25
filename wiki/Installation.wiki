@@ -1,5 +1,3 @@
-#Documentation on how to install and run
-
 = Installation =
   # Download the zip file containing the application from:
      http://code.google.com/p/itivo/downloads/list
