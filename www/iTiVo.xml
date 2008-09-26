@@ -13,7 +13,7 @@
     <item>
       <title>Version 1.0</title>
       <pubDate>Wed, 24 Sep 2008 11:24:54 +0900</pubDate>
-      <enclosure url="http://itivo.googlecode.com/iTiVo-1.0.zip" length="3995085" type="application/octet-stream" sparkle:version="1.0"/>
+      <enclosure url="http://itivo.googlecode.com/files/iTiVo-1.0.zip" length="3995073" type="application/octet-stream" sparkle:version="1.0"/>
       <guid isPermaLink="false">version-10-no-useful-changes</guid>
       <sparkle:releaseNotesLink>http://itivo.googlecode.com/svn/trunk/www/iTiVo-1.0-relnotes.html</sparkle:releaseNotesLink>
     </item>
