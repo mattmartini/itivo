@@ -16,6 +16,7 @@ property DL : ""
 property IPA : ""
 property MAK : ""
 property iTunes : ""
+property iTunesSync : ""
 property iTunesIcon : ""
 property Growl : ""
 property LaunchCount : 0
@@ -150,6 +151,7 @@ on registerSettings()
 		make new default entry at end of default entries with properties {name:"TiVo", contents:""}
 		make new default entry at end of default entries with properties {name:"format", contents:""}
 		make new default entry at end of default entries with properties {name:"iTunes", contents:""}
+		make new default entry at end of default entries with properties {name:"iTunesSync", contents:""}
 		make new default entry at end of default entries with properties {name:"iTunesIcon", contents:""}
 		make new default entry at end of default entries with properties {name:"Growl", contents:""}
 		make new default entry at end of default entries with properties {name:"customWidth", contents:""}
@@ -189,6 +191,7 @@ on readSettings()
 		end try
 		try
 			set iTunes to contents of default entry "iTunes"
+			set iTunesSync to contents of default entry "iTunesSync"
 			set iTunesIcon to contents of default entry "iTunesIcon"
 			set Growl to contents of default entry "Growl"
 			set customWidth to contents of default entry "customWidth"
@@ -237,6 +240,8 @@ on readSettings()
 	tell drawer "Drawer" of window "iTiVo"
 		set state of button "iTunes" to 0
 		set enabled of button "iTunes" to false
+		set state of button "iTunesSync" to 0
+		set enabled of button "iTunesSync" to false
 		set enabled of popup button "icon" to false
 	end tell
 	set contents of text field "customWidth" of drawer "Drawer" of window "iTiVo" to customWidth
@@ -259,6 +264,7 @@ on readSettings()
 	set formats to title of every menu item of popup button "format" of drawer "Drawer" of window "iTiVo"
 	set iTunesIcons to title of every menu item of popup button "icon" of drawer "Drawer" of window "iTiVo"
 	set state of button "iTunes" of drawer "Drawer" of window "iTiVo" to iTunes
+	set state of button "iTunesSync" of drawer "Drawer" of window "iTiVo" to iTunesSync
 	if iTunesIcon is in iTunesIcons then
 		set title of popup button "icon" of drawer "Drawer" of window "iTiVo" to iTunesIcon
 	end if
@@ -270,6 +276,8 @@ on readSettings()
 				set filenameExtension to ".mpg"
 				set state of button "iTunes" to 0
 				set enabled of button "iTunes" to false
+				set state of button "iTunesSync" to 0
+				set enabled of button "iTunesSync" to false
 				set enabled of popup button "icon" to false
 			else if format = "iPod/iPhone high-res" then
 				set encodeMode to 1
@@ -278,8 +286,13 @@ on readSettings()
 				if iTunes > 0 then
 					set enabled of popup button "icon" to true
 					set state of button "iTunes" to on state
+					set enabled of button "iTunesSync" to true
+					if iTunesSync > 0 then
+						set state of button "iTunesSync" to on state
+					end if
 				else
 					set enabled of popup button "icon" to false
+					set enabled of button "iTunesSync" to false
 				end if
 			else if format = "iPod/iPhone med-res" then
 				set encodeMode to 2
@@ -288,8 +301,13 @@ on readSettings()
 				if iTunes > 0 then
 					set enabled of popup button "icon" to true
 					set state of button "iTunes" to on state
+					set enabled of button "iTunesSync" to true
+					if iTunesSync > 0 then
+						set state of button "iTunesSync" to on state
+					end if
 				else
 					set enabled of popup button "icon" to false
+					set enabled of button "iTunesSync" to false
 				end if
 			else if format = "iPod/iPhone low-res" then
 				set encodeMode to 3
@@ -298,8 +316,13 @@ on readSettings()
 				if iTunes > 0 then
 					set enabled of popup button "icon" to true
 					set state of button "iTunes" to on state
+					set enabled of button "iTunesSync" to true
+					if iTunesSync > 0 then
+						set state of button "iTunesSync" to on state
+					end if
 				else
 					set enabled of popup button "icon" to false
+					set enabled of button "iTunesSync" to false
 				end if
 			else if format = "Zune" then
 				set encodeMode to 4
@@ -308,7 +331,12 @@ on readSettings()
 				if iTunes > 0 then
 					set enabled of popup button "icon" to true
 					set state of button "iTunes" to on state
+					set enabled of button "iTunesSync" to true
+					if iTunesSync > 0 then
+						set state of button "iTunesSync" to on state
+					end if
 				else
+					set enabled of button "iTunesSync" to false
 					set enabled of popup button "icon" to false
 				end if
 			else if format = "AppleTV" then
@@ -318,20 +346,29 @@ on readSettings()
 				if iTunes > 0 then
 					set enabled of popup button "icon" to true
 					set state of button "iTunes" to on state
+					set enabled of button "iTunesSync" to true
+					if iTunesSync > 0 then
+						set state of button "iTunesSync" to on state
+					end if
 				else
 					set enabled of popup button "icon" to false
+					set enabled of button "iTunesSync" to false
 				end if
 			else if format = "PSP" then
 				set encodeMode to 6
 				set filenameExtension to ".mp4"
 				set state of button "iTunes" to 0
 				set enabled of button "iTunes" to false
+				set state of button "iTunesSync" to 0
+				set enabled of button "iTunesSync" to fals
 				set enabled of popup button "icon" to false
 			else if format = "PS3" then
 				set encodeMode to 7
 				set filenameExtension to ".mp4"
 				set state of button "iTunes" to 0
 				set enabled of button "iTunes" to false
+				set state of button "iTunesSync" to 0
+				set enabled of button "iTunesSync" to fals
 				set enabled of popup button "icon" to false
 			else if format = "Quicktime MPEG-4 (Custom)" then
 				set encodeMode to 8
@@ -340,8 +377,13 @@ on readSettings()
 				if iTunes > 0 then
 					set enabled of popup button "icon" to true
 					set state of button "iTunes" to on state
+					set enabled of button "iTunesSync" to true
+					if iTunesSync > 0 then
+						set state of button "iTunesSync" to on state
+					end if
 				else
 					set enabled of popup button "icon" to false
+					set enabled of button "iTunesSync" to false
 				end if
 				my showSettings()
 			end if
@@ -424,6 +466,7 @@ on writeSettings()
 		set contents of default entry "TiVo" to TiVo as string
 		set contents of default entry "format" to format as string
 		set contents of default entry "iTunes" to iTunes as string
+		set contents of default entry "iTunesSync" to iTunesSync as string
 		set contents of default entry "iTunesIcon" to iTunesIcon as string
 		set contents of default entry "Growl" to Growl as string
 		set contents of default entry "customWidth" to customWidth as string
@@ -689,8 +732,6 @@ on clicked theObject
 					set success to my downloadItem(currentProcessSelection, retryCount, retryCount)
 					set retryCount to retryCount + 1
 				end repeat
-				
-				--				my downloadItem(currentProcessSelection, 0, 0)
 				if (count of (selected data rows of table view "ShowListTable" of scroll view "ShowList" of box "topBox" of split view "splitView")) = 1 then
 					set enabled of button "DownloadButton" of box "topBox" of split view "splitView" to true
 					set enabled of button "subscribeButton" of box "topBox" of split view "splitView" to true
@@ -703,12 +744,18 @@ on clicked theObject
 				set enabled of button "connectButton" to true
 			end try
 		else if theObjectName = "iTunes" then
+			log "clicked itunes"
 			set iTunes to state of theObject
 			if iTunes > 0 then
+				set enabled of button "iTunesSync" of drawer "Drawer" to true
 				set enabled of popup button "icon" of drawer "Drawer" to true
 			else
+				set enabled of button "iTunesSync" of drawer "Drawer" to false
 				set enabled of popup button "icon" of drawer "Drawer" to false
 			end if
+		else if theObjectName = "iTunesSync" then
+			log "clicked itunessync"
+			set iTunesSync to state of theObject
 		else if theObjectName = "Growl" then
 			set Growl to state of theObject
 			if Growl as integer = 1 then
@@ -941,61 +988,83 @@ on choose menu item theObject
 	if name of theObject = "icon" then
 		set iTunesIcon to title of theObject
 	else if name of theObject = "Help" then
-		open location "http://yoav.org/iTiVo/faq.html"
+		open location "http://code.google.com/p/itivo/wiki/Help"
 	else if name of theObject = "format" then
 		tell drawer "Drawer" of window "iTiVo"
 			if title of theObject = "No Conversion (native MPEG-2)" then
 				set encodeMode to 0
 				set state of button "iTunes" to 0
 				set enabled of button "iTunes" to false
+				set state of button "iTunesSync" to 0
+				set enabled of button "iTunesSync" to false
 				set enabled of popup button "icon" to false
 				my hideSettings()
 			else if title of theObject = "iPod/iPhone high-res" then
 				set encodeMode to 1
 				set enabled of button "iTunes" to true
 				if iTunes > 0 then
+					set enabled of button "iTunesSync" to true
 					set enabled of popup button "icon" to true
 				else
+					set enabled of button "iTunesSync" to false
 					set enabled of popup button "icon" to false
 				end if
 				my hideSettings()
 				if iTunes > 0 then
 					set state of button "iTunes" to iTunes
+					if iTunesSync > 0 then
+						set state of button "iTunesSync" to iTunesSync
+					end if
 				end if
 			else if title of theObject = "iPod/iPhone med-res" then
 				set encodeMode to 2
 				set enabled of button "iTunes" to true
 				if iTunes > 0 then
 					set enabled of popup button "icon" to true
+					set enabled of button "iTunesSync" to true
 				else
+					set enabled of button "iTunesSync" to false
 					set enabled of popup button "icon" to false
 				end if
 				my hideSettings()
 				if iTunes > 0 then
 					set state of button "iTunes" to iTunes
+					if iTunesSync > 0 then
+						set state of button "iTunesSync" to iTunesSync
+					end if
 				end if
 			else if title of theObject = "iPod/iPhone low-res" then
 				set encodeMode to 3
 				set enabled of button "iTunes" to true
 				if iTunes > 0 then
 					set enabled of popup button "icon" to true
+					set enabled of button "iTunesSync" to true
 				else
+					set enabled of button "iTunesSync" to false
 					set enabled of popup button "icon" to false
 				end if
 				my hideSettings()
 				if iTunes > 0 then
 					set state of button "iTunes" to iTunes
+					if iTunesSync > 0 then
+						set state of button "iTunesSync" to iTunesSync
+					end if
 				end if
 			else if title of theObject = "Zune" then
 				set encodeMode to 4
 				set enabled of button "iTunes" to true
 				if iTunes > 0 then
 					set enabled of popup button "icon" to true
+					set enabled of button "iTunesSync" to true
 				else
+					set enabled of button "iTunesSync" to false
 					set enabled of popup button "icon" to false
 				end if
 				my hideSettings()
 				if iTunes > 0 then
+					if iTunesSync > 0 then
+						set state of button "iTunesSync" to iTunesSync
+					end if
 					set state of button "iTunes" to iTunes
 				end if
 			else if title of theObject = "AppleTV" then
@@ -1003,18 +1072,25 @@ on choose menu item theObject
 				set enabled of button "iTunes" to true
 				if iTunes > 0 then
 					set enabled of popup button "icon" to true
+					set enabled of button "iTunesSync" to true
 				else
+					set enabled of button "iTunesSync" to false
 					set enabled of popup button "icon" to false
 				end if
 				my hideSettings()
 				if iTunes > 0 then
 					set state of button "iTunes" to iTunes
+					if iTunesSync > 0 then
+						set state of button "iTunesSync" to iTunesSync
+					end if
 				end if
 			else if title of theObject = "PSP" then
 				set encodeMode to 6
 				set enabled of button "iTunes" to true
 				set state of button "iTunes" to 0
 				set enabled of button "iTunes" to false
+				set state of button "iTunesSync" to 0
+				set enabled of button "iTunesSync" to false
 				set enabled of popup button "icon" to false
 				my hideSettings()
 			else if title of theObject = "PS3" then
@@ -1022,6 +1098,8 @@ on choose menu item theObject
 				set enabled of button "iTunes" to true
 				set state of button "iTunes" to 0
 				set enabled of button "iTunes" to false
+				set state of button "iTunesSync" to 0
+				set enabled of button "iTunesSync" to false
 				set enabled of popup button "icon" to false
 				my hideSettings()
 			else if title of theObject = "Quicktime MPEG-4 (Custom)" then
@@ -1029,12 +1107,17 @@ on choose menu item theObject
 				set enabled of button "iTunes" to true
 				if iTunes > 0 then
 					set enabled of popup button "icon" to true
+					set enabled of button "iTunesSync" to true
 				else
+					set enabled of button "iTunesSync" to false
 					set enabled of popup button "icon" to false
 				end if
 				my showSettings()
 				if iTunes > 0 then
 					set state of button "iTunes" to iTunes
+					if iTunesSync > 0 then
+						set state of button "iTunesSync" to iTunesSync
+					end if
 				end if
 			end if
 		end tell
@@ -1460,6 +1543,7 @@ on ConnectTiVo()
 		set enabled of button "DownloadButton" of box "topBox" of split view "splitView" to false
 		set contents of text field "status" to ""
 		set key equivalent of button "ConnectButton" to ""
+		set contents of text field "status" to "Last Update : " & (current date)
 	end tell
 end ConnectTiVo
 
@@ -1528,6 +1612,15 @@ on post_process_item(this_item, show_name, episodeName, file_description, episod
 				set ott to ""
 			end if
 		end tell
+		if iTunesSync as integer > 0 then
+			log "now attempting to sync the phone"
+			set contents of text field "status" to "Initiating sync to all connected devices on iTunes..."
+			tell application "iTunes"
+				repeat with s in sources
+					if ((kind of s is iPod) or (kind of s is iPhone)) then update s
+				end repeat
+			end tell
+		end if
 		set contents of text field "status" of window "iTiVo" to ""
 	end try
 end post_process_item
