@@ -202,7 +202,7 @@
 			<key>Content</key>
 			<dict>
 				<key>PBXProjectModuleGUID</key>
-				<string>531FE19D0E8D56AC007A8D9C</string>
+				<string>532153820E900618003A3C33</string>
 				<key>PBXProjectModuleLabel</key>
 				<string>iTiVo.applescript</string>
 				<key>PBXSplitModuleInNavigatorKey</key>
@@ -210,16 +210,16 @@
 					<key>Split0</key>
 					<dict>
 						<key>PBXProjectModuleGUID</key>
-						<string>531FE19E0E8D56AC007A8D9C</string>
+						<string>532153830E900618003A3C33</string>
 						<key>PBXProjectModuleLabel</key>
 						<string>iTiVo.applescript</string>
 						<key>_historyCapacity</key>
 						<integer>0</integer>
 						<key>bookmark</key>
-						<string>531FE19F0E8D56AC007A8D9C</string>
+						<string>5349D9520E908A8400A87B5C</string>
 						<key>history</key>
 						<array>
-							<string>531FE1970E8D55F6007A8D9C</string>
+							<string>5321538A0E905FC2003A3C33</string>
 						</array>
 					</dict>
 					<key>SplitCount</key>
@@ -272,6 +272,8 @@
 			<key>Layout</key>
 			<array>
 				<dict>
+					<key>BecomeActive</key>
+					<true/>
 					<key>ContentConfiguration</key>
 					<dict>
 						<key>PBXBottomSmartGroupGIDs</key>
@@ -364,7 +366,7 @@
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>531FE19A0E8D56AC007A8D9C</string>
+										<string>5349D9510E908A8400A87B5C</string>
 										<key>history</key>
 										<array>
 											<string>532FB4380E690DA300E8AE02</string>
@@ -372,16 +374,15 @@
 											<string>532A07440E69144B008F743F</string>
 											<string>530CFEA60E69AB48006B4B34</string>
 											<string>535A7A990E7E4BC2009362EA</string>
-											<string>53C205870E800D8A003A8379</string>
 											<string>535803520E8ADEAF00750515</string>
 											<string>535803530E8ADEAF00750515</string>
 											<string>535803540E8ADEAF00750515</string>
 											<string>535803650E8C0EE300750515</string>
-											<string>531FE1990E8D56AC007A8D9C</string>
+											<string>532153780E900226003A3C33</string>
+											<string>532153890E905FC2003A3C33</string>
 										</array>
 										<key>prevStack</key>
 										<array>
-											<string>532FB43C0E690DA300E8AE02</string>
 											<string>532FB43D0E690DA300E8AE02</string>
 											<string>532FB43F0E690DA300E8AE02</string>
 											<string>532A072A0E69129A008F743F</string>
@@ -391,7 +392,7 @@
 											<string>532A075C0E691B73008F743F</string>
 											<string>539F85A00E69F51E00C65AD2</string>
 											<string>535A7A9C0E7E4BC2009362EA</string>
-											<string>53C205890E800D8A003A8379</string>
+											<string>5321537A0E900226003A3C33</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -413,8 +414,6 @@
 							<string>176pt</string>
 						</dict>
 						<dict>
-							<key>BecomeActive</key>
-							<true/>
 							<key>ContentConfiguration</key>
 							<dict>
 								<key>PBXProjectModuleGUID</key>
@@ -451,9 +450,9 @@
 			</array>
 			<key>TableOfContents</key>
 			<array>
-				<string>531FE19B0E8D56AC007A8D9C</string>
+				<string>5349D9430E905FEE00A87B5C</string>
 				<string>1CE0B1FE06471DED0097A5F4</string>
-				<string>531FE19C0E8D56AC007A8D9C</string>
+				<string>5349D9440E905FEE00A87B5C</string>
 				<string>1CE0B20306471E060097A5F4</string>
 				<string>1CE0B20506471E060097A5F4</string>
 			</array>
@@ -587,9 +586,11 @@
 	<integer>5</integer>
 	<key>WindowOrderList</key>
 	<array>
+		<string>1CD10A99069EF8BA00B06720</string>
 		<string>5330C6360E498641000D9229</string>
 		<string>/Users/yoav/src/itivo/iTiVo.xcodeproj</string>
-		<string>531FE19D0E8D56AC007A8D9C</string>
+		<string>1C78EAAD065D492600B07095</string>
+		<string>532153820E900618003A3C33</string>
 	</array>
 	<key>WindowString</key>
 	<string>38 191 867 633 0 0 1440 878 </string>
@@ -669,7 +670,7 @@
 			<key>TableOfContents</key>
 			<array>
 				<string>5330C6360E498641000D9229</string>
-				<string>531FE1A00E8D56AC007A8D9C</string>
+				<string>5349D9460E905FEE00A87B5C</string>
 				<string>1CD0528F0623707200166675</string>
 				<string>XCMainBuildResultsModuleGUID</string>
 			</array>
@@ -789,13 +790,13 @@
 			<key>TableOfContents</key>
 			<array>
 				<string>1CD10A99069EF8BA00B06720</string>
-				<string>535803590E8ADEAF00750515</string>
+				<string>5349D9470E905FEE00A87B5C</string>
 				<string>1C162984064C10D400B95A72</string>
-				<string>5358035A0E8ADEAF00750515</string>
-				<string>5358035B0E8ADEAF00750515</string>
-				<string>5358035C0E8ADEAF00750515</string>
-				<string>5358035D0E8ADEAF00750515</string>
-				<string>5358035E0E8ADEAF00750515</string>
+				<string>5349D9480E905FEE00A87B5C</string>
+				<string>5349D9490E905FEE00A87B5C</string>
+				<string>5349D94A0E905FEE00A87B5C</string>
+				<string>5349D94B0E905FEE00A87B5C</string>
+				<string>5349D94C0E905FEE00A87B5C</string>
 			</array>
 			<key>ToolbarConfiguration</key>
 			<string>xcode.toolbar.config.debugV3</string>
@@ -934,18 +935,18 @@
 							<key>GeometryConfiguration</key>
 							<dict>
 								<key>Frame</key>
-								<string>{{0, 0}, {927, 381}}</string>
+								<string>{{0, 0}, {987, 512}}</string>
 								<key>RubberWindowFrame</key>
-								<string>468 129 927 422 0 0 1440 878 </string>
+								<string>457 105 987 553 0 0 1440 878 </string>
 							</dict>
 							<key>Module</key>
 							<string>PBXDebugCLIModule</string>
 							<key>Proportion</key>
-							<string>381pt</string>
+							<string>512pt</string>
 						</dict>
 					</array>
 					<key>Proportion</key>
-					<string>381pt</string>
+					<string>512pt</string>
 				</dict>
 			</array>
 			<key>Name</key>
@@ -959,17 +960,17 @@
 			<key>TableOfContents</key>
 			<array>
 				<string>1C78EAAD065D492600B07095</string>
-				<string>5358036D0E8C0EE300750515</string>
+				<string>5349D94D0E905FEE00A87B5C</string>
 				<string>1C78EAAC065D492600B07095</string>
 			</array>
 			<key>ToolbarConfiguration</key>
 			<string>xcode.toolbar.config.consoleV3</string>
 			<key>WindowString</key>
-			<string>468 129 927 422 0 0 1440 878 </string>
+			<string>457 105 987 553 0 0 1440 878 </string>
 			<key>WindowToolGUID</key>
 			<string>1C78EAAD065D492600B07095</string>
 			<key>WindowToolIsVisible</key>
-			<false/>
+			<true/>
 		</dict>
 		<dict>
 			<key>Identifier</key>
@@ -1400,7 +1401,7 @@
 			<key>TableOfContents</key>
 			<array>
 				<string>1C0AD2AF069F1E9B00FABCE6</string>
-				<string>53C2B8720E4CA61800AB4EBC</string>
+				<string>5321536F0E8FFF7B003A3C33</string>
 				<string>1CA6456E063B45B4001379D8</string>
 			</array>
 			<key>ToolbarConfiguration</key>

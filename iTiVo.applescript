@@ -1586,6 +1586,7 @@ on post_process_item(this_item, show_name, episodeName, file_description, episod
 			log "Importing " & show_name & " into iTunes..."
 			update
 		end tell
+		log "starting communication with itunes"
 		tell application "iTunes"
 			launch
 			set this_track to add (POSIX file this_item as alias) to playlist "Library" of source "Library"
@@ -1602,6 +1603,7 @@ on post_process_item(this_item, show_name, episodeName, file_description, episod
 			set this_track's year to episodeYear as string
 			set this_track's episode number to episodeNum as string
 			set this_track's genre to episodeGenre as string
+			log "configured track"
 			if iTunesIcon = "Generic TDM" then
 				set pict_item to path to me as string
 				set pict_item to pict_item & "Contents:Resources:TDM.pict"
@@ -1612,17 +1614,24 @@ on post_process_item(this_item, show_name, episodeName, file_description, episod
 				set ott to ""
 			end if
 		end tell
+		log "itunes config done now syncing"
 		if iTunesSync as integer > 0 then
 			log "now attempting to sync the phone"
-			set contents of text field "status" to "Initiating sync to all connected devices on iTunes..."
+			set contents of text field "status" of window "iTiVo" to "Initiating sync to all connected devices on iTunes..."
+			log "now attempting to sync the phone 2"
 			tell application "iTunes"
+				log "talking to itunes now"
 				repeat with s in sources
-					if ((kind of s is iPod) or (kind of s is iPhone)) then update s
+					log "found source " & kind of s & "    with name : " & name of s
+					if (kind of s is iPod) then
+						update s
+					end if
 				end repeat
 			end tell
 		end if
-		set contents of text field "status" of window "iTiVo" to ""
+		log "done with itunes"
 	end try
+	set contents of text field "status" of window "iTiVo" to ""
 end post_process_item
 
 on showSettings()
