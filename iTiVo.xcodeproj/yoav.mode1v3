@@ -202,7 +202,7 @@
 			<key>Content</key>
 			<dict>
 				<key>PBXProjectModuleGUID</key>
-				<string>532153820E900618003A3C33</string>
+				<string>53F5B39A0E9D4EEB00FF3506</string>
 				<key>PBXProjectModuleLabel</key>
 				<string>iTiVo.applescript</string>
 				<key>PBXSplitModuleInNavigatorKey</key>
@@ -210,16 +210,16 @@
 					<key>Split0</key>
 					<dict>
 						<key>PBXProjectModuleGUID</key>
-						<string>532153830E900618003A3C33</string>
+						<string>53F5B39B0E9D4EEB00FF3506</string>
 						<key>PBXProjectModuleLabel</key>
 						<string>iTiVo.applescript</string>
 						<key>_historyCapacity</key>
 						<integer>0</integer>
 						<key>bookmark</key>
-						<string>5349D9520E908A8400A87B5C</string>
+						<string>53F5B3BF0E9D82AE00FF3506</string>
 						<key>history</key>
 						<array>
-							<string>5321538A0E905FC2003A3C33</string>
+							<string>53F5B3B50E9D715000FF3506</string>
 						</array>
 					</dict>
 					<key>SplitCount</key>
@@ -272,8 +272,6 @@
 			<key>Layout</key>
 			<array>
 				<dict>
-					<key>BecomeActive</key>
-					<true/>
 					<key>ContentConfiguration</key>
 					<dict>
 						<key>PBXBottomSmartGroupGIDs</key>
@@ -366,7 +364,7 @@
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>5349D9510E908A8400A87B5C</string>
+										<string>53F5B3BE0E9D82AE00FF3506</string>
 										<key>history</key>
 										<array>
 											<string>532FB4380E690DA300E8AE02</string>
@@ -379,7 +377,8 @@
 											<string>535803540E8ADEAF00750515</string>
 											<string>535803650E8C0EE300750515</string>
 											<string>532153780E900226003A3C33</string>
-											<string>532153890E905FC2003A3C33</string>
+											<string>53F5B3B20E9D715000FF3506</string>
+											<string>532B75910E9D4CE1008C416E</string>
 										</array>
 										<key>prevStack</key>
 										<array>
@@ -393,6 +392,8 @@
 											<string>539F85A00E69F51E00C65AD2</string>
 											<string>535A7A9C0E7E4BC2009362EA</string>
 											<string>5321537A0E900226003A3C33</string>
+											<string>532B75930E9D4CE1008C416E</string>
+											<string>53F5B3B30E9D715000FF3506</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -414,6 +415,8 @@
 							<string>176pt</string>
 						</dict>
 						<dict>
+							<key>BecomeActive</key>
+							<true/>
 							<key>ContentConfiguration</key>
 							<dict>
 								<key>PBXProjectModuleGUID</key>
@@ -450,9 +453,9 @@
 			</array>
 			<key>TableOfContents</key>
 			<array>
-				<string>5349D9430E905FEE00A87B5C</string>
+				<string>53F5B3920E9D4DF300FF3506</string>
 				<string>1CE0B1FE06471DED0097A5F4</string>
-				<string>5349D9440E905FEE00A87B5C</string>
+				<string>53F5B3930E9D4DF300FF3506</string>
 				<string>1CE0B20306471E060097A5F4</string>
 				<string>1CE0B20506471E060097A5F4</string>
 			</array>
@@ -589,8 +592,8 @@
 		<string>1CD10A99069EF8BA00B06720</string>
 		<string>5330C6360E498641000D9229</string>
 		<string>/Users/yoav/src/itivo/iTiVo.xcodeproj</string>
+		<string>53F5B39A0E9D4EEB00FF3506</string>
 		<string>1C78EAAD065D492600B07095</string>
-		<string>532153820E900618003A3C33</string>
 	</array>
 	<key>WindowString</key>
 	<string>38 191 867 633 0 0 1440 878 </string>
@@ -670,7 +673,7 @@
 			<key>TableOfContents</key>
 			<array>
 				<string>5330C6360E498641000D9229</string>
-				<string>5349D9460E905FEE00A87B5C</string>
+				<string>53F5B39E0E9D4EEB00FF3506</string>
 				<string>1CD0528F0623707200166675</string>
 				<string>XCMainBuildResultsModuleGUID</string>
 			</array>
@@ -790,13 +793,13 @@
 			<key>TableOfContents</key>
 			<array>
 				<string>1CD10A99069EF8BA00B06720</string>
-				<string>5349D9470E905FEE00A87B5C</string>
+				<string>53F5B39F0E9D4EEB00FF3506</string>
 				<string>1C162984064C10D400B95A72</string>
-				<string>5349D9480E905FEE00A87B5C</string>
-				<string>5349D9490E905FEE00A87B5C</string>
-				<string>5349D94A0E905FEE00A87B5C</string>
-				<string>5349D94B0E905FEE00A87B5C</string>
-				<string>5349D94C0E905FEE00A87B5C</string>
+				<string>53F5B3A00E9D4EEB00FF3506</string>
+				<string>53F5B3A10E9D4EEB00FF3506</string>
+				<string>53F5B3A20E9D4EEB00FF3506</string>
+				<string>53F5B3A30E9D4EEB00FF3506</string>
+				<string>53F5B3A40E9D4EEB00FF3506</string>
 			</array>
 			<key>ToolbarConfiguration</key>
 			<string>xcode.toolbar.config.debugV3</string>
@@ -960,7 +963,7 @@
 			<key>TableOfContents</key>
 			<array>
 				<string>1C78EAAD065D492600B07095</string>
-				<string>5349D94D0E905FEE00A87B5C</string>
+				<string>53F5B3A50E9D4EEB00FF3506</string>
 				<string>1C78EAAC065D492600B07095</string>
 			</array>
 			<key>ToolbarConfiguration</key>

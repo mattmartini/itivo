@@ -7,7 +7,7 @@
 
 property format : 0
 property encodeMode : 0
-property filenameExtension : "mp4"
+property filenameExtension : ".mp4"
 property targetData : missing value
 property targetDataQ : missing value
 property targetDataS : missing value
@@ -268,6 +268,7 @@ on readSettings()
 	if iTunesIcon is in iTunesIcons then
 		set title of popup button "icon" of drawer "Drawer" of window "iTiVo" to iTunesIcon
 	end if
+	log "using format : " & format
 	if format is in formats then
 		set title of popup button "format" of drawer "Drawer" of window "iTiVo" to format
 		tell drawer "Drawer" of window "iTiVo"
@@ -993,6 +994,7 @@ on choose menu item theObject
 		tell drawer "Drawer" of window "iTiVo"
 			if title of theObject = "No Conversion (native MPEG-2)" then
 				set encodeMode to 0
+				set filenameExtension to ".mpg"
 				set state of button "iTunes" to 0
 				set enabled of button "iTunes" to false
 				set state of button "iTunesSync" to 0
@@ -1001,6 +1003,7 @@ on choose menu item theObject
 				my hideSettings()
 			else if title of theObject = "iPod/iPhone high-res" then
 				set encodeMode to 1
+				set filenameExtension to ".mp4"
 				set enabled of button "iTunes" to true
 				if iTunes > 0 then
 					set enabled of button "iTunesSync" to true
@@ -1018,6 +1021,7 @@ on choose menu item theObject
 				end if
 			else if title of theObject = "iPod/iPhone med-res" then
 				set encodeMode to 2
+				set filenameExtension to ".mp4"
 				set enabled of button "iTunes" to true
 				if iTunes > 0 then
 					set enabled of popup button "icon" to true
@@ -1036,6 +1040,7 @@ on choose menu item theObject
 			else if title of theObject = "iPod/iPhone low-res" then
 				set encodeMode to 3
 				set enabled of button "iTunes" to true
+				set filenameExtension to ".mp4"
 				if iTunes > 0 then
 					set enabled of popup button "icon" to true
 					set enabled of button "iTunesSync" to true
@@ -1052,6 +1057,7 @@ on choose menu item theObject
 				end if
 			else if title of theObject = "Zune" then
 				set encodeMode to 4
+				set filenameExtension to ".mp4"
 				set enabled of button "iTunes" to true
 				if iTunes > 0 then
 					set enabled of popup button "icon" to true
@@ -1070,6 +1076,7 @@ on choose menu item theObject
 			else if title of theObject = "AppleTV" then
 				set encodeMode to 5
 				set enabled of button "iTunes" to true
+				set filenameExtension to ".mp4"
 				if iTunes > 0 then
 					set enabled of popup button "icon" to true
 					set enabled of button "iTunesSync" to true
@@ -1086,6 +1093,7 @@ on choose menu item theObject
 				end if
 			else if title of theObject = "PSP" then
 				set encodeMode to 6
+				set filenameExtension to ".mp4"
 				set enabled of button "iTunes" to true
 				set state of button "iTunes" to 0
 				set enabled of button "iTunes" to false
@@ -1095,6 +1103,7 @@ on choose menu item theObject
 				my hideSettings()
 			else if title of theObject = "PS3" then
 				set encodeMode to 7
+				set filenameExtension to ".mp4"
 				set enabled of button "iTunes" to true
 				set state of button "iTunes" to 0
 				set enabled of button "iTunes" to false
@@ -1104,6 +1113,7 @@ on choose menu item theObject
 				my hideSettings()
 			else if title of theObject = "Quicktime MPEG-4 (Custom)" then
 				set encodeMode to 8
+				set filenameExtension to ".mp4"
 				set enabled of button "iTunes" to true
 				if iTunes > 0 then
 					set enabled of popup button "icon" to true
@@ -1532,6 +1542,9 @@ on ConnectTiVo()
 			repeat with currentItem in addedItems
 				my updateSubscriptionList(item 1 of currentItem, item 2 of currentItem, true)
 			end repeat
+			if (count of addedItems) > 0 then
+				set enabled of button "decodeQueue" of box "bottomBox" of split view "splitView" to true
+			end if
 			if (count of processInfoRecord) = 1 then
 				set contents of text field "nowPlaying" of box "topBox" of split view "splitView" to "Now Playing (1 item)"
 			else
@@ -1668,8 +1681,8 @@ end hideSettings
 on performCancelDownload()
 	set myPath to my prepareCommand(POSIX path of (path to me))
 	do shell script "perl " & myPath & "Contents/Resources/killProcesses.pl ;exit 0"
-	do shell script "sleep 3"
-	--do shell script "rm ~/.TiVoDLPipe* ;exit 0"
+	do shell script "sleep 1"
+	-- do shell script "rm -f ~/.TiVoDL* ;exit 0"
 	log "performCancelDownload"
 end performCancelDownload
 
@@ -1893,3 +1906,4 @@ on idle
 	end if
 	return installedIdleHandler
 end idle
+goo
