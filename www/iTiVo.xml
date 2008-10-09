@@ -2,7 +2,7 @@
 <rss version="2.0"
     xmlns:atom="http://www.w3.org/2005/Atom"
     xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle"
-    version="2.0">
+    />
   <channel>
     <title>iTiVo</title>
     <link>http://itivo.googlecode.com/svn/trunk/www/iTiVo.xml</link>
@@ -14,7 +14,8 @@
       <enclosure
       sparkle:version="1.1"
       url="http://itivo.googlecode.com/files/iTiVo-1.1.zip"
-      type="application/octet-stream"/>
+      type="application/octet-stream"
+     />
       <sparkle:releaseNotesLink>http://itivo.googlecode.com/svn/trunk/www/changelog.html</sparkle:releaseNotesLink>
     </item>
   </channel>
