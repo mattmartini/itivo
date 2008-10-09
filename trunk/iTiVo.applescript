@@ -1681,8 +1681,6 @@ end hideSettings
 on performCancelDownload()
 	set myPath to my prepareCommand(POSIX path of (path to me))
 	do shell script "perl " & myPath & "Contents/Resources/killProcesses.pl ;exit 0"
-	do shell script "sleep 1"
-	-- do shell script "rm -f ~/.TiVoDL* ;exit 0"
 	log "performCancelDownload"
 end performCancelDownload
 

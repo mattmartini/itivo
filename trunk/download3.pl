@@ -27,21 +27,21 @@ if ($encodeMode == 0) {
    $abitrate=128;
    $width=640;
    $height=-10;
-   $shellScript3 = $file2 . "Contents/Resources/mencoder -af volume=13:1 -of lavf -lavfopts format=mp4 -oac faac -faacopts mpeg=4:object=2:raw:br=$abitrate -ovc x264 -x264encopts nocabac:level_idc=30:bitrate=$vbitrate:threads=auto:bframes=0:global_header -vf pp=lb,scale=$width:$height,harddup -o " . $file3 . $file . $filenameExtension ." ~/.TiVoDLPipe2";
+   $shellScript3 = $file2 . "Contents/Resources/mencoder -af volume=13:1 -of lavf -lavfopts format=ipod -oac faac -faacopts mpeg=4:object=2:raw:br=$abitrate -ovc x264 -x264encopts nocabac:level_idc=30:bitrate=$vbitrate:threads=auto:bframes=0:global_header -vf pp=lb,scale=$width:$height,harddup -o " . $file3 . $file . $filenameExtension ." ~/.TiVoDLPipe2";
 } elsif ($encodeMode == 2) {
 # iphone med-res
    $vbitrate=800;
    $abitrate=128;
    $width=480;
    $height=320;
-   $shellScript3 = $file2 . "Contents/Resources/mencoder -af volume=13:1 -of lavf -lavfopts format=mp4 -oac faac -faacopts mpeg=4:object=2:raw:br=$abitrate -ovc x264 -x264encopts nocabac:level_idc=30:bitrate=$vbitrate:threads=auto:bframes=0:global_header -vf pp=lb,scale=$width:$height,harddup -o " . $file3 . $file . $filenameExtension ." ~/.TiVoDLPipe2";
+   $shellScript3 = $file2 . "Contents/Resources/mencoder -af volume=13:1 -of lavf -lavfopts format=ipod -oac faac -faacopts mpeg=4:object=2:raw:br=$abitrate -ovc x264 -x264encopts nocabac:level_idc=30:bitrate=$vbitrate:threads=auto:bframes=0:global_header -vf pp=lb,scale=$width:$height,harddup -o " . $file3 . $file . $filenameExtension ." ~/.TiVoDLPipe2";
 } elsif ($encodeMode == 3) {
 # iphone low-res
    $vbitrate=256;
    $abitrate=128;
    $width=320;
    $height=240;
-   $shellScript3 = $file2 . "Contents/Resources/mencoder -af volume=13:1 -of lavf -lavfopts format=mp4 -oac faac -faacopts mpeg=4:object=2:raw:br=$abitrate -ovc x264 -x264encopts nocabac:level_idc=30:bitrate=$vbitrate:threads=auto:bframes=0:global_header -vf pp=lb,scale=$width:$height,harddup -o " . $file3 . $file . $filenameExtension ." ~/.TiVoDLPipe2";
+   $shellScript3 = $file2 . "Contents/Resources/mencoder -af volume=13:1 -of lavf -lavfopts format=ipod -oac faac -faacopts mpeg=4:object=2:raw:br=$abitrate -ovc x264 -x264encopts nocabac:level_idc=30:bitrate=$vbitrate:threads=auto:bframes=0:global_header -vf pp=lb,scale=$width:$height,harddup -o " . $file3 . $file . $filenameExtension ." ~/.TiVoDLPipe2";
 } elsif ($encodeMode == 4) {
 # zune
    $vbitrate=960;
@@ -71,7 +71,7 @@ if ($encodeMode == 0) {
    $height=-10;
    $shellScript3 = $file2 . "Contents/Resources/mencoder -af volume=13:1 -of lavf -lavfopts format=mp4 -oac faac -faacopts mpeg=4:object=2:raw:br=$abitrate -ovc x264 -x264encopts level_idc=41:bitrate=$vbitrate:threads=auto:bframes=0:global_header:subq=5:me=umh -vf pp=lb,scale=$width:$height,harddup -o " . $file3 . $file . $filenameExtension ." ~/.TiVoDLPipe2";
 } else {
-	$shellScript3 = $file2 . "Contents/Resources/mencoder -af volume=13:1 -of lavf -lavfopts format=mp4 -oac faac -faacopts mpeg=4:object=2:raw:br=$abitrate -ovc x264 -x264encopts nocabac:level_idc=30:bitrate=$vbitrate:threads=auto:bframes=0:global_header -vf pp=lb,scale=$width:$height,harddup -o " . $file3 . $file . $filenameExtension ." ~/.TiVoDLPipe2";
+	$shellScript3 = $file2 . "Contents/Resources/mencoder -af volume=13:1 -of lavf -lavfopts format=ipod -oac faac -faacopts mpeg=4:object=2:raw:br=$abitrate -ovc x264 -x264encopts nocabac:level_idc=30:bitrate=$vbitrate:threads=auto:bframes=0:global_header -vf pp=lb,scale=$width:$height,harddup -o " . $file3 . $file . $filenameExtension ." ~/.TiVoDLPipe2";
 }
 
 `$shellScript3`;
