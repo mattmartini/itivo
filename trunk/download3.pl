@@ -20,7 +20,7 @@ $filenameExtension = $ARGV[13];
 
 if ($encodeMode == 0) {
 # Native, no conversion
-	$shellScript3 = "cat ~/.TiVoDLPipe2 > " . $file3 . $file . $filenameExtension;
+	$shellScript3 = "cat -u ~/.TiVoDLPipe2 >" . $file3 . $file . $filenameExtension;
 } elsif ($encodeMode == 1) {
 # iphone high-res
    $vbitrate=1500;
