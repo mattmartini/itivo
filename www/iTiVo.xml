@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle" version="2.0">
+<rss version="2.0"
+    xmlns:atom="http://www.w3.org/2005/Atom"
+    xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle"
+    version="2.0">
   <channel>
     <title>iTiVo</title>
     <link>http://itivo.googlecode.com/svn/trunk/www/iTiVo.xml</link>
     <description>A MAC interface to your TiVo</description>
-    <generator></generator>
-    <docs>http://blogs.law.harvard.edu/tech/rss</docs>
-    <language>en</language>
-    <pubDate>Wed, 24 Sep 2008 11:35:15 +0900</pubDate>
-    <lastBuildDate>Wed, 24 Sep 2008 11:35:15 +0900</lastBuildDate>
-    <atom:link href="http://itivo.googlecode.com/svn/trunk/www/iTiVo.xml" rel="self" type="application/rss+xml"/>
+    <language>en-us</language>
     <item>
-      <title>Version 1.0</title>
-      <pubDate>Wed, 24 Sep 2008 11:24:54 +0900</pubDate>
-      <enclosure url="http://itivo.googlecode.com/files/iTiVo-1.0.zip" length="3995073" type="application/octet-stream" sparkle:version="1.0"/>
-      <guid isPermaLink="false">version-10-no-useful-changes</guid>
-      <sparkle:releaseNotesLink>http://itivo.googlecode.com/svn/trunk/www/iTiVo-1.0-relnotes.html</sparkle:releaseNotesLink>
+      <title>iTiVo 1.1</title>
+      <pubDate>10/09/2008 12:00:00</pubDate>
+      <enclosure
+      sparkle:version="1.1"
+      url="http://itivo.googlecode.com/files/iTiVo-1.1.zip"
+      type="application/octet-stream"/>
+      <sparkle:releaseNotesLink>http://itivo.googlecode.com/svn/trunk/www/changelog.html</sparkle:releaseNotesLink>
     </item>
   </channel>
 </rss>
