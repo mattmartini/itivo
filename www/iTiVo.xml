@@ -2,7 +2,7 @@
 <rss version="2.0"
     xmlns:atom="http://www.w3.org/2005/Atom"
     xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle"
-    />
+    >
   <channel>
     <title>iTiVo</title>
     <link>http://itivo.googlecode.com/svn/trunk/www/iTiVo.xml</link>
