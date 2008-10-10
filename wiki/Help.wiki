@@ -42,3 +42,4 @@ If there is a show you always choose to download from your tivo (daily news for 
 
 
 = F.A.Q. =
+The list of commonly asked questions is at http://code.google.com/p/itivo/wiki/FAQ
