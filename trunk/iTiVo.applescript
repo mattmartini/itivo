@@ -251,15 +251,15 @@ on readSettings()
 	if CLeft > 0 then
 		set coordinate system to AppleScript coordinate system
 		set bounds of window "iTiVo" to {CLeft, CTop, CRight, CBottom}
-		set (width of table column "IDVal" of table view "ShowListTable" of scroll view "ShowList" of box "topBox" of split view "splitView" of window "iTiVo") to Col1
-		set (width of table column "ShowVal" of table view "ShowListTable" of scroll view "ShowList" of box "topBox" of split view "splitView" of window "iTiVo") to Col2
-		set (width of table column "EpisodeVal" of table view "ShowListTable" of scroll view "ShowList" of box "topBox" of split view "splitView" of window "iTiVo") to Col3
-		set (width of table column "DateVal" of table view "ShowListTable" of scroll view "ShowList" of box "topBox" of split view "splitView" of window "iTiVo") to Col5
-		set (width of table column "SizeVal" of table view "ShowListTable" of scroll view "ShowList" of box "topBox" of split view "splitView" of window "iTiVo") to Col6
+		set (width of table column "IDVal" of table view "ShowListTable" of scroll view "ShowList" of box "topBox" of split view "splitView1" of window "iTiVo") to Col1
+		set (width of table column "ShowVal" of table view "ShowListTable" of scroll view "ShowList" of box "topBox" of split view "splitView1" of window "iTiVo") to Col2
+		set (width of table column "EpisodeVal" of table view "ShowListTable" of scroll view "ShowList" of box "topBox" of split view "splitView1" of window "iTiVo") to Col3
+		set (width of table column "DateVal" of table view "ShowListTable" of scroll view "ShowList" of box "topBox" of split view "splitView1" of window "iTiVo") to Col5
+		set (width of table column "SizeVal" of table view "ShowListTable" of scroll view "ShowList" of box "topBox" of split view "splitView1" of window "iTiVo") to Col6
 	end if
 	if BBottom > 0 then
-		set tempBounds to bounds of box "topBox" of split view "splitView" of window "iTiVo"
-		set bounds of box "topBox" of split view "splitView" of window "iTiVo" to {first item of tempBounds, second item of tempBounds, third item of tempBounds, BBottom}
+		set tempBounds to bounds of box "topBox" of split view "splitView1" of window "iTiVo"
+		set bounds of box "topBox" of split view "splitView1" of window "iTiVo" to {first item of tempBounds, second item of tempBounds, third item of tempBounds, BBottom}
 	end if
 	set formats to title of every menu item of popup button "format" of drawer "Drawer" of window "iTiVo"
 	set iTunesIcons to title of every menu item of popup button "icon" of drawer "Drawer" of window "iTiVo"
@@ -438,12 +438,12 @@ end getSettingsFromUI
 on writeSettings()
 	set coordinate system to AppleScript coordinate system
 	set winBounds to bounds of window "iTiVo"
-	set boxBounds to bounds of box "topBox" of split view "splitView" of window "iTiVo"
-	set Col1 to (width of table column "IDVal" of table view "ShowListTable" of scroll view "ShowList" of box "topBox" of split view "splitView" of window "iTiVo")
-	set Col2 to (width of table column "ShowVal" of table view "ShowListTable" of scroll view "ShowList" of box "topBox" of split view "splitView" of window "iTiVo")
-	set Col3 to (width of table column "EpisodeVal" of table view "ShowListTable" of scroll view "ShowList" of box "topBox" of split view "splitView" of window "iTiVo")
-	set Col5 to (width of table column "DateVal" of table view "ShowListTable" of scroll view "ShowList" of box "topBox" of split view "splitView" of window "iTiVo")
-	set Col6 to (width of table column "SizeVal" of table view "ShowListTable" of scroll view "ShowList" of box "topBox" of split view "splitView" of window "iTiVo")
+	set boxBounds to bounds of box "topBox" of split view "splitView1" of window "iTiVo"
+	set Col1 to (width of table column "IDVal" of table view "ShowListTable" of scroll view "ShowList" of box "topBox" of split view "splitView1" of window "iTiVo")
+	set Col2 to (width of table column "ShowVal" of table view "ShowListTable" of scroll view "ShowList" of box "topBox" of split view "splitView1" of window "iTiVo")
+	set Col3 to (width of table column "EpisodeVal" of table view "ShowListTable" of scroll view "ShowList" of box "topBox" of split view "splitView1" of window "iTiVo")
+	set Col5 to (width of table column "DateVal" of table view "ShowListTable" of scroll view "ShowList" of box "topBox" of split view "splitView1" of window "iTiVo")
+	set Col6 to (width of table column "SizeVal" of table view "ShowListTable" of scroll view "ShowList" of box "topBox" of split view "splitView1" of window "iTiVo")
 	set TiVo to title of current menu item of popup button "MyTiVos" of window "iTiVo"
 	set format to title of current menu item of popup button "format" of drawer "Drawer" of window "iTiVo"
 	set targetDataSList to content of targetDataS
@@ -524,10 +524,10 @@ on clicked theObject
 			my ConnectTiVo()
 		else if theObjectName = "queueButton" then
 			log "adding to download..."
-			set currentProcessSelectionTEMP to (selected data rows of table view "ShowListTable" of scroll view "ShowList" of box "topBox" of split view "splitView")
+			set currentProcessSelectionTEMP to (selected data rows of table view "ShowListTable" of scroll view "ShowList" of box "topBox" of split view "splitView1")
 			set rowCount to count of currentProcessSelectionTEMP
 			set currentCount to 0
-			set currentProcessSelectionTEMPAll to (selected data rows of table view "ShowListTable" of scroll view "ShowList" of box "topBox" of split view "splitView")
+			set currentProcessSelectionTEMPAll to (selected data rows of table view "ShowListTable" of scroll view "ShowList" of box "topBox" of split view "splitView1")
 			repeat while currentCount < rowCount
 				set currentProcessSelection to {}
 				set currentCount to currentCount + 1
@@ -545,14 +545,14 @@ on clicked theObject
 				set tempStatus to text 1 thru 11 of (contents of text field "status" as string)
 			end try
 			if tempStatus ≠ "Downloading" then
-				set enabled of button "decodeQueue" of box "bottomBox" of split view "splitView" to true
+				set enabled of button "decodeQueue" of view "bottomLeftView" of split view "splitView2" of box "bottomBox" of split view "splitView1" to true
 			end if
 		else if theObjectName = "subscribeButton" then
-			set currentProcessSelectionTEMP to (selected data rows of table view "ShowListTable" of scroll view "ShowList" of box "topBox" of split view "splitView")
+			set currentProcessSelectionTEMP to (selected data rows of table view "ShowListTable" of scroll view "ShowList" of box "topBox" of split view "splitView1")
 			set currentProcessSelectionTEMP to item 1 of currentProcessSelectionTEMP
 			set showName to contents of data cell "ShowVal" of currentProcessSelectionTEMP
 			log "Attempting to subscribe to " & showName & "  date: " & (current date)
-			set rowCountS to count of data rows of data source 1 of table view "subscriptionListTable" of scroll view "subscriptionList" of box "bottomBox" of split view "splitView"
+			set rowCountS to count of data rows of data source 1 of table view "subscriptionListTable" of scroll view "subscriptionList" of view "bottomRightView" of split view "splitView2" of box "bottomBox" of split view "splitView1"
 			set currentRow to 0
 			set currentProcessSelection to {}
 			set processInfoRecord to {}
@@ -561,7 +561,7 @@ on clicked theObject
 			repeat while currentRow < rowCountS
 				set currentRow to currentRow + 1
 				set currentProcessSelectionS2 to {}
-				set currentProcessSelectionS to (data row currentRow of data source 1 of table view "subscriptionListTable" of scroll view "subscriptionList" of box "bottomBox" of split view "splitView")
+				set currentProcessSelectionS to (data row currentRow of data source 1 of table view "subscriptionListTable" of scroll view "subscriptionList" of view "bottomRightView" of split view "splitView2" of box "bottomBox" of split view "splitView1")
 				set name2 to contents of (data cell "ShowVal" of currentProcessSelectionS)
 				if not name2 = showName then
 					set end of currentProcessSelectionS2 to contents of (data cell "ShowVal" of currentProcessSelectionS)
@@ -571,12 +571,12 @@ on clicked theObject
 			end repeat
 			set end of processInfoRecord to currentProcessSelection
 			set content of targetDataS to processInfoRecord
-			update table view "subscriptionListTable" of scroll view "subscriptionList" of box "bottomBox" of split view "splitView"
+			update table view "subscriptionListTable" of scroll view "subscriptionList" of view "bottomRightView" of split view "splitView2" of box "bottomBox" of split view "splitView1"
 		else if theObjectName = "deleteSubscriptionButton" then
-			set currentProcessSelectionTEMP to (selected data row of table view "subscriptionListTable" of scroll view "subscriptionList" of box "bottomBox" of split view "splitView")
+			set currentProcessSelectionTEMP to (selected data row of table view "subscriptionListTable" of scroll view "subscriptionList" of view "bottomRightView" of split view "splitView2" of box "bottomBox" of split view "splitView1")
 			set showName to contents of data cell "ShowVal" of currentProcessSelectionTEMP
 			log "Attempting to remove subscription to " & showName & "  date: " & (current date)
-			set selectedRows to selected rows of table view "subscriptionListTable" of scroll view "subscriptionList" of box "bottomBox" of split view "splitView"
+			set selectedRows to selected rows of table view "subscriptionListTable" of scroll view "subscriptionList" of view "bottomRightView" of split view "splitView2" of box "bottomBox" of split view "splitView1"
 			set processInfoRecordTemp to content of targetDataS
 			set processInfoRecord to {}
 			set rowCount to 1
@@ -592,11 +592,11 @@ on clicked theObject
 			end repeat
 			set content of targetDataS to processInfoRecord
 			if (totalCount = 0) then
-				set enabled of button "deleteSubscriptionButton" of box "bottomBox" of split view "splitView" to false
+				set enabled of button "deleteSubscriptionButton" of view "bottomRightView" of split view "splitView2" of box "bottomBox" of split view "splitView1" to false
 			end if
-			update table view "subscriptionListTable" of scroll view "subscriptionList" of box "bottomBox" of split view "splitView"
+			update table view "subscriptionListTable" of scroll view "subscriptionList" of view "bottomRightView" of split view "splitView2" of box "bottomBox" of split view "splitView1"
 		else if theObjectName = "removeButton" then
-			set selectedRows to selected rows of table view "queueListTable" of scroll view "queueList" of box "bottomBox" of split view "splitView"
+			set selectedRows to selected rows of table view "queueListTable" of scroll view "queueList" of view "bottomLeftView" of split view "splitView2" of box "bottomBox" of split view "splitView1"
 			set processInfoRecordTemp to content of targetDataQ
 			set processInfoRecord to {}
 			set rowCount to 1
@@ -612,27 +612,27 @@ on clicked theObject
 			end repeat
 			set content of targetDataQ to processInfoRecord
 			if (count of processInfoRecord) = 1 then
-				set contents of text field "downloadQueue" of box "bottomBox" of split view "splitView" to "Download Queue (1 item)"
+				set contents of text field "downloadQueue" of view "bottomLeftView" of split view "splitView2" of box "bottomBox" of split view "splitView1" to "Download Queue (1 item)"
 			else
-				set contents of text field "downloadQueue" of box "bottomBox" of split view "splitView" to "Download Queue (" & (count of processInfoRecord) & " items)"
+				set contents of text field "downloadQueue" of view "bottomLeftView" of split view "splitView2" of box "bottomBox" of split view "splitView1" to "Download Queue (" & (count of processInfoRecord) & " items)"
 			end if
 			if totalCount = 0 then
-				set enabled of button "decodeQueue" of box "bottomBox" of split view "splitView" to false
+				set enabled of button "decodeQueue" of view "bottomLeftView" of split view "splitView2" of box "bottomBox" of split view "splitView1" to false
 			end if
-			set enabled of button "removeButton" of box "bottomBox" of split view "splitView" to false
-			update table view "queueListTable" of scroll view "queueList" of box "bottomBox" of split view "splitView"
+			set enabled of button "removeButton" of view "bottomLeftView" of split view "splitView2" of box "bottomBox" of split view "splitView1" to false
+			update table view "queueListTable" of scroll view "queueList" of view "bottomLeftView" of split view "splitView2" of box "bottomBox" of split view "splitView1"
 		else if theObjectName = "decodeQueue" then
 			log "starting queue download..."
-			set enabled of button "DownloadButton" of box "topBox" of split view "splitView" to false
-			set enabled of button "decodeQueue" of box "bottomBox" of split view "splitView" to false
+			set enabled of button "DownloadButton" of box "topBox" of split view "splitView1" to false
+			set enabled of button "decodeQueue" of view "bottomLeftView" of split view "splitView2" of box "bottomBox" of split view "splitView1" to false
 			set enabled of button "format" of drawer "Drawer" to false
 			set enabled of button "connectButton" to false
 			set cancelAllDownloads to 0
 			set success to 0
-			set rowCountQ to count of data rows of data source 1 of table view "queueListTable" of scroll view "queueList" of box "bottomBox" of split view "splitView"
+			set rowCountQ to count of data rows of data source 1 of table view "queueListTable" of scroll view "queueList" of view "bottomLeftView" of split view "splitView2" of box "bottomBox" of split view "splitView1"
 			repeat until rowCountQ = 0 or cancelAllDownloads = 1
 				set currentProcessSelectionQ2 to {}
-				set currentProcessSelectionQ to (data row 1 of data source 1 of table view "queueListTable" of scroll view "queueList" of box "bottomBox" of split view "splitView")
+				set currentProcessSelectionQ to (data row 1 of data source 1 of table view "queueListTable" of scroll view "queueList" of view "bottomLeftView" of split view "splitView2" of box "bottomBox" of split view "splitView1")
 				set end of currentProcessSelectionQ2 to contents of (data cell "ShowVal" of currentProcessSelectionQ)
 				set end of currentProcessSelectionQ2 to contents of (data cell "EpisodeVal" of currentProcessSelectionQ)
 				--set end of currentProcessSelectionQ2 to contents of (data cell "DescriptionVal" of currentProcessSelectionQ)
@@ -676,14 +676,14 @@ on clicked theObject
 					end repeat
 					set content of targetDataQ to processInfoRecord
 					if (count of processInfoRecord) = 1 then
-						set contents of text field "downloadQueue" of box "bottomBox" of split view "splitView" to "Download Queue (1 item)"
+						set contents of text field "downloadQueue" of view "bottomLeftView" of split view "splitView2" of box "bottomBox" of split view "splitView1" to "Download Queue (1 item)"
 					else
-						set contents of text field "downloadQueue" of box "bottomBox" of split view "splitView" to "Download Queue (" & (count of processInfoRecord) & " items)"
+						set contents of text field "downloadQueue" of view "bottomLeftView" of split view "splitView2" of box "bottomBox" of split view "splitView1" to "Download Queue (" & (count of processInfoRecord) & " items)"
 					end if
-					set rowCountQ to count of data rows of data source 1 of table view "queueListTable" of scroll view "queueList" of box "bottomBox" of split view "splitView"
+					set rowCountQ to count of data rows of data source 1 of table view "queueListTable" of scroll view "queueList" of view "bottomLeftView" of split view "splitView2" of box "bottomBox" of split view "splitView1"
 				else
 					set rowCountQ to 0
-					set enabled of button "decodeQueue" of box "bottomBox" of split view "splitView" to true
+					set enabled of button "decodeQueue" of view "bottomLeftView" of split view "splitView2" of box "bottomBox" of split view "splitView1" to true
 				end if
 			end repeat
 			if success > 0 and cancelAllDownloads = 0 then
@@ -692,19 +692,19 @@ on clicked theObject
 			end if
 			set enabled of button "format" of drawer "Drawer" to true
 			set enabled of button "connectButton" to true
-			if (count of (selected data rows of table view "ShowListTable" of scroll view "ShowList" of box "topBox" of split view "splitView")) = 1 then
-				set enabled of button "DownloadButton" of box "topBox" of split view "splitView" to true
-				set enabled of button "subscribeButton" of box "topBox" of split view "splitView" to true
+			if (count of (selected data rows of table view "ShowListTable" of scroll view "ShowList" of box "topBox" of split view "splitView1")) = 1 then
+				set enabled of button "DownloadButton" of box "topBox" of split view "splitView1" to true
+				set enabled of button "subscribeButton" of box "topBox" of split view "splitView1" to true
 			end if
-			set enabled of button "queueButton" of box "topBox" of split view "splitView" to true
+			set enabled of button "queueButton" of box "topBox" of split view "splitView1" to true
 		else if theObjectName = "DownloadButton" then
 			try
-				set enabled of button "DownloadButton" of box "topBox" of split view "splitView" to false
-				set enabled of button "decodeQueue" of box "bottomBox" of split view "splitView" to false
+				set enabled of button "DownloadButton" of box "topBox" of split view "splitView1" to false
+				set enabled of button "decodeQueue" of view "bottomLeftView" of split view "splitView2" of box "bottomBox" of split view "splitView1" to false
 				set enabled of button "format" of drawer "Drawer" to false
 				set enabled of button "connectButton" to false
 				set currentProcessSelection to {}
-				set currentProcessSelectionTEMP to (selected data rows of table view "ShowListTable" of scroll view "ShowList" of box "topBox" of split view "splitView")
+				set currentProcessSelectionTEMP to (selected data rows of table view "ShowListTable" of scroll view "ShowList" of box "topBox" of split view "splitView1")
 				set currentProcessSelectionTEMP to item 1 of currentProcessSelectionTEMP
 				set end of currentProcessSelection to contents of (data cell "ShowVal" of currentProcessSelectionTEMP)
 				set end of currentProcessSelection to contents of (data cell "EpisodeVal" of currentProcessSelectionTEMP)
@@ -733,14 +733,14 @@ on clicked theObject
 					set success to my downloadItem(currentProcessSelection, retryCount, retryCount)
 					set retryCount to retryCount + 1
 				end repeat
-				if (count of (selected data rows of table view "ShowListTable" of scroll view "ShowList" of box "topBox" of split view "splitView")) = 1 then
-					set enabled of button "DownloadButton" of box "topBox" of split view "splitView" to true
-					set enabled of button "subscribeButton" of box "topBox" of split view "splitView" to true
+				if (count of (selected data rows of table view "ShowListTable" of scroll view "ShowList" of box "topBox" of split view "splitView1")) = 1 then
+					set enabled of button "DownloadButton" of box "topBox" of split view "splitView1" to true
+					set enabled of button "subscribeButton" of box "topBox" of split view "splitView1" to true
 				end if
-				if (count of data rows of data source 1 of table view "queueListTable" of scroll view "queueList" of box "bottomBox" of split view "splitView") > 0 then
-					set enabled of button "decodeQueue" of box "bottomBox" of split view "splitView" to true
+				if (count of data rows of data source 1 of table view "queueListTable" of scroll view "queueList" of view "bottomLeftView" of split view "splitView2" of box "bottomBox" of split view "splitView1") > 0 then
+					set enabled of button "decodeQueue" of view "bottomLeftView" of split view "splitView2" of box "bottomBox" of split view "splitView1" to true
 				end if
-				set enabled of button "queueButton" of box "topBox" of split view "splitView" to true
+				set enabled of button "queueButton" of box "topBox" of split view "splitView1" to true
 				set enabled of button "format" of drawer "Drawer" to true
 				set enabled of button "connectButton" to true
 			end try
@@ -770,14 +770,14 @@ end clicked
 on selection changing theObject
 	tell window "iTiVo"
 		if name of theObject = "ShowListTable" and title of button "ConnectButton" = "Update from TiVo" then
-			set selected rows of table view "queueListTable" of scroll view "queueList" of box "bottomBox" of split view "splitView" to {}
-			set selected rows of table view "subscriptionListTable" of scroll view "subscriptionList" of box "bottomBox" of split view "splitView" to {}
+			set selected rows of table view "queueListTable" of scroll view "queueList" of view "bottomLeftView" of split view "splitView2" of box "bottomBox" of split view "splitView1" to {}
+			set selected rows of table view "subscriptionListTable" of scroll view "subscriptionList" of view "bottomRightView" of split view "splitView2" of box "bottomBox" of split view "splitView1" to {}
 		else if name of theObject = "queueListTable" and title of button "ConnectButton" = "Update from TiVo" then
-			set selected rows of table view "showListTable" of scroll view "showList" of box "topBox" of split view "splitView" to {}
-			set selected rows of table view "subscriptionListTable" of scroll view "subscriptionList" of box "bottomBox" of split view "splitView" to {}
+			set selected rows of table view "showListTable" of scroll view "showList" of box "topBox" of split view "splitView1" to {}
+			set selected rows of table view "subscriptionListTable" of scroll view "subscriptionList" of view "bottomRightView" of split view "splitView2" of box "bottomBox" of split view "splitView1" to {}
 		else if name of theObject = "subscriptionListTable" and title of button "ConnectButton" = "Update from TiVo" then
-			set selected rows of table view "queueListTable" of scroll view "queueList" of box "bottomBox" of split view "splitView" to {}
-			set selected rows of table view "showListTable" of scroll view "showList" of box "topBox" of split view "splitView" to {}
+			set selected rows of table view "queueListTable" of scroll view "queueList" of view "bottomLeftView" of split view "splitView2" of box "bottomBox" of split view "splitView1" to {}
+			set selected rows of table view "showListTable" of scroll view "showList" of box "topBox" of split view "splitView1" to {}
 		end if
 	end tell
 end selection changing
@@ -845,10 +845,10 @@ on selection changed theObject
 					set contents of text field "detailDate" of drawer "Drawer2" to ""
 				end if
 				if rowCount = 0 then
-					set enabled of button "queueButton" of box "topBox" of split view "splitView" to false
-					set enabled of button "subscribeButton" of box "topBox" of split view "splitView" to false
-					set enabled of button "DownloadButton" of box "topBox" of split view "splitView" to false
-					set enabled of button "deleteSubscriptionButton" of box "bottomBox" of split view "splitView" to false
+					set enabled of button "queueButton" of box "topBox" of split view "splitView1" to false
+					set enabled of button "subscribeButton" of box "topBox" of split view "splitView1" to false
+					set enabled of button "DownloadButton" of box "topBox" of split view "splitView1" to false
+					set enabled of button "deleteSubscriptionButton" of view "bottomRightView" of split view "splitView2" of box "bottomBox" of split view "splitView1" to false
 				else
 					set tempStatus to ""
 					try
@@ -856,23 +856,23 @@ on selection changed theObject
 					end try
 					if tempStatus ≠ "Downloading" then
 						if rowCount = 1 then
-							set enabled of button "DownloadButton" of box "topBox" of split view "splitView" to true
-							set title of button "queueButton" of box "topBox" of split view "splitView" to "Add Show to Queue"
-							set enabled of button "subscribeButton" of box "topBox" of split view "splitView" to true
+							set enabled of button "DownloadButton" of box "topBox" of split view "splitView1" to true
+							set title of button "queueButton" of box "topBox" of split view "splitView1" to "Add Show to Queue"
+							set enabled of button "subscribeButton" of box "topBox" of split view "splitView1" to true
 						else
-							set enabled of button "DownloadButton" of box "topBox" of split view "splitView" to false
-							set title of button "queueButton" of box "topBox" of split view "splitView" to "Add Shows to Queue"
-							set enabled of button "subscribeButton" of box "topBox" of split view "splitView" to false
+							set enabled of button "DownloadButton" of box "topBox" of split view "splitView1" to false
+							set title of button "queueButton" of box "topBox" of split view "splitView1" to "Add Shows to Queue"
+							set enabled of button "subscribeButton" of box "topBox" of split view "splitView1" to false
 						end if
 					end if
-					set enabled of button "queueButton" of box "topBox" of split view "splitView" to true
-					set enabled of button "deleteSubscriptionButton" of box "bottomBox" of split view "splitView" to false
+					set enabled of button "queueButton" of box "topBox" of split view "splitView1" to true
+					set enabled of button "deleteSubscriptionButton" of view "bottomRightView" of split view "splitView2" of box "bottomBox" of split view "splitView1" to false
 				end if
 			on error
-				set enabled of button "queueButton" of box "topBox" of split view "splitView" to false
-				set enabled of button "DownloadButton" of box "topBox" of split view "splitView" to false
-				set enabled of button "subscribeButton" of box "topBox" of split view "splitView" to false
-				set enabled of button "deleteSubscriptionButton" of box "bottomBox" of split view "splitView" to false
+				set enabled of button "queueButton" of box "topBox" of split view "splitView1" to false
+				set enabled of button "DownloadButton" of box "topBox" of split view "splitView1" to false
+				set enabled of button "subscribeButton" of box "topBox" of split view "splitView1" to false
+				set enabled of button "deleteSubscriptionButton" of view "bottomRightView" of split view "splitView2" of box "bottomBox" of split view "splitView1" to false
 			end try
 		else if name of theObject = "queueListTable" and title of button "ConnectButton" = "Update from TiVo" then
 			set currentProcessSelectionQ to {}
@@ -934,33 +934,33 @@ on selection changed theObject
 					set contents of text field "detailEpisode" of drawer "Drawer2" to ""
 					set contents of text field "detailDate" of drawer "Drawer2" to ""
 				end if
-				set enabled of button "deleteSubscriptionButton" of box "bottomBox" of split view "splitView" to false
+				set enabled of button "deleteSubscriptionButton" of view "bottomRightView" of split view "splitView2" of box "bottomBox" of split view "splitView1" to false
 				if rowCount = 0 then
-					set enabled of button "removeButton" of box "bottomBox" of split view "splitView" to false
+					set enabled of button "removeButton" of view "bottomLeftView" of split view "splitView2" of box "bottomBox" of split view "splitView1" to false
 				else
-					set enabled of button "removeButton" of box "bottomBox" of split view "splitView" to true
+					set enabled of button "removeButton" of view "bottomLeftView" of split view "splitView2" of box "bottomBox" of split view "splitView1" to true
 					set tempStatus to ""
 					try
 						set tempStatus to text 1 thru 11 of (contents of text field "status" as string)
 					end try
 					if tempStatus ≠ "Downloading" then
-						set enabled of button "queueButton" of box "topBox" of split view "splitView" to true
+						set enabled of button "queueButton" of box "topBox" of split view "splitView1" to true
 					end if
 				end if
 			on error
-				set enabled of button "removeButton" of box "bottomBox" of split view "splitView" to false
+				set enabled of button "removeButton" of view "bottomLeftView" of split view "splitView2" of box "bottomBox" of split view "splitView1" to false
 			end try
 		else if name of theObject = "subscriptionListTable" and title of button "ConnectButton" = "Update from TiVo" then
 			set currentProcessSelectionsTEMP to selected data rows of theObject
 			set rowCount to count of currentProcessSelectionsTEMP
-			set enabled of button "queueButton" of box "topBox" of split view "splitView" to false
-			set enabled of button "subscribeButton" of box "topBox" of split view "splitView" to false
-			set enabled of button "DownloadButton" of box "topBox" of split view "splitView" to false
-			set enabled of button "removeButton" of box "bottomBox" of split view "splitView" to false
+			set enabled of button "queueButton" of box "topBox" of split view "splitView1" to false
+			set enabled of button "subscribeButton" of box "topBox" of split view "splitView1" to false
+			set enabled of button "DownloadButton" of box "topBox" of split view "splitView1" to false
+			set enabled of button "removeButton" of view "bottomLeftView" of split view "splitView2" of box "bottomBox" of split view "splitView1" to false
 			if ((count of currentProcessSelectionsTEMP) > 0) then
-				set enabled of button "deleteSubscriptionButton" of box "bottomBox" of split view "splitView" to true
+				set enabled of button "deleteSubscriptionButton" of view "bottomRightView" of split view "splitView2" of box "bottomBox" of split view "splitView1" to true
 			else
-				set enabled of button "deleteSubscriptionButton" of box "bottomBox" of split view "splitView" to false
+				set enabled of button "deleteSubscriptionButton" of view "bottomRightView" of split view "splitView2" of box "bottomBox" of split view "splitView1" to false
 			end if
 		end if
 	end tell
@@ -1543,17 +1543,17 @@ on ConnectTiVo()
 				my updateSubscriptionList(item 1 of currentItem, item 2 of currentItem, true)
 			end repeat
 			if (count of addedItems) > 0 then
-				set enabled of button "decodeQueue" of box "bottomBox" of split view "splitView" to true
+				set enabled of button "decodeQueue" of view "bottomLeftView" of split view "splitView2" of box "bottomBox" of split view "splitView1" to true
 			end if
 			if (count of processInfoRecord) = 1 then
-				set contents of text field "nowPlaying" of box "topBox" of split view "splitView" to "Now Playing (1 item)"
+				set contents of text field "nowPlaying" of box "topBox" of split view "splitView1" to "Now Playing (1 item)"
 			else
-				set contents of text field "nowPlaying" of box "topBox" of split view "splitView" to "Now Playing (" & (count of processInfoRecord) & " items)"
+				set contents of text field "nowPlaying" of box "topBox" of split view "splitView1" to "Now Playing (" & (count of processInfoRecord) & " items)"
 			end if
 			set content of targetData to processInfoRecord
 			set title of button "ConnectButton" to "Update from TiVo"
 		end if
-		set enabled of button "DownloadButton" of box "topBox" of split view "splitView" to false
+		set enabled of button "DownloadButton" of box "topBox" of split view "splitView1" to false
 		set contents of text field "status" to ""
 		set key equivalent of button "ConnectButton" to ""
 		set contents of text field "status" to "Last Update : " & (current date)
@@ -1776,14 +1776,14 @@ end getCurrentFilesize
 
 on updateSubscriptionList(nname, ndate, umissing)
 	set newdate to my getDate(ndate)
-	set rowCountS to count of data rows of data source 1 of table view "subscriptionListTable" of scroll view "subscriptionList" of box "bottomBox" of split view "splitView" of window "iTiVo"
+	set rowCountS to count of data rows of data source 1 of table view "subscriptionListTable" of scroll view "subscriptionList" of view "bottomRightView" of split view "splitView2" of box "bottomBox" of split view "splitView1" of window "iTiVo"
 	set currentRow to 0
 	set alreadyIn to false
 	set processInfoRecord to {}
 	repeat while currentRow < rowCountS
 		set currentRow to currentRow + 1
 		set currentProcessSelectionS2 to {}
-		set currentProcessSelectionS to data row currentRow of data source 1 of table view "subscriptionListTable" of scroll view "subscriptionList" of box "bottomBox" of split view "splitView" of window "iTiVo"
+		set currentProcessSelectionS to data row currentRow of data source 1 of table view "subscriptionListTable" of scroll view "subscriptionList" of view "bottomRightView" of split view "splitView2" of box "bottomBox" of split view "splitView1" of window "iTiVo"
 		set name2 to contents of (data cell "ShowVal" of currentProcessSelectionS)
 		set date2 to contents of (data cell "LastDLVal" of currentProcessSelectionS)
 		if (not name2 = nname) then
@@ -1807,16 +1807,16 @@ on updateSubscriptionList(nname, ndate, umissing)
 		set end of processInfoRecord to currentProcessSelectionS2
 	end if
 	set content of targetDataS to processInfoRecord
-	update table view "subscriptionListTable" of scroll view "subscriptionList" of box "bottomBox" of split view "splitView" of window "iTiVo"
+	update table view "subscriptionListTable" of scroll view "subscriptionList" of view "bottomRightView" of split view "splitView2" of box "bottomBox" of split view "splitView1" of window "iTiVo"
 end updateSubscriptionList
 
 on isSubscribed(name1, date1)
 	set myDate to my getDate(date1)
-	set rowCountS to count of data rows of data source 1 of table view "subscriptionListTable" of scroll view "subscriptionList" of box "bottomBox" of split view "splitView" of window "iTiVo"
+	set rowCountS to count of data rows of data source 1 of table view "subscriptionListTable" of scroll view "subscriptionList" of view "bottomRightView" of split view "splitView2" of box "bottomBox" of split view "splitView1" of window "iTiVo"
 	set currentRow to 0
 	repeat while currentRow < rowCountS
 		set currentRow to currentRow + 1
-		set currentProcessSelectionS to data row currentRow of data source 1 of table view "subscriptionListTable" of scroll view "subscriptionList" of box "bottomBox" of split view "splitView" of window "iTiVo"
+		set currentProcessSelectionS to data row currentRow of data source 1 of table view "subscriptionListTable" of scroll view "subscriptionList" of view "bottomRightView" of split view "splitView2" of box "bottomBox" of split view "splitView1" of window "iTiVo"
 		set name2 to contents of (data cell "ShowVal" of currentProcessSelectionS)
 		if (name1 = name2) then
 			set date2 to contents of (data cell "LastDLVal" of currentProcessSelectionS)
@@ -1851,13 +1851,13 @@ end getDate
 
 on addSelectionToQueue(currentProcessSelection)
 	set id1 to sixth item of currentProcessSelection
-	set rowCountQ to count of data rows of data source 1 of table view "queueListTable" of scroll view "queueList" of box "bottomBox" of split view "splitView" of window "iTiVo"
+	set rowCountQ to count of data rows of data source 1 of table view "queueListTable" of scroll view "queueList" of view "bottomLeftView" of split view "splitView2" of box "bottomBox" of split view "splitView1" of window "iTiVo"
 	set currentRow to 0
 	set processInfoRecord to {}
 	repeat while currentRow < rowCountQ
 		set currentRow to currentRow + 1
 		set currentProcessSelectionQ2 to {}
-		set currentProcessSelectionQ to (data row currentRow of data source 1 of table view "queueListTable" of scroll view "queueList" of box "bottomBox" of split view "splitView" of window "iTiVo")
+		set currentProcessSelectionQ to (data row currentRow of data source 1 of table view "queueListTable" of scroll view "queueList" of view "bottomLeftView" of split view "splitView2" of box "bottomBox" of split view "splitView1" of window "iTiVo")
 		set id2 to contents of (data cell "IDVal" of currentProcessSelectionQ)
 		if not id1 = id2 then
 			set end of currentProcessSelectionQ2 to contents of (data cell "ShowVal" of currentProcessSelectionQ)
@@ -1872,11 +1872,11 @@ on addSelectionToQueue(currentProcessSelection)
 	set end of processInfoRecord to currentProcessSelection
 	set content of targetDataQ to processInfoRecord
 	if (count of processInfoRecord) = 1 then
-		set contents of text field "downloadQueue" of box "bottomBox" of split view "splitView" of window "iTiVo" to "Download Queue (1 item)"
+		set contents of text field "downloadQueue" of view "bottomLeftView" of split view "splitView2" of box "bottomBox" of split view "splitView1" of window "iTiVo" to "Download Queue (1 item)"
 	else
-		set contents of text field "downloadQueue" of box "bottomBox" of split view "splitView" of window "iTiVo" to "Download Queue (" & (count of processInfoRecord) & " items)"
+		set contents of text field "downloadQueue" of view "bottomLeftView" of split view "splitView2" of box "bottomBox" of split view "splitView1" of window "iTiVo" to "Download Queue (" & (count of processInfoRecord) & " items)"
 	end if
-	update table view "queueListTable" of scroll view "queueList" of box "bottomBox" of split view "splitView" of window "iTiVo"
+	update table view "queueListTable" of scroll view "queueList" of view "bottomLeftView" of split view "splitView2" of box "bottomBox" of split view "splitView1" of window "iTiVo"
 end addSelectionToQueue
 
 on mouse down theObject event theEvent
@@ -1896,12 +1896,20 @@ on idle
 		my ConnectTiVo()
 		tell window "iTiVo"
 			log "starting download"
-			set enabled of button "decodeQueue" of box "bottomBox" of split view "splitView" to true
-			tell button "decodeQueue" of box "bottomBox" of split view "splitView" to perform action
+			set enabled of button "decodeQueue" of view "bottomLeftView" of split view "splitView2" of box "bottomBox" of split view "splitView1" to true
+			tell button "decodeQueue" of view "bottomLeftView" of split view "splitView2" of box "bottomBox" of split view "splitView1" to perform action
 		end tell
 	else
 		log "probably downloading things right now"
 	end if
 	return installedIdleHandler
 end idle
+
+on keyboard down theObject event theEvent
+	(*Add your script here.*)
+end keyboard down
+
+on keyboard up theObject event theEvent
+	(*Add your script here.*)
+end keyboard up
 goo
