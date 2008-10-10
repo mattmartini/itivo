@@ -49,6 +49,4 @@ If there is a show you always choose to download from your tivo (daily news for 
     I only have a tivo 3 and an intel iMac running Leopard to test with.  I appreciate bug reports.
 
   # How do I get "The Daily Show" onto my iPhone daily?
-    First, configure iTiVo so that it can download from your tivo.  Then, select an episode of the daily show, and "subscribe".  Under Preferences, select "iPhone low-res" and "import to iTunes".  Download an episode.  
-    Then go to iTunes.  Connect your iPhone.  Select it, and go to the "Video" tab.  From there, select 'sync TV shows" and either select "all" or specify the shows you want, as well as settings for how many episodes to copy.
-    From now on, just leave iTiVo running, and sync your phone whenever.
+    Read the documentation at http://code.google.com/p/itivo/wiki/Subscriptions
