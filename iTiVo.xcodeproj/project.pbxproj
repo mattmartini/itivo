@@ -28,6 +28,7 @@
 		257572CD072881A4000BE9CA /* AppleScriptKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA206CF1015C4E2903C91932 /* AppleScriptKit.framework */; };
 		5304AD990E4CBDBF00E77CA0 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5304AD980E4CBDBF00E77CA0 /* Sparkle.framework */; };
 		5304ADC30E4CBDFE00E77CA0 /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 5304AD980E4CBDBF00E77CA0 /* Sparkle.framework */; };
+		538D23740E8D69DB00E2894F /* comskip in Resources */ = {isa = PBXBuildFile; fileRef = 538D23730E8D69DB00E2894F /* comskip */; };
 		6100670D0B470D4700E38A87 /* mencoder in Resources */ = {isa = PBXBuildFile; fileRef = 6100670C0B470D4700E38A87 /* mencoder */; };
 		612EF59C0B4459F000ACBBBF /* ParseDetail.pl in Resources */ = {isa = PBXBuildFile; fileRef = 612EF59B0B4459F000ACBBBF /* ParseDetail.pl */; };
 		61354C080B273C3C00EEF96F /* ParseXML.pl in Resources */ = {isa = PBXBuildFile; fileRef = 61354C050B273C3C00EEF96F /* ParseXML.pl */; };
@@ -65,6 +66,7 @@
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		5304AD980E4CBDBF00E77CA0 /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Sparkle.framework; sourceTree = "<group>"; };
+		538D23730E8D69DB00E2894F /* comskip */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = comskip; sourceTree = "<group>"; };
 		6100670C0B470D4700E38A87 /* mencoder */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; name = mencoder; path = "External Software/mencoder"; sourceTree = "<group>"; };
 		612EF59B0B4459F000ACBBBF /* ParseDetail.pl */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.script.perl; path = ParseDetail.pl; sourceTree = "<group>"; };
 		61354C050B273C3C00EEF96F /* ParseXML.pl */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.script.perl; path = ParseXML.pl; sourceTree = "<group>"; };
@@ -148,6 +150,7 @@
 		29B97315FDCFA39411CA2CEA /* Other Sources */ = {
 			isa = PBXGroup;
 			children = (
+				538D23730E8D69DB00E2894F /* comskip */,
 				6156A9C20B4CA01B000373DF /* killProcesses.pl */,
 				61D69A480B4C753500D69E4C /* download2.pl */,
 				61D69A490B4C753500D69E4C /* download3.pl */,
@@ -253,6 +256,7 @@
 				61D69A4A0B4C753500D69E4C /* download2.pl in Resources */,
 				61D69A4B0B4C753500D69E4C /* download3.pl in Resources */,
 				6156A9C30B4CA01B000373DF /* killProcesses.pl in Resources */,
+				538D23740E8D69DB00E2894F /* comskip in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
