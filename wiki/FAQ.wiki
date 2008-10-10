@@ -1,4 +1,3 @@
-
 = F.A.Q. =
   # My program crashes / I get 'mencoder' errors.
     iTiVo is actually a front-end for several programs written by multiple people.  Many of these programs are not perfect (and iTiVo has its own bugs).  If you report bugs in the interface above (under Issues), I will hopefully get around to fixing it.  However, it may be related to underlying programs which I have no control over. The short version:  sorry.
@@ -11,3 +10,6 @@
 
   # I have questions about my TiVo.
     I'm only responsible for this front-end.  If you have questions about your tivo, I highly recommend going to the tivocommunity forum here: http://tivocommunity.com/tivo-vb/index.php
+
+  # I have shows on my TiVo that are not listed on iTiVo!
+    Certain shows and certain channels can be marked 'copyrighted'.  Any show marked as such is not available for download from the tivo, and is therefore not listed.
