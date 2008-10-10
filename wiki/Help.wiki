@@ -50,3 +50,6 @@ If there is a show you always choose to download from your tivo (daily news for 
 
   # How do I get "The Daily Show" onto my iPhone daily?
     Read the documentation at http://code.google.com/p/itivo/wiki/Subscriptions
+
+  # I have questions about my TiVo.
+    I'm only responsible for this front-end.  If you have questions about your tivo, I highly recommend going to the tivocommunity forum here: http://tivocommunity.com/tivo-vb/index.php
