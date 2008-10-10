@@ -2,7 +2,7 @@
 
 A common use for iTiVo is to download your favorite shows to your iPhone automatically.  Here is how to set this up:
 
-  # Set up iTiVo, including inputting your tivo's MAK.
+  # Set up iTiVo, including inputting your tivo's MAK. Instructions are at http://code.google.com/p/itivo/wiki/Installation
   # In the Prefs pane:
     * Select a format such as 'iPhone low-res'.
     * Select 'Import to Itunes'.  This will automatically add your show as a 'tv show' to iTunes after it's done downloading.
