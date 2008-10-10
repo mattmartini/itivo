@@ -29,9 +29,9 @@
 		5304AD990E4CBDBF00E77CA0 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5304AD980E4CBDBF00E77CA0 /* Sparkle.framework */; };
 		5304ADC30E4CBDFE00E77CA0 /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 5304AD980E4CBDBF00E77CA0 /* Sparkle.framework */; };
 		538D23740E8D69DB00E2894F /* comskip in Resources */ = {isa = PBXBuildFile; fileRef = 538D23730E8D69DB00E2894F /* comskip */; };
+		53E5328A0E9FBEB300E16E0D /* ParseXML.pl in Resources */ = {isa = PBXBuildFile; fileRef = 53E532890E9FBEB300E16E0D /* ParseXML.pl */; };
 		6100670D0B470D4700E38A87 /* mencoder in Resources */ = {isa = PBXBuildFile; fileRef = 6100670C0B470D4700E38A87 /* mencoder */; };
 		612EF59C0B4459F000ACBBBF /* ParseDetail.pl in Resources */ = {isa = PBXBuildFile; fileRef = 612EF59B0B4459F000ACBBBF /* ParseDetail.pl */; };
-		61354C080B273C3C00EEF96F /* ParseXML.pl in Resources */ = {isa = PBXBuildFile; fileRef = 61354C050B273C3C00EEF96F /* ParseXML.pl */; };
 		61354C090B273C3C00EEF96F /* download.pl in Resources */ = {isa = PBXBuildFile; fileRef = 61354C060B273C3C00EEF96F /* download.pl */; };
 		61354C8B0B2741D800EEF96F /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 61354C890B2741D800EEF96F /* Credits.rtf */; };
 		6156A9C30B4CA01B000373DF /* killProcesses.pl in Resources */ = {isa = PBXBuildFile; fileRef = 6156A9C20B4CA01B000373DF /* killProcesses.pl */; };
@@ -67,9 +67,9 @@
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		5304AD980E4CBDBF00E77CA0 /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Sparkle.framework; sourceTree = "<group>"; };
 		538D23730E8D69DB00E2894F /* comskip */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = comskip; sourceTree = "<group>"; };
+		53E532890E9FBEB300E16E0D /* ParseXML.pl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.perl; path = ParseXML.pl; sourceTree = "<group>"; };
 		6100670C0B470D4700E38A87 /* mencoder */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; name = mencoder; path = "External Software/mencoder"; sourceTree = "<group>"; };
 		612EF59B0B4459F000ACBBBF /* ParseDetail.pl */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.script.perl; path = ParseDetail.pl; sourceTree = "<group>"; };
-		61354C050B273C3C00EEF96F /* ParseXML.pl */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.script.perl; path = ParseXML.pl; sourceTree = "<group>"; };
 		61354C060B273C3C00EEF96F /* download.pl */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.script.perl; path = download.pl; sourceTree = "<group>"; };
 		61354C8A0B2741D800EEF96F /* English */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = English; path = English.lproj/Credits.rtf; sourceTree = "<group>"; };
 		6156A9C20B4CA01B000373DF /* killProcesses.pl */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.script.perl; path = killProcesses.pl; sourceTree = "<group>"; };
@@ -150,6 +150,7 @@
 		29B97315FDCFA39411CA2CEA /* Other Sources */ = {
 			isa = PBXGroup;
 			children = (
+				53E532890E9FBEB300E16E0D /* ParseXML.pl */,
 				538D23730E8D69DB00E2894F /* comskip */,
 				6156A9C20B4CA01B000373DF /* killProcesses.pl */,
 				61D69A480B4C753500D69E4C /* download2.pl */,
@@ -158,7 +159,6 @@
 				612EF59B0B4459F000ACBBBF /* ParseDetail.pl */,
 				617286790B350D0200C39347 /* tivodecode */,
 				6100670C0B470D4700E38A87 /* mencoder */,
-				61354C050B273C3C00EEF96F /* ParseXML.pl */,
 				61354C060B273C3C00EEF96F /* download.pl */,
 				29B97316FDCFA39411CA2CEA /* main.m */,
 			);
@@ -244,7 +244,6 @@
 			files = (
 				257572C7072881A4000BE9CA /* MainMenu.nib in Resources */,
 				257572C8072881A4000BE9CA /* InfoPlist.strings in Resources */,
-				61354C080B273C3C00EEF96F /* ParseXML.pl in Resources */,
 				61354C090B273C3C00EEF96F /* download.pl in Resources */,
 				61354C8B0B2741D800EEF96F /* Credits.rtf in Resources */,
 				61A5D8A20B2B12530030FBD5 /* iTiVo.icns in Resources */,
@@ -257,6 +256,7 @@
 				61D69A4B0B4C753500D69E4C /* download3.pl in Resources */,
 				6156A9C30B4CA01B000373DF /* killProcesses.pl in Resources */,
 				538D23740E8D69DB00E2894F /* comskip in Resources */,
+				53E5328A0E9FBEB300E16E0D /* ParseXML.pl in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
