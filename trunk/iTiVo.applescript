@@ -1408,7 +1408,7 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 					set ETA to ETA & " remaining)"
 				end try
 			end if
-			do shell script "sleep 0.5;exit 0"
+			delay 0.5
 		end repeat
 	end tell
 	my performCancelDownload()
@@ -1421,7 +1421,7 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 		end tell
 	end if
 	tell window "iTiVo"
-		set contents of text field "status" to ""
+		set contents of text field "status" to "Download Finished at " & (current date)
 		set contents of text field "status2" to ""
 		set visible of progress indicator "Status" to false
 		tell progress indicator "Status" to increment by -1 * currentProgress
@@ -1554,7 +1554,6 @@ on ConnectTiVo()
 			set title of button "ConnectButton" to "Update from TiVo"
 		end if
 		set enabled of button "DownloadButton" of box "topBox" of split view "splitView1" to false
-		set contents of text field "status" to ""
 		set key equivalent of button "ConnectButton" to ""
 		set contents of text field "status" to "Last Update : " & (current date)
 	end tell
@@ -1904,12 +1903,3 @@ on idle
 	end if
 	return installedIdleHandler
 end idle
-
-on keyboard down theObject event theEvent
-	(*Add your script here.*)
-end keyboard down
-
-on keyboard up theObject event theEvent
-	(*Add your script here.*)
-end keyboard up
-goo
