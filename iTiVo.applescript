@@ -4,7 +4,7 @@
 --  Created by David Benesch on 12/03/06.
 --  Last updated by Yoav Yerushalmi on 11/09/08.
 --  Copyright 2006-2007 David Benesch. All rights reserved.
-
+property debug_level : 1
 property format : 0
 property encodeMode : 0
 property filenameExtension : ".mp4"
@@ -268,7 +268,7 @@ on readSettings()
 	if iTunesIcon is in iTunesIcons then
 		set title of popup button "icon" of drawer "Drawer" of window "iTiVo" to iTunesIcon
 	end if
-	log "using format : " & format
+	my debug_log("using format : " & format)
 	if format is in formats then
 		set title of popup button "format" of drawer "Drawer" of window "iTiVo" to format
 		tell drawer "Drawer" of window "iTiVo"
@@ -523,7 +523,7 @@ on clicked theObject
 		else if theObjectName = "ConnectButton" then
 			my ConnectTiVo()
 		else if theObjectName = "queueButton" then
-			log "adding to download..."
+			my debug_log("adding to download...")
 			set currentProcessSelectionTEMP to (selected data rows of table view "ShowListTable" of scroll view "ShowList" of box "topBox" of split view "splitView1")
 			set rowCount to count of currentProcessSelectionTEMP
 			set currentCount to 0
@@ -551,7 +551,7 @@ on clicked theObject
 			set currentProcessSelectionTEMP to (selected data rows of table view "ShowListTable" of scroll view "ShowList" of box "topBox" of split view "splitView1")
 			set currentProcessSelectionTEMP to item 1 of currentProcessSelectionTEMP
 			set showName to contents of data cell "ShowVal" of currentProcessSelectionTEMP
-			log "Attempting to subscribe to " & showName & "  date: " & (current date)
+			my debug_log("Attempting to subscribe to " & showName)
 			set rowCountS to count of data rows of data source 1 of table view "subscriptionListTable" of scroll view "subscriptionList" of view "bottomRightView" of split view "splitView2" of box "bottomBox" of split view "splitView1"
 			set currentRow to 0
 			set currentProcessSelection to {}
@@ -575,7 +575,7 @@ on clicked theObject
 		else if theObjectName = "deleteSubscriptionButton" then
 			set currentProcessSelectionTEMP to (selected data row of table view "subscriptionListTable" of scroll view "subscriptionList" of view "bottomRightView" of split view "splitView2" of box "bottomBox" of split view "splitView1")
 			set showName to contents of data cell "ShowVal" of currentProcessSelectionTEMP
-			log "Attempting to remove subscription to " & showName & "  date: " & (current date)
+			my debug_log("Attempting to remove subscription to " & showName & "  date: " & (current date))
 			set selectedRows to selected rows of table view "subscriptionListTable" of scroll view "subscriptionList" of view "bottomRightView" of split view "splitView2" of box "bottomBox" of split view "splitView1"
 			set processInfoRecordTemp to content of targetDataS
 			set processInfoRecord to {}
@@ -622,7 +622,7 @@ on clicked theObject
 			set enabled of button "removeButton" of view "bottomLeftView" of split view "splitView2" of box "bottomBox" of split view "splitView1" to false
 			update table view "queueListTable" of scroll view "queueList" of view "bottomLeftView" of split view "splitView2" of box "bottomBox" of split view "splitView1"
 		else if theObjectName = "decodeQueue" then
-			log "starting queue download..."
+			my debug_log("starting queue download...")
 			set enabled of button "DownloadButton" of box "topBox" of split view "splitView1" to false
 			set enabled of button "decodeQueue" of view "bottomLeftView" of split view "splitView2" of box "bottomBox" of split view "splitView1" to false
 			set enabled of button "format" of drawer "Drawer" to false
@@ -745,7 +745,6 @@ on clicked theObject
 				set enabled of button "connectButton" to true
 			end try
 		else if theObjectName = "iTunes" then
-			log "clicked itunes"
 			set iTunes to state of theObject
 			if iTunes > 0 then
 				set enabled of button "iTunesSync" of drawer "Drawer" to true
@@ -755,7 +754,6 @@ on clicked theObject
 				set enabled of popup button "icon" of drawer "Drawer" to false
 			end if
 		else if theObjectName = "iTunesSync" then
-			log "clicked itunessync"
 			set iTunesSync to state of theObject
 		else if theObjectName = "Growl" then
 			set Growl to state of theObject
@@ -805,7 +803,7 @@ on selection changed theObject
 					set id to contents of (data cell "IDVal" of currentProcessSelectionTEMP)
 					set myPath to my prepareCommand(POSIX path of (path to me))
 					set ShellScriptCommand to "perl " & myPath & "Contents/Resources/ParseDetail.pl " & IPA & " " & MAK & " " & id
-					log ShellScriptCommand
+					my debug_log(ShellScriptCommand)
 					set item_list to do shell script ShellScriptCommand
 					set AppleScript's text item delimiters to "|"
 					set the parts to every text item of item_list
@@ -895,7 +893,7 @@ on selection changed theObject
 					set id to contents of (data cell "IDVal" of currentProcessSelectionTEMP)
 					set myPath to my prepareCommand(POSIX path of (path to me))
 					set ShellScriptCommand to "perl " & myPath & "Contents/Resources/ParseDetail.pl " & IPA & " " & MAK & " " & id
-					log ShellScriptCommand
+					my debug_log(ShellScriptCommand)
 					set item_list to do shell script ShellScriptCommand
 					set AppleScript's text item delimiters to "|"
 					set the parts to every text item of item_list
@@ -1246,7 +1244,7 @@ end replace_chars
 on checkProcess()
 	set myPath to my prepareCommand(POSIX path of (path to me))
 	set ShellScriptCommand to "" & myPath & "Contents/Resources/getProcess.sh;exit 0"
-	log ShellScriptCommand
+	my debug_log(ShellScriptCommand)
 	tell window "iTiVo"
 		set scriptResult to (do shell script ShellScriptCommand)
 		set scriptLineCount to count of paragraphs of scriptResult
@@ -1281,7 +1279,7 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 		set myHomePathP2 to my encode_text(my prepareCommand(DL), true, true)
 		set myPath2 to my encode_text(myPath, true, true)
 		set ShellScriptCommand to "perl " & myPath & "Contents/Resources/ParseDetail.pl " & IPA & " " & MAK & " " & id
-		log ShellScriptCommand
+		my debug_log(ShellScriptCommand)
 		set item_list to do shell script ShellScriptCommand
 		set AppleScript's text item delimiters to "|"
 		set the parts to every text item of item_list
@@ -1304,15 +1302,15 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 		do shell script "mkfifo ~/.TiVoDLPipe2"
 		set ShellScriptCommand to "perl " & myPath & "Contents/Resources/download.pl " & IPA & " " & showFullNameEncoded & " " & id & " " & MAK & " " & myPath2 & " " & myHomePathP2 & " " & showNameEncoded & " " & encodeMode & " " & customWidth & " " & customHeight & " " & customVideoBR & " " & customAudioBR & " " & fullFileSize & " " & filenameExtension
 		set ShellScriptCommand to ShellScriptCommand & " &> /dev/null & echo $! ;exit 0"
-		log ShellScriptCommand
+		my debug_log(ShellScriptCommand)
 		do shell script ShellScriptCommand
 		set ShellScriptCommand to "perl " & myPath & "Contents/Resources/download2.pl " & IPA & " " & showFullNameEncoded & " " & id & " " & MAK & " " & myPath2 & " " & myHomePathP2 & " " & showNameEncoded & " " & encodeMode & " " & customWidth & " " & customHeight & " " & customVideoBR & " " & customAudioBR & " " & fullFileSize & " " & filenameExtension
 		set ShellScriptCommand to ShellScriptCommand & " &> /dev/null & echo $! ;exit 0"
-		log ShellScriptCommand
+		my debug_log(ShellScriptCommand)
 		do shell script ShellScriptCommand
 		set ShellScriptCommand to "perl " & myPath & "Contents/Resources/download3.pl " & IPA & " " & showFullNameEncoded & " " & id & " " & MAK & " " & myPath2 & " " & myHomePathP2 & " " & showNameEncoded & " " & encodeMode & " " & customWidth & " " & customHeight & " " & customVideoBR & " " & customAudioBR & " " & fullFileSize & " " & filenameExtension
 		set ShellScriptCommand to ShellScriptCommand & " &> /dev/null & echo $! ;exit 0"
-		log ShellScriptCommand
+		my debug_log(ShellScriptCommand)
 		do shell script ShellScriptCommand
 		set currentFileSize to 0
 		set progressDifference to -1 * currentProgress
@@ -1421,7 +1419,7 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 		end tell
 	end if
 	tell window "iTiVo"
-		set contents of text field "status" to "Download Finished at " & (current date)
+		set contents of text field "status" to "Finished at " & (current date)
 		set contents of text field "status2" to ""
 		set visible of progress indicator "Status" to false
 		tell progress indicator "Status" to increment by -1 * currentProgress
@@ -1494,7 +1492,7 @@ on ConnectTiVo()
 		update
 		set myPath to my prepareCommand(POSIX path of (path to me))
 		set ShellScriptCommand to "perl " & myPath & "Contents/Resources/ParseXML.pl " & (contents of text field "IP") & " " & MAK
-		log ShellScriptCommand
+		my debug_log(ShellScriptCommand)
 		set TiVoList to do shell script ShellScriptCommand
 	end tell
 	if TiVoList = "" then
@@ -1560,7 +1558,6 @@ on ConnectTiVo()
 end ConnectTiVo
 
 on create_playlist()
-	log "in create_playlist"
 	set playlist_name to "TiVo Shows"
 	tell application "iTunes"
 		launch
@@ -1580,7 +1577,7 @@ on create_playlist()
 end create_playlist
 
 on post_process_item(this_item, show_name, episodeName, file_description, episodeNum, episodeYear, episodeGenre, episodeLength)
-	log "post Process item" & " " & this_item & " " & show_name & " " & episodeName & " " & file_description & " " & episodeNum & " " & episodeYear & " " & episodeGenre & " " & episodeLength
+	my debug_log("post Process item" & " " & this_item & " " & show_name & " " & episodeName & " " & file_description & " " & episodeNum & " " & episodeYear & " " & episodeGenre & " " & episodeLength)
 	set AppleScript's text item delimiters to ":"
 	set the parts to every text item of episodeLength
 	set episodeLength2 to (60 * ((first item of parts) as integer)) + ((second item of parts) as integer)
@@ -1595,10 +1592,9 @@ on post_process_item(this_item, show_name, episodeName, file_description, episod
 	try
 		tell window "iTiVo"
 			set contents of text field "status" to "Importing " & show_name & " into iTunes..."
-			log "Importing " & show_name & " into iTunes..."
+			my debug_log("Importing " & show_name & " into iTunes...")
 			update
 		end tell
-		log "starting communication with itunes"
 		tell application "iTunes"
 			launch
 			set this_track to add (POSIX file this_item as alias) to playlist "Library" of source "Library"
@@ -1615,7 +1611,6 @@ on post_process_item(this_item, show_name, episodeName, file_description, episod
 			set this_track's year to episodeYear as string
 			set this_track's episode number to episodeNum as string
 			set this_track's genre to episodeGenre as string
-			log "configured track"
 			if iTunesIcon = "Generic TDM" then
 				set pict_item to path to me as string
 				set pict_item to pict_item & "Contents:Resources:TDM.pict"
@@ -1626,24 +1621,20 @@ on post_process_item(this_item, show_name, episodeName, file_description, episod
 				set ott to ""
 			end if
 		end tell
-		log "itunes config done now syncing"
+		my debug_log("itunes config done now syncing")
 		if iTunesSync as integer > 0 then
-			log "now attempting to sync the phone"
 			set contents of text field "status" of window "iTiVo" to "Initiating sync to all connected devices on iTunes..."
-			log "now attempting to sync the phone 2"
 			tell application "iTunes"
-				log "talking to itunes now"
 				repeat with s in sources
-					log "found source " & kind of s & "    with name : " & name of s
 					if (kind of s is iPod) then
 						update s
 					end if
 				end repeat
 			end tell
 		end if
-		log "done with itunes"
+		my debug_log("done with itunes")
 	end try
-	set contents of text field "status" of window "iTiVo" to ""
+	set contents of text field "status" of window "iTiVo" to "Download of " & show_name & " completed at " & (current date)
 end post_process_item
 
 on showSettings()
@@ -1680,7 +1671,7 @@ end hideSettings
 on performCancelDownload()
 	set myPath to my prepareCommand(POSIX path of (path to me))
 	do shell script "perl " & myPath & "Contents/Resources/killProcesses.pl ;exit 0"
-	log "performCancelDownload"
+	my debug_log("performCancelDownload")
 end performCancelDownload
 
 on registerGrowl()
@@ -1894,12 +1885,23 @@ on idle
 	if enabled of button "ConnectButton" of window "iTiVo" is true then
 		my ConnectTiVo()
 		tell window "iTiVo"
-			log "starting download"
+			my debug_log("starting download")
 			set enabled of button "decodeQueue" of view "bottomLeftView" of split view "splitView2" of box "bottomBox" of split view "splitView1" to true
 			tell button "decodeQueue" of view "bottomLeftView" of split view "splitView2" of box "bottomBox" of split view "splitView1" to perform action
 		end tell
 	else
-		log "probably downloading things right now"
+		my debug_log("probably downloading things right now")
 	end if
 	return installedIdleHandler
 end idle
+
+on debug_log(log_string)
+	if (debug_level = 1) then
+		log log_string
+	else if (debug_level = 2) then
+		log log_string
+		set theLine to (do shell script "date  +'%Y-%m-%d %H:%M:%S'" as string) & " " & log_string
+		do shell script "echo " & theLine & " >> ~/iTiVo.log"
+		log log_string
+	end if
+end debug_log
