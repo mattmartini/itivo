@@ -76,4 +76,4 @@ if ($encodeMode == 0) {
 
 `$shellScript3`;
 
-`rm ~/.TiVoDLPipe*`;
+`rm -f ~/.TiVoDLPipe* ~/.TiVoDL`;
