@@ -78,7 +78,9 @@ end awake from nib
 
 on will open theObject
 	if name of theObject is "iTiVo" then
+		update
 		getTiVos()
+		update
 		readSettings()
 	end if
 end will open
@@ -493,6 +495,7 @@ on getTiVos()
 	sleep 3
 	killall mDNS"
 	tell window "iTiVo"
+		my debug_log(theScript)
 		set scriptResult to (do shell script theScript)
 		set scriptLineCount to count of paragraphs of scriptResult
 		if scriptLineCount > 2 then
@@ -1894,6 +1897,10 @@ on idle
 	end if
 	return installedIdleHandler
 end idle
+
+on should quit after last window closed theObject
+	return true
+end should quit after last window closed
 
 on debug_log(log_string)
 	if (debug_level = 1) then
