@@ -78,6 +78,7 @@ end awake from nib
 
 on will open theObject
 	if name of theObject is "iTiVo" then
+		my debug_log("     ================    Starting   ===================")
 		update
 		getTiVos()
 		update
@@ -398,7 +399,7 @@ on readSettings()
 			set title of popup button "MyTiVos" of window "iTiVo" to TiVo
 			try
 				set theScript to "mDNS -L \"" & TiVo & "\" _tivo-videos._tcp local | colrm 1 42 &
-sleep 3
+sleep 2
 killall mDNS"
 				set hostList to paragraphs 1 thru -1 of (do shell script theScript)
 				repeat with j in hostList
@@ -492,7 +493,7 @@ end setSettingsInUI
 
 on getTiVos()
 	set theScript to "mDNS -B _tivo-videos._tcp local | colrm 1 74& 
-	sleep 3
+	sleep 2
 	killall mDNS"
 	tell window "iTiVo"
 		my debug_log(theScript)
@@ -659,7 +660,7 @@ on clicked theObject
 					do shell script "rm ~/.TiVoDL"
 				end try
 				set retryCount to 0
-				repeat while success = 1 and (my getCurrentFilesize(filePath)) as integer < (fullFileSize * 0.85) as integer and retryCount < 4 and cancelAllDownloads = 0
+				repeat while success = 1 and (my getCurrentFilesize(filePath)) as real < (fullFileSize * 0.85) as real and retryCount < 4 and cancelAllDownloads = 0
 					set success to my downloadItem(currentProcessSelectionQ2, 1, retryCount)
 					set retryCount to retryCount + 1
 				end repeat
@@ -732,7 +733,7 @@ on clicked theObject
 					do shell script "rm ~/.TiVoDL"
 				end try
 				set retryCount to 0
-				repeat while success = 1 and (my getCurrentFilesize(filePath)) as integer < (fullFileSize * 0.85) as integer and retryCount < 4
+				repeat while success = 1 and (my getCurrentFilesize(filePath)) as real < (fullFileSize * 0.85) as real and retryCount < 4
 					set success to my downloadItem(currentProcessSelection, retryCount, retryCount)
 					set retryCount to retryCount + 1
 				end repeat
@@ -1137,7 +1138,7 @@ on choose menu item theObject
 			tell window "iTiVo"
 				try
 					set theScript to "mDNS -L \"" & title of theObject & "\" _tivo-videos._tcp local | colrm 1 42 &
-sleep 3
+sleep 2
 killall mDNS"
 					set hostList to paragraphs 1 thru -1 of (do shell script theScript)
 					repeat with j in hostList
@@ -1260,6 +1261,7 @@ on checkProcess()
 end checkProcess
 
 on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
+	my debug_log(" downloadItem  called")
 	my performCancelDownload()
 	tell window "iTiVo"
 		if not (my checkDL()) then
@@ -1333,6 +1335,7 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 		end if
 	end tell
 	if Growl = "1" and GrowlAppName = "GrowlHelperApp.app" then
+		my debug_log("Informing via Growl")
 		tell application GrowlAppName
 			using terms from application "GrowlHelperApp"
 				if retryCount > 0 then
@@ -1350,6 +1353,7 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 		set visible of progress indicator "Status" to true
 		set starttime to ((do shell script "date +%s") as integer) - 10
 		repeat while timeoutCount < 480 and cancelDownload as integer = 0 and downloadExists as integer = 1 and cancelAllDownloads as integer = 0
+			-- my debug_log("timeout: " & timeoutCount & "   currentFileSize: " & currentFileSize & "  fullFileSize:" & fullFileSize)
 			if currentFileSize = 0 then
 				set starttime to do shell script "date +%s"
 			end if
@@ -1361,7 +1365,7 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 			else
 				set downloadExists to 0
 			end if
-			if currentFileSize as integer > prevFileSize as integer then
+			if currentFileSize as real > prevFileSize as real then
 				set prevFileSize to currentFileSize
 				set timeoutCount to 0
 				set contents of text field "status" to "Downloading " & first item of currentProcessSelectionParam & " - " & second item of currentProcessSelectionParam
@@ -1413,6 +1417,7 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 		end repeat
 	end tell
 	my performCancelDownload()
+	my debug_log("Download completed")
 	if Growl = "1" and GrowlAppName = "GrowlHelperApp.app" then
 		tell application GrowlAppName
 			using terms from application "GrowlHelperApp"
@@ -1430,7 +1435,8 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 		set timeoutCount to 0
 		set currentFileSize to 0
 		set enabled of button "CancelDownload" to false
-		if cancelDownload = 0 and (my getCurrentFilesize(filePath)) as integer > (fullFileSize * 0.85) then
+		my debug_log("Finished Downloading, 85% fullfilesize=" & (0.85 * fullFileSize) & " ;  currentfilesize=" & getCurrentFilesize(filePath))
+		if cancelDownload = 0 and (my getCurrentFilesize(filePath)) as real > (fullFileSize * 0.85) as real then
 			set historyCheck to first item of currentProcessSelectionParam & "-" & id as string
 			if historyCheck is not in DLHistory then
 				set DLHistory to DLHistory & {historyCheck}
@@ -1438,8 +1444,11 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 				my ConnectTiVo()
 			end if
 			if iTunes as integer > 0 then
+				my debug_log(" Doing iTunes-related work ")
 				my create_playlist()
 				my post_process_item(DL & showNameP & filenameExtension, item 1 of currentProcessSelectionParam, item 2 of currentProcessSelectionParam, item 4 of parts, item 14 of parts, item 13 of parts, item 8 of parts, item 7 of parts)
+			else
+				my debug_log(" iTunes not selected ")
 			end if
 		end if
 	end tell
@@ -1908,7 +1917,6 @@ on debug_log(log_string)
 	else if (debug_level = 2) then
 		log log_string
 		set theLine to (do shell script "date  +'%Y-%m-%d %H:%M:%S'" as string) & " " & log_string
-		do shell script "echo " & theLine & " >> ~/iTiVo.log"
-		log log_string
+		do shell script "echo '" & theLine & "' >> ~/iTiVo.log"
 	end if
 end debug_log
