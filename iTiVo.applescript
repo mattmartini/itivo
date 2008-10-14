@@ -4,7 +4,7 @@
 --  Created by David Benesch on 12/03/06.
 --  Last updated by Yoav Yerushalmi on 11/09/08.
 --  Copyright 2006-2007 David Benesch. All rights reserved.
-property debug_level : 1
+property debug_level : 2
 property format : 0
 property encodeMode : 0
 property filenameExtension : ".mp4"
@@ -1435,7 +1435,7 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 		set timeoutCount to 0
 		set currentFileSize to 0
 		set enabled of button "CancelDownload" to false
-		my debug_log("Finished Downloading, 85% fullfilesize=" & (0.85 * fullFileSize) & " ;  currentfilesize=" & getCurrentFilesize(filePath))
+		my debug_log("Finished Downloading, 85% fullfilesize=" & (0.85 * fullFileSize) & " ;  currentfilesize=" & my getCurrentFilesize(filePath))
 		if cancelDownload = 0 and (my getCurrentFilesize(filePath)) as real > (fullFileSize * 0.85) as real then
 			set historyCheck to first item of currentProcessSelectionParam & "-" & id as string
 			if historyCheck is not in DLHistory then
