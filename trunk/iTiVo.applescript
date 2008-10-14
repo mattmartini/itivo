@@ -4,7 +4,7 @@
 --  Created by David Benesch on 12/03/06.
 --  Last updated by Yoav Yerushalmi on 11/09/08.
 --  Copyright 2006-2007 David Benesch. All rights reserved.
-property debug_level : 2
+property debug_level : 3
 property format : 0
 property encodeMode : 0
 property filenameExtension : ".mp4"
@@ -659,11 +659,7 @@ on clicked theObject
 				try
 					do shell script "rm ~/.TiVoDL"
 				end try
-				set retryCount to 0
-				repeat while success = 1 and (my getCurrentFilesize(filePath)) as real < (fullFileSize * 0.85) as real and retryCount < 4 and cancelAllDownloads = 0
-					set success to my downloadItem(currentProcessSelectionQ2, 1, retryCount)
-					set retryCount to retryCount + 1
-				end repeat
+				set success to my downloadItem(currentProcessSelectionQ2, 1, 4)
 				if success > 0 and cancelAllDownloads = 0 then
 					set processInfoRecordTemp to content of targetDataQ
 					set processInfoRecord to {}
@@ -729,14 +725,7 @@ on clicked theObject
 				set fullFileSize to (first word of fullFileSize as integer)
 				
 				set success to 1
-				try
-					do shell script "rm ~/.TiVoDL"
-				end try
-				set retryCount to 0
-				repeat while success = 1 and (my getCurrentFilesize(filePath)) as real < (fullFileSize * 0.85) as real and retryCount < 4
-					set success to my downloadItem(currentProcessSelection, retryCount, retryCount)
-					set retryCount to retryCount + 1
-				end repeat
+				set success to my downloadItem(currentProcessSelection, 0, 4)
 				if (count of (selected data rows of table view "ShowListTable" of scroll view "ShowList" of box "topBox" of split view "splitView1")) = 1 then
 					set enabled of button "DownloadButton" of box "topBox" of split view "splitView1" to true
 					set enabled of button "subscribeButton" of box "topBox" of split view "splitView1" to true
@@ -1261,8 +1250,7 @@ on checkProcess()
 end checkProcess
 
 on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
-	my debug_log(" downloadItem  called")
-	my performCancelDownload()
+	my debug_log(" downloadItem  called: " & overrideDLCheck & "," & retryCount)
 	tell window "iTiVo"
 		if not (my checkDL()) then
 			return 0
@@ -1300,132 +1288,149 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 				return 0
 			end if
 		end if
-		try
-			do shell script "rm ~/.TiVoDLPipe*"
-		end try
-		do shell script "mkfifo ~/.TiVoDLPipe"
-		do shell script "mkfifo ~/.TiVoDLPipe2"
-		set ShellScriptCommand to "perl " & myPath & "Contents/Resources/download.pl " & IPA & " " & showFullNameEncoded & " " & id & " " & MAK & " " & myPath2 & " " & myHomePathP2 & " " & showNameEncoded & " " & encodeMode & " " & customWidth & " " & customHeight & " " & customVideoBR & " " & customAudioBR & " " & fullFileSize & " " & filenameExtension
-		set ShellScriptCommand to ShellScriptCommand & " &> /dev/null & echo $! ;exit 0"
-		my debug_log(ShellScriptCommand)
-		do shell script ShellScriptCommand
-		set ShellScriptCommand to "perl " & myPath & "Contents/Resources/download2.pl " & IPA & " " & showFullNameEncoded & " " & id & " " & MAK & " " & myPath2 & " " & myHomePathP2 & " " & showNameEncoded & " " & encodeMode & " " & customWidth & " " & customHeight & " " & customVideoBR & " " & customAudioBR & " " & fullFileSize & " " & filenameExtension
-		set ShellScriptCommand to ShellScriptCommand & " &> /dev/null & echo $! ;exit 0"
-		my debug_log(ShellScriptCommand)
-		do shell script ShellScriptCommand
-		set ShellScriptCommand to "perl " & myPath & "Contents/Resources/download3.pl " & IPA & " " & showFullNameEncoded & " " & id & " " & MAK & " " & myPath2 & " " & myHomePathP2 & " " & showNameEncoded & " " & encodeMode & " " & customWidth & " " & customHeight & " " & customVideoBR & " " & customAudioBR & " " & fullFileSize & " " & filenameExtension
-		set ShellScriptCommand to ShellScriptCommand & " &> /dev/null & echo $! ;exit 0"
-		my debug_log(ShellScriptCommand)
-		do shell script ShellScriptCommand
-		set currentFileSize to 0
-		set progressDifference to -1 * currentProgress
-		tell progress indicator "Status" to increment by progressDifference
-		set progressDifference to 0
-		set contents of text field "status" to "Downloading " & first item of currentProcessSelectionParam & " - " & second item of currentProcessSelectionParam
-		set currentFileSize to 0
-		set prevFileSize to 0
-		set timeoutCount to 0
-		set cancelDownload to 0
-		set downloadExistsCmdString to "du -k -d 0 ~/.TiVoDLPipe ;exit 0"
-		set downloadExistsCmd to do shell script downloadExistsCmdString
-		if downloadExistsCmd is not equal to "" then
-			set downloadExists to 1
-		else
-			set downloadExists to 0
-		end if
 	end tell
-	if Growl = "1" and GrowlAppName = "GrowlHelperApp.app" then
-		my debug_log("Informing via Growl")
-		tell application GrowlAppName
-			using terms from application "GrowlHelperApp"
-				if retryCount > 0 then
-					notify with name "Beginning Download" title "Retrying 
-" & (item 1 of currentProcessSelectionParam) description (item 2 of currentProcessSelectionParam) application name "iTiVo"
-				else
-					notify with name "Beginning Download" title "Downloading 
-" & (item 1 of currentProcessSelectionParam) description (item 2 of currentProcessSelectionParam) application name "iTiVo"
-				end if
-			end using terms from
-		end tell
-	end if
-	tell window "iTiVo"
-		set ETA to ""
-		set visible of progress indicator "Status" to true
-		set starttime to ((do shell script "date +%s") as integer) - 10
-		repeat while timeoutCount < 480 and cancelDownload as integer = 0 and downloadExists as integer = 1 and cancelAllDownloads as integer = 0
-			-- my debug_log("timeout: " & timeoutCount & "   currentFileSize: " & currentFileSize & "  fullFileSize:" & fullFileSize)
-			if currentFileSize = 0 then
-				set starttime to do shell script "date +%s"
-			end if
-			set currenttime to ((do shell script "date +%s") as integer)
-			set currentFileSize to my getCurrentFilesize(filePath)
+	set currentTry to 0
+	my performCancelDownload()
+	try
+		do shell script "rm ~/.TiVoDL"
+	end try
+	set cancelDownload to 0
+	repeat while (not my isDownloadComplete(filePath, fullFileSize, currentTry)) and currentTry < retryCount and cancelDownload = 0
+		tell window "iTiVo"
+			try
+				do shell script "rm ~/.TiVoDLPipe*"
+			end try
+			do shell script "mkfifo ~/.TiVoDLPipe"
+			do shell script "mkfifo ~/.TiVoDLPipe2"
+			set ShellScriptCommand to "perl " & myPath & "Contents/Resources/download.pl " & IPA & " " & showFullNameEncoded & " " & id & " " & MAK & " " & myPath2 & " " & myHomePathP2 & " " & showNameEncoded & " " & encodeMode & " " & customWidth & " " & customHeight & " " & customVideoBR & " " & customAudioBR & " " & fullFileSize & " " & filenameExtension
+			set ShellScriptCommand to ShellScriptCommand & " &> /dev/null & echo $! ;exit 0"
+			my debug_log(ShellScriptCommand)
+			do shell script ShellScriptCommand
+			set ShellScriptCommand to "perl " & myPath & "Contents/Resources/download2.pl " & IPA & " " & showFullNameEncoded & " " & id & " " & MAK & " " & myPath2 & " " & myHomePathP2 & " " & showNameEncoded & " " & encodeMode & " " & customWidth & " " & customHeight & " " & customVideoBR & " " & customAudioBR & " " & fullFileSize & " " & filenameExtension
+			set ShellScriptCommand to ShellScriptCommand & " &> /dev/null & echo $! ;exit 0"
+			my debug_log(ShellScriptCommand)
+			do shell script ShellScriptCommand
+			set ShellScriptCommand to "perl " & myPath & "Contents/Resources/download3.pl " & IPA & " " & showFullNameEncoded & " " & id & " " & MAK & " " & myPath2 & " " & myHomePathP2 & " " & showNameEncoded & " " & encodeMode & " " & customWidth & " " & customHeight & " " & customVideoBR & " " & customAudioBR & " " & fullFileSize & " " & filenameExtension
+			set ShellScriptCommand to ShellScriptCommand & " &> /dev/null & echo $! ;exit 0"
+			my debug_log(ShellScriptCommand)
+			do shell script ShellScriptCommand
+			set currentFileSize to 0
+			set progressDifference to -1 * currentProgress
+			tell progress indicator "Status" to increment by progressDifference
+			set progressDifference to 0
+			set contents of text field "status" to "Downloading " & first item of currentProcessSelectionParam & " - " & second item of currentProcessSelectionParam
+			set currentFileSize to 0
+			set prevFileSize to 0
+			set timeoutCount to 0
+			set downloadExistsCmdString to "du -k -d 0 ~/.TiVoDLPipe ;exit 0"
 			set downloadExistsCmd to do shell script downloadExistsCmdString
 			if downloadExistsCmd is not equal to "" then
 				set downloadExists to 1
 			else
 				set downloadExists to 0
 			end if
-			if currentFileSize as real > prevFileSize as real then
-				set prevFileSize to currentFileSize
-				set timeoutCount to 0
-				set contents of text field "status" to "Downloading " & first item of currentProcessSelectionParam & " - " & second item of currentProcessSelectionParam
-			else
-				set timeoutCount to timeoutCount + 1
-				if timeoutCount = 20 then
-					set contents of text field "status" to "Downloading " & first item of currentProcessSelectionParam & " (waiting for TiVo)"
-				end if
-			end if
-			try
-				set progressDifference to (100 * (currentFileSize / fullFileSize)) - currentProgress
-				tell progress indicator "Status" to increment by progressDifference
-				set currentProgress to (100 * (currentFileSize / fullFileSize))
-				if currentProgress > 100 then
-					set currentProgress to 100
-				end if
-				if encodeMode > 0 then
-					set contents of text field "status2" to ((my roundThis(currentProgress, 2)) as string) & "% complete" & ETA as string
-				else
-					set contents of text field "status2" to (((currentFileSize as integer) as string) & " MB of " & fullFileSize as string) & " MB (" & ((my roundThis(currentProgress, 1)) as string) & "%)" & ETA as string
-				end if
-			end try
-			if currentFileSize > 0 then
-				try
-					set remainingData to (fullFileSize - currentFileSize)
-					if remainingData < 0 then
-						set remainingData to 0
+		end tell
+		if Growl = "1" and GrowlAppName = "GrowlHelperApp.app" then
+			my debug_log("Informing via Growl")
+			tell application GrowlAppName
+				using terms from application "GrowlHelperApp"
+					if currentTry > 0 then
+						notify with name "Beginning Download" title "Retrying (try number " & currentTry + 1 & ")
+" & (item 1 of currentProcessSelectionParam) description (item 2 of currentProcessSelectionParam) application name "iTiVo"
+					else
+						notify with name "Beginning Download" title "Downloading 
+" & (item 1 of currentProcessSelectionParam) description (item 2 of currentProcessSelectionParam) application name "iTiVo"
 					end if
-					set ETA to (((my truncate(remainingData * ((currenttime - starttime) / currentFileSize))) + 15) / 60) as integer
-					set hour to my truncate(ETA / 60) as integer
-					set min to ETA - (hour * 60)
-					if hour > 0 then
-						set ETA to " (" & hour & " hour"
-						if hour ≠ 1 then
+				end using terms from
+			end tell
+		end if
+		tell window "iTiVo"
+			set ETA to ""
+			set visible of progress indicator "Status" to true
+			set starttime to ((do shell script "date +%s") as integer) - 10
+			repeat while timeoutCount < 480 and cancelDownload as integer = 0 and downloadExists as integer = 1 and cancelAllDownloads as integer = 0
+				if (debug_level ≥ 3) then
+					my debug_log("timeout: " & timeoutCount & "   currentFileSize: " & currentFileSize & "  fullFileSize:" & fullFileSize)
+				end if
+				if currentFileSize = 0 then
+					set starttime to do shell script "date +%s"
+				end if
+				set currenttime to ((do shell script "date +%s") as integer)
+				set currentFileSize to my getCurrentFilesize(filePath)
+				set downloadExistsCmd to do shell script downloadExistsCmdString
+				if downloadExistsCmd is not equal to "" then
+					set downloadExists to 1
+				else
+					set downloadExists to 0
+				end if
+				if currentFileSize as real > prevFileSize as real then
+					set prevFileSize to currentFileSize
+					set timeoutCount to 0
+					set contents of text field "status" to "Downloading " & first item of currentProcessSelectionParam & " - " & second item of currentProcessSelectionParam
+				else
+					set timeoutCount to timeoutCount + 1
+					if timeoutCount = 20 then
+						set contents of text field "status" to "Downloading " & first item of currentProcessSelectionParam & " (waiting for TiVo)"
+					end if
+				end if
+				try
+					set progressDifference to (100 * (currentFileSize / fullFileSize)) - currentProgress
+					tell progress indicator "Status" to increment by progressDifference
+					set currentProgress to (100 * (currentFileSize / fullFileSize))
+					if currentProgress > 100 then
+						set currentProgress to 100
+					end if
+					if encodeMode > 0 then
+						set contents of text field "status2" to ((my roundThis(currentProgress, 2)) as string) & "% complete" & ETA as string
+					else
+						set contents of text field "status2" to (((currentFileSize as integer) as string) & " MB of " & fullFileSize as string) & " MB (" & ((my roundThis(currentProgress, 1)) as string) & "%)" & ETA as string
+					end if
+				end try
+				if currentFileSize > 0 then
+					try
+						set remainingData to (fullFileSize - currentFileSize)
+						if remainingData < 0 then
+							set remainingData to 0
+						end if
+						set ETA to (((my truncate(remainingData * ((currenttime - starttime) / currentFileSize))) + 15) / 60) as integer
+						set hour to my truncate(ETA / 60) as integer
+						set min to ETA - (hour * 60)
+						if hour > 0 then
+							set ETA to " (" & hour & " hour"
+							if hour ≠ 1 then
+								set ETA to ETA & "s"
+							end if
+							set ETA to ETA & ", "
+						else
+							set ETA to " ("
+						end if
+						set ETA to ETA & min & " minute"
+						if min ≠ 1 then
 							set ETA to ETA & "s"
 						end if
-						set ETA to ETA & ", "
-					else
-						set ETA to " ("
-					end if
-					set ETA to ETA & min & " minute"
-					if min ≠ 1 then
-						set ETA to ETA & "s"
-					end if
-					set ETA to ETA & " remaining)"
-				end try
-			end if
-			delay 0.5
-		end repeat
-	end tell
-	my performCancelDownload()
-	my debug_log("Download completed")
-	if Growl = "1" and GrowlAppName = "GrowlHelperApp.app" then
-		tell application GrowlAppName
-			using terms from application "GrowlHelperApp"
-				notify with name "Ending Download" title "Finished
-" & (item 1 of currentProcessSelectionParam as string) description (item 2 of currentProcessSelectionParam as string) application name "iTiVo"
-			end using terms from
+						set ETA to ETA & " remaining)"
+					end try
+				end if
+				delay 0.5
+			end repeat
 		end tell
-	end if
+		my performCancelDownload()
+		set currentTry to currentTry + 1
+		my debug_log("Download completed")
+		if Growl = "1" and GrowlAppName = "GrowlHelperApp.app" then
+			tell application GrowlAppName
+				using terms from application "GrowlHelperApp"
+					if (my isDownloadComplete(filePath, fullFileSize, currentTry)) then
+						notify with name "Ending Download" title "Finished
+" & (item 1 of currentProcessSelectionParam as string) description (item 2 of currentProcessSelectionParam as string) application name "iTiVo"
+					else
+						notify with name "Ending Download" title "Incomplete Download!
+" & (item 1 of currentProcessSelectionParam as string) description (item 2 of currentProcessSelectionParam as string) application name "iTiVo"
+					end if
+				end using terms from
+			end tell
+		end if
+	end repeat
 	tell window "iTiVo"
 		set contents of text field "status" to "Finished at " & (current date)
 		set contents of text field "status2" to ""
@@ -1434,7 +1439,7 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 		set title of button "ConnectButton" to "Update from TiVo"
 		set enabled of button "CancelDownload" to false
 		my debug_log("Finished Downloading, 85% fullfilesize=" & (0.85 * fullFileSize) & " ;  currentfilesize=" & my getCurrentFilesize(filePath))
-		if cancelDownload = 0 and (my getCurrentFilesize(filePath)) as real > (fullFileSize * 0.85) as real then
+		if cancelDownload = 0 and my isDownloadComplete(filePath, fullFileSize, currentTry) then
 			set historyCheck to first item of currentProcessSelectionParam & "-" & id as string
 			if historyCheck is not in DLHistory then
 				set DLHistory to DLHistory & {historyCheck}
@@ -1879,6 +1884,24 @@ on addSelectionToQueue(currentProcessSelection)
 	update table view "queueListTable" of scroll view "queueList" of view "bottomLeftView" of split view "splitView2" of box "bottomBox" of split view "splitView1" of window "iTiVo"
 end addSelectionToQueue
 
+on isDownloadComplete(filePath, fullFileSize, tryCount)
+	if (my getCurrentFilesize(filePath)) as real < (fullFileSize * (1 - (0.15 * tryCount))) as real then
+		return false
+	else
+		return true
+	end if
+end isDownloadComplete
+
+on debug_log(log_string)
+	if (debug_level ≥ 1) then
+		log log_string
+	end if
+	if (debug_level ≥ 2) then
+		set theLine to (do shell script "date  +'%Y-%m-%d %H:%M:%S'" as string) & " " & log_string
+		do shell script "echo '" & theLine & "' >> ~/iTiVo.log"
+	end if
+end debug_log
+
 on mouse down theObject event theEvent
 	if option key down of theEvent then
 		set cancelAllDownloads to 1
@@ -1908,13 +1931,3 @@ end idle
 on should quit after last window closed theObject
 	return true
 end should quit after last window closed
-
-on debug_log(log_string)
-	if (debug_level = 1) then
-		log log_string
-	else if (debug_level = 2) then
-		log log_string
-		set theLine to (do shell script "date  +'%Y-%m-%d %H:%M:%S'" as string) & " " & log_string
-		do shell script "echo '" & theLine & "' >> ~/iTiVo.log"
-	end if
-end debug_log
