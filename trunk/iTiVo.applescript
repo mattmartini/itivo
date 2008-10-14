@@ -1432,8 +1432,6 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 		set visible of progress indicator "Status" to false
 		tell progress indicator "Status" to increment by -1 * currentProgress
 		set title of button "ConnectButton" to "Update from TiVo"
-		set timeoutCount to 0
-		set currentFileSize to 0
 		set enabled of button "CancelDownload" to false
 		my debug_log("Finished Downloading, 85% fullfilesize=" & (0.85 * fullFileSize) & " ;  currentfilesize=" & my getCurrentFilesize(filePath))
 		if cancelDownload = 0 and (my getCurrentFilesize(filePath)) as real > (fullFileSize * 0.85) as real then
