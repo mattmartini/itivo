@@ -9,11 +9,11 @@
     <description>A MAC interface to your TiVo</description>
     <language>en-us</language>
     <item>
-      <title>iTiVo 1.1</title>
-      <pubDate>10/09/2008 12:00:00</pubDate>
+      <title>iTiVo 1.2</title>
+      <pubDate>10/14/2008 12:00:00</pubDate>
       <enclosure
-      sparkle:version="1.1"
-      url="http://itivo.googlecode.com/files/iTiVo-1.1.zip"
+      sparkle:version="1.2"
+      url="http://itivo.googlecode.com/files/iTiVo-1.2.zip"
       type="application/octet-stream"
      />
       <sparkle:releaseNotesLink>http://itivo.googlecode.com/svn/trunk/www/changelog.html</sparkle:releaseNotesLink>
