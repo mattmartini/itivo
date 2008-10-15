@@ -4,7 +4,7 @@
 --  Created by David Benesch on 12/03/06.
 --  Last updated by Yoav Yerushalmi on 11/09/08.
 --  Copyright 2006-2007 David Benesch. All rights reserved.
-property debug_level : 0
+property debug_level : 1
 property format : 0
 property encodeMode : 0
 property filenameExtension : ".mp4"
@@ -1562,6 +1562,12 @@ on ConnectTiVo()
 				set contents of text field "nowPlaying" of box "topBox" of split view "splitView1" to "Now Playing (1 item)"
 			else
 				set contents of text field "nowPlaying" of box "topBox" of split view "splitView1" to "Now Playing (" & (count of processInfoRecord) & " items)"
+			end if
+			set DLHistoryCount to (count of DLHistory)
+			set ListCount to (count of processInfoRecord)
+			if (DLHistoryCount > ListCount) then
+				set DLHistoryTemp to items (DLHistoryCount - ListCount) thru -1 of DLHistory
+				set DLHistory to DLHistoryTemp
 			end if
 			set content of targetData to processInfoRecord
 			set title of button "ConnectButton" to "Update from TiVo"
