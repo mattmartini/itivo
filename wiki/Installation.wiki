@@ -6,7 +6,7 @@
 
 
 = Running for the first time =
-  # Sign in to [_new http://www.tivo.com/tivo-mma/index.do your tivo account here]
+  # Sign in to [http://www.tivo.com/tivo-mma/index.do your tivo account here]
   # Enable Tivo downloads on [https://www.tivo.com/tivo-mma/dvrpref.do This page]
   # Get your Media Access Key from [https://www.tivo.com/tivo-mma/showmakey.do This page]
   # In iTiVo PRefs, select the Download Format you wish to use (iPhone low-res is fine for viewing on iphone).
