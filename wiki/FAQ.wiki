@@ -1,18 +1,15 @@
 = F.A.Q. =
   # My program crashes / I get 'mencoder' errors.
     iTiVo is actually a front-end for several programs written by multiple people.  Many of these programs are not perfect (and iTiVo has its own bugs).  If you report bugs in the interface above (under Issues), I will hopefully get around to fixing it.  However, it may be related to underlying programs which I have no control over. The short version:  sorry.
-
   # This program is buggy!
     I only have a tivo 3 and an intel iMac running Leopard to test with.  I appreciate bug reports.
-
   # How do I get "The Daily Show" onto my iPhone daily?
     Read the documentation at http://code.google.com/p/itivo/wiki/Subscriptions
-
   # I have questions about my TiVo.
     I'm only responsible for this front-end.  If you have questions about your tivo, I highly recommend going to the tivocommunity forum here: http://tivocommunity.com/tivo-vb/index.php
-
   # I have shows on my TiVo that are not listed on iTiVo!
     Certain shows and certain channels can be marked 'copyrighted'.  Any show marked as such is not available for download from the tivo, and is therefore not listed.
-
   # I chose to download 'no conversion (native MPEG-2)' and Quicktime will not play my video
     While the tivo does indeed store the file as an mpeg-2 file which you download, it turns out that the mpeg2 format the tivo uses is not compatible with quicktime (and many other apple programs).  This is a 'known issue' with quicktime not supporting mpeg2 transport streams.   You can either download http://www.videolan.org/vlc/download-macosx.html and use that to play the file, or else tell iTiVo to convert it into a different format.
+  # Is it supposed to be *this* slow?
+    Over a wired connection, from a TiVo S3, converting to iPhone low-res, I can usually get a 1000 megabyte 30 minute show down in about 20 mins.  Wireless will slow it down somewhat, and the speed of your computer will have an effect too.  If you select a higher quality format, then it will definitely be the speed of your computer that controls the download speed.  If you're seeing it take 'days' though, there is probably a problem with your network connection between the computer and the TiVo.
