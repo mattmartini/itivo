@@ -5,18 +5,12 @@
   # Drag the iTiVo Application to your "Applications" folder
 
 
-= Running for the first time =
+= Configuring your tivo to allow downloads =
   # Sign in to http://www.tivo.com/tivo-mma/index.do (clicking the link will take you away from this page.. so you might want to open it in a new window).  Sign in with your username and password.
   # Select "Change DVR Preferences". Enable Tivo downloads.  (if you are already logged in, you can go straight to [https://www.tivo.com/tivo-mma/dvrpref.do This page] to do the same)
-  # Select "My Account".  Select "View media access key". Get your Media Access Key.  (Again you can get it straight from [https://www.tivo.com/tivo-mma/showmakey.do This page])
-  # In iTiVo PRefs, select the Download Format you wish to use (iPhone low-res is fine for viewing on iphone).
-  # If you wish to have the video automatically put into iTunes, select the box
-  # Connect to your tivo.  If the name does now show up on the top drop-down list, then you will need to select "My TiVos" and type in the IP address of your tivo.
-  # Select a show you wish to download, and hit "Download Show" OR select several shows, hit "Add to Queue" and then "Download Queue".
-  # wait...... (this takes a LONG time, especially if you are using a wireless connection)
 
 = Obtaining the Media Access Key =
-The media access key is a special key that is unique to your tivo account.  It enables you to view the shows on your tivo in multiple locations.  (including TivoToGo).  It is needed to be able to download the shows and decode them on your devices. 
+The media access key is a special key that is unique to your tivo account.  It enables you to view the shows on your tivo in multiple locations.  (including TivoToGo).  It is needed by iTiVo to download shows.  You enter it in the Prefs drawer.
 
   # Sign in to [http://www.tivo.com/tivo-mma/index.do your tivo account]
   # Go to [https://www.tivo.com/tivo-mma/showmakey.do Tivo.Com's Key page].  You will need to already have an account on the website.  If not, follow the appropriate instructions.
