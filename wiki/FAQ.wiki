@@ -12,4 +12,10 @@
   # I chose to download 'no conversion (native MPEG-2)' and Quicktime will not play my video
     While the tivo does indeed store the file as an mpeg-2 file which you download, it turns out that the mpeg2 format the tivo uses is not compatible with quicktime (and many other apple programs).  This is a 'known issue' with quicktime not supporting mpeg2 transport streams.   You can either download http://www.videolan.org/vlc/download-macosx.html and use that to play the file, or else tell iTiVo to convert it into a different format.
   # Is it supposed to be *this* slow?
-    Over a wired connection, from a TiVo S3, converting to iPhone low-res, I can usually get a 1000 megabyte 30 minute show down in about 20 mins.  Wireless will slow it down somewhat, and the speed of your computer will have an effect too.  If you select a higher quality format, then it will definitely be the speed of your computer that controls the download speed.  If you're seeing it take 'days' though, there is probably a problem with your network connection between the computer and the TiVo.
+    Several things affect the speed of the download:
+    # Model of Tivo.  S3 is fastest, then HD then S2.
+    # Size of the original program on the tivo (the more there is to transfer, the slower it will be).
+    # The speed of your computer.  Your CPU is used to convert the movies once they get to the computer.
+    # Format you are converting to.  The high resolution, high quality formats take a lot of processing power from your computer.
+    # The quality of your Tivo->computer network.  Wired 100Mbps will not be fully utilized, but is your best connection.  Wireless will slow it down somewhat.
+    Over a wired connection, from a TiVo S3, converting to iPhone low-res, I can usually get a 1000 megabyte 30 minute show down in about 20 mins. Use those settings as a starting point to see.  If you're seeing MUCH worse times, then something is wrong.
