@@ -1,24 +1,21 @@
 = Installation =
   # Download the zip file containing the application from:
      http://code.google.com/p/itivo/downloads/list
-  # Unzip the file
-  # Copy the iTiVo Application to your "Applications" folder
+  # Unzip the file and open the resulting folder.
+  # Drag the iTiVo Application to your "Applications" folder
 
 
 = Running for the first time =
-  # Get your Media Access Key (see instructions below on retrieveing your MAK) and put it in the appropriate box.
-  # Select the Download Format you wish to use (iPhone med-res is good for viewing on iphone).
+  # Enable Tivo downloads on [https://www.tivo.com/tivo-mma/dvrpref.do This page]
+  # Get your Media Access Key from [https://www.tivo.com/tivo-mma/showmakey.do This page]
+  # Select the Download Format you wish to use (iPhone low-res is fine for viewing on iphone).
   # If you wish to have the video automatically put into iTunes, select the box
   # Connect to your tivo.  If the name does now show up on the top drop-down list, then you will need to select "My TiVos" and type in the IP address of your tivo.
   # Select a show you wish to download, and hit "Download Show" OR select several shows, hit "Add to Queue" and then "Download Queue".
-  # wait...... (this takes a LONG time, especially if you are not connected via a wired connection).
+  # wait...... (this takes a LONG time, especially if you are using a wireless connection)
 
 = Obtaining the Media Access Key =
 The media access key is a special key that is unique to your tivo account.  It enables you to view the shows on your tivo in multiple locations.  (including TivoToGo).  It is needed to be able to download the shows and decode them on your devices. 
 
-  # Go to [http://www.tivo.com tivo.com].
-  # Select "My Tivo".
-  # Select "My Account" (and sign in).
-  # Select "DVR preferences" and make sure you have "enabled video downloads" from that tivo.
-  # Select "My Account" again, and select "view media access key"
-  # Copy down that ten digit number.
+  # Go to [https://www.tivo.com/tivo-mma/showmakey.do Tivo.Com's Key page].  You will need to already have an account on the website.  If not, follow the appropriate instructions.
+  # Copy down that ten digit number.  That is your MAK
