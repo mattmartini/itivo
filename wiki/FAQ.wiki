@@ -9,6 +9,10 @@
     I'm only responsible for this front-end.  If you have questions about your tivo, I highly recommend going to the tivocommunity forum here: http://tivocommunity.com/tivo-vb/index.php
   # I have shows on my TiVo that are not listed on iTiVo!
     Certain shows and certain channels can be marked 'copyrighted'.  Any show marked as such is not available for download from the tivo, and is therefore not listed.
+  # I managed to hide the preferences drawer
+    To unhide the preferences drawer, click the prefs button.
+  # I managed to hide the Show Description drawer
+    To unhide the show description drawer, click the little triangle on the top right of the main window.
   # I chose to download 'no conversion (native MPEG-2)' and Quicktime will not play my video
     While the tivo does indeed store the file as an mpeg-2 file which you download, it turns out that the mpeg2 format the tivo uses is not compatible with quicktime (and many other apple programs).  This is a 'known issue' with quicktime not supporting mpeg2 transport streams.   You can either download http://www.videolan.org/vlc/download-macosx.html and use that to play the file, or else tell iTiVo to convert it into a different format.
   # Is it supposed to be *this* slow?
