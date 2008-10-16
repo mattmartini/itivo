@@ -1,8 +1,9 @@
 = Help =
+iTiVo is a tool that is intended to help you get shows from your TiVo to your computer or to your portable device (such as an iPhone).  It is really just a compilation of tools written by others, combined with a friendly interface to make life simple for you.  It is still under heavy development, so you may notice bugs and new releases often.  Please report bugs under the 'issues' tab above if you can.
 
-This document is a basic "help" documentation.  It is incomplete.
 
-= Meaning of Options =
+
+= What the Buttons/Options Mean =
   * TiVo IP Address
     The IP address to connect to for your tivo.  Only use this if you failed to automatically find your tivo in the "My TiVos" dropdown.
 
@@ -12,30 +13,37 @@ This document is a basic "help" documentation.  It is incomplete.
   * Update from TiVo
     Clicking this button will attempt to connect to your tivo, and download show information.  This goes much faster if you are using a wired instead of wireless connection, and can also be slow if this is an old tivo with a LOT of shows.
 
+=== Now Playing ===
+  This part of the window is dedicated to the shows currently available to download from your tivo.
+
   * Subscribe
     Selecting a show and clicking "subscribe" will add the show to your subscription list.  Read further on subscription lists below.
 
-  * Add to queue
+  * Add to Queue
     Add the show to the download queue for later downloading.  Read below for more info.
 
   * Download show
     Immediately download the selected show.  This is only available if iTiVo is not already busy downloading something.
 
-  * Now Playing
-    Shows what shows are available to download from your tivo.
+=== Download Queue ===
+  This part of the window is a queue of downloads that are scheduled to happen.  Subscriptions automatically add to the queue, and clicking "Add to Queue" above will also add to the queue.  The queue is processed about once an hour as long as the program is running.
 
-  * Remove from queue
+  * Remove
     Delete the selected show from the download queue.
 
-  * Download Queue
+  * Download Now
     Start processing the download queue now.
 
+=== Subscriptions List ===
+  This part of the window is a list of shows you have subscribed to.  Subscribed shows are automatically added to the queue when new episodes appear on the tivo.
+
   * Delete (subscription)
-    Remove the selected subscription from the subscriptions list.
+    Remove the selected subscription from the subscriptions list.  This will only stop the show from being downloaded automatically in the future.  Any shows already on the queue will have to be removed manually.
+
 
 
 = Download Queue =
-The download queue is simply a list of shows scheduled for downloading.  Since the tivo only allows you to download one show at a time, it's sometimes easied to make a list of shows you wanted downloaded, and then have them all go at once while you go out for a while.  The list is processed top-to-bottom.  Although there is no mechanism for moving shows around the list, you can "cheat".  Adding a show already on the queue will push that show to the bottom.  Even if you do not select to 'download queue', if the program has been idle for an hour, it will attempt to download the queue (this is to support subscriptions).
+The download queue is simply a list of shows scheduled for downloading.  Since the tivo only allows you to download one show at a time, it's sometimes easier to make a list of shows you wanted downloaded, and then have them all go at once while you go out for a while.  The list is processed top-to-bottom.  Although there is no mechanism for moving shows around the list, you can "cheat".  Adding a show already on the queue will push that show to the bottom.  Even if you do not select to 'download queue', if the program has been idle for an hour, it will attempt to download the queue (this is to support subscriptions).
 
 = Subscriptions =
 If there is a show you always choose to download from your tivo (daily news for example, or a show you always watch on your iphone) you can 'subscribe' to that show.  When a subscription exists, the iTiVo program checks hourly for shows on that list.  If a new show with that title has become available, it will add it to the queue automatically.  A show only gets added once (so if you cancel, or quit iTiVo, you will need to manually add the show to the queue again if you still want it).
