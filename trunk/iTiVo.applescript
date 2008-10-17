@@ -4,7 +4,7 @@
 --  Created by David Benesch on 12/03/06.
 --  Last updated by Yoav Yerushalmi on 11/09/08.
 --  Copyright 2006-2007 David Benesch. All rights reserved.
-property debug_level : 1
+property debug_level : 2
 property format : 0
 property encodeMode : 0
 property filenameExtension : ".mp4"
@@ -1250,7 +1250,7 @@ on checkProcess()
 end checkProcess
 
 on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
-	my debug_log(" downloadItem  called: " & overrideDLCheck & "," & retryCount)
+	my debug_log("downloadItem called: " & overrideDLCheck & "," & retryCount)
 	tell window "iTiVo"
 		if not (my checkDL()) then
 			return 0
@@ -1283,12 +1283,14 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 		set showNameP to my replace_chars(showName, "/", ":")
 		set showNameCheck to showName & filenameExtension
 		set filePath to (my prepareCommand(DL & showNameP & filenameExtension) as string)
+		my debug_log("downloadItem called 2: " & showName & " : " & filenameExtension)
 		if overrideDLCheck < 1 then
 			if my checkDLFile(showNameCheck) then
 				return 0
 			end if
 		end if
 	end tell
+	my debug_log("downloadItem called 3: " & overrideDLCheck & "," & retryCount)
 	set currentTry to 0
 	my performCancelDownload()
 	try
@@ -1713,11 +1715,8 @@ on checkDL()
 	set HDNameDL to first item of partsDL
 	set AppleScript's text item delimiters to "|"
 	
-	--if HDName ≠ HDNameDL then
 	set DLLocation2 to (HDName & (DL as string)) as POSIX file
-	--else
 	set DLLocation to (DL as POSIX file)
-	--end if
 	
 	tell application "Finder"
 		set DLExists to exists folder (DLLocation as string)
@@ -1744,22 +1743,19 @@ on checkDLFile(showName)
 	set HDNameDL to first item of partsDL
 	set AppleScript's text item delimiters to "|"
 	
-	--if HDName ≠ HDNameDL then
 	set DLLocation2 to (HDName & (DL as string)) as POSIX file
-	--else
 	set DLLocation to (DL as POSIX file)
-	--end if
 	
 	set DFExists to false
 	set DFExists2 to false
 	tell application "Finder"
 		if exists folder (DLLocation as string) then
-			set DFExists to exists file showName in folder DLLocation
+			set DFExists to exists file showName in folder (DLLocation as string)
 		else if exists folder (DLLocation2 as string) then
 			if text 1 thru 1 of (DLLocation2 as string) = ":" then
 				set DLLocation2 to ((text 2 thru -1 of (DLLocation2 as string)) as string)
 			end if
-			set DFExists2 to exists file showName in folder DLLocation2
+			set DFExists2 to exists file showName in folder (DLLocation2 as string)
 		end if
 	end tell
 	
