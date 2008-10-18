@@ -4,6 +4,9 @@ iTiVo is a tool that is intended to help you get shows from your TiVo to your co
 = Installation/Configuration =
 Before you can use iTiVo, you need to install it, tell your TiVo to allow transfers, and tell iTiVo your 'tivo key (MAK)'.  Instructions on how to do all of this are in the [http://code.google.com/p/itivo/wiki/Installation Installation Document].
 
+= Setting the Media Access Key =
+Is documented in the [http://code.google.com/p/itivo/wiki/Installation Installation Document].
+
 = What the Buttons/Options Mean =
   * TiVo IP Address
     The IP address to connect to for your tivo.  Only use this if you failed to automatically find your tivo in the "My TiVos" dropdown.
