@@ -15,3 +15,10 @@ The media access key is a special key that is unique to your tivo account.  It e
   # Sign in to [http://www.tivo.com/tivo-mma/index.do your tivo account]
   # Go to [https://www.tivo.com/tivo-mma/showmakey.do Tivo.Com's Key page].  You will need to already have an account on the website.  If not, follow the appropriate instructions.
   # Copy down that ten digit number.  That is your MAK
+
+An alternative method that can be used is to walk up to your TiVo, and do the following:
+  # Go to the main TiVo menu (hit the TiVo button)
+  # Go to *Messages and Settings*
+  # Select *Account and System Info*
+  # Select *Media Access Key*
+  # Copy down the 10-digit number
