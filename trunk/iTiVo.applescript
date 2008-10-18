@@ -5,6 +5,7 @@
 --  Last updated by Yoav Yerushalmi on 11/09/08.
 --  Copyright 2006-2007 David Benesch. All rights reserved.
 property debug_level : 2
+property already_launched : 0
 property format : 0
 property encodeMode : 0
 property filenameExtension : ".mp4"
@@ -77,14 +78,23 @@ on awake from nib theObject
 end awake from nib
 
 on will open theObject
-	if name of theObject is "iTiVo" then
+	if name of theObject is "iTiVo" and already_launched = 0 then
 		my debug_log("     ================    Starting   ===================")
-		update
 		getTiVos()
 		update
 		readSettings()
+		set already_launched to 1
 	end if
 end will open
+
+on was miniaturized theObject
+	if name of theObject is "iTiVo" then
+		my debug_log("Miniaturizing window")
+		writeSettings()
+		getTiVos()
+		readSettings()
+	end if
+end was miniaturized
 
 on will finish launching theObject
 	set haveOS1040 to minOSVers at 1040
@@ -439,6 +449,7 @@ on getSettingsFromUI()
 end getSettingsFromUI
 
 on writeSettings()
+	my debug_log("write_settings")
 	set coordinate system to AppleScript coordinate system
 	set winBounds to bounds of window "iTiVo"
 	set boxBounds to bounds of box "topBox" of split view "splitView1" of window "iTiVo"
@@ -500,6 +511,8 @@ on getTiVos()
 		set scriptResult to (do shell script theScript)
 		set scriptLineCount to count of paragraphs of scriptResult
 		if scriptLineCount > 2 then
+			delete every menu item of menu of popup button "MyTiVos"
+			make new menu item at the end of menu items of menu of popup button "MyTiVos" with properties {title:"My TiVos", enabled:true}
 			set nameList to paragraphs 4 thru -1 of scriptResult
 			repeat with i in nameList
 				if length of i > 1 then
@@ -1513,7 +1526,12 @@ on ConnectTiVo()
 		set TiVoList to do shell script ShellScriptCommand
 	end tell
 	if TiVoList = "" then
-		display dialog "iTiVo could not communicate with your TiVo.  Pleae make sure your IP address and Media Access Key are correct and try again." buttons {"OK"} default button "OK" attached to window "iTiVo"
+		if (MAK as integer = 0) then
+			display dialog "Your Media Access Key is not set correctly. (Select *Help* from the menu if you don't know how) " buttons {"OK"} default button "OK" attached to window "iTiVo"
+			tell drawer "Drawer" of window "iTiVo" to open drawer on bottom edge
+		else
+			display dialog "iTiVo could not communicate with your TiVo.  Pleae make sure your IP address and Media Access Key are correct and try again." buttons {"OK"} default button "OK" attached to window "iTiVo"
+		end if
 	end if
 	tell window "iTiVo"
 		if TiVoList ≠ "" then
@@ -1933,3 +1951,4 @@ end idle
 on should quit after last window closed theObject
 	return true
 end should quit after last window closed
+
