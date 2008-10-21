@@ -4,7 +4,7 @@
 --  Created by David Benesch on 12/03/06.
 --  Last updated by Yoav Yerushalmi on 11/09/08.
 --  Copyright 2006-2007 David Benesch. All rights reserved.
-property debug_level : 2
+property debug_level : 0
 property already_launched : 0
 property format : 0
 property encodeMode : 0
@@ -1296,14 +1296,12 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 		set showNameP to my replace_chars(showName, "/", ":")
 		set showNameCheck to showName & filenameExtension
 		set filePath to (my prepareCommand(DL & showNameP & filenameExtension) as string)
-		my debug_log("downloadItem called 2: " & showName & " : " & filenameExtension)
-		if overrideDLCheck < 1 then
+		if (overrideDLCheck < 1) then
 			if my checkDLFile(showNameCheck) then
 				return 0
 			end if
 		end if
 	end tell
-	my debug_log("downloadItem called 3: " & overrideDLCheck & "," & retryCount)
 	set currentTry to 0
 	my performCancelDownload()
 	try

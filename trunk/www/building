@@ -1,26 +1,33 @@
-#!/bin/sh
+#!/bin/sh -x
 # get tivodecode, mplayer, libfaac, libx264
-
+#
+# git clone git://git.videolan.org/x264.git
+# 
   mkdir binaries
 
-  cd tivodecode-0.2pre4
   export CFLAGS="-arch i386 -arch ppc"
   export LDFLAGS="-arch i386 -arch ppc"
+  cd tivodecode-0.2pre4
+  make distclean
   ./configure --disable-dependency-tracking
   make
   cp tivodecode ../binaries/tivodecode
 
-   export CFLAGS='-arch i386'
-   export LDFLAGS='-arch i386'
-  cd x264
+   export CFLAGS=''
+   export LDFLAGS=''
+  cd ../x264
   ./configure
+  make clean
   make
 
   cd ../faac
   ./configure --without-mp4v2
-  make libfaac
+  make clean
+  make 
 
   cd ../mplayer
+  make distclean
+  rm ./uname
   ./configure --disable-png --enable-x264 --disable-mplayer --enable-faac --enable-faad-internal --with-extraincdir=/Users/yoav/src/faac/include/:/Users/yoav/src/x264 --with-extralibdir=/Users/yoav/src/faac/libfaac/.libs/:/Users/yoav/src/x264 --extra-libs-mencoder='-lx264 /Users/yoav/src/faac/libfaac/.libs/libfaac.a'
   make
   cp ./mencoder ../binaries/mencoder-i386
@@ -38,6 +45,8 @@
    ./configure --host=ppc-apple-darwin --without-mp4v2
   make
 
+  cd ../mplayer
+  make distclean
   export OPATH=$PATH
   export PATH=.:$PATH
   echo '#!/bin/sh
