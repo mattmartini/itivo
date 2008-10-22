@@ -503,17 +503,17 @@ on setSettingsInUI()
 end setSettingsInUI
 
 on getTiVos()
-	set theScript to "mDNS -B _tivo-videos._tcp local | colrm 1 74& 
+	set theScript to "mDNS -B _tivo-videos._tcp local | colrm 1 74| grep -v 'Instance Name' |sort | uniq & 
 	sleep 2
 	killall mDNS"
 	tell window "iTiVo"
 		my debug_log(theScript)
 		set scriptResult to (do shell script theScript)
 		set scriptLineCount to count of paragraphs of scriptResult
-		if scriptLineCount > 2 then
+		if scriptLineCount > 1 then
 			delete every menu item of menu of popup button "MyTiVos"
 			make new menu item at the end of menu items of menu of popup button "MyTiVos" with properties {title:"My TiVos", enabled:true}
-			set nameList to paragraphs 4 thru -1 of scriptResult
+			set nameList to paragraphs 2 thru -1 of scriptResult
 			repeat with i in nameList
 				if length of i > 1 then
 					make new menu item at the end of menu items of menu of popup button "MyTiVos" with properties {title:i, enabled:true}
