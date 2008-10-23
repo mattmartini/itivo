@@ -28,6 +28,7 @@
 		257572CD072881A4000BE9CA /* AppleScriptKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA206CF1015C4E2903C91932 /* AppleScriptKit.framework */; };
 		5304AD990E4CBDBF00E77CA0 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5304AD980E4CBDBF00E77CA0 /* Sparkle.framework */; };
 		5304ADC30E4CBDFE00E77CA0 /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 5304AD980E4CBDBF00E77CA0 /* Sparkle.framework */; };
+		532226E40EB0698400062D5F /* PrefsPanel.xib in Resources */ = {isa = PBXBuildFile; fileRef = 532226E30EB0698400062D5F /* PrefsPanel.xib */; };
 		53E5328A0E9FBEB300E16E0D /* ParseXML.pl in Resources */ = {isa = PBXBuildFile; fileRef = 53E532890E9FBEB300E16E0D /* ParseXML.pl */; };
 		6100670D0B470D4700E38A87 /* mencoder in Resources */ = {isa = PBXBuildFile; fileRef = 6100670C0B470D4700E38A87 /* mencoder */; };
 		612EF59C0B4459F000ACBBBF /* ParseDetail.pl in Resources */ = {isa = PBXBuildFile; fileRef = 612EF59B0B4459F000ACBBBF /* ParseDetail.pl */; };
@@ -65,6 +66,7 @@
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		5304AD980E4CBDBF00E77CA0 /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Sparkle.framework; sourceTree = "<group>"; };
+		532226E30EB0698400062D5F /* PrefsPanel.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PrefsPanel.xib; sourceTree = "<group>"; };
 		53E532890E9FBEB300E16E0D /* ParseXML.pl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.perl; path = ParseXML.pl; sourceTree = "<group>"; };
 		6100670C0B470D4700E38A87 /* mencoder */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; name = mencoder; path = "External Software/mencoder"; sourceTree = "<group>"; };
 		612EF59B0B4459F000ACBBBF /* ParseDetail.pl */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.script.perl; path = ParseDetail.pl; sourceTree = "<group>"; };
@@ -165,6 +167,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				532226E30EB0698400062D5F /* PrefsPanel.xib */,
 				29B97318FDCFA39411CA2CEA /* MainMenu.nib */,
 				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
 				65359356078DD41800E8BB2F /* AppleScriptKit.sdef */,
@@ -253,6 +256,7 @@
 				61D69A4B0B4C753500D69E4C /* download3.pl in Resources */,
 				6156A9C30B4CA01B000373DF /* killProcesses.pl in Resources */,
 				53E5328A0E9FBEB300E16E0D /* ParseXML.pl in Resources */,
+				532226E40EB0698400062D5F /* PrefsPanel.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
