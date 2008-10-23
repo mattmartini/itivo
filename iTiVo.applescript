@@ -41,6 +41,8 @@ property openDetail : 1
 property DLHistory : {}
 property GrowlAppName : ""
 
+property panelWIndow : missing value
+
 on awake from nib theObject
 	update theObject
 	if name of theObject is "queueListTable" then
@@ -121,7 +123,7 @@ on launched theObject
 	end if
 end launched
 
-on switchDrawer()
+on displayPrefs()
 	tell window "iTiVo"
 		if state of drawer "Drawer" is drawer closed then
 			tell drawer "Drawer" to open drawer on bottom edge
@@ -129,7 +131,27 @@ on switchDrawer()
 			tell drawer "Drawer" to close drawer
 		end if
 	end tell
-end switchDrawer
+	
+	if panelWIndow is equal to missing value then
+		load nib "PrefsPanel"
+		set panelWIndow to window "PrefsPanel"
+	end if
+	
+	-- Set the state of the items in the panel
+	tell panelWIndow
+	end tell
+	--	display panel panelWIndow attached to window "iTiVo"
+end displayPrefs
+
+on panel ended thePanel with result theResult
+	if theResult is 1 then
+		tell thePanel
+			set MAK to contents of text field "MAK"
+		end tell
+		
+	end if
+end panel ended
+
 
 on switchDrawer2()
 	tell window "iTiVo"
@@ -443,7 +465,6 @@ end will quit
 
 on getSettingsFromUI()
 	tell window "iTiVo"
-		set MAK to contents of text field "MAK" of drawer "Drawer"
 		set IPA to contents of text field "IP"
 	end tell
 end getSettingsFromUI
@@ -524,11 +545,13 @@ on getTiVos()
 end getTiVos
 
 on clicked theObject
+	set theObjectName to name of theObject
 	getSettingsFromUI()
 	tell window "iTiVo"
-		set theObjectName to name of theObject
 		if theObjectName = "prefButton" then
-			my switchDrawer()
+			my displayPrefs()
+		else if theObjectName = "PrefsOK" then
+			close panel (window of theObject) with result 1
 		else if theObjectName = "detailButton" then
 			my switchDrawer2()
 		else if theObjectName = "locationButton" then
@@ -994,6 +1017,8 @@ on choose menu item theObject
 		set iTunesIcon to title of theObject
 	else if name of theObject = "Help" then
 		open location "http://code.google.com/p/itivo/wiki/Help"
+	else if name of theObject = "Preferences" then
+		my displayPrefs()
 	else if name of theObject = "format" then
 		tell drawer "Drawer" of window "iTiVo"
 			if title of theObject = "No Conversion (native MPEG-2)" then
