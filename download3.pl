@@ -33,7 +33,7 @@ if ($encodeMode == 0) {
    $vbitrate=800;
    $abitrate=128;
    $width=480;
-   $height=320;
+   $height=360;
    $shellScript3 = $file2 . "Contents/Resources/mencoder -af volume=13:1 -of lavf -lavfopts format=ipod -oac faac -faacopts mpeg=4:object=2:raw:br=$abitrate -ovc x264 -x264encopts nocabac:level_idc=30:bitrate=$vbitrate:threads=auto:bframes=0:global_header -vf pp=lb,scale=$width:$height,harddup -o " . $file3 . $file . $filenameExtension ." ~/.TiVoDLPipe2";
 } elsif ($encodeMode == 3) {
 # iphone low-res
