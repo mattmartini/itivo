@@ -4,22 +4,14 @@
 --  Created by David Benesch on 12/03/06.
 --  Last updated by Yoav Yerushalmi on 11/09/08.
 --  Copyright 2006-2007 David Benesch. All rights reserved.
-property debug_level : 0
+property debug_level : 1
 property already_launched : 0
-property format : 0
-property encodeMode : 0
 property filenameExtension : ".mp4"
 property targetData : missing value
 property targetDataQ : missing value
 property targetDataS : missing value
 property targetDataSList : {}
-property DL : ""
 property IPA : ""
-property MAK : ""
-property iTunes : ""
-property iTunesSync : ""
-property iTunesIcon : ""
-property Growl : ""
 property LaunchCount : 0
 property currentProgress : 0
 property autoConnect : 0
@@ -40,8 +32,18 @@ property customVideoBR : 1800
 property openDetail : 1
 property DLHistory : {}
 property GrowlAppName : ""
+property encodeMode : 0
+
+(* User-controlled properties *)
+property MAK : ""
+property DL : ""
+property iTunes : ""
+property iTunesSync : ""
+property iTunesIcon : ""
+property format : ""
 
 property panelWIndow : missing value
+property currentPrefsTab : "DownloadingTab"
 
 on awake from nib theObject
 	update theObject
@@ -124,33 +126,161 @@ on launched theObject
 end launched
 
 on displayPrefs()
-	tell window "iTiVo"
-		if state of drawer "Drawer" is drawer closed then
-			tell drawer "Drawer" to open drawer on bottom edge
-		else
-			tell drawer "Drawer" to close drawer
-		end if
-	end tell
-	
 	if panelWIndow is equal to missing value then
 		load nib "PrefsPanel"
 		set panelWIndow to window "PrefsPanel"
 	end if
 	
-	-- Set the state of the items in the panel
-	tell panelWIndow
-	end tell
-	--	display panel panelWIndow attached to window "iTiVo"
+	my writeSettings()
+	setupPrefsTab(currentPrefsTab)
+	display panel panelWIndow attached to window "iTiVo"
 end displayPrefs
 
 on panel ended thePanel with result theResult
+	my debug_log("Prefs done, with result " & theResult & "mak " & MAK)
 	if theResult is 1 then
-		tell thePanel
-			set MAK to contents of text field "MAK"
-		end tell
-		
+		my writeSettings()
+	else
+		my readSettings()
 	end if
 end panel ended
+
+on showResSettings()
+	tell view "DownloadingView" of tab view "TopTab" of panelWIndow
+		set visible of text field "customWidth" to true
+		set visible of text field "customHeight" to true
+		set visible of text field "customVideoBR" to true
+		set visible of text field "customAudioBR" to true
+		set visible of text field "title1" to true
+		set visible of text field "title2" to true
+		set visible of text field "title3" to true
+		set visible of text field "title4" to true
+		set visible of text field "title5" to true
+		set visible of text field "title6" to true
+	end tell
+end showResSettings
+
+on hideResSettings()
+	tell view "DownloadingView" of tab view "TopTab" of panelWIndow
+		set visible of text field "customWidth" to false
+		set visible of text field "customHeight" to false
+		set visible of text field "customVideoBR" to false
+		set visible of text field "customAudioBR" to false
+		set visible of text field "title1" to false
+		set visible of text field "title2" to false
+		set visible of text field "title3" to false
+		set visible of text field "title4" to false
+		set visible of text field "title5" to false
+		set visible of text field "title6" to false
+	end tell
+end hideResSettings
+
+
+on formatCompatItunes(formatName)
+	if (formatName = "No Conversion (native MPEG-2)") then
+		return false
+	else if (formatName = "iPod/iPhone high-res") then
+		return true
+	else if (formatName = "iPod/iPhone med-res") then
+		return true
+	else if (formatName = "iPod/iPhone low-res") then
+		return true
+	else if (formatName = "Zune") then
+		return true
+	else if (formatName = "AppleTV") then
+		return true
+	else if (formatName = "PSP") then
+		return false
+	else if (formatName = "PS3") then
+		return false
+	else if (formatName = "Quicktime MPEG-4 (Custom)") then
+		return true
+	else
+		return false
+	end if
+end formatCompatItunes
+
+on setupPrefsTab(tabName)
+	tell panelWIndow
+		if (tabName = "DownloadingTab") then
+			set contents of text field "MAK" of view "DownloadingView" of tab view "TopTab" to MAK
+			set contents of text field "Location" of view "DownloadingView" of tab view "TopTab" to DL
+			set formats to title of every menu item of popup button "format" of view "DownloadingView" of tab view "TopTab"
+			if format is in formats then
+				set title of popup button "format" of view "DownloadingView" of tab view "TopTab" to format
+			else
+				set title of popup button "format" of view "DownloadingView" of tab view "TopTab" to first item of formats
+				set format to title of popup button "format" of view "DownloadingView" of tab view "TopTab"
+			end if
+			if (format = "Quicktime MPEG-4 (Custom)") then
+				my showResSettings()
+			else
+				my hideResSettings()
+			end if
+			set contents of text field "customWidth" of view "DownloadingView" of tab view "TopTab" to customWidth
+			set contents of text field "customHeight" of view "DownloadingView" of tab view "TopTab" to customHeight
+			set contents of text field "customAudioBR" of view "DownloadingView" of tab view "TopTab" to customAudioBR
+			set contents of text field "customVideoBR" of view "DownloadingView" of tab view "TopTab" to customVideoBR
+		else if (tabName = "iTunesTab") then
+			if (my formatCompatItunes(format)) then
+				set enabled of button "iTunes" of view "iTunesView" of tab view "TopTab" to true
+				set enabled of button "iTunesSync" of view "iTunesView" of tab view "TopTab" to true
+				set enabled of popup button "icon" of view "iTunesView" of tab view "TopTab" to true
+			else
+				set enabled of button "iTunes" of view "iTunesView" of tab view "TopTab" to false
+				set enabled of button "iTunesSync" of view "iTunesView" of tab view "TopTab" to false
+				set enabled of popup button "icon" of view "iTunesView" of tab view "TopTab" to false
+			end if
+			set state of button "iTunes" of view "iTunesView" of tab view "TopTab" to iTunes
+			set state of button "iTunesSync" of view "iTunesView" of tab view "TopTab" to iTunesSync
+			set iTunesIcons to title of every menu item of popup button "icon" of view "iTunesView" of tab view "TopTab"
+			if (iTunesIcon is in iTunesIcons) then
+				set title of popup button "icon" of view "iTunesView" of tab view "TopTab" to iTunesIcon
+			else
+				set title of popup button "icon" of view "iTunesView" of tab view "TopTab" to first item of iTunesIcons
+			end if
+		else if (tabName = "ComSkipTab") then
+		else if (tabName = "AdvancedTab") then
+		else
+			my debug_log("Can't setup PrefsTab for " & tabName)
+		end if
+	end tell
+end setupPrefsTab
+
+on recordPrefsTab()
+	tell panelWIndow
+		if (currentPrefsTab = "DownloadingTab") then
+			set MAK to contents of text field "MAK" of view "DownloadingView" of tab view "TopTab"
+			set DL to contents of text field "Location" of view "DownloadingView" of tab view "TopTab"
+			set format to title of popup button "format" of view "DownloadingView" of tab view "TopTab"
+			set customWidth to contents of text field "customWidth" of view "DownloadingView" of tab view "TopTab"
+			set customHeight to contents of text field "customHeight" of view "DownloadingView" of tab view "TopTab"
+			set customAudioBR to contents of text field "customAudioBR" of view "DownloadingView" of tab view "TopTab"
+			set customVideoBR to contents of text field "customVideoBR" of view "DownloadingView" of tab view "TopTab"
+		else if (currentPrefsTab = "iTunesTab") then
+			set iTunes to state of button "iTunes" of view "iTunesView" of tab view "TopTab"
+			set iTunesSync to state of button "iTunesSync" of view "iTunesView" of tab view "TopTab"
+			set iTunesIcon to title of popup button "icon" of view "iTunesView" of tab view "TopTab"
+		else if (currentPrefsTab = "ComSkipTab") then
+		else if (currentPrefsTab = "AdvancedTab") then
+		else
+			my debug_log("What tab are we on?? ")
+			return false
+		end if
+	end tell
+	return true
+end recordPrefsTab
+
+on should select tab view item theObject tab view item tabViewItem
+	my debug_log("should select tab view " & name of tabViewItem & "," & name of theObject)
+	return my recordPrefsTab()
+end should select tab view item
+
+on selected tab view item theObject tab view item tabViewItem
+	my debug_log("selected tab view " & name of tabViewItem)
+	set currentPrefsTab to name of tabViewItem
+	my setupPrefsTab(name of tabViewItem)
+end selected tab view item
 
 
 on switchDrawer2()
@@ -188,7 +318,6 @@ on registerSettings()
 		make new default entry at end of default entries with properties {name:"iTunes", contents:""}
 		make new default entry at end of default entries with properties {name:"iTunesSync", contents:""}
 		make new default entry at end of default entries with properties {name:"iTunesIcon", contents:""}
-		make new default entry at end of default entries with properties {name:"Growl", contents:""}
 		make new default entry at end of default entries with properties {name:"customWidth", contents:""}
 		make new default entry at end of default entries with properties {name:"customHeight", contents:""}
 		make new default entry at end of default entries with properties {name:"customAudioBR", contents:""}
@@ -202,6 +331,7 @@ on registerSettings()
 end registerSettings
 
 on readSettings()
+	my debug_log("read settings")
 	tell user defaults
 		try
 			set PrefVersion to contents of default entry "PrefVersion"
@@ -228,7 +358,6 @@ on readSettings()
 			set iTunes to contents of default entry "iTunes"
 			set iTunesSync to contents of default entry "iTunesSync"
 			set iTunesIcon to contents of default entry "iTunesIcon"
-			set Growl to contents of default entry "Growl"
 			set customWidth to contents of default entry "customWidth"
 			set customHeight to contents of default entry "customHeight"
 			set customAudioBR to contents of default entry "customAudioBR"
@@ -265,24 +394,8 @@ on readSettings()
 		tell application "Finder" to set GrowlAppName to name of application file id "com.Growl.GrowlHelperApp"
 	end try
 	if GrowlAppName = "GrowlHelperApp.app" then
-		set state of button "Growl" of drawer "Drawer" of window "iTiVo" to Growl
-		if Growl as integer = 1 then
-			my registerGrowl()
-		end if
-	else
-		set enabled of button "Growl" of drawer "Drawer" of window "iTiVo" to false
+		my registerGrowl()
 	end if
-	tell drawer "Drawer" of window "iTiVo"
-		set state of button "iTunes" to 0
-		set enabled of button "iTunes" to false
-		set state of button "iTunesSync" to 0
-		set enabled of button "iTunesSync" to false
-		set enabled of popup button "icon" to false
-	end tell
-	set contents of text field "customWidth" of drawer "Drawer" of window "iTiVo" to customWidth
-	set contents of text field "customHeight" of drawer "Drawer" of window "iTiVo" to customHeight
-	set contents of text field "customAudioBR" of drawer "Drawer" of window "iTiVo" to customAudioBR
-	set contents of text field "customVideoBR" of drawer "Drawer" of window "iTiVo" to customVideoBR
 	if CLeft > 0 then
 		set coordinate system to AppleScript coordinate system
 		set bounds of window "iTiVo" to {CLeft, CTop, CRight, CBottom}
@@ -296,135 +409,7 @@ on readSettings()
 		set tempBounds to bounds of box "topBox" of split view "splitView1" of window "iTiVo"
 		set bounds of box "topBox" of split view "splitView1" of window "iTiVo" to {first item of tempBounds, second item of tempBounds, third item of tempBounds, BBottom}
 	end if
-	set formats to title of every menu item of popup button "format" of drawer "Drawer" of window "iTiVo"
-	set iTunesIcons to title of every menu item of popup button "icon" of drawer "Drawer" of window "iTiVo"
-	set state of button "iTunes" of drawer "Drawer" of window "iTiVo" to iTunes
-	set state of button "iTunesSync" of drawer "Drawer" of window "iTiVo" to iTunesSync
-	if iTunesIcon is in iTunesIcons then
-		set title of popup button "icon" of drawer "Drawer" of window "iTiVo" to iTunesIcon
-	end if
 	my debug_log("using format : " & format)
-	if format is in formats then
-		set title of popup button "format" of drawer "Drawer" of window "iTiVo" to format
-		tell drawer "Drawer" of window "iTiVo"
-			if format = "No Conversion (native MPEG-2)" then
-				set encodeMode to 0
-				set filenameExtension to ".mpg"
-				set state of button "iTunes" to 0
-				set enabled of button "iTunes" to false
-				set state of button "iTunesSync" to 0
-				set enabled of button "iTunesSync" to false
-				set enabled of popup button "icon" to false
-			else if format = "iPod/iPhone high-res" then
-				set encodeMode to 1
-				set filenameExtension to ".mp4"
-				set enabled of button "iTunes" to true
-				if iTunes > 0 then
-					set enabled of popup button "icon" to true
-					set state of button "iTunes" to on state
-					set enabled of button "iTunesSync" to true
-					if iTunesSync > 0 then
-						set state of button "iTunesSync" to on state
-					end if
-				else
-					set enabled of popup button "icon" to false
-					set enabled of button "iTunesSync" to false
-				end if
-			else if format = "iPod/iPhone med-res" then
-				set encodeMode to 2
-				set filenameExtension to ".mp4"
-				set enabled of button "iTunes" to true
-				if iTunes > 0 then
-					set enabled of popup button "icon" to true
-					set state of button "iTunes" to on state
-					set enabled of button "iTunesSync" to true
-					if iTunesSync > 0 then
-						set state of button "iTunesSync" to on state
-					end if
-				else
-					set enabled of popup button "icon" to false
-					set enabled of button "iTunesSync" to false
-				end if
-			else if format = "iPod/iPhone low-res" then
-				set encodeMode to 3
-				set filenameExtension to ".mp4"
-				set enabled of button "iTunes" to true
-				if iTunes > 0 then
-					set enabled of popup button "icon" to true
-					set state of button "iTunes" to on state
-					set enabled of button "iTunesSync" to true
-					if iTunesSync > 0 then
-						set state of button "iTunesSync" to on state
-					end if
-				else
-					set enabled of popup button "icon" to false
-					set enabled of button "iTunesSync" to false
-				end if
-			else if format = "Zune" then
-				set encodeMode to 4
-				set filenameExtension to ".mp4"
-				set enabled of button "iTunes" to true
-				if iTunes > 0 then
-					set enabled of popup button "icon" to true
-					set state of button "iTunes" to on state
-					set enabled of button "iTunesSync" to true
-					if iTunesSync > 0 then
-						set state of button "iTunesSync" to on state
-					end if
-				else
-					set enabled of button "iTunesSync" to false
-					set enabled of popup button "icon" to false
-				end if
-			else if format = "AppleTV" then
-				set encodeMode to 5
-				set filenameExtension to ".mp4"
-				set enabled of button "iTunes" to true
-				if iTunes > 0 then
-					set enabled of popup button "icon" to true
-					set state of button "iTunes" to on state
-					set enabled of button "iTunesSync" to true
-					if iTunesSync > 0 then
-						set state of button "iTunesSync" to on state
-					end if
-				else
-					set enabled of popup button "icon" to false
-					set enabled of button "iTunesSync" to false
-				end if
-			else if format = "PSP" then
-				set encodeMode to 6
-				set filenameExtension to ".mp4"
-				set state of button "iTunes" to 0
-				set enabled of button "iTunes" to false
-				set state of button "iTunesSync" to 0
-				set enabled of button "iTunesSync" to fals
-				set enabled of popup button "icon" to false
-			else if format = "PS3" then
-				set encodeMode to 7
-				set filenameExtension to ".mp4"
-				set state of button "iTunes" to 0
-				set enabled of button "iTunes" to false
-				set state of button "iTunesSync" to 0
-				set enabled of button "iTunesSync" to fals
-				set enabled of popup button "icon" to false
-			else if format = "Quicktime MPEG-4 (Custom)" then
-				set encodeMode to 8
-				set filenameExtension to ".mp4"
-				set enabled of button "iTunes" to true
-				if iTunes > 0 then
-					set enabled of popup button "icon" to true
-					set state of button "iTunes" to on state
-					set enabled of button "iTunesSync" to true
-					if iTunesSync > 0 then
-						set state of button "iTunesSync" to on state
-					end if
-				else
-					set enabled of popup button "icon" to false
-					set enabled of button "iTunesSync" to false
-				end if
-				my showSettings()
-			end if
-		end tell
-	end if
 	set TiVos to title of every menu item of popup button "MyTiVos" of window "iTiVo"
 	if TiVo is in TiVos then
 		if TiVo ≠ "My TiVos" then
@@ -453,7 +438,7 @@ killall mDNS"
 		set DL to myHomePathP & "Desktop/" as string
 	end if
 	if MAK is not greater than 0 or DL = "" then
-		tell drawer "Drawer" of window "iTiVo" to open drawer on bottom edge
+		my displayPrefs()
 	end if
 end readSettings
 
@@ -470,7 +455,7 @@ on getSettingsFromUI()
 end getSettingsFromUI
 
 on writeSettings()
-	my debug_log("write_settings")
+	my debug_log("write_settings ")
 	set coordinate system to AppleScript coordinate system
 	set winBounds to bounds of window "iTiVo"
 	set boxBounds to bounds of box "topBox" of split view "splitView1" of window "iTiVo"
@@ -480,7 +465,6 @@ on writeSettings()
 	set Col5 to (width of table column "DateVal" of table view "ShowListTable" of scroll view "ShowList" of box "topBox" of split view "splitView1" of window "iTiVo")
 	set Col6 to (width of table column "SizeVal" of table view "ShowListTable" of scroll view "ShowList" of box "topBox" of split view "splitView1" of window "iTiVo")
 	set TiVo to title of current menu item of popup button "MyTiVos" of window "iTiVo"
-	set format to title of current menu item of popup button "format" of drawer "Drawer" of window "iTiVo"
 	set targetDataSList to content of targetDataS
 	
 	tell user defaults
@@ -504,7 +488,6 @@ on writeSettings()
 		set contents of default entry "iTunes" to iTunes as string
 		set contents of default entry "iTunesSync" to iTunesSync as string
 		set contents of default entry "iTunesIcon" to iTunesIcon as string
-		set contents of default entry "Growl" to Growl as string
 		set contents of default entry "customWidth" to customWidth as string
 		set contents of default entry "customHeight" to customHeight as string
 		set contents of default entry "customVideoBR" to customVideoBR as string
@@ -518,15 +501,13 @@ end writeSettings
 on setSettingsInUI()
 	tell window "iTiVo"
 		set contents of text field "IP" to IPA
-		set contents of text field "MAK" of drawer "Drawer" to MAK
-		set contents of text field "Location" of drawer "Drawer" to DL
 	end tell
 end setSettingsInUI
 
 on getTiVos()
 	set theScript to "mDNS -B _tivo-videos._tcp local | colrm 1 74| grep -v 'Instance Name' |sort | uniq & 
-	sleep 2
-	killall mDNS"
+sleep 2
+killall mDNS"
 	tell window "iTiVo"
 		my debug_log(theScript)
 		set scriptResult to (do shell script theScript)
@@ -551,12 +532,17 @@ on clicked theObject
 		if theObjectName = "prefButton" then
 			my displayPrefs()
 		else if theObjectName = "PrefsOK" then
+			my recordPrefsTab()
 			close panel (window of theObject) with result 1
+		else if theObjectName = "PrefsCancel" then
+			close panel (window of theObject) with result 0
 		else if theObjectName = "detailButton" then
 			my switchDrawer2()
 		else if theObjectName = "locationButton" then
 			set DL to POSIX path of (choose folder)
-			set contents of text field "Location" of drawer "Drawer" to DL
+			tell panelWIndow
+				set contents of text field "Location" of view "DownloadingView" of tab view "TopTab" to DL
+			end tell
 		else if theObjectName = "CancelDownload" then
 			set cancelDownload to 1
 			set enabled of button "CancelDownload" to false
@@ -665,7 +651,6 @@ on clicked theObject
 			my debug_log("starting queue download...")
 			set enabled of button "DownloadButton" of box "topBox" of split view "splitView1" to false
 			set enabled of button "decodeQueue" of view "bottomLeftView" of split view "splitView2" of box "bottomBox" of split view "splitView1" to false
-			set enabled of button "format" of drawer "Drawer" to false
 			set enabled of button "connectButton" to false
 			set cancelAllDownloads to 0
 			set success to 0
@@ -726,7 +711,6 @@ on clicked theObject
 				set currentProcessSelectionQ to {}
 				set content of targetDataQ to currentProcessSelectionQ
 			end if
-			set enabled of button "format" of drawer "Drawer" to true
 			set enabled of button "connectButton" to true
 			if (count of (selected data rows of table view "ShowListTable" of scroll view "ShowList" of box "topBox" of split view "splitView1")) = 1 then
 				set enabled of button "DownloadButton" of box "topBox" of split view "splitView1" to true
@@ -737,7 +721,6 @@ on clicked theObject
 			try
 				set enabled of button "DownloadButton" of box "topBox" of split view "splitView1" to false
 				set enabled of button "decodeQueue" of view "bottomLeftView" of split view "splitView2" of box "bottomBox" of split view "splitView1" to false
-				set enabled of button "format" of drawer "Drawer" to false
 				set enabled of button "connectButton" to false
 				set currentProcessSelection to {}
 				set currentProcessSelectionTEMP to (selected data rows of table view "ShowListTable" of scroll view "ShowList" of box "topBox" of split view "splitView1")
@@ -770,24 +753,16 @@ on clicked theObject
 					set enabled of button "decodeQueue" of view "bottomLeftView" of split view "splitView2" of box "bottomBox" of split view "splitView1" to true
 				end if
 				set enabled of button "queueButton" of box "topBox" of split view "splitView1" to true
-				set enabled of button "format" of drawer "Drawer" to true
 				set enabled of button "connectButton" to true
 			end try
 		else if theObjectName = "iTunes" then
 			set iTunes to state of theObject
 			if iTunes > 0 then
-				set enabled of button "iTunesSync" of drawer "Drawer" to true
-				set enabled of popup button "icon" of drawer "Drawer" to true
+				set enabled of button "iTunesSync" of view "iTunesView" of tab view "TopTab" of panelWIndow to true
+				set enabled of popup button "icon" of view "iTunesView" of tab view "TopTab" of panelWIndow to true
 			else
-				set enabled of button "iTunesSync" of drawer "Drawer" to false
-				set enabled of popup button "icon" of drawer "Drawer" to false
-			end if
-		else if theObjectName = "iTunesSync" then
-			set iTunesSync to state of theObject
-		else if theObjectName = "Growl" then
-			set Growl to state of theObject
-			if Growl as integer = 1 then
-				my registerGrowl()
+				set enabled of button "iTunesSync" of view "iTunesView" of tab view "TopTab" of panelWIndow to false
+				set enabled of popup button "icon" of view "iTunesView" of tab view "TopTab" of panelWIndow to false
 			end if
 		end if
 	end tell
@@ -1013,153 +988,16 @@ on column clicked theObject table column tableColumn
 end column clicked
 
 on choose menu item theObject
-	if name of theObject = "icon" then
-		set iTunesIcon to title of theObject
-	else if name of theObject = "Help" then
+	if name of theObject = "Help" then
 		open location "http://code.google.com/p/itivo/wiki/Help"
 	else if name of theObject = "Preferences" then
 		my displayPrefs()
 	else if name of theObject = "format" then
-		tell drawer "Drawer" of window "iTiVo"
-			if title of theObject = "No Conversion (native MPEG-2)" then
-				set encodeMode to 0
-				set filenameExtension to ".mpg"
-				set state of button "iTunes" to 0
-				set enabled of button "iTunes" to false
-				set state of button "iTunesSync" to 0
-				set enabled of button "iTunesSync" to false
-				set enabled of popup button "icon" to false
-				my hideSettings()
-			else if title of theObject = "iPod/iPhone high-res" then
-				set encodeMode to 1
-				set filenameExtension to ".mp4"
-				set enabled of button "iTunes" to true
-				if iTunes > 0 then
-					set enabled of button "iTunesSync" to true
-					set enabled of popup button "icon" to true
-				else
-					set enabled of button "iTunesSync" to false
-					set enabled of popup button "icon" to false
-				end if
-				my hideSettings()
-				if iTunes > 0 then
-					set state of button "iTunes" to iTunes
-					if iTunesSync > 0 then
-						set state of button "iTunesSync" to iTunesSync
-					end if
-				end if
-			else if title of theObject = "iPod/iPhone med-res" then
-				set encodeMode to 2
-				set filenameExtension to ".mp4"
-				set enabled of button "iTunes" to true
-				if iTunes > 0 then
-					set enabled of popup button "icon" to true
-					set enabled of button "iTunesSync" to true
-				else
-					set enabled of button "iTunesSync" to false
-					set enabled of popup button "icon" to false
-				end if
-				my hideSettings()
-				if iTunes > 0 then
-					set state of button "iTunes" to iTunes
-					if iTunesSync > 0 then
-						set state of button "iTunesSync" to iTunesSync
-					end if
-				end if
-			else if title of theObject = "iPod/iPhone low-res" then
-				set encodeMode to 3
-				set enabled of button "iTunes" to true
-				set filenameExtension to ".mp4"
-				if iTunes > 0 then
-					set enabled of popup button "icon" to true
-					set enabled of button "iTunesSync" to true
-				else
-					set enabled of button "iTunesSync" to false
-					set enabled of popup button "icon" to false
-				end if
-				my hideSettings()
-				if iTunes > 0 then
-					set state of button "iTunes" to iTunes
-					if iTunesSync > 0 then
-						set state of button "iTunesSync" to iTunesSync
-					end if
-				end if
-			else if title of theObject = "Zune" then
-				set encodeMode to 4
-				set filenameExtension to ".mp4"
-				set enabled of button "iTunes" to true
-				if iTunes > 0 then
-					set enabled of popup button "icon" to true
-					set enabled of button "iTunesSync" to true
-				else
-					set enabled of button "iTunesSync" to false
-					set enabled of popup button "icon" to false
-				end if
-				my hideSettings()
-				if iTunes > 0 then
-					if iTunesSync > 0 then
-						set state of button "iTunesSync" to iTunesSync
-					end if
-					set state of button "iTunes" to iTunes
-				end if
-			else if title of theObject = "AppleTV" then
-				set encodeMode to 5
-				set enabled of button "iTunes" to true
-				set filenameExtension to ".mp4"
-				if iTunes > 0 then
-					set enabled of popup button "icon" to true
-					set enabled of button "iTunesSync" to true
-				else
-					set enabled of button "iTunesSync" to false
-					set enabled of popup button "icon" to false
-				end if
-				my hideSettings()
-				if iTunes > 0 then
-					set state of button "iTunes" to iTunes
-					if iTunesSync > 0 then
-						set state of button "iTunesSync" to iTunesSync
-					end if
-				end if
-			else if title of theObject = "PSP" then
-				set encodeMode to 6
-				set filenameExtension to ".mp4"
-				set enabled of button "iTunes" to true
-				set state of button "iTunes" to 0
-				set enabled of button "iTunes" to false
-				set state of button "iTunesSync" to 0
-				set enabled of button "iTunesSync" to false
-				set enabled of popup button "icon" to false
-				my hideSettings()
-			else if title of theObject = "PS3" then
-				set encodeMode to 7
-				set filenameExtension to ".mp4"
-				set enabled of button "iTunes" to true
-				set state of button "iTunes" to 0
-				set enabled of button "iTunes" to false
-				set state of button "iTunesSync" to 0
-				set enabled of button "iTunesSync" to false
-				set enabled of popup button "icon" to false
-				my hideSettings()
-			else if title of theObject = "Quicktime MPEG-4 (Custom)" then
-				set encodeMode to 8
-				set filenameExtension to ".mp4"
-				set enabled of button "iTunes" to true
-				if iTunes > 0 then
-					set enabled of popup button "icon" to true
-					set enabled of button "iTunesSync" to true
-				else
-					set enabled of button "iTunesSync" to false
-					set enabled of popup button "icon" to false
-				end if
-				my showSettings()
-				if iTunes > 0 then
-					set state of button "iTunes" to iTunes
-					if iTunesSync > 0 then
-						set state of button "iTunesSync" to iTunesSync
-					end if
-				end if
-			end if
-		end tell
+		if (title of popup button "format" of view "DownloadingView" of tab view "TopTab" of panelWIndow = "Quicktime MPEG-4 (Custom)") then
+			my showResSettings()
+		else
+			my hideResSettings()
+		end if
 	else if name of theObject = "MyTiVos" and not title of theObject = "My TiVos" then
 		if title of theObject ≠ "My TiVos" then
 			tell window "iTiVo"
@@ -1208,12 +1046,6 @@ on changed theObject
 			set customVideoBR to content of theObject as integer
 		on error
 			set content of theObject to customVideoBR
-		end try
-	else if name of theObject = "MAK" then
-		try
-			set MAK to content of theObject as double integer
-		on error
-			set content of theObject to MAK
 		end try
 	else if name of theObject = "IP" then
 		set title of popup button "MyTiVos" of window "iTiVo" to "My TiVos"
@@ -1329,6 +1161,38 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 	end tell
 	set currentTry to 0
 	my performCancelDownload()
+	if format = "No Conversion (native MPEG-2)" then
+		set encodeMode to 0
+		set filenameExtension to ".mpg"
+	else if format = "iPod/iPhone high-res" then
+		set encodeMode to 1
+		set filenameExtension to ".mp4"
+	else if format = "iPod/iPhone med-res" then
+		set encodeMode to 2
+		set filenameExtension to ".mp4"
+	else if format = "iPod/iPhone low-res" then
+		set encodeMode to 3
+		set filenameExtension to ".mp4"
+	else if format = "Zune" then
+		set encodeMode to 4
+		set filenameExtension to ".mp4"
+	else if format = "AppleTV" then
+		set encodeMode to 5
+		set filenameExtension to ".mp4"
+	else if format = "PSP" then
+		set encodeMode to 6
+		set filenameExtension to ".mp4"
+	else if format = "PS3" then
+		set encodeMode to 7
+		set filenameExtension to ".mp4"
+	else if format = "Quicktime MPEG-4 (Custom)" then
+		set encodeMode to 8
+		set filenameExtension to ".mp4"
+	else
+		set format to "No Conversion (native MPEG-2)"
+		set encodeMode to 0
+		set filenameExtension to ".mpg"
+	end if
 	try
 		do shell script "rm ~/.TiVoDL"
 	end try
@@ -1368,7 +1232,7 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 				set downloadExists to 0
 			end if
 		end tell
-		if Growl = "1" and GrowlAppName = "GrowlHelperApp.app" then
+		if GrowlAppName = "GrowlHelperApp.app" then
 			my debug_log("Informing via Growl")
 			tell application GrowlAppName
 				using terms from application "GrowlHelperApp"
@@ -1455,7 +1319,7 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 		my performCancelDownload()
 		set currentTry to currentTry + 1
 		my debug_log("Download completed")
-		if Growl = "1" and GrowlAppName = "GrowlHelperApp.app" then
+		if GrowlAppName = "GrowlHelperApp.app" then
 			tell application GrowlAppName
 				using terms from application "GrowlHelperApp"
 					if (my isDownloadComplete(filePath, fullFileSize, currentTry)) then
@@ -1549,11 +1413,11 @@ on ConnectTiVo()
 		set TiVoList to do shell script ShellScriptCommand
 	end tell
 	if TiVoList = "" then
-		if (MAK as integer = 0) then
+		if (MAK < 1) then
 			display dialog "Your Media Access Key is not set correctly. (Select *Help* from the menu if you don't know how) " buttons {"OK"} default button "OK" attached to window "iTiVo"
-			tell drawer "Drawer" of window "iTiVo" to open drawer on bottom edge
+			my displayPrefs()
 		else
-			display dialog "iTiVo could not communicate with your TiVo.  Pleae make sure your IP address and Media Access Key are correct and try again." buttons {"OK"} default button "OK" attached to window "iTiVo"
+			display dialog "iTiVo could not communicate with your TiVo.  Please make sure your IP address and Media Access Key are correct (check your Prefs) and try again." buttons {"OK"} default button "OK" attached to window "iTiVo"
 		end if
 	end if
 	tell window "iTiVo"
@@ -1701,37 +1565,6 @@ on post_process_item(this_item, show_name, episodeName, file_description, episod
 	set contents of text field "status" of window "iTiVo" to "Download of " & show_name & " completed at " & (current date)
 end post_process_item
 
-on showSettings()
-	tell drawer "Drawer" of window "iTiVo"
-		set visible of text field "customWidth" to true
-		set visible of text field "customHeight" to true
-		set visible of text field "customVideoBR" to true
-		set visible of text field "customAudioBR" to true
-		set visible of text field "title1" to true
-		set visible of text field "title2" to true
-		set visible of text field "title3" to true
-		set visible of text field "title4" to true
-		set visible of text field "title5" to true
-		set visible of text field "title6" to true
-	end tell
-end showSettings
-
-on hideSettings()
-	tell drawer "Drawer" of window "iTiVo"
-		set visible of text field "customWidth" to false
-		set visible of text field "customHeight" to false
-		set visible of text field "customVideoBR" to false
-		set visible of text field "customAudioBR" to false
-		set visible of text field "title1" to false
-		set visible of text field "title2" to false
-		set visible of text field "title3" to false
-		set visible of text field "title4" to false
-		set visible of text field "title5" to false
-		set visible of text field "title6" to false
-	end tell
-end hideSettings
-
-
 on performCancelDownload()
 	set myPath to my prepareCommand(POSIX path of (path to me))
 	do shell script "perl " & myPath & "Contents/Resources/killProcesses.pl ;exit 0"
@@ -1766,9 +1599,7 @@ on checkDL()
 	
 	if not DLExists and not DLExists2 then
 		display dialog "Your download location is not valid.  Please select a valid location." attached to window "iTiVo"
-		--set DL to ""
-		--set contents of text field "Location" of drawer "Drawer" of window "iTiVo" to DL
-		tell drawer "Drawer" of window "iTiVo" to open drawer on bottom edge
+		my displayPrefs()
 		return false
 	else
 		return true
@@ -1955,7 +1786,7 @@ end mouse down
 
 on idle
 	if (installedIdleHandler = 0) then
-		set installedIdleHandler to 3600
+		set installedIdleHandler to 900
 		return installedIdleHandler
 	end if
 	if enabled of button "ConnectButton" of window "iTiVo" is true then
