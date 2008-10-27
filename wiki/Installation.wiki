@@ -8,10 +8,12 @@
 
 = Configuring your tivo to allow downloads =
   # Sign in to http://www.tivo.com/tivo-mma/index.do (clicking the link will take you away from this page.. so you might want to open it in a new window).  Sign in with your username and password.
-  # Select "Change DVR Preferences". Enable Tivo downloads.  (if you are already logged in, you can go straight to [https://www.tivo.com/tivo-mma/dvrpref.do This page] to do the same)
+  # Select "Change DVR Preferences". Enable Tivo downloads.  (if you are already logged in, you can go straight to [https://www.tivo.com/tivo-mma/dvrpref.do This page] to do the same).
+  # Save your settings.
+  # You may need to force a daily update or wait overnight for these settings to take effect.
 
-= Obtaining the Media Access Key =
-The media access key is a special key that is unique to your tivo account.  It enables you to view the shows on your tivo in multiple locations.  (including TivoToGo).  It is needed by iTiVo to download shows.  You enter it in the Prefs drawer.
+= Obtaining the Media Access Key (MAK) =
+The media access key is a special key that is unique to your tivo account.  It enables you to view the shows on your tivo in multiple locations.  (including TivoToGo).  It is needed by iTiVo to download shows.  You enter it in the Prefs settings.
 
   # Sign in to [http://www.tivo.com/tivo-mma/index.do your tivo account]
   # Go to [https://www.tivo.com/tivo-mma/showmakey.do Tivo.Com's Key page].  You will need to already have an account on the website.  If not, follow the appropriate instructions.
