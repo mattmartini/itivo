@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 
-$file = `echo ~/.TiVoDL`;
+$file = "/tmp/iTiVoDL-$ENV{'USER'}";
 open (CURLFILE, $file);
 
 $line = "";

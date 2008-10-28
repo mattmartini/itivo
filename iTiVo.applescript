@@ -33,6 +33,7 @@ property openDetail : 1
 property DLHistory : {}
 property GrowlAppName : ""
 property encodeMode : 0
+property UserName : ""
 
 (* User-controlled properties *)
 property MAK : ""
@@ -88,6 +89,7 @@ on will open theObject
 		update
 		readSettings()
 		set already_launched to 1
+		set UserName to do shell script "whoami"
 	end if
 end will open
 
@@ -221,23 +223,31 @@ on setupPrefsTab(tabName)
 			set contents of text field "customHeight" of view "DownloadingView" of tab view "TopTab" to customHeight
 			set contents of text field "customAudioBR" of view "DownloadingView" of tab view "TopTab" to customAudioBR
 			set contents of text field "customVideoBR" of view "DownloadingView" of tab view "TopTab" to customVideoBR
-		else if (tabName = "iTunesTab") then
+			
 			if (my formatCompatItunes(format)) then
-				set enabled of button "iTunes" of view "iTunesView" of tab view "TopTab" to true
-				set enabled of button "iTunesSync" of view "iTunesView" of tab view "TopTab" to true
-				set enabled of popup button "icon" of view "iTunesView" of tab view "TopTab" to true
+				set enabled of button "iTunes" of view "DownloadingView" of tab view "TopTab" to true
+				set enabled of button "iTunesSync" of view "DownloadingView" of tab view "TopTab" to true
+				set enabled of popup button "icon" of view "DownloadingView" of tab view "TopTab" to true
 			else
-				set enabled of button "iTunes" of view "iTunesView" of tab view "TopTab" to false
-				set enabled of button "iTunesSync" of view "iTunesView" of tab view "TopTab" to false
-				set enabled of popup button "icon" of view "iTunesView" of tab view "TopTab" to false
+				set enabled of button "iTunes" of view "DownloadingView" of tab view "TopTab" to false
+				set enabled of button "iTunesSync" of view "DownloadingView" of tab view "TopTab" to false
+				set enabled of popup button "icon" of view "DownloadingView" of tab view "TopTab" to false
 			end if
-			set state of button "iTunes" of view "iTunesView" of tab view "TopTab" to iTunes
-			set state of button "iTunesSync" of view "iTunesView" of tab view "TopTab" to iTunesSync
-			set iTunesIcons to title of every menu item of popup button "icon" of view "iTunesView" of tab view "TopTab"
-			if (iTunesIcon is in iTunesIcons) then
-				set title of popup button "icon" of view "iTunesView" of tab view "TopTab" to iTunesIcon
+			set state of button "iTunes" of view "DownloadingView" of tab view "TopTab" to iTunes
+			if iTunes > 0 then
+				set enabled of button "iTunesSync" of view "DownloadingView" of tab view "TopTab" of panelWIndow to true
+				set enabled of popup button "icon" of view "DownloadingView" of tab view "TopTab" of panelWIndow to true
 			else
-				set title of popup button "icon" of view "iTunesView" of tab view "TopTab" to first item of iTunesIcons
+				set enabled of button "iTunesSync" of view "DownloadingView" of tab view "TopTab" of panelWIndow to false
+				set iTunesSync to false
+				set enabled of popup button "icon" of view "DownloadingView" of tab view "TopTab" of panelWIndow to false
+			end if
+			set state of button "iTunesSync" of view "DownloadingView" of tab view "TopTab" to iTunesSync
+			set iTunesIcons to title of every menu item of popup button "icon" of view "DownloadingView" of tab view "TopTab"
+			if (iTunesIcon is in iTunesIcons) then
+				set title of popup button "icon" of view "DownloadingView" of tab view "TopTab" to iTunesIcon
+			else
+				set title of popup button "icon" of view "DownloadingView" of tab view "TopTab" to first item of iTunesIcons
 			end if
 		else if (tabName = "ComSkipTab") then
 		else if (tabName = "AdvancedTab") then
@@ -257,10 +267,9 @@ on recordPrefsTab()
 			set customHeight to contents of text field "customHeight" of view "DownloadingView" of tab view "TopTab"
 			set customAudioBR to contents of text field "customAudioBR" of view "DownloadingView" of tab view "TopTab"
 			set customVideoBR to contents of text field "customVideoBR" of view "DownloadingView" of tab view "TopTab"
-		else if (currentPrefsTab = "iTunesTab") then
-			set iTunes to state of button "iTunes" of view "iTunesView" of tab view "TopTab"
-			set iTunesSync to state of button "iTunesSync" of view "iTunesView" of tab view "TopTab"
-			set iTunesIcon to title of popup button "icon" of view "iTunesView" of tab view "TopTab"
+			set iTunes to state of button "iTunes" of view "DownloadingView" of tab view "TopTab"
+			set iTunesSync to state of button "iTunesSync" of view "DownloadingView" of tab view "TopTab"
+			set iTunesIcon to title of popup button "icon" of view "DownloadingView" of tab view "TopTab"
 		else if (currentPrefsTab = "ComSkipTab") then
 		else if (currentPrefsTab = "AdvancedTab") then
 		else
@@ -678,7 +687,8 @@ on clicked theObject
 				
 				set success to 1
 				try
-					do shell script "rm ~/.TiVoDL"
+					set shellCmd to "rm /tmp/iTiVoDL-" & UserName
+					do shell script shellCmd
 				end try
 				set success to my downloadItem(currentProcessSelectionQ2, 1, 4)
 				if success > 0 and cancelAllDownloads = 0 then
@@ -758,11 +768,11 @@ on clicked theObject
 		else if theObjectName = "iTunes" then
 			set iTunes to state of theObject
 			if iTunes > 0 then
-				set enabled of button "iTunesSync" of view "iTunesView" of tab view "TopTab" of panelWIndow to true
-				set enabled of popup button "icon" of view "iTunesView" of tab view "TopTab" of panelWIndow to true
+				set enabled of button "iTunesSync" of view "DownloadingView" of tab view "TopTab" of panelWIndow to true
+				set enabled of popup button "icon" of view "DownloadingView" of tab view "TopTab" of panelWIndow to true
 			else
-				set enabled of button "iTunesSync" of view "iTunesView" of tab view "TopTab" of panelWIndow to false
-				set enabled of popup button "icon" of view "iTunesView" of tab view "TopTab" of panelWIndow to false
+				set enabled of button "iTunesSync" of view "DownloadingView" of tab view "TopTab" of panelWIndow to false
+				set enabled of popup button "icon" of view "DownloadingView" of tab view "TopTab" of panelWIndow to false
 			end if
 		end if
 	end tell
@@ -993,10 +1003,22 @@ on choose menu item theObject
 	else if name of theObject = "Preferences" then
 		my displayPrefs()
 	else if name of theObject = "format" then
-		if (title of popup button "format" of view "DownloadingView" of tab view "TopTab" of panelWIndow = "Quicktime MPEG-4 (Custom)") then
+		local myformat
+		set myformat to title of popup button "format" of view "DownloadingView" of tab view "TopTab" of panelWIndow
+		if (myformat = "Quicktime MPEG-4 (Custom)") then
 			my showResSettings()
 		else
 			my hideResSettings()
+		end if
+		if (my formatCompatItunes(myformat)) then
+			set enabled of button "iTunes" of view "DownloadingView" of tab view "TopTab" of panelWIndow to true
+			set enabled of button "iTunesSync" of view "DownloadingView" of tab view "TopTab" of panelWIndow to true
+			set enabled of popup button "icon" of view "DownloadingView" of tab view "TopTab" of panelWIndow to true
+		else
+			set state of button "iTunes" of view "DownloadingView" of tab view "TopTab" of panelWIndow to false
+			set enabled of button "iTunes" of view "DownloadingView" of tab view "TopTab" of panelWIndow to false
+			set enabled of button "iTunesSync" of view "DownloadingView" of tab view "TopTab" of panelWIndow to false
+			set enabled of popup button "icon" of view "DownloadingView" of tab view "TopTab" of panelWIndow to false
 		end if
 	else if name of theObject = "MyTiVos" and not title of theObject = "My TiVos" then
 		if title of theObject ≠ "My TiVos" then
@@ -1194,25 +1216,29 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 		set filenameExtension to ".mpg"
 	end if
 	try
-		do shell script "rm ~/.TiVoDL"
+		set shellCmd to "rm /tmp/iTiVoDL-" & UserName
+		do shell script shellCmd
 	end try
 	set cancelDownload to 0
-	repeat while (not my isDownloadComplete(filePath, fullFileSize, currentTry)) and currentTry < retryCount and cancelDownload = 0
+	repeat while ((not my isDownloadComplete(filePath, fullFileSize, currentTry)) and currentTry < retryCount and cancelDownload = 0)
 		tell window "iTiVo"
 			try
-				do shell script "rm ~/.TiVoDLPipe*"
+				set shellCmd to "rm /tmp/iTiVoDLPipe*-" & UserName
+				my debug_log(shellCmd)
+				do shell script shellCmd
 			end try
-			do shell script "mkfifo ~/.TiVoDLPipe"
-			do shell script "mkfifo ~/.TiVoDLPipe2"
-			set ShellScriptCommand to "perl " & myPath & "Contents/Resources/download.pl " & IPA & " " & showFullNameEncoded & " " & id & " " & MAK & " " & myPath2 & " " & myHomePathP2 & " " & showNameEncoded & " " & encodeMode & " " & customWidth & " " & customHeight & " " & customVideoBR & " " & customAudioBR & " " & fullFileSize & " " & filenameExtension
+			set shellCmd to "mkfifo /tmp/iTiVoDLPipe-" & UserName & "; mkfifo /tmp/iTiVoDLPipe2-" & UserName
+			my debug_log(shellCmd)
+			do shell script shellCmd
+			set ShellScriptCommand to "perl " & myPath & "Contents/Resources/http-fetcher.pl " & IPA & " " & id & " " & showNameEncoded & " " & MAK
 			set ShellScriptCommand to ShellScriptCommand & " &> /dev/null & echo $! ;exit 0"
 			my debug_log(ShellScriptCommand)
 			do shell script ShellScriptCommand
-			set ShellScriptCommand to "perl " & myPath & "Contents/Resources/download2.pl " & IPA & " " & showFullNameEncoded & " " & id & " " & MAK & " " & myPath2 & " " & myHomePathP2 & " " & showNameEncoded & " " & encodeMode & " " & customWidth & " " & customHeight & " " & customVideoBR & " " & customAudioBR & " " & fullFileSize & " " & filenameExtension
+			set ShellScriptCommand to "perl " & myPath & "Contents/Resources/tivo-decoder.pl " & myPath2 & " " & MAK
 			set ShellScriptCommand to ShellScriptCommand & " &> /dev/null & echo $! ;exit 0"
 			my debug_log(ShellScriptCommand)
 			do shell script ShellScriptCommand
-			set ShellScriptCommand to "perl " & myPath & "Contents/Resources/download3.pl " & IPA & " " & showFullNameEncoded & " " & id & " " & MAK & " " & myPath2 & " " & myHomePathP2 & " " & showNameEncoded & " " & encodeMode & " " & customWidth & " " & customHeight & " " & customVideoBR & " " & customAudioBR & " " & fullFileSize & " " & filenameExtension
+			set ShellScriptCommand to "perl " & myPath & "Contents/Resources/re-encoder.pl " & IPA & " " & showFullNameEncoded & " " & id & " " & MAK & " " & myPath2 & " " & myHomePathP2 & " " & showNameEncoded & " " & encodeMode & " " & customWidth & " " & customHeight & " " & customVideoBR & " " & customAudioBR & " " & fullFileSize & " " & filenameExtension
 			set ShellScriptCommand to ShellScriptCommand & " &> /dev/null & echo $! ;exit 0"
 			my debug_log(ShellScriptCommand)
 			do shell script ShellScriptCommand
@@ -1224,7 +1250,7 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 			set currentFileSize to 0
 			set prevFileSize to 0
 			set timeoutCount to 0
-			set downloadExistsCmdString to "du -k -d 0 ~/.TiVoDLPipe ;exit 0"
+			set downloadExistsCmdString to "du -k -d 0 /tmp/iTiVoDLPipe-" & UserName & " ;exit 0"
 			set downloadExistsCmd to do shell script downloadExistsCmdString
 			if downloadExistsCmd is not equal to "" then
 				set downloadExists to 1
@@ -1581,6 +1607,7 @@ on registerGrowl()
 end registerGrowl
 
 on checkDL()
+	my debug_log("checkDL")
 	set FinderPath to (path to application "Finder") as string
 	set AppleScript's text item delimiters to ":"
 	set the parts to every text item of FinderPath
@@ -1607,6 +1634,7 @@ on checkDL()
 end checkDL
 
 on checkDLFile(showName)
+	my debug_log("CheckDLFile")
 	set FinderPath to (path to application "Finder") as string
 	set AppleScript's text item delimiters to ":"
 	set the parts to every text item of FinderPath
