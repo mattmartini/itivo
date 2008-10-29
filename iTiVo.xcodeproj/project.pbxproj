@@ -6,6 +6,21 @@
 	objectVersion = 45;
 	objects = {
 
+/* Begin PBXAggregateTarget section */
+		53E8CDDC0EB8B6C400439BE1 /* Distribution */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 53E8CDE30EB8B6C600439BE1 /* Build configuration list for PBXAggregateTarget "Distribution" */;
+			buildPhases = (
+				53E8CDDB0EB8B6C400439BE1 /* ShellScript */,
+			);
+			dependencies = (
+				53E8CDFD0EB8BCF200439BE1 /* PBXTargetDependency */,
+			);
+			name = Distribution;
+			productName = Distribution;
+		};
+/* End PBXAggregateTarget section */
+
 /* Begin PBXAppleScriptBuildPhase section */
 		257572C4072881A4000BE9CA /* AppleScript */ = {
 			isa = PBXAppleScriptBuildPhase;
@@ -33,6 +48,7 @@
 		53AF17610EB6937700C68D2E /* tivo-decoder.pl in Resources */ = {isa = PBXBuildFile; fileRef = 53AF17600EB6937700C68D2E /* tivo-decoder.pl */; };
 		53AF17630EB6938A00C68D2E /* re-encoder.pl in Resources */ = {isa = PBXBuildFile; fileRef = 53AF17620EB6938A00C68D2E /* re-encoder.pl */; };
 		53E5328A0E9FBEB300E16E0D /* ParseXML.pl in Resources */ = {isa = PBXBuildFile; fileRef = 53E532890E9FBEB300E16E0D /* ParseXML.pl */; };
+		53E8CDD60EB8492F00439BE1 /* dsa_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = 53E8CDD50EB8492F00439BE1 /* dsa_pub.pem */; };
 		6100670D0B470D4700E38A87 /* mencoder in Resources */ = {isa = PBXBuildFile; fileRef = 6100670C0B470D4700E38A87 /* mencoder */; };
 		612EF59C0B4459F000ACBBBF /* ParseDetail.pl in Resources */ = {isa = PBXBuildFile; fileRef = 612EF59B0B4459F000ACBBBF /* ParseDetail.pl */; };
 		61354C8B0B2741D800EEF96F /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 61354C890B2741D800EEF96F /* Credits.rtf */; };
@@ -42,6 +58,16 @@
 		61D69A000B4C50BF00D69E4C /* curlSize.pl in Resources */ = {isa = PBXBuildFile; fileRef = 61D699FF0B4C50BF00D69E4C /* curlSize.pl */; };
 		61E28DAE0B3FA5B800D6DD59 /* iTiVo.pict in Resources */ = {isa = PBXBuildFile; fileRef = 61E28DAD0B3FA5B800D6DD59 /* iTiVo.pict */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		53E8CDFC0EB8BCF200439BE1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 257572C2072881A4000BE9CA /* iTiVo */;
+			remoteInfo = iTiVo;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		53C2B8670E4CA0BD00AB4EBC /* CopyFiles */ = {
@@ -71,6 +97,7 @@
 		53AF17600EB6937700C68D2E /* tivo-decoder.pl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.perl; path = "tivo-decoder.pl"; sourceTree = "<group>"; };
 		53AF17620EB6938A00C68D2E /* re-encoder.pl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.perl; path = "re-encoder.pl"; sourceTree = "<group>"; };
 		53E532890E9FBEB300E16E0D /* ParseXML.pl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.perl; path = ParseXML.pl; sourceTree = "<group>"; };
+		53E8CDD50EB8492F00439BE1 /* dsa_pub.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = dsa_pub.pem; sourceTree = "<group>"; };
 		6100670C0B470D4700E38A87 /* mencoder */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; name = mencoder; path = "External Software/mencoder"; sourceTree = "<group>"; };
 		612EF59B0B4459F000ACBBBF /* ParseDetail.pl */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.script.perl; path = ParseDetail.pl; sourceTree = "<group>"; };
 		61354C8A0B2741D800EEF96F /* English */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = English; path = English.lproj/Credits.rtf; sourceTree = "<group>"; };
@@ -167,6 +194,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				53E8CDD50EB8492F00439BE1 /* dsa_pub.pem */,
 				532226E30EB0698400062D5F /* PrefsPanel.xib */,
 				29B97318FDCFA39411CA2CEA /* MainMenu.nib */,
 				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
@@ -233,6 +261,7 @@
 			projectRoot = "";
 			targets = (
 				257572C2072881A4000BE9CA /* iTiVo */,
+				53E8CDDC0EB8B6C400439BE1 /* Distribution */,
 			);
 		};
 /* End PBXProject section */
@@ -257,10 +286,27 @@
 				53AF175F0EB6936100C68D2E /* http-fetcher.pl in Resources */,
 				53AF17610EB6937700C68D2E /* tivo-decoder.pl in Resources */,
 				53AF17630EB6938A00C68D2E /* re-encoder.pl in Resources */,
+				53E8CDD60EB8492F00439BE1 /* dsa_pub.pem in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		53E8CDDB0EB8B6C400439BE1 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "#!/bin/bash\n\nset -o errexit\n\n[ $BUILD_STYLE = Release ] || { echo Distribution target requires \"'Release'\" build style; false; }\n\nVERSION=$(defaults read \"$BUILT_PRODUCTS_DIR/$PROJECT_NAME.app/Contents/Info\" CFBundleVersion)\nDOWNLOAD_BASE_URL=\"http://itivo.googlecode.com/files\"\nRELEASENOTES_URL=\"http://itivo.googlecode.com/svn/trunk/www/changelog.html\"\n\nARCHIVE_FILENAME=\"$PROJECT_NAME-$VERSION.zip\"\nDOWNLOAD_URL=\"$DOWNLOAD_BASE_URL/$ARCHIVE_FILENAME\"\n\nWD=$PWD\ncd \"$BUILT_PRODUCTS_DIR\"\nrm -f \"$PROJECT_NAME\"*.zip\nzip -qr \"$ARCHIVE_FILENAME\" \"$PROJECT_NAME.app\" \"faac LGPL License.txt\" \"gpl-3.0.txt\" \"iTiVo Read Me.rtf\" \"mencoder:xvid GPL License.txt\"\n\nSIZE=$(stat -f %z \"$ARCHIVE_FILENAME\")\nPUBDATE=$(date +\"%a, %d %b %G %T %z\")\nSIGNATURE=$(\n\topenssl dgst -sha1 -binary < \"$ARCHIVE_FILENAME\" \\\n\t| openssl dgst -dss1 -sign \"$WD/keys/dsa_priv.pem\" \\\n\t| openssl enc -base64\n)\n\n[ $SIGNATURE ] || { echo Unable to load signing private key with name \"'$KEYCHAIN_PRIVKEY_NAME'\" from keychain; false; }\n\ncat <<EOF\n\t\t<item>\n\t\t\t<title>Version $VERSION</title>\n\t\t\t<sparkle:releaseNotesLink>$RELEASENOTES_URL</sparkle:releaseNotesLink>\n\t\t\t<pubDate>$PUBDATE</pubDate>\n\t\t\t<enclosure\n\t\t\t\turl=\"$DOWNLOAD_URL\"\n\t\t\t\tsparkle:version=\"$VERSION\"\n\t\t\t\ttype=\"application/octet-stream\"\n\t\t\t\tlength=\"$SIZE\"\n\t\t\t\tsparkle:dsaSignature=\"$SIGNATURE\"\n\t\t\t/>\n\t\t</item>\nEOF\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		257572C9072881A4000BE9CA /* Sources */ = {
@@ -272,6 +318,14 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		53E8CDFD0EB8BCF200439BE1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 257572C2072881A4000BE9CA /* iTiVo */;
+			targetProxy = 53E8CDFC0EB8BCF200439BE1 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		089C165CFE840E0CC02AAC07 /* InfoPlist.strings */ = {
@@ -372,6 +426,27 @@
 			};
 			name = Release;
 		};
+		53E8CDDD0EB8B6C400439BE1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				PRODUCT_NAME = Distribution;
+			};
+			name = Debug;
+		};
+		53E8CDDE0EB8B6C400439BE1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				PRODUCT_NAME = Distribution;
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -389,6 +464,15 @@
 			buildConfigurations = (
 				4E71A80A08A2C90C0034BBD9 /* Debug */,
 				4E71A80B08A2C90C0034BBD9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		53E8CDE30EB8B6C600439BE1 /* Build configuration list for PBXAggregateTarget "Distribution" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				53E8CDDD0EB8B6C400439BE1 /* Debug */,
+				53E8CDDE0EB8B6C400439BE1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

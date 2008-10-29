@@ -42,6 +42,7 @@ property iTunes : ""
 property iTunesSync : ""
 property iTunesIcon : ""
 property format : ""
+property postDownloadCmd : ""
 
 property panelWIndow : missing value
 property currentPrefsTab : "DownloadingTab"
@@ -105,7 +106,7 @@ end was miniaturized
 on will finish launching theObject
 	set haveOS1040 to minOSVers at 1040
 	if not haveOS1040 then
-		display dialog "TDM requires Mac OS X 10.4 or later." buttons {"OK"} default button "OK" attached to window "iTiVo"
+		display dialog "This Application requires Mac OS X 10.4 or later." buttons {"OK"} default button "OK" attached to window "iTiVo"
 		quit
 	end if
 	performCancelDownload()
@@ -251,6 +252,7 @@ on setupPrefsTab(tabName)
 			end if
 		else if (tabName = "ComSkipTab") then
 		else if (tabName = "AdvancedTab") then
+			set contents of text field "postDownloadCmd" of view "AdvancedView" of tab view "TopTab" to postDownloadCmd
 		else
 			my debug_log("Can't setup PrefsTab for " & tabName)
 		end if
@@ -272,6 +274,7 @@ on recordPrefsTab()
 			set iTunesIcon to title of popup button "icon" of view "DownloadingView" of tab view "TopTab"
 		else if (currentPrefsTab = "ComSkipTab") then
 		else if (currentPrefsTab = "AdvancedTab") then
+			set postDownloadCmd to contents of text field "postDownloadCmd" of view "AdvancedView" of tab view "TopTab"
 		else
 			my debug_log("What tab are we on?? ")
 			return false
@@ -331,10 +334,10 @@ on registerSettings()
 		make new default entry at end of default entries with properties {name:"customHeight", contents:""}
 		make new default entry at end of default entries with properties {name:"customAudioBR", contents:""}
 		make new default entry at end of default entries with properties {name:"customVideoBR", contents:""}
+		make new default entry at end of default entries with properties {name:"postDownloadCmd", contents:postDownloadCmd}
 		make new default entry at end of default entries with properties {name:"openDetail", contents:""}
 		make new default entry at end of default entries with properties {name:"DLHistory", contents:""}
 		make new default entry at end of default entries with properties {name:"targetDataSList", contents:{}}
-		make new default entry at end of default entries with properties {name:"PrefVersion", contents:""}
 		register
 	end tell
 end registerSettings
@@ -342,11 +345,6 @@ end registerSettings
 on readSettings()
 	my debug_log("read settings")
 	tell user defaults
-		try
-			set PrefVersion to contents of default entry "PrefVersion"
-		on error
-			set PrefVersion to ""
-		end try
 		try
 			set IPA to contents of default entry "IPA"
 			set MAK to contents of default entry "MAK"
@@ -371,33 +369,29 @@ on readSettings()
 			set customHeight to contents of default entry "customHeight"
 			set customAudioBR to contents of default entry "customAudioBR"
 			set customVideoBR to contents of default entry "customVideoBR"
+			set postDownloadCmd to contents of default entry "postDownloadCmd"
 			set openDetail to contents of default entry "openDetail"
 			set DLHistory to contents of default entry "DLHistory"
 			set targetDataSList to contents of default entry "targetDataSList"
 		end try
-		if PrefVersion = 2 then
-			try
-				set CLeft to contents of default entry "CLeft"
-				set CTop to contents of default entry "CTop"
-				set CRight to contents of default entry "CRight"
-				set CBottom to contents of default entry "CBottom"
-				set Col1 to contents of default entry "Col1"
-				set Col2 to contents of default entry "Col2"
-				set Col3 to contents of default entry "Col3"
-				set Col5 to contents of default entry "Col5"
-				set Col6 to contents of default entry "Col6"
-			on error
-				set CLeft to ""
-			end try
-			try
-				set BBottom to contents of default entry "BBottom"
-			on error
-				set BBottom to ""
-			end try
-		else
+		try
+			set CLeft to contents of default entry "CLeft"
+			set CTop to contents of default entry "CTop"
+			set CRight to contents of default entry "CRight"
+			set CBottom to contents of default entry "CBottom"
+			set Col1 to contents of default entry "Col1"
+			set Col2 to contents of default entry "Col2"
+			set Col3 to contents of default entry "Col3"
+			set Col5 to contents of default entry "Col5"
+			set Col6 to contents of default entry "Col6"
+		on error
 			set CLeft to ""
+		end try
+		try
+			set BBottom to contents of default entry "BBottom"
+		on error
 			set BBottom to ""
-		end if
+		end try
 	end tell
 	try
 		tell application "Finder" to set GrowlAppName to name of application file id "com.Growl.GrowlHelperApp"
@@ -477,7 +471,6 @@ on writeSettings()
 	set targetDataSList to content of targetDataS
 	
 	tell user defaults
-		set contents of default entry "PrefVersion" to 2
 		set contents of default entry "IPA" to IPA
 		set contents of default entry "MAK" to MAK
 		set contents of default entry "DL" to DL
@@ -501,6 +494,7 @@ on writeSettings()
 		set contents of default entry "customHeight" to customHeight as string
 		set contents of default entry "customVideoBR" to customVideoBR as string
 		set contents of default entry "customAudioBR" to customAudioBR as string
+		set contents of default entry "postDownloadCmd" to postDownloadCmd
 		set contents of default entry "openDetail" to (openDetail as integer)
 		set contents of default entry "DLHistory" to DLHistory as list
 		set contents of default entry "targetDataSList" to targetDataSList as list
@@ -1156,10 +1150,11 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 		set oShowDate to third item of currentProcessSelectionParam
 		set showNameEncoded to my encode_text(my prepareCommand(showName), true, true)
 		if second item of currentProcessSelectionParam ≠ "" then
-			set showName to showName & " - " & second item of currentProcessSelectionParam
+			set oShowEpisode to second item of currentProcessSelectionParam
 		else
-			set showName to showName & " - " & id
+			set oShowEpisode to id as string
 		end if
+		set showName to showName & " - " & oShowEpisode
 		set showFullNameEncoded to my encode_text(my prepareCommand(showName), true, true)
 		set myHomePathP2 to my encode_text(my prepareCommand(DL), true, true)
 		set myPath2 to my encode_text(myPath, true, true)
@@ -1375,14 +1370,28 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 				my ConnectTiVo()
 			end if
 			if iTunes as integer > 0 then
-				my debug_log(" Doing iTunes-related work ")
+				my debug_log("Doing iTunes-related work ")
 				my create_playlist()
 				my post_process_item(DL & showNameP & filenameExtension, item 1 of currentProcessSelectionParam, item 2 of currentProcessSelectionParam, item 4 of parts, item 14 of parts, item 13 of parts, item 8 of parts, item 7 of parts)
-			else
-				my debug_log(" iTunes not selected ")
 			end if
 		end if
 	end tell
+	if (not postDownloadCmd = "") then
+		try
+			set shellCmd to "file=" & quoted form of DL & quoted form of showNameP & quoted form of filenameExtension & "; "
+			set shellCmd to shellCmd & "show=" & quoted form of oShowName & "; "
+			set shellCmd to shellCmd & "episode=" & quoted form of oShowEpisode & "; "
+			if isDownloadComplete(filePath, fullFileSize, currentTry) then
+				set shellCmd to shellCmd & "success=1; "
+			else
+				set shellCmd to shellCmd & "success=0; "
+			end if
+			set shellCmd to shellCmd & postDownloadCmd
+			my debug_log("Running: " & shellCmd)
+			set shellCmdResult to do shell script shellCmd
+			my debug_log(shellCmdResult)
+		end try
+	end if
 	if cancelDownload = 0 then
 		set cancelDownload to 0
 		return 1
@@ -1565,9 +1574,9 @@ on post_process_item(this_item, show_name, episodeName, file_description, episod
 			set this_track's year to episodeYear as string
 			set this_track's episode number to episodeNum as string
 			set this_track's genre to episodeGenre as string
-			if iTunesIcon = "Generic TDM" then
+			if iTunesIcon = "Generic iTiVo" then
 				set pict_item to path to me as string
-				set pict_item to pict_item & "Contents:Resources:TDM.pict"
+				set pict_item to pict_item & "Contents:Resources:iTiVo.pict"
 				set file_ref to open for access pict_item
 				set ott to read file_ref from 513 as picture
 				close access file_ref
