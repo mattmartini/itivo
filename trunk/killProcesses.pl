@@ -2,7 +2,7 @@
 
 # going through in order trying to kill gently first, and then again hard
 
-@tokill = ("curl", "tivodecode", "mencoder", "download");
+@tokill = ("curl", "tivodecode", "mencoder", "http-fetcher", "tivo-decoder", "re-encoder" );
 
 foreach $procname (@tokill) {
 	$processes = `ps -jAww -o command | grep -e 'iTiVo.app'`;
