@@ -64,7 +64,7 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 257572C2072881A4000BE9CA /* iTiVo */;
+			remoteGlobalIDString = 257572C2072881A4000BE9CA;
 			remoteInfo = iTiVo;
 		};
 /* End PBXContainerItemProxy section */

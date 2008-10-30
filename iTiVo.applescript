@@ -43,6 +43,7 @@ property iTunesSync : ""
 property iTunesIcon : ""
 property format : ""
 property postDownloadCmd : ""
+property SUFeedURL : "http://itivo.googlecode.com/svn/trunk/www/iTiVo.xml"
 
 property panelWIndow : missing value
 property currentPrefsTab : "DownloadingTab"
@@ -91,6 +92,9 @@ on will open theObject
 		readSettings()
 		set already_launched to 1
 		set UserName to do shell script "whoami"
+		if MAK is not greater than 0 then
+			my displayPrefs()
+		end if
 	end if
 end will open
 
@@ -132,15 +136,14 @@ on displayPrefs()
 	if panelWIndow is equal to missing value then
 		load nib "PrefsPanel"
 		set panelWIndow to window "PrefsPanel"
+	else
+		my writeSettings()
 	end if
-	
-	my writeSettings()
-	setupPrefsTab(currentPrefsTab)
+	my setupPrefsTab(currentPrefsTab)
 	display panel panelWIndow attached to window "iTiVo"
 end displayPrefs
 
 on panel ended thePanel with result theResult
-	my debug_log("Prefs done, with result " & theResult & "mak " & MAK)
 	if theResult is 1 then
 		my writeSettings()
 	else
@@ -184,9 +187,9 @@ on formatCompatItunes(formatName)
 		return false
 	else if (formatName = "iPod/iPhone high-res") then
 		return true
-	else if (formatName = "iPod/iPhone med-res") then
+	else if (formatName = "iPhone low-res") then
 		return true
-	else if (formatName = "iPod/iPhone low-res") then
+	else if (formatName = "iPod low-res") then
 		return true
 	else if (formatName = "Zune") then
 		return true
@@ -195,6 +198,10 @@ on formatCompatItunes(formatName)
 	else if (formatName = "PSP") then
 		return false
 	else if (formatName = "PS3") then
+		return false
+	else if (formatName = "DVD (NTSC mpeg-2 AC3)") then
+		return false
+	else if (formatName = "DVD (PAL mpeg-2 AC3)") then
 		return false
 	else if (formatName = "Quicktime MPEG-4 (Custom)") then
 		return true
@@ -253,6 +260,11 @@ on setupPrefsTab(tabName)
 		else if (tabName = "ComSkipTab") then
 		else if (tabName = "AdvancedTab") then
 			set contents of text field "postDownloadCmd" of view "AdvancedView" of tab view "TopTab" to postDownloadCmd
+			if (SUFeedURL = "http://itivo.googlecode.com/svn/trunk/www/iTiVo-beta.xml") then
+				set state of button "betaUpdate" of view "AdvancedView" of tab view "TopTab" to true
+			else
+				set state of button "betaUpdate" of view "AdvancedView" of tab view "TopTab" to false
+			end if
 		else
 			my debug_log("Can't setup PrefsTab for " & tabName)
 		end if
@@ -275,6 +287,11 @@ on recordPrefsTab()
 		else if (currentPrefsTab = "ComSkipTab") then
 		else if (currentPrefsTab = "AdvancedTab") then
 			set postDownloadCmd to contents of text field "postDownloadCmd" of view "AdvancedView" of tab view "TopTab"
+			if (state of button "betaUpdate" of view "AdvancedView" of tab view "TopTab" = 1) then
+				set SUFeedURL to "http://itivo.googlecode.com/svn/trunk/www/iTiVo-beta.xml"
+			else
+				set SUFeedURL to "http://itivo.googlecode.com/svn/trunk/www/iTiVo.xml"
+			end if
 		else
 			my debug_log("What tab are we on?? ")
 			return false
@@ -284,12 +301,10 @@ on recordPrefsTab()
 end recordPrefsTab
 
 on should select tab view item theObject tab view item tabViewItem
-	my debug_log("should select tab view " & name of tabViewItem & "," & name of theObject)
 	return my recordPrefsTab()
 end should select tab view item
 
 on selected tab view item theObject tab view item tabViewItem
-	my debug_log("selected tab view " & name of tabViewItem)
 	set currentPrefsTab to name of tabViewItem
 	my setupPrefsTab(name of tabViewItem)
 end selected tab view item
@@ -335,6 +350,7 @@ on registerSettings()
 		make new default entry at end of default entries with properties {name:"customAudioBR", contents:""}
 		make new default entry at end of default entries with properties {name:"customVideoBR", contents:""}
 		make new default entry at end of default entries with properties {name:"postDownloadCmd", contents:postDownloadCmd}
+		make new default entry at end of default entries with properties {name:"SUFeedURL", contents:SUFeedURL}
 		make new default entry at end of default entries with properties {name:"openDetail", contents:""}
 		make new default entry at end of default entries with properties {name:"DLHistory", contents:""}
 		make new default entry at end of default entries with properties {name:"targetDataSList", contents:{}}
@@ -369,6 +385,7 @@ on readSettings()
 			set customHeight to contents of default entry "customHeight"
 			set customAudioBR to contents of default entry "customAudioBR"
 			set customVideoBR to contents of default entry "customVideoBR"
+			set SUFeedURL to contents of default entry "SUFeedURL"
 			set postDownloadCmd to contents of default entry "postDownloadCmd"
 			set openDetail to contents of default entry "openDetail"
 			set DLHistory to contents of default entry "DLHistory"
@@ -440,9 +457,6 @@ killall mDNS"
 		set myHomePathP to POSIX path of (path to home folder)
 		set DL to myHomePathP & "Desktop/" as string
 	end if
-	if MAK is not greater than 0 or DL = "" then
-		my displayPrefs()
-	end if
 end readSettings
 
 on will quit theObject
@@ -458,47 +472,51 @@ on getSettingsFromUI()
 end getSettingsFromUI
 
 on writeSettings()
-	my debug_log("write_settings ")
-	set coordinate system to AppleScript coordinate system
-	set winBounds to bounds of window "iTiVo"
-	set boxBounds to bounds of box "topBox" of split view "splitView1" of window "iTiVo"
-	set Col1 to (width of table column "IDVal" of table view "ShowListTable" of scroll view "ShowList" of box "topBox" of split view "splitView1" of window "iTiVo")
-	set Col2 to (width of table column "ShowVal" of table view "ShowListTable" of scroll view "ShowList" of box "topBox" of split view "splitView1" of window "iTiVo")
-	set Col3 to (width of table column "EpisodeVal" of table view "ShowListTable" of scroll view "ShowList" of box "topBox" of split view "splitView1" of window "iTiVo")
-	set Col5 to (width of table column "DateVal" of table view "ShowListTable" of scroll view "ShowList" of box "topBox" of split view "splitView1" of window "iTiVo")
-	set Col6 to (width of table column "SizeVal" of table view "ShowListTable" of scroll view "ShowList" of box "topBox" of split view "splitView1" of window "iTiVo")
-	set TiVo to title of current menu item of popup button "MyTiVos" of window "iTiVo"
-	set targetDataSList to content of targetDataS
-	
-	tell user defaults
-		set contents of default entry "IPA" to IPA
-		set contents of default entry "MAK" to MAK
-		set contents of default entry "DL" to DL
-		set contents of default entry "CLeft" to first item of winBounds
-		set contents of default entry "CTop" to second item of winBounds
-		set contents of default entry "CRight" to third item of winBounds
-		set contents of default entry "CBottom" to fourth item of winBounds
-		set contents of default entry "BBottom" to fourth item of boxBounds
-		set contents of default entry "Col1" to (Col1 as integer)
-		set contents of default entry "Col2" to (Col2 as integer)
-		set contents of default entry "Col3" to (Col3 as integer)
-		set contents of default entry "Col5" to (Col5 as integer)
-		set contents of default entry "Col6" to (Col6 as integer)
-		set contents of default entry "LaunchCount" to (LaunchCount as integer)
-		set contents of default entry "TiVo" to TiVo as string
-		set contents of default entry "format" to format as string
-		set contents of default entry "iTunes" to iTunes as string
-		set contents of default entry "iTunesSync" to iTunesSync as string
-		set contents of default entry "iTunesIcon" to iTunesIcon as string
-		set contents of default entry "customWidth" to customWidth as string
-		set contents of default entry "customHeight" to customHeight as string
-		set contents of default entry "customVideoBR" to customVideoBR as string
-		set contents of default entry "customAudioBR" to customAudioBR as string
-		set contents of default entry "postDownloadCmd" to postDownloadCmd
-		set contents of default entry "openDetail" to (openDetail as integer)
-		set contents of default entry "DLHistory" to DLHistory as list
-		set contents of default entry "targetDataSList" to targetDataSList as list
-	end tell
+	my debug_log("write_settings")
+	try
+		set coordinate system to AppleScript coordinate system
+		set winBounds to bounds of window "iTiVo"
+		set boxBounds to bounds of box "topBox" of split view "splitView1" of window "iTiVo"
+		set Col1 to (width of table column "IDVal" of table view "ShowListTable" of scroll view "ShowList" of box "topBox" of split view "splitView1" of window "iTiVo")
+		set Col2 to (width of table column "ShowVal" of table view "ShowListTable" of scroll view "ShowList" of box "topBox" of split view "splitView1" of window "iTiVo")
+		set Col3 to (width of table column "EpisodeVal" of table view "ShowListTable" of scroll view "ShowList" of box "topBox" of split view "splitView1" of window "iTiVo")
+		set Col5 to (width of table column "DateVal" of table view "ShowListTable" of scroll view "ShowList" of box "topBox" of split view "splitView1" of window "iTiVo")
+		set Col6 to (width of table column "SizeVal" of table view "ShowListTable" of scroll view "ShowList" of box "topBox" of split view "splitView1" of window "iTiVo")
+		set TiVo to title of current menu item of popup button "MyTiVos" of window "iTiVo"
+		set targetDataSList to content of targetDataS
+		tell user defaults
+			set contents of default entry "IPA" to IPA
+			set contents of default entry "MAK" to MAK
+			set contents of default entry "DL" to DL
+			set contents of default entry "CLeft" to first item of winBounds
+			set contents of default entry "CTop" to second item of winBounds
+			set contents of default entry "CRight" to third item of winBounds
+			set contents of default entry "CBottom" to fourth item of winBounds
+			set contents of default entry "BBottom" to fourth item of boxBounds
+			set contents of default entry "Col1" to (Col1 as integer)
+			set contents of default entry "Col2" to (Col2 as integer)
+			set contents of default entry "Col3" to (Col3 as integer)
+			set contents of default entry "Col5" to (Col5 as integer)
+			set contents of default entry "Col6" to (Col6 as integer)
+			set contents of default entry "LaunchCount" to (LaunchCount as integer)
+			set contents of default entry "TiVo" to TiVo as string
+			set contents of default entry "format" to format as string
+			set contents of default entry "iTunes" to iTunes as string
+			set contents of default entry "iTunesSync" to iTunesSync as string
+			set contents of default entry "iTunesIcon" to iTunesIcon as string
+			set contents of default entry "customWidth" to customWidth as string
+			set contents of default entry "customHeight" to customHeight as string
+			set contents of default entry "customVideoBR" to customVideoBR as string
+			set contents of default entry "customAudioBR" to customAudioBR as string
+			set contents of default entry "postDownloadCmd" to postDownloadCmd
+			set contents of default entry "SUFeedURL" to SUFeedURL
+			set contents of default entry "openDetail" to (openDetail as integer)
+			set contents of default entry "DLHistory" to DLHistory as list
+			set contents of default entry "targetDataSList" to targetDataSList as list
+		end tell
+	on error
+		my debug_log("Failed to write out initial settings")
+	end try
 end writeSettings
 
 on setSettingsInUI()
@@ -1184,10 +1202,10 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 	else if format = "iPod/iPhone high-res" then
 		set encodeMode to 1
 		set filenameExtension to ".mp4"
-	else if format = "iPod/iPhone med-res" then
+	else if format = "iPhone low-res" then
 		set encodeMode to 2
 		set filenameExtension to ".mp4"
-	else if format = "iPod/iPhone low-res" then
+	else if format = "iPod low-res" then
 		set encodeMode to 3
 		set filenameExtension to ".mp4"
 	else if format = "Zune" then
@@ -1202,8 +1220,14 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 	else if format = "PS3" then
 		set encodeMode to 7
 		set filenameExtension to ".mp4"
-	else if format = "Quicktime MPEG-4 (Custom)" then
+	else if format = "DVD (NTSC mpeg-2 AC3)" then
 		set encodeMode to 8
+		set filenameExtension to ".mpg"
+	else if format = "DVD (PAL mpeg-2 AC3)" then
+		set encodeMode to 9
+		set filenameExtension to ".mpg"
+	else if format = "Quicktime MPEG-4 (Custom)" then
+		set encodeMode to 10
 		set filenameExtension to ".mp4"
 	else
 		set format to "No Conversion (native MPEG-2)"
@@ -1454,6 +1478,8 @@ on ConnectTiVo()
 		else
 			display dialog "iTiVo could not communicate with your TiVo.  Please make sure your IP address and Media Access Key are correct (check your Prefs) and try again." buttons {"OK"} default button "OK" attached to window "iTiVo"
 		end if
+		set contents of text field "status" of window "iTiVo" to "Failed to connect to tivo!"
+		return
 	end if
 	tell window "iTiVo"
 		if TiVoList ≠ "" then
