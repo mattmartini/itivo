@@ -48,37 +48,37 @@ Instructions on finding out your MAK is documented in the [http://code.google.co
   Here you can get status information on what is going on, and modify the preferences.
 
   * Prefs
-    Opens and closes the preferences drawer.
+    Opens and closes the preferences window.
 
   * Cancel Download
     When a download is happening, clicking this button will tell iTiVo to stop downloading it.  A partial download will be left in the download location, but nothing else will be done.
 
 = Preferences =
-To access the preferences drawer, click on the 'Prefs' button at the bottom of the window. Here you can configure how iTiVo will behave.
+To access the preferences window, click on the 'Prefs' button at the bottom of the window. Here you can configure how iTiVo will behave.  There are tabs associated with different functions.
 
   * Media Access Key
-    This 10-digit number is the code used to access your TiVo.  It is different for each customer.  You must get yours from the TiVo or from the tivo.com website.  Instructions on how to do this are in the [http://code.google.com/p/itivo/wiki/Installation Installation Document].
-
-  * Growl Notification
-    If you have [http://growl.info/ Growl] installed on your mac, iTiVo will notify your system of events via growl if that button is selected.
+    This 10-digit number is the code used to access your TiVo.  It is different for each customer.  Without the correct MAK, iTiVo will not work.  You must get yours from the TiVo or from the tivo.com website.  Instructions on how to do this are in the [http://code.google.com/p/itivo/wiki/Installation Installation Document].
 
   * Download Location:
     This is the directory into which downloads will go.  Clicking on the button will enable you to select a new location.  Remember that downloads can get very big, so make sure you have a lot of space available.
 
   * Download Format:
-    This is a pulldown menu with multiple selections. The higher quality/size you select, the slower the conversion process will be.  If you're planning on just watching a show on your iPhone and then discarding it, iPhone low-res is generally all you need.
+    This is a pulldown menu with multiple selections. The higher quality/size you select, the slower the conversion process will be.
 
   * iTunes Icon:
     Lets you select if it should include a starting frame from the video as your icon in itunes.
 
   * Import to iTunes
-    If a download completes successfully, and this button is selected, iTiVo will automatically attempt to add that show to your iTunes library.  It will generally show up under TV shows (unless it's a 90 min+ show without an episode title, in which case iTiVo assumes this is a movie and puts it under Movies).  Only some download formats are supported by iTunes.
+    If a download completes successfully, and this button is selected, iTiVo will automatically attempt to add that show to your iTunes library.  It will generally show up under TV shows (sometimes under Movies).  Only some download formats are supported by iTunes.
 
   * Sync (iTunes) after import
     If a download is successfully added, then selecting this will tell iTunes to 'sync' to all attached devices.  If you had earlier configured your iTunes to add all TV shows to you iPhone, then a completed download will automatically be downloaded to your iPhone if it is connected.
 
+  * Commercial Skip
+    If enabled, it will attempt to use a program named "comskip" to detect where commercials are in your show, and remove them.  Turning this option on slows down downloads considerably. It also takes up a LOT of hard drive space for temporary data.  And most importantly, it does its best to figure out what a commercial is, but can make mistakes (leaving commercials in, or worse, cutting out parts of your show).  You can read up on comskip on [http://www.kaashoek.com/comskip/ its homepage].
+
 = Download Queue =
-The download queue is simply a list of shows scheduled for downloading.  Since the tivo only allows you to download one show at a time, it's sometimes easier to make a list of shows you wanted downloaded, and then have them all go at once while you go out for a while.  The list is processed top-to-bottom.  Although there is no mechanism for moving shows around the list, you can "cheat".  Adding a show already on the queue will push that show to the bottom.  Even if you do not select to 'download queue', if the program has been idle for an hour, it will attempt to download the queue (this is to support subscriptions).
+The download queue is simply a list of shows scheduled for downloading.  Since the tivo only allows you to download one show at a time, it's sometimes easier to make a list of shows you wanted downloaded, and then have them all go at once while you go out for a while.  The list is processed top-to-bottom.  Although there is no mechanism for moving shows around the list, you can "cheat".  Adding a show already on the queue will push that show to the bottom.  Even if you do not select to 'download queue', if the program has been idle, it will attempt to download the queue (this is to support subscriptions).
 
 = Subscriptions =
 If there is a show you always choose to download from your tivo (daily news for example, or a show you always watch on your iphone) you can 'subscribe' to that show.  When a subscription exists, the iTiVo program checks hourly for shows on that list.  If a new show with that title has become available, it will add it to the queue automatically.  A show only gets added once (so if you cancel, or quit iTiVo, you will need to manually add the show to the queue again if you still want it).
