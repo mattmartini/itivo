@@ -1,5 +1,9 @@
 = Help =
-iTiVo is a tool that is intended to help you get shows from your TiVo to your computer or to your portable device (such as an iPhone).  It is really just a compilation of tools written by others, combined with a friendly interface to make life simple for you.  It is still under heavy development, so you may notice bugs and new releases often.  Please report bugs under the 'issues' tab above if you can.
+iTiVo is a tool that is intended to help you get shows from your TiVo to your computer or to your portable device (such as an iPhone).  It is really just a compilation of tools written by others, combined with a friendly interface to make life simple for you.  It is still under heavy development, so you may notice bugs and new releases often.
+
+  If you have bugs to report, please use the [http://code.google.com/p/itivo/issues/entry?template=Defect%20report%20from%20user bug report form].
+
+  If you have a question, check out the [http://code.google.com/p/itivo/wiki/FAQ FAQ].
 
 = Installation/Configuration =
 Before you can use iTiVo, you need to install it, tell your TiVo to allow transfers, and tell iTiVo your 'tivo key (MAK)'.  Instructions on how to do all of this are in the [http://code.google.com/p/itivo/wiki/Installation Installation Document].
