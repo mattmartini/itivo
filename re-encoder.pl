@@ -30,15 +30,15 @@ if ($encodeMode == 0) {
    $vbitrate=1500;
    $abitrate=128;
    $width=640;
-   $height=-10;
-   $shellScript3 = $AppDir . "Contents/Resources/mencoder -edl $Edl -af volume=13:1 -of lavf -lavfopts format=ipod -oac faac -faacopts mpeg=4:object=2:raw:br=$abitrate -ovc x264 -x264encopts nocabac:level_idc=30:bitrate=$vbitrate:threads=auto:bframes=0:global_header -vf pp=lb,scale=$width:$height,harddup -o $Target $Src >$Progress 2>&1";
+   $height=480;
+   $shellScript3 = $AppDir . "Contents/Resources/mencoder -edl $Edl -af volume=13:1 -of lavf -lavfopts format=ipod -oac faac -faacopts mpeg=4:object=2:raw:br=$abitrate -ovc x264 -x264encopts nocabac:level_idc=30:bitrate=$vbitrate:threads=auto:bframes=0:global_header -vf pp=lb,dsize=$width:$height:0,scale=-8:-8,harddup -o $Target $Src >$Progress 2>&1";
 } elsif ($encodeMode == 2) {
 # iphone
    $vbitrate=256;
    $abitrate=128;
    $width=480;
    $height=320;
-   $shellScript3 = $AppDir . "Contents/Resources/mencoder -edl $Edl -af volume=13:1 -of lavf -lavfopts format=ipod -oac faac -faacopts mpeg=4:object=2:raw:br=$abitrate -ovc x264 -x264encopts nocabac:level_idc=30:bitrate=$vbitrate:threads=auto:bframes=0:global_header -vf pp=lb,scale=$width:$height,harddup -o $Target $Src >$Progress 2>&1";
+   $shellScript3 = $AppDir . "Contents/Resources/mencoder -edl $Edl -af volume=13:1 -of lavf -lavfopts format=ipod -oac faac -faacopts mpeg=4:object=2:raw:br=$abitrate -ovc x264 -x264encopts nocabac:level_idc=30:bitrate=$vbitrate:threads=auto:bframes=0:global_header -vf pp=lb,dsize=$width:$height:0,scale=-8:-8,harddup -o $Target $Src >$Progress 2>&1";
 } elsif ($encodeMode == 3) {
 # ipod
    $vbitrate=256;
