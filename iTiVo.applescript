@@ -4,7 +4,7 @@
 --  Created by David Benesch on 12/03/06.
 --  Last updated by Yoav Yerushalmi on 11/09/08.
 --  Copyright 2006-2007 David Benesch. All rights reserved.
-property debug_level : 1
+property debug_level : 3
 property already_launched : 0
 property filenameExtension : ".mp4"
 property targetData : missing value
@@ -43,6 +43,7 @@ property iTunesSync : ""
 property iTunesIcon : ""
 property format : ""
 property postDownloadCmd : ""
+property comSkip : 0
 property SUFeedURL : "http://itivo.googlecode.com/svn/trunk/www/iTiVo.xml"
 
 property panelWIndow : missing value
@@ -185,11 +186,11 @@ end hideResSettings
 on formatCompatItunes(formatName)
 	if (formatName = "No Conversion (native MPEG-2)") then
 		return false
-	else if (formatName = "iPod/iPhone high-res") then
+	else if (formatName = "iPod/iPhone super-res") then
 		return true
-	else if (formatName = "iPhone low-res") then
+	else if (formatName = "iPhone") then
 		return true
-	else if (formatName = "iPod low-res") then
+	else if (formatName = "iPod") then
 		return true
 	else if (formatName = "Zune") then
 		return true
@@ -258,6 +259,13 @@ on setupPrefsTab(tabName)
 				set title of popup button "icon" of view "DownloadingView" of tab view "TopTab" to first item of iTunesIcons
 			end if
 		else if (tabName = "ComSkipTab") then
+			if (format = "No Conversion (native MPEG-2)") then
+				set comSkip to 0
+				set enabled of button "comSkip" of view "comSkipView" of tab view "TopTab" to false
+			else
+				set enabled of button "comSkip" of view "comSkipView" of tab view "TopTab" to true
+			end if
+			set state of button "comSkip" of view "comSkipView" of tab view "TopTab" to comSkip
 		else if (tabName = "AdvancedTab") then
 			set contents of text field "postDownloadCmd" of view "AdvancedView" of tab view "TopTab" to postDownloadCmd
 			if (SUFeedURL = "http://itivo.googlecode.com/svn/trunk/www/iTiVo-beta.xml") then
@@ -285,6 +293,7 @@ on recordPrefsTab()
 			set iTunesSync to state of button "iTunesSync" of view "DownloadingView" of tab view "TopTab"
 			set iTunesIcon to title of popup button "icon" of view "DownloadingView" of tab view "TopTab"
 		else if (currentPrefsTab = "ComSkipTab") then
+			set comSkip to state of button "comSkip" of view "comSkipView" of tab view "TopTab"
 		else if (currentPrefsTab = "AdvancedTab") then
 			set postDownloadCmd to contents of text field "postDownloadCmd" of view "AdvancedView" of tab view "TopTab"
 			if (state of button "betaUpdate" of view "AdvancedView" of tab view "TopTab" = 1) then
@@ -349,6 +358,7 @@ on registerSettings()
 		make new default entry at end of default entries with properties {name:"customHeight", contents:""}
 		make new default entry at end of default entries with properties {name:"customAudioBR", contents:""}
 		make new default entry at end of default entries with properties {name:"customVideoBR", contents:""}
+		make new default entry at end of default entries with properties {name:"comSkip", contents:comSkip}
 		make new default entry at end of default entries with properties {name:"postDownloadCmd", contents:postDownloadCmd}
 		make new default entry at end of default entries with properties {name:"SUFeedURL", contents:SUFeedURL}
 		make new default entry at end of default entries with properties {name:"openDetail", contents:""}
@@ -386,10 +396,11 @@ on readSettings()
 			set customAudioBR to contents of default entry "customAudioBR"
 			set customVideoBR to contents of default entry "customVideoBR"
 			set SUFeedURL to contents of default entry "SUFeedURL"
-			set postDownloadCmd to contents of default entry "postDownloadCmd"
 			set openDetail to contents of default entry "openDetail"
 			set DLHistory to contents of default entry "DLHistory"
 			set targetDataSList to contents of default entry "targetDataSList"
+			set comSkip to contents of default entry "comSkip"
+			set postDownloadCmd to contents of default entry "postDownloadCmd"
 		end try
 		try
 			set CLeft to contents of default entry "CLeft"
@@ -508,6 +519,7 @@ on writeSettings()
 			set contents of default entry "customHeight" to customHeight as string
 			set contents of default entry "customVideoBR" to customVideoBR as string
 			set contents of default entry "customAudioBR" to customAudioBR as string
+			set contents of default entry "comSkip" to comSkip
 			set contents of default entry "postDownloadCmd" to postDownloadCmd
 			set contents of default entry "SUFeedURL" to SUFeedURL
 			set contents of default entry "openDetail" to (openDetail as integer)
@@ -699,7 +711,7 @@ on clicked theObject
 				
 				set success to 1
 				try
-					set shellCmd to "rm /tmp/iTiVoDL-" & UserName
+					set shellCmd to "rm /tmp/iTiVoDL*-" & UserName
 					do shell script shellCmd
 				end try
 				set success to my downloadItem(currentProcessSelectionQ2, 1, 4)
@@ -1022,6 +1034,9 @@ on choose menu item theObject
 		else
 			my hideResSettings()
 		end if
+		if (myformat = "No Conversion (native MPEG-2)") then
+			set comSkip to 0
+		end if
 		if (my formatCompatItunes(myformat)) then
 			set enabled of button "iTunes" of view "DownloadingView" of tab view "TopTab" of panelWIndow to true
 			set enabled of button "iTunesSync" of view "DownloadingView" of tab view "TopTab" of panelWIndow to true
@@ -1199,13 +1214,13 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 	if format = "No Conversion (native MPEG-2)" then
 		set encodeMode to 0
 		set filenameExtension to ".mpg"
-	else if format = "iPod/iPhone high-res" then
+	else if format = "iPod/iPhone super-res" then
 		set encodeMode to 1
 		set filenameExtension to ".mp4"
-	else if format = "iPhone low-res" then
+	else if format = "iPhone" then
 		set encodeMode to 2
 		set filenameExtension to ".mp4"
-	else if format = "iPod low-res" then
+	else if format = "iPod" then
 		set encodeMode to 3
 		set filenameExtension to ".mp4"
 	else if format = "Zune" then
@@ -1235,21 +1250,26 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 		set filenameExtension to ".mpg"
 	end if
 	try
-		set shellCmd to "rm /tmp/iTiVoDL-" & UserName
+		set shellCmd to "rm /tmp/iTiVoDL*-" & UserName
 		do shell script shellCmd
 	end try
 	set cancelDownload to 0
-	repeat while ((not my isDownloadComplete(filePath, fullFileSize, currentTry)) and currentTry < retryCount and cancelDownload = 0)
+	set timeRemaining to 200
+	repeat while ((not (my isDownloadComplete(filePath, fullFileSize, currentTry) and timeRemaining ≤ 1)) and currentTry < retryCount and cancelDownload = 0)
 		tell window "iTiVo"
 			try
-				set shellCmd to "rm /tmp/iTiVoDLPipe*-" & UserName
+				set shellCmd to "rm /tmp/iTiVoDLPipe*-" & UserName & "*"
 				my debug_log(shellCmd)
 				do shell script shellCmd
 			end try
-			set shellCmd to "mkfifo /tmp/iTiVoDLPipe-" & UserName & "; mkfifo /tmp/iTiVoDLPipe2-" & UserName
+			if (comSkip = 0) then
+				set shellCmd to "mkfifo /tmp/iTiVoDLPipe-" & UserName & " /tmp/iTiVoDLPipe2-" & UserName & ".mpg"
+			else
+				set shellCmd to "mkfifo /tmp/iTiVoDLPipe-" & UserName & " ; touch /tmp/iTiVoDLPipe{2,3}-" & UserName & ".mpg"
+			end if
 			my debug_log(shellCmd)
 			do shell script shellCmd
-			set ShellScriptCommand to "perl " & myPath & "Contents/Resources/http-fetcher.pl " & IPA & " " & id & " " & showNameEncoded & " " & MAK
+			set ShellScriptCommand to "perl " & myPath & "Contents/Resources/http-fetcher.pl " & IPA & " " & id & " " & showNameEncoded & " " & MAK & " /tmp/iTiVoDLPipe-" & UserName
 			set ShellScriptCommand to ShellScriptCommand & " &> /dev/null & echo $! ;exit 0"
 			my debug_log(ShellScriptCommand)
 			do shell script ShellScriptCommand
@@ -1257,10 +1277,12 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 			set ShellScriptCommand to ShellScriptCommand & " &> /dev/null & echo $! ;exit 0"
 			my debug_log(ShellScriptCommand)
 			do shell script ShellScriptCommand
-			set ShellScriptCommand to "perl " & myPath & "Contents/Resources/re-encoder.pl " & IPA & " " & showFullNameEncoded & " " & id & " " & MAK & " " & myPath2 & " " & myHomePathP2 & " " & showNameEncoded & " " & encodeMode & " " & customWidth & " " & customHeight & " " & customVideoBR & " " & customAudioBR & " " & fullFileSize & " " & filenameExtension
-			set ShellScriptCommand to ShellScriptCommand & " &> /dev/null & echo $! ;exit 0"
-			my debug_log(ShellScriptCommand)
-			do shell script ShellScriptCommand
+			if (comSkip = 0) then
+				set ShellScriptCommand to "perl " & myPath & "Contents/Resources/re-encoder.pl " & myPath2 & " " & myHomePathP2 & " " & showFullNameEncoded & filenameExtension & " " & encodeMode & " " & customWidth & " " & customHeight & " " & customVideoBR & " " & customAudioBR
+				set ShellScriptCommand to ShellScriptCommand & " &> /dev/null & echo $! ;exit 0"
+				my debug_log(ShellScriptCommand)
+				do shell script ShellScriptCommand
+			end if
 			set currentFileSize to 0
 			set progressDifference to -1 * currentProgress
 			tell progress indicator "Status" to increment by progressDifference
@@ -1291,6 +1313,7 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 				end using terms from
 			end tell
 		end if
+		set currentTry to currentTry + 1
 		tell window "iTiVo"
 			set ETA to ""
 			set visible of progress indicator "Status" to true
@@ -1360,9 +1383,125 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 				end if
 				delay 0.5
 			end repeat
+			if (my isDownloadComplete(filePath, fullFileSize, currentTry) and comSkip = 1) then
+				tell progress indicator "Status" to increment by -1 * currentProgress
+				set currentProgresss to 0
+				set downloadExistsCmdString to "du -k -d 0 /tmp/iTiVoDLPipe3-" & UserName & ".mpg ;exit 0"
+				set timeoutCount to 0
+				set downloadExists to 1
+				set currentPercent to 0
+				set hrs to 0
+				set mins to 0
+				set secs to 0
+				set timeOn to "0:0:0"
+				set frameOn to 0
+				set prevframeOn to 0
+				set visible of progress indicator "Status" to true
+				set ShellScriptCommand to "perl " & myPath & "Contents/Resources/remove-commercials.pl " & myPath2
+				set ShellScriptCommand to ShellScriptCommand & " &> /dev/null & echo $! ;exit 0"
+				my debug_log(ShellScriptCommand)
+				do shell script ShellScriptCommand
+				repeat while timeoutCount < 120 and cancelDownload as integer = 0 and downloadExists as integer = 1 and cancelAllDownloads as integer = 0
+					if (debug_level ≥ 3) then
+						my debug_log("comskip timeout: " & timeoutCount & " download:" & downloadExists & "   frameOn: " & frameOn & "  timeOn:" & timeOn & "   currentPercent: " & currentPercent)
+					end if
+					set {frameOn, currentPercent, timeOn} to my getcomskip()
+					set downloadExistsCmd to do shell script downloadExistsCmdString
+					if downloadExistsCmd is not equal to "" then
+						set downloadExists to 1
+					else
+						set downloadExists to 0
+					end if
+					if frameOn as integer > prevframeOn as integer then
+						set prevframeOn to frameOn
+						set timeoutCount to 0
+						set contents of text field "status" to "Commercial Skip " & first item of currentProcessSelectionParam & " - " & second item of currentProcessSelectionParam
+					else
+						set timeoutCount to timeoutCount + 1
+						if timeoutCount = 20 then
+							set contents of text field "status" to "Commercial Skip " & first item of currentProcessSelectionParam & " (stalled)"
+						end if
+					end if
+					try
+						set progressDifference to currentPercent - currentProgress
+						tell progress indicator "Status" to increment by progressDifference
+						set currentProgress to currentPercent as integer
+						if currentProgress > 100 then
+							set currentProgress to 100
+						end if
+						set contents of text field "status2" to ((timeOn as string) & " processed      (" & (100 - currentPercent) as string) & "% remaining)"
+					end try
+					delay 0.5
+				end repeat
+				tell progress indicator "Status" to increment by -1 * currentProgress
+				set currentProgresss to 0
+				set downloadExistsCmdString to "du -k -d 0 /tmp/iTiVoDLPipe2-" & UserName & ".mpg ;exit 0"
+				set timeoutCount to 0
+				set downloadExists to 1
+				set currentPercent to 0
+				set timeOn to 0.0
+				set prevtimeOn to 0
+				set visible of progress indicator "Status" to true
+				set ShellScriptCommand to "perl " & myPath & "Contents/Resources/re-encoder.pl " & myPath2 & " " & myHomePathP2 & " " & showFullNameEncoded & filenameExtension & " " & encodeMode & " " & customWidth & " " & customHeight & " " & customVideoBR & " " & customAudioBR
+				set ShellScriptCommand to ShellScriptCommand & " &> /dev/null & echo $! ;exit 0"
+				my debug_log(ShellScriptCommand)
+				do shell script ShellScriptCommand
+				repeat while timeoutCount < 120 and cancelDownload as integer = 0 and downloadExists as integer = 1 and cancelAllDownloads as integer = 0
+					if (debug_level ≥ 3) then
+						my debug_log("mencoder timeout: " & timeoutCount & " download:" & downloadExists & "   timeRemaining: " & timeRemaining & "  timeOn:" & timeOn & "   currentPercent: " & currentPercent)
+					end if
+					set {timeOn, currentPercent, timeRemaining} to my getmencoder()
+					set downloadExistsCmd to do shell script downloadExistsCmdString
+					if downloadExistsCmd is not equal to "" then
+						set downloadExists to 1
+					else
+						set downloadExists to 0
+					end if
+					if timeOn as real > prevtimeOn as real then
+						set prevtimeOn to timeOn
+						set timeoutCount to 0
+						set contents of text field "status" to "Encoding " & first item of currentProcessSelectionParam & " - " & second item of currentProcessSelectionParam
+					else
+						set timeoutCount to timeoutCount + 1
+						if timeoutCount = 20 then
+							set contents of text field "status" to "Encoding " & first item of currentProcessSelectionParam & " (waiting)"
+						end if
+					end if
+					try
+						set progressDifference to currentPercent - currentProgress
+						tell progress indicator "Status" to increment by progressDifference
+						set currentProgress to currentPercent as integer
+						if currentProgress > 100 then
+							set currentProgress to 100
+						end if
+						set timedone to timeOn as integer
+						set hrs to (timedone div 3600)
+						if (hrs < 10) then
+							set hrs to "0" & hrs as string
+						else
+							set hrs to hrs as string
+						end if
+						set timedone to timedone mod 3600
+						set mins to (timedone div 60)
+						if (mins < 10) then
+							set mins to "0" & mins as string
+						else
+							set mins to mins as string
+						end if
+						set secs to (timedone mod 60)
+						if (secs < 10) then
+							set secs to "0" & secs as string
+						else
+							set secs to secs as string
+						end if
+						set timedone to hrs & ":" & mins & ":" & secs
+						set contents of text field "status2" to (timedone & " encoded      (" & (timeRemaining + 1) as string) & " mins remaining)"
+					end try
+					delay 0.5
+				end repeat
+			end if
 		end tell
 		my performCancelDownload()
-		set currentTry to currentTry + 1
 		my debug_log("Download completed")
 		if GrowlAppName = "GrowlHelperApp.app" then
 			tell application GrowlAppName
@@ -1716,6 +1855,26 @@ on getCurrentFilesize(filePath)
 	end if
 end getCurrentFilesize
 
+on getcomskip()
+	set myPath to my prepareCommand(POSIX path of (path to me))
+	set myresult to (do shell script "perl " & myPath & "Contents/Resources/comskipSize.pl")
+	if (myresult = "") then
+		return {0, 0, "0:0:0"}
+	else
+		return {first word of myresult, second word of myresult, "" & third word of myresult & ":" & fourth word of myresult & ":" & fifth word of myresult}
+	end if
+end getcomskip
+
+on getmencoder()
+	set myPath to my prepareCommand(POSIX path of (path to me))
+	set myresult to (do shell script "perl " & myPath & "Contents/Resources/mencoderSize.pl")
+	if (myresult = "") then
+		return {0, 0, 0}
+	else
+		return words in myresult
+	end if
+end getmencoder
+
 on updateSubscriptionList(nname, ndate, umissing)
 	set newdate to my getDate(ndate)
 	set rowCountS to count of data rows of data source 1 of table view "subscriptionListTable" of scroll view "subscriptionList" of view "bottomRightView" of split view "splitView2" of box "bottomBox" of split view "splitView1" of window "iTiVo"
@@ -1822,7 +1981,7 @@ on addSelectionToQueue(currentProcessSelection)
 end addSelectionToQueue
 
 on isDownloadComplete(filePath, fullFileSize, tryCount)
-	if (my getCurrentFilesize(filePath)) as real < (fullFileSize * (1 - (0.15 * tryCount))) as real then
+	if (my getCurrentFilesize(filePath)) as real < (fullFileSize * (1 - (0.2 * tryCount))) as real then
 		return false
 	else
 		return true
@@ -1830,13 +1989,19 @@ on isDownloadComplete(filePath, fullFileSize, tryCount)
 end isDownloadComplete
 
 on debug_log(log_string)
-	if (debug_level ≥ 1) then
-		log log_string
-	end if
-	if (debug_level ≥ 2) then
-		set theLine to (do shell script "date  +'%Y-%m-%d %H:%M:%S'" as string) & " " & log_string
+	try
+		if (debug_level ≥ 1) then
+			log log_string
+		end if
+		if (debug_level ≥ 2) then
+			set theLine to (do shell script "date  +'%Y-%m-%d %H:%M:%S'" as string) & " " & log_string
+			do shell script "echo '" & theLine & "' >> ~/iTiVo.log"
+		end if
+	on error
+		log "Failed to output string"
+		set theLine to (do shell script "date  +'%Y-%m-%d %H:%M:%S'" as string) & " ERROR: Failing to output correct string"
 		do shell script "echo '" & theLine & "' >> ~/iTiVo.log"
-	end if
+	end try
 end debug_log
 
 on mouse down theObject event theEvent
@@ -1868,4 +2033,3 @@ end idle
 on should quit after last window closed theObject
 	return true
 end should quit after last window closed
-
