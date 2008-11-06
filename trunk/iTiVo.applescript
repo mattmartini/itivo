@@ -4,7 +4,7 @@
 --  Created by David Benesch on 12/03/06.
 --  Last updated by Yoav Yerushalmi on 11/09/08.
 --  Copyright 2006-2007 David Benesch. All rights reserved.
-property debug_level : 3
+property debug_level : 0
 property already_launched : 0
 property filenameExtension : ".mp4"
 property targetData : missing value
