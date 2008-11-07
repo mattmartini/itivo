@@ -4,7 +4,7 @@
   # This program is buggy!
     I only have a tivo 3 and an intel iMac running Leopard to test with.  I appreciate bug reports.
   # I clicked "subscribe" but it's not downloading all episodes of CSI!
-    Subscribing only downloads 'future' episodes that show up on the tivo AFTER you started the subscription.  If you want to download all the CSI's currently on your tivo, select 'Show' (to sort all shows by name), find the first CSI and click on it.  Find the last CSI and shift-click on it.   Then select "Add Shows to Queue"
+    Subscribing only downloads 'future' episodes that show up on the tivo AFTER you started the subscription.  If you want to download all the CSI's currently on your tivo, select the table column heading 'show' (to sort all shows by name), find the first CSI and click on it.  Find the last CSI and shift-click on it.   Then select "Add Shows to Queue"
   # How do I get "The Daily Show" onto my iPhone automatically?
     Read the documentation at http://code.google.com/p/itivo/wiki/Subscriptions
   # I have questions about my TiVo.
