@@ -3,7 +3,9 @@ iTiVo is a tool that is intended to help you get shows from your TiVo to your co
 
   If you have bugs to report, please use the [http://code.google.com/p/itivo/issues/entry?template=Defect%20report%20from%20user bug report form].
 
-  If you have a question, check out the [http://code.google.com/p/itivo/wiki/FAQ FAQ].
+  If you have a question, check out the [http://code.google.com/p/itivo/wiki/FAQ FAQ]. 
+
+  Alternatively, you can go to the [http://tivocommunity.com/tivo-vb/showthread.php?t=409772 TiVo Community iTiVo page] and ask there.
 
 = Installation/Configuration =
 Before you can use iTiVo, you need to install it, tell your TiVo to allow transfers, and tell iTiVo your 'tivo key (MAK)'.  Instructions on how to do all of this are in the [http://code.google.com/p/itivo/wiki/Installation Installation Document].
