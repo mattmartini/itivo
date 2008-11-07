@@ -1215,7 +1215,7 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 	end try
 	set cancelDownload to 0
 	set timeRemaining to 0
-	repeat while ((not (my isDownloadComplete(filePath, fullFileSize, currentTry) and (timeRemaining ≤ 3 * (retryCount + 1)))) and currentTry < retryCount and cancelDownload = 0)
+	repeat while ((not (my isDownloadComplete(filePath, fullFileSize, currentTry) and (timeRemaining ≤ 5 * (retryCount + 1)))) and currentTry < retryCount and cancelDownload = 0)
 		tell window "iTiVo"
 			try
 				set shellCmd to "rm /tmp/iTiVoDLPipe*-" & UserName & "*"
@@ -1350,6 +1350,7 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 				set currentProgresss to 0
 				set downloadExistsCmdString to "du -k -d 0 /tmp/iTiVoDLPipe3-" & UserName & ".mpg ;exit 0"
 				set timeoutCount to 0
+				set timeRemaining to 200
 				set downloadExists to 1
 				set currentPercent to 0
 				set hrs to 0
