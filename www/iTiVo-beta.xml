@@ -9,7 +9,6 @@
     <description>A MAC interface to your TiVo</description>
     <language>en-us</language>
 		<item>
-		<item>
 			<title>Version 1.3</title>
 			<sparkle:releaseNotesLink>http://itivo.googlecode.com/svn/trunk/www/changelog.html</sparkle:releaseNotesLink>
 			<pubDate>Thu, 06 Nov 2008 18:14:28 -0800</pubDate>
