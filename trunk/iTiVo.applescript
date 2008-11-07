@@ -410,7 +410,12 @@ on readSettings()
 		tell application "Finder" to set GrowlAppName to name of application file id "com.Growl.GrowlHelperApp"
 	end try
 	if GrowlAppName = "GrowlHelperApp.app" then
-		my registerGrowl()
+		try
+			my registerGrowl()
+		on error
+			my debug_log("Failed to register growl")
+			set GrowlAppName to ""
+		end try
 	end if
 	my debug_log("using format : " & format)
 	set TiVos to title of every menu item of popup button "MyTiVos" of window "iTiVo"
@@ -1209,8 +1214,8 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 		do shell script shellCmd
 	end try
 	set cancelDownload to 0
-	set timeRemaining to 200
-	repeat while ((not (my isDownloadComplete(filePath, fullFileSize, currentTry) and timeRemaining ≤ 1)) and currentTry < retryCount and cancelDownload = 0)
+	set timeRemaining to 0
+	repeat while ((not (my isDownloadComplete(filePath, fullFileSize, currentTry) and (timeRemaining ≤ 3 * (retryCount + 1)))) and currentTry < retryCount and cancelDownload = 0)
 		tell window "iTiVo"
 			try
 				set shellCmd to "rm /tmp/iTiVoDLPipe*-" & UserName & "*"
@@ -1255,18 +1260,20 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 			end if
 		end tell
 		if GrowlAppName = "GrowlHelperApp.app" then
-			my debug_log("Informing via Growl")
-			tell application GrowlAppName
-				using terms from application "GrowlHelperApp"
-					if currentTry > 0 then
-						notify with name "Beginning Download" title "Retrying (try number " & currentTry + 1 & ")
+			try
+				my debug_log("Informing via Growl")
+				tell application GrowlAppName
+					using terms from application "GrowlHelperApp"
+						if currentTry > 0 then
+							notify with name "Beginning Download" title "Retrying (try number " & currentTry + 1 & ")
 " & (item 1 of currentProcessSelectionParam) description (item 2 of currentProcessSelectionParam) application name "iTiVo"
-					else
-						notify with name "Beginning Download" title "Downloading 
+						else
+							notify with name "Beginning Download" title "Downloading 
 " & (item 1 of currentProcessSelectionParam) description (item 2 of currentProcessSelectionParam) application name "iTiVo"
-					end if
-				end using terms from
-			end tell
+						end if
+					end using terms from
+				end tell
+			end try
 		end if
 		set currentTry to currentTry + 1
 		tell window "iTiVo"
@@ -1459,17 +1466,19 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 		my performCancelDownload()
 		my debug_log("Download completed")
 		if GrowlAppName = "GrowlHelperApp.app" then
-			tell application GrowlAppName
-				using terms from application "GrowlHelperApp"
-					if (my isDownloadComplete(filePath, fullFileSize, currentTry)) then
-						notify with name "Ending Download" title "Finished
+			try
+				tell application GrowlAppName
+					using terms from application "GrowlHelperApp"
+						if (my isDownloadComplete(filePath, fullFileSize, currentTry)) then
+							notify with name "Ending Download" title "Finished
 " & (item 1 of currentProcessSelectionParam as string) description (item 2 of currentProcessSelectionParam as string) application name "iTiVo"
-					else
-						notify with name "Ending Download" title "Incomplete Download!
+						else
+							notify with name "Ending Download" title "Incomplete Download!
 " & (item 1 of currentProcessSelectionParam as string) description (item 2 of currentProcessSelectionParam as string) application name "iTiVo"
-					end if
-				end using terms from
-			end tell
+						end if
+					end using terms from
+				end tell
+			end try
 		end if
 	end repeat
 	tell window "iTiVo"

@@ -8,7 +8,7 @@ foreach $procname (@tokill) {
 	$processes = `ps -jAww -o command | grep -e 'iTiVo.app'`;
 	@lines = split('\n', $processes);
 	foreach $n (@lines) {
-		if ($n =~ /^[a-z]+\s+(\d+).*\/$procname/) {
+		if ($n =~ /^[\S+]+\s+(\d+).*\/$procname/) {
 			`kill $1`;
 		}
 	}
@@ -19,7 +19,7 @@ foreach $procname (@tokill) {
 	$processes = `ps -jAww -o command | grep -e 'iTiVo.app'`;
 	@lines = split('\n', $processes);
 	foreach $n (@lines) {
-		if ($n =~ /^[a-z]+\s+(\d+).*\/$procname/) {
+		if ($n =~ /^[\S+]+\s+(\d+).*\/$procname/) {
 			`kill $1`;
 		}
 	}
@@ -28,10 +28,10 @@ foreach $procname (@tokill) {
 $processes = `ps -jAww -o command | grep -e 'TiVoDLPipe'`;
 @lines = split('\n', $processes);
 foreach $n (@lines) {
-	if ($n =~ /^[a-z]+\s+(\d+).*cat/) {
+	if ($n =~ /^[\S+]+\s+(\d+).*cat/) {
 		`kill -9 $1`;
 	}
-	if ($n =~ /^[a-z]+\s+(\d+).*tee/) {
+	if ($n =~ /^[\S+]+\s+(\d+).*tee/) {
 		`kill -9 $1`;
 	}
 }
