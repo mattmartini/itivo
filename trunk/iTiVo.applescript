@@ -28,7 +28,7 @@ property sortColumn : ""
 property customHeight : 480
 property customWidth : 640
 property customAudioBR : 128
-property customVideoBR : 1800
+property customVideoBR : 512
 property openDetail : 1
 property DLHistory : {}
 property GrowlAppName : ""
@@ -338,16 +338,6 @@ on registerSettings()
 		make new default entry at end of default entries with properties {name:"IPA", contents:IPA}
 		make new default entry at end of default entries with properties {name:"MAK", contents:MAK}
 		make new default entry at end of default entries with properties {name:"DL", contents:""}
-		make new default entry at end of default entries with properties {name:"CLeft", contents:""}
-		make new default entry at end of default entries with properties {name:"CTop", contents:""}
-		make new default entry at end of default entries with properties {name:"CRight", contents:""}
-		make new default entry at end of default entries with properties {name:"CBottom", contents:""}
-		make new default entry at end of default entries with properties {name:"BBottom", contents:""}
-		make new default entry at end of default entries with properties {name:"Col1", contents:""}
-		make new default entry at end of default entries with properties {name:"Col2", contents:""}
-		make new default entry at end of default entries with properties {name:"Col3", contents:""}
-		make new default entry at end of default entries with properties {name:"Col5", contents:""}
-		make new default entry at end of default entries with properties {name:"Col6", contents:""}
 		make new default entry at end of default entries with properties {name:"LaunchCount", contents:""}
 		make new default entry at end of default entries with properties {name:"TiVo", contents:""}
 		make new default entry at end of default entries with properties {name:"format", contents:""}
@@ -402,43 +392,12 @@ on readSettings()
 			set comSkip to contents of default entry "comSkip"
 			set postDownloadCmd to contents of default entry "postDownloadCmd"
 		end try
-		try
-			set CLeft to contents of default entry "CLeft"
-			set CTop to contents of default entry "CTop"
-			set CRight to contents of default entry "CRight"
-			set CBottom to contents of default entry "CBottom"
-			set Col1 to contents of default entry "Col1"
-			set Col2 to contents of default entry "Col2"
-			set Col3 to contents of default entry "Col3"
-			set Col5 to contents of default entry "Col5"
-			set Col6 to contents of default entry "Col6"
-		on error
-			set CLeft to ""
-		end try
-		try
-			set BBottom to contents of default entry "BBottom"
-		on error
-			set BBottom to ""
-		end try
 	end tell
 	try
 		tell application "Finder" to set GrowlAppName to name of application file id "com.Growl.GrowlHelperApp"
 	end try
 	if GrowlAppName = "GrowlHelperApp.app" then
 		my registerGrowl()
-	end if
-	if CLeft > 0 then
-		set coordinate system to AppleScript coordinate system
-		set bounds of window "iTiVo" to {CLeft, CTop, CRight, CBottom}
-		set (width of table column "IDVal" of table view "ShowListTable" of scroll view "ShowList" of box "topBox" of split view "splitView1" of window "iTiVo") to Col1
-		set (width of table column "ShowVal" of table view "ShowListTable" of scroll view "ShowList" of box "topBox" of split view "splitView1" of window "iTiVo") to Col2
-		set (width of table column "EpisodeVal" of table view "ShowListTable" of scroll view "ShowList" of box "topBox" of split view "splitView1" of window "iTiVo") to Col3
-		set (width of table column "DateVal" of table view "ShowListTable" of scroll view "ShowList" of box "topBox" of split view "splitView1" of window "iTiVo") to Col5
-		set (width of table column "SizeVal" of table view "ShowListTable" of scroll view "ShowList" of box "topBox" of split view "splitView1" of window "iTiVo") to Col6
-	end if
-	if BBottom > 0 then
-		set tempBounds to bounds of box "topBox" of split view "splitView1" of window "iTiVo"
-		set bounds of box "topBox" of split view "splitView1" of window "iTiVo" to {first item of tempBounds, second item of tempBounds, third item of tempBounds, BBottom}
 	end if
 	my debug_log("using format : " & format)
 	set TiVos to title of every menu item of popup button "MyTiVos" of window "iTiVo"
@@ -485,30 +444,12 @@ end getSettingsFromUI
 on writeSettings()
 	my debug_log("write_settings")
 	try
-		set coordinate system to AppleScript coordinate system
-		set winBounds to bounds of window "iTiVo"
-		set boxBounds to bounds of box "topBox" of split view "splitView1" of window "iTiVo"
-		set Col1 to (width of table column "IDVal" of table view "ShowListTable" of scroll view "ShowList" of box "topBox" of split view "splitView1" of window "iTiVo")
-		set Col2 to (width of table column "ShowVal" of table view "ShowListTable" of scroll view "ShowList" of box "topBox" of split view "splitView1" of window "iTiVo")
-		set Col3 to (width of table column "EpisodeVal" of table view "ShowListTable" of scroll view "ShowList" of box "topBox" of split view "splitView1" of window "iTiVo")
-		set Col5 to (width of table column "DateVal" of table view "ShowListTable" of scroll view "ShowList" of box "topBox" of split view "splitView1" of window "iTiVo")
-		set Col6 to (width of table column "SizeVal" of table view "ShowListTable" of scroll view "ShowList" of box "topBox" of split view "splitView1" of window "iTiVo")
 		set TiVo to title of current menu item of popup button "MyTiVos" of window "iTiVo"
 		set targetDataSList to content of targetDataS
 		tell user defaults
 			set contents of default entry "IPA" to IPA
 			set contents of default entry "MAK" to MAK
 			set contents of default entry "DL" to DL
-			set contents of default entry "CLeft" to first item of winBounds
-			set contents of default entry "CTop" to second item of winBounds
-			set contents of default entry "CRight" to third item of winBounds
-			set contents of default entry "CBottom" to fourth item of winBounds
-			set contents of default entry "BBottom" to fourth item of boxBounds
-			set contents of default entry "Col1" to (Col1 as integer)
-			set contents of default entry "Col2" to (Col2 as integer)
-			set contents of default entry "Col3" to (Col3 as integer)
-			set contents of default entry "Col5" to (Col5 as integer)
-			set contents of default entry "Col6" to (Col6 as integer)
 			set contents of default entry "LaunchCount" to (LaunchCount as integer)
 			set contents of default entry "TiVo" to TiVo as string
 			set contents of default entry "format" to format as string

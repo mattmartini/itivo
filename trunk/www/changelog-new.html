@@ -1,17 +1,20 @@
 iTiVo 1.3
-  Added support for automatic commercial skipping.
-  Added an option to enable downloading of beta releases.
-  There is no more Prefs Drawer. Instead there is a pane that opens up and has
-    room for a lot more options (coming in the future).
-  Replaced iphone med-res and low-res with device-specific resolution low-res
-  Updated to latest release of mencoder, and removed dependency on png library.
-  Placed temporary files in /tmp/ instead of in homedir to speed performance
-  Fixed slowness of miniaturize/unminiaturize.
+  Added support for comskip.
+     -- Can strip out commercials!  
+  Reworked the Prefs system:
+    - beta downloads
+    - comskip support
+    - download options
+  Added mpeg-2 conversion options (DVD/Tivo2)
+  Redid iphone/ipod download options
+  Updated to latest release of mencoder/libx264.
+  Place temporary files in /tmp/
+  Fixed slowness of miniaturize
   Fixed bug where same tivo would show up multiple times in list.
-  Fixed bug with med-res iphone settings (japtor)
   Update to Sparkle 1.5b6, and create a DSA signature of the bundle
-  Remove the option to control Growl.  If it's there it will be used.
-
+  Remove the option to control Growl. Always used.
+  Save window state on exit.
+  reduce idle time to 15 mins.
 
 iTiVo 1.2.1
   emergency release to work on PowerPC Macs (G4/G5)
