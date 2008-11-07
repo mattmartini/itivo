@@ -11,8 +11,6 @@
     I'm only responsible for this front-end.  If you have questions about your tivo, I highly recommend going to the tivocommunity forum here: http://tivocommunity.com/tivo-vb/index.php
   # I have shows on my TiVo that are not listed on iTiVo!
     Certain shows and certain channels can be marked 'copyrighted'.  Any show marked as such is not available for download from the tivo, and is therefore not listed.
-  # I managed to hide the preferences drawer
-    To unhide the preferences drawer, click the prefs button.
   # I managed to hide the Show Description drawer
     To unhide the show description drawer, click the little triangle on the top right of the main window.
   # I chose to download 'no conversion (native MPEG-2)' and Quicktime will not play my video
