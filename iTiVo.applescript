@@ -45,6 +45,7 @@ property format : ""
 property postDownloadCmd : ""
 property comSkip : 0
 property SUFeedURL : "http://itivo.googlecode.com/svn/trunk/www/iTiVo.xml"
+property debugLog : false
 
 property panelWIndow : missing value
 property currentPrefsTab : "DownloadingTab"
@@ -273,6 +274,7 @@ on setupPrefsTab(tabName)
 			else
 				set state of button "betaUpdate" of view "AdvancedView" of tab view "TopTab" to false
 			end if
+			set state of button "debugLog" of view "AdvancedView" of tab view "TopTab" to debugLog
 		else
 			my debug_log("Can't setup PrefsTab for " & tabName)
 		end if
@@ -296,6 +298,10 @@ on recordPrefsTab()
 			set comSkip to state of button "comSkip" of view "comSkipView" of tab view "TopTab"
 		else if (currentPrefsTab = "AdvancedTab") then
 			set postDownloadCmd to contents of text field "postDownloadCmd" of view "AdvancedView" of tab view "TopTab"
+			set debugLog to state of button "debugLog" of view "AdvancedView" of tab view "TopTab" as boolean
+			if (debugLog is true) then
+				set debug_level to 3
+			end if
 			if (state of button "betaUpdate" of view "AdvancedView" of tab view "TopTab" = 1) then
 				set SUFeedURL to "http://itivo.googlecode.com/svn/trunk/www/iTiVo-beta.xml"
 			else
@@ -350,6 +356,7 @@ on registerSettings()
 		make new default entry at end of default entries with properties {name:"customVideoBR", contents:""}
 		make new default entry at end of default entries with properties {name:"comSkip", contents:comSkip}
 		make new default entry at end of default entries with properties {name:"postDownloadCmd", contents:postDownloadCmd}
+		make new default entry at end of default entries with properties {name:"debugLog", contents:debugLog}
 		make new default entry at end of default entries with properties {name:"SUFeedURL", contents:SUFeedURL}
 		make new default entry at end of default entries with properties {name:"openDetail", contents:""}
 		make new default entry at end of default entries with properties {name:"DLHistory", contents:""}
@@ -391,6 +398,12 @@ on readSettings()
 			set targetDataSList to contents of default entry "targetDataSList"
 			set comSkip to contents of default entry "comSkip"
 			set postDownloadCmd to contents of default entry "postDownloadCmd"
+		end try
+		try
+			set debugLog to contents of default entry "debugLog"
+			if (debugLog = true) then
+				set debug_level to 3
+			end if
 		end try
 	end tell
 	try
@@ -466,6 +479,7 @@ on writeSettings()
 			set contents of default entry "openDetail" to (openDetail as integer)
 			set contents of default entry "DLHistory" to DLHistory as list
 			set contents of default entry "targetDataSList" to targetDataSList as list
+			set contents of default entry "debugLog" to debugLog
 		end tell
 	on error
 		my debug_log("Failed to write out initial settings")
