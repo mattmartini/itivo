@@ -205,6 +205,8 @@ on formatCompatItunes(formatName)
 		return false
 	else if (formatName = "DVD (PAL mpeg-2 AC3)") then
 		return false
+	else if (formatName = "mpeg-2 (re-encode)") then
+		return false
 	else if (formatName = "Quicktime MPEG-4 (Custom)") then
 		return true
 	else
@@ -1201,8 +1203,11 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 	else if format = "DVD (PAL mpeg-2 AC3)" then
 		set encodeMode to 9
 		set filenameExtension to ".mpg"
-	else if format = "Quicktime MPEG-4 (Custom)" then
+	else if format = "mpeg-2 (re-encode)" then
 		set encodeMode to 10
+		set filenameExtension to ".mpg"
+	else if format = "Quicktime MPEG-4 (Custom)" then
+		set encodeMode to 11
 		set filenameExtension to ".mp4"
 	else
 		set format to "No Conversion (native MPEG-2)"
