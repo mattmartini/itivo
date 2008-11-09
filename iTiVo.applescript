@@ -4,7 +4,7 @@
 --  Created by David Benesch on 12/03/06.
 --  Last updated by Yoav Yerushalmi on 11/09/08.
 --  Copyright 2006-2007 David Benesch. All rights reserved.
-property debug_level : 0
+property debug_level : 1
 property already_launched : 0
 property filenameExtension : ".mp4"
 property targetData : missing value
@@ -25,15 +25,12 @@ property cancelAllDownloads : 0
 property showListObject : missing value
 property sortOrder : ""
 property sortColumn : ""
-property customHeight : 480
-property customWidth : 640
-property customAudioBR : 128
-property customVideoBR : 512
 property openDetail : 1
 property DLHistory : {}
 property GrowlAppName : ""
 property encodeMode : 0
 property UserName : ""
+property formats_plist : missing value
 
 (* User-controlled properties *)
 property MAK : ""
@@ -42,6 +39,10 @@ property iTunes : ""
 property iTunesSync : ""
 property iTunesIcon : ""
 property format : ""
+property encoderUsed : ""
+property encoderVideoOptions : ""
+property encoderAudioOptions : ""
+property encoderOtherOptions : ""
 property postDownloadCmd : ""
 property comSkip : 0
 property SUFeedURL : "http://itivo.googlecode.com/svn/trunk/www/iTiVo.xml"
@@ -153,89 +154,64 @@ on panel ended thePanel with result theResult
 	end if
 end panel ended
 
-on showResSettings()
-	tell view "DownloadingView" of tab view "TopTab" of panelWIndow
-		set visible of text field "customWidth" to true
-		set visible of text field "customHeight" to true
-		set visible of text field "customVideoBR" to true
-		set visible of text field "customAudioBR" to true
-		set visible of text field "title1" to true
-		set visible of text field "title2" to true
-		set visible of text field "title3" to true
-		set visible of text field "title4" to true
-		set visible of text field "title5" to true
-		set visible of text field "title6" to true
-	end tell
-end showResSettings
-
-on hideResSettings()
-	tell view "DownloadingView" of tab view "TopTab" of panelWIndow
-		set visible of text field "customWidth" to false
-		set visible of text field "customHeight" to false
-		set visible of text field "customVideoBR" to false
-		set visible of text field "customAudioBR" to false
-		set visible of text field "title1" to false
-		set visible of text field "title2" to false
-		set visible of text field "title3" to false
-		set visible of text field "title4" to false
-		set visible of text field "title5" to false
-		set visible of text field "title6" to false
-	end tell
-end hideResSettings
-
+on formatCompatComSkip(formatName)
+	tell application "System Events" to set formatsArray to value of property list item "formats" of formats_plist
+	repeat with currentFormat in formatsArray
+		if |name| of currentFormat is formatName then
+			return |comSkip| of currentFormat
+		end if
+	end repeat
+	my debug_log("Couldn't find comSkip of format " & formatName)
+	return false
+end formatCompatComSkip
 
 on formatCompatItunes(formatName)
-	if (formatName = "No Conversion (native MPEG-2)") then
-		return false
-	else if (formatName = "iPod/iPhone super-res") then
-		return true
-	else if (formatName = "iPhone") then
-		return true
-	else if (formatName = "iPod") then
-		return true
-	else if (formatName = "Zune") then
-		return true
-	else if (formatName = "AppleTV") then
-		return true
-	else if (formatName = "PSP") then
-		return false
-	else if (formatName = "PS3") then
-		return false
-	else if (formatName = "DVD (NTSC mpeg-2 AC3)") then
-		return false
-	else if (formatName = "DVD (PAL mpeg-2 AC3)") then
-		return false
-	else if (formatName = "mpeg-2 (re-encode)") then
-		return false
-	else if (formatName = "Quicktime MPEG-4 (Custom)") then
-		return true
-	else
-		return false
-	end if
+	tell application "System Events" to set formatsArray to value of property list item "formats" of formats_plist
+	repeat with currentFormat in formatsArray
+		if |name| of currentFormat is formatName then
+			return |iTunes| of currentFormat
+		end if
+	end repeat
+	my debug_log("Couldn't find itunes of format " & formatName)
+	return false
 end formatCompatItunes
+
+on getFormatSettings(formatName)
+	tell application "System Events" to set formatsArray to value of property list item "formats" of formats_plist
+	repeat with currentFormat in formatsArray
+		if |name| of currentFormat is formatName then
+			return {|encoderUsed| of currentFormat, |encoderVideoOptions| of currentFormat, |encoderAudioOptions| of currentFormat, |encoderOtherOptions| of currentFormat, |filenameExtension| of currentFormat}
+		end if
+	end repeat
+	return {"mencoder", "", "", "", ".mp4"}
+end getFormatSettings
+
+on getFormats()
+	my debug_log("getFormats")
+	set formatsList to {} as list
+	tell application "System Events" to set formatsArray to value of property list item "formats" of formats_plist
+	repeat with currentFormat in formatsArray
+		set formatsList to formatsList & {|name| of currentFormat}
+	end repeat
+	return formatsList
+end getFormats
 
 on setupPrefsTab(tabName)
 	tell panelWIndow
 		if (tabName = "DownloadingTab") then
 			set contents of text field "MAK" of view "DownloadingView" of tab view "TopTab" to MAK
 			set contents of text field "Location" of view "DownloadingView" of tab view "TopTab" to DL
-			set formats to title of every menu item of popup button "format" of view "DownloadingView" of tab view "TopTab"
-			if format is in formats then
+			set formats to my getFormats()
+			delete every menu item of menu of popup button "format" of view "DownloadingView" of tab view "TopTab"
+			repeat with formatitem in formats
+				make new menu item at the end of menu items of menu of popup button "format" of view "DownloadingView" of tab view "TopTab" with properties {title:formatitem, enabled:true}
+			end repeat
+			if format is not in formats then
+				set {encoderUsed, encoderVideoOptions, encoderAudioOptions, encoderOtherOptions, filenameExtension} to getFormatSettings(format)
+				set format to first item of formats
 				set title of popup button "format" of view "DownloadingView" of tab view "TopTab" to format
-			else
-				set title of popup button "format" of view "DownloadingView" of tab view "TopTab" to first item of formats
-				set format to title of popup button "format" of view "DownloadingView" of tab view "TopTab"
 			end if
-			if (format = "Quicktime MPEG-4 (Custom)") then
-				my showResSettings()
-			else
-				my hideResSettings()
-			end if
-			set contents of text field "customWidth" of view "DownloadingView" of tab view "TopTab" to customWidth
-			set contents of text field "customHeight" of view "DownloadingView" of tab view "TopTab" to customHeight
-			set contents of text field "customAudioBR" of view "DownloadingView" of tab view "TopTab" to customAudioBR
-			set contents of text field "customVideoBR" of view "DownloadingView" of tab view "TopTab" to customVideoBR
-			
+			set title of popup button "format" of view "DownloadingView" of tab view "TopTab" to format
 			if (my formatCompatItunes(format)) then
 				set enabled of button "iTunes" of view "DownloadingView" of tab view "TopTab" to true
 				set enabled of button "iTunesSync" of view "DownloadingView" of tab view "TopTab" to true
@@ -262,7 +238,7 @@ on setupPrefsTab(tabName)
 				set title of popup button "icon" of view "DownloadingView" of tab view "TopTab" to first item of iTunesIcons
 			end if
 		else if (tabName = "ComSkipTab") then
-			if (format = "No Conversion (native MPEG-2)") then
+			if (not my formatCompatComSkip(format)) then
 				set comSkip to 0
 				set enabled of button "comSkip" of view "comSkipView" of tab view "TopTab" to false
 			else
@@ -277,6 +253,11 @@ on setupPrefsTab(tabName)
 				set state of button "betaUpdate" of view "AdvancedView" of tab view "TopTab" to false
 			end if
 			set state of button "debugLog" of view "AdvancedView" of tab view "TopTab" to debugLog
+			set contents of text field "filenameExtension" of view "AdvancedView" of tab view "TopTab" to filenameExtension
+			set contents of text field "encoderUsed" of view "AdvancedView" of tab view "TopTab" to encoderUsed
+			set contents of text field "encoderVideoOptions" of view "AdvancedView" of tab view "TopTab" to encoderVideoOptions
+			set contents of text field "encoderAudioOptions" of view "AdvancedView" of tab view "TopTab" to encoderAudioOptions
+			set contents of text field "encoderOtherOptions" of view "AdvancedView" of tab view "TopTab" to encoderOtherOptions
 		else
 			my debug_log("Can't setup PrefsTab for " & tabName)
 		end if
@@ -289,10 +270,6 @@ on recordPrefsTab()
 			set MAK to contents of text field "MAK" of view "DownloadingView" of tab view "TopTab"
 			set DL to contents of text field "Location" of view "DownloadingView" of tab view "TopTab"
 			set format to title of popup button "format" of view "DownloadingView" of tab view "TopTab"
-			set customWidth to contents of text field "customWidth" of view "DownloadingView" of tab view "TopTab"
-			set customHeight to contents of text field "customHeight" of view "DownloadingView" of tab view "TopTab"
-			set customAudioBR to contents of text field "customAudioBR" of view "DownloadingView" of tab view "TopTab"
-			set customVideoBR to contents of text field "customVideoBR" of view "DownloadingView" of tab view "TopTab"
 			set iTunes to state of button "iTunes" of view "DownloadingView" of tab view "TopTab"
 			set iTunesSync to state of button "iTunesSync" of view "DownloadingView" of tab view "TopTab"
 			set iTunesIcon to title of popup button "icon" of view "DownloadingView" of tab view "TopTab"
@@ -309,6 +286,11 @@ on recordPrefsTab()
 			else
 				set SUFeedURL to "http://itivo.googlecode.com/svn/trunk/www/iTiVo.xml"
 			end if
+			set filenameExtension to contents of text field "filenameExtension" of view "AdvancedView" of tab view "TopTab"
+			set encoderUsed to contents of text field "encoderUsed" of view "AdvancedView" of tab view "TopTab"
+			set encoderVideoOptions to contents of text field "encoderVideoOptions" of view "AdvancedView" of tab view "TopTab"
+			set encoderAudioOptions to contents of text field "encoderAudioOptions" of view "AdvancedView" of tab view "TopTab"
+			set encoderOtherOptions to contents of text field "encoderOtherOptions" of view "AdvancedView" of tab view "TopTab"
 		else
 			my debug_log("What tab are we on?? ")
 			return false
@@ -352,14 +334,14 @@ on registerSettings()
 		make new default entry at end of default entries with properties {name:"iTunes", contents:""}
 		make new default entry at end of default entries with properties {name:"iTunesSync", contents:""}
 		make new default entry at end of default entries with properties {name:"iTunesIcon", contents:""}
-		make new default entry at end of default entries with properties {name:"customWidth", contents:""}
-		make new default entry at end of default entries with properties {name:"customHeight", contents:""}
-		make new default entry at end of default entries with properties {name:"customAudioBR", contents:""}
-		make new default entry at end of default entries with properties {name:"customVideoBR", contents:""}
 		make new default entry at end of default entries with properties {name:"comSkip", contents:comSkip}
 		make new default entry at end of default entries with properties {name:"postDownloadCmd", contents:postDownloadCmd}
 		make new default entry at end of default entries with properties {name:"debugLog", contents:debugLog}
 		make new default entry at end of default entries with properties {name:"SUFeedURL", contents:SUFeedURL}
+		make new default entry at end of default entries with properties {name:"encoderUsed", contents:encoderUsed}
+		make new default entry at end of default entries with properties {name:"encoderVideoOptions", contents:encoderVideoOptions}
+		make new default entry at end of default entries with properties {name:"encoderAudioOptions", contents:encoderAudioOptions}
+		make new default entry at end of default entries with properties {name:"encoderOtherOptions", contents:encoderOtherOptions}
 		make new default entry at end of default entries with properties {name:"openDetail", contents:""}
 		make new default entry at end of default entries with properties {name:"DLHistory", contents:""}
 		make new default entry at end of default entries with properties {name:"targetDataSList", contents:{}}
@@ -390,16 +372,16 @@ on readSettings()
 			set iTunes to contents of default entry "iTunes"
 			set iTunesSync to contents of default entry "iTunesSync"
 			set iTunesIcon to contents of default entry "iTunesIcon"
-			set customWidth to contents of default entry "customWidth"
-			set customHeight to contents of default entry "customHeight"
-			set customAudioBR to contents of default entry "customAudioBR"
-			set customVideoBR to contents of default entry "customVideoBR"
 			set SUFeedURL to contents of default entry "SUFeedURL"
 			set openDetail to contents of default entry "openDetail"
 			set DLHistory to contents of default entry "DLHistory"
 			set targetDataSList to contents of default entry "targetDataSList"
 			set comSkip to contents of default entry "comSkip"
 			set postDownloadCmd to contents of default entry "postDownloadCmd"
+			set encoderUsed to contents of default entry "encoderUsed"
+			set encoderVideoOptions to contents of default entry "encoderVideoOptions"
+			set encoderAudioOptions to contents of default entry "encoderAudioOptions"
+			set encoderOtherOptions to contents of default entry "encoderOtherOptions"
 		end try
 		try
 			set debugLog to contents of default entry "debugLog"
@@ -420,6 +402,20 @@ on readSettings()
 		end try
 	end if
 	my debug_log("using format : " & format)
+	set myPath to POSIX path of (path to me)
+	set myHomePath to POSIX path of (path to home folder)
+	set plistfile_path to myPath & "Contents/Resources/formats.plist"
+	tell application "Finder" to if exists (myHomePath & "Library/Preferences/iTiVo/formats.plist") as POSIX file then set plistfile_path to myHomePath & "Library/Preferences/iTiVo/formats.plist"
+	tell application "System Events" to set formats_plist to contents of property list file plistfile_path
+	set formats to my getFormats()
+	if format is not in formats then
+		set format to first item of formats
+		set {encoderUsed, encoderVideoOptions, encoderAudioOptions, encoderOtherOptions, filenameExtension} to getFormatSettings(format)
+	else
+		if (encoderUsed = "") then
+			set {encoderUsed, encoderVideoOptions, encoderAudioOptions, encoderOtherOptions, filenameExtension} to getFormatSettings(format)
+		end if
+	end if
 	set TiVos to title of every menu item of popup button "MyTiVos" of window "iTiVo"
 	if TiVo is in TiVos then
 		if TiVo ≠ "My TiVos" then
@@ -476,12 +472,12 @@ on writeSettings()
 			set contents of default entry "iTunes" to iTunes as string
 			set contents of default entry "iTunesSync" to iTunesSync as string
 			set contents of default entry "iTunesIcon" to iTunesIcon as string
-			set contents of default entry "customWidth" to customWidth as string
-			set contents of default entry "customHeight" to customHeight as string
-			set contents of default entry "customVideoBR" to customVideoBR as string
-			set contents of default entry "customAudioBR" to customAudioBR as string
 			set contents of default entry "comSkip" to comSkip
 			set contents of default entry "postDownloadCmd" to postDownloadCmd
+			set contents of default entry "encoderUsed" to encoderUsed
+			set contents of default entry "encoderVideoOptions" to encoderVideoOptions
+			set contents of default entry "encoderAudioOptions" to encoderAudioOptions
+			set contents of default entry "encoderOtherOptions" to encoderOtherOptions
 			set contents of default entry "SUFeedURL" to SUFeedURL
 			set contents of default entry "openDetail" to (openDetail as integer)
 			set contents of default entry "DLHistory" to DLHistory as list
@@ -991,12 +987,8 @@ on choose menu item theObject
 	else if name of theObject = "format" then
 		local myformat
 		set myformat to title of popup button "format" of view "DownloadingView" of tab view "TopTab" of panelWIndow
-		if (myformat = "Quicktime MPEG-4 (Custom)") then
-			my showResSettings()
-		else
-			my hideResSettings()
-		end if
-		if (myformat = "No Conversion (native MPEG-2)") then
+		set {encoderUsed, encoderVideoOptions, encoderAudioOptions, encoderOtherOptions, filenameExtension} to getFormatSettings(myformat)
+		if (not my formatCompatComSkip(myformat)) then
 			set comSkip to 0
 		end if
 		if (my formatCompatItunes(myformat)) then
@@ -1034,31 +1026,7 @@ killall mDNS"
 end choose menu item
 
 on changed theObject
-	if name of theObject = "customWidth" then
-		try
-			set customWidth to content of theObject as integer
-		on error
-			set content of theObject to customWidth
-		end try
-	else if name of theObject = "customHeight" then
-		try
-			set customHeight to content of theObject as integer
-		on error
-			set content of theObject to customHeight
-		end try
-	else if name of theObject = "customAudioBR" then
-		try
-			set customAudioBR to content of theObject as integer
-		on error
-			set content of theObject to customAudioBR
-		end try
-	else if name of theObject = "customVideoBR" then
-		try
-			set customVideoBR to content of theObject as integer
-		on error
-			set content of theObject to customVideoBR
-		end try
-	else if name of theObject = "IP" then
+	if name of theObject = "IP" then
 		set title of popup button "MyTiVos" of window "iTiVo" to "My TiVos"
 	end if
 end changed
@@ -1173,47 +1141,6 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 	end tell
 	set currentTry to 0
 	my performCancelDownload()
-	if format = "No Conversion (native MPEG-2)" then
-		set encodeMode to 0
-		set filenameExtension to ".mpg"
-	else if format = "iPod/iPhone super-res" then
-		set encodeMode to 1
-		set filenameExtension to ".mp4"
-	else if format = "iPhone" then
-		set encodeMode to 2
-		set filenameExtension to ".mp4"
-	else if format = "iPod" then
-		set encodeMode to 3
-		set filenameExtension to ".mp4"
-	else if format = "Zune" then
-		set encodeMode to 4
-		set filenameExtension to ".mp4"
-	else if format = "AppleTV" then
-		set encodeMode to 5
-		set filenameExtension to ".mp4"
-	else if format = "PSP" then
-		set encodeMode to 6
-		set filenameExtension to ".mp4"
-	else if format = "PS3" then
-		set encodeMode to 7
-		set filenameExtension to ".mp4"
-	else if format = "DVD (NTSC mpeg-2 AC3)" then
-		set encodeMode to 8
-		set filenameExtension to ".mpg"
-	else if format = "DVD (PAL mpeg-2 AC3)" then
-		set encodeMode to 9
-		set filenameExtension to ".mpg"
-	else if format = "mpeg-2 (re-encode)" then
-		set encodeMode to 10
-		set filenameExtension to ".mpg"
-	else if format = "Quicktime MPEG-4 (Custom)" then
-		set encodeMode to 11
-		set filenameExtension to ".mp4"
-	else
-		set format to "No Conversion (native MPEG-2)"
-		set encodeMode to 0
-		set filenameExtension to ".mpg"
-	end if
 	try
 		set shellCmd to "rm /tmp/iTiVoDL*-" & UserName
 		do shell script shellCmd
@@ -1243,7 +1170,9 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 			my debug_log(ShellScriptCommand)
 			do shell script ShellScriptCommand
 			if (comSkip = 0) then
-				set ShellScriptCommand to "perl " & myPath & "Contents/Resources/re-encoder.pl " & myPath2 & " " & myHomePathP2 & " " & showFullNameEncoded & filenameExtension & " " & encodeMode & " " & customWidth & " " & customHeight & " " & customVideoBR & " " & customAudioBR
+				set ShellScriptCommand to "perl " & myPath & "Contents/Resources/re-encoder.pl " & myPath2 & " " & myHomePathP2 & " " & showFullNameEncoded & filenameExtension & " "
+				set ShellScriptCommand to ShellScriptCommand & quoted form of encoderUsed & " " & quoted form of encoderVideoOptions & " "
+				set ShellScriptCommand to ShellScriptCommand & quoted form of encoderAudioOptions & " " & quoted form of encoderOtherOptions
 				set ShellScriptCommand to ShellScriptCommand & " &> /dev/null & echo $! ;exit 0"
 				my debug_log(ShellScriptCommand)
 				do shell script ShellScriptCommand
@@ -1410,7 +1339,7 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 				set timeOn to 0.0
 				set prevtimeOn to 0
 				set visible of progress indicator "Status" to true
-				set ShellScriptCommand to "perl " & myPath & "Contents/Resources/re-encoder.pl " & myPath2 & " " & myHomePathP2 & " " & showFullNameEncoded & filenameExtension & " " & encodeMode & " " & customWidth & " " & customHeight & " " & customVideoBR & " " & customAudioBR
+				set ShellScriptCommand to "perl " & myPath & "Contents/Resources/re-encoder.pl " & myPath2 & " " & myHomePathP2 & " " & showFullNameEncoded & filenameExtension & " " & encodeMode
 				set ShellScriptCommand to ShellScriptCommand & " &> /dev/null & echo $! ;exit 0"
 				my debug_log(ShellScriptCommand)
 				do shell script ShellScriptCommand
