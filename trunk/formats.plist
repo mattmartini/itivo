@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>version</key>
+	<integer>1</integer>
+	<key>formats</key>
+	<array>
+		<dict>
+			<key>comSkip</key>
+			<false/>
+			<key>filenameExtension</key>
+			<string>.mpg</string>
+			<key>encoderUsed</key>
+			<string>cat</string>
+			<key>name</key>
+			<string>No Conversion (native MPEG-2)</string>
+			<key>encoderVideoOptions</key>
+			<string></string>
+			<key>encoderAudioOptions</key>
+			<string></string>
+			<key>encoderOtherOptions</key>
+			<string></string>
+			<key>iTunes</key>
+			<false/>
+		</dict>
+		<dict>
+			<key>filenameExtension</key>
+			<string>.mp4</string>
+			<key>comSkip</key>
+			<true/>
+			<key>encoderUsed</key>
+			<string>mencoder</string>
+			<key>name</key>
+			<string>iPod/iPhone super-res</string>
+			<key>encoderVideoOptions</key>
+			<string>-of lavf -lavfopts format=ipod -ovc x264 -x264encopts nocabac:level_idc=30:bitrate=1500:threads=auto:bframes=0:global_header -vf pp=lb,dsize=640:480:0,scale=-8:-8,harddup</string>
+			<key>encoderAudioOptions</key>
+			<string>-af volume=13:1 -oac faac -faacopts mpeg=4:object=2:raw:br=128</string>
+			<key>encoderOtherOptions</key>
+			<string>-hr-edl-seek</string>
+			<key>iTunes</key>
+			<true/>
+		</dict>
+		<dict>
+			<key>comSkip</key>
+			<true/>
+			<key>filenameExtension</key>
+			<string>.mp4</string>
+			<key>encoderUsed</key>
+			<string>mencoder</string>
+			<key>name</key>
+			<string>iPhone</string>
+			<key>encoderVideoOptions</key>
+			<string>-of lavf -lavfopts format=ipod -ovc x264 -x264encopts nocabac:level_idc=30:bitrate=384:threads=auto:bframes=0:global_header -vf pp=lb,dsize=480:320:0,scale=-8:-8,harddup</string>
+			<key>encoderAudioOptions</key>
+			<string>-af volume=13:1 -oac faac -faacopts mpeg=4:object=2:raw:br=128</string>
+			<key>encoderOtherOptions</key>
+			<string>-hr-edl-seek</string>
+			<key>iTunes</key>
+			<true/>
+		</dict>
+		<dict>
+			<key>comSkip</key>
+			<true/>
+			<key>filenameExtension</key>
+			<string>.mp4</string>
+			<key>encoderUsed</key>
+			<string>mencoder</string>
+			<key>name</key>
+			<string>iPod</string>
+			<key>encoderVideoOptions</key>
+			<string>-of lavf -lavfopts format=ipod -ovc x264 -x264encopts nocabac:level_idc=30:bitrate=256:threads=auto:bframes=0:global_header -vf pp=lb,dsize=320:240:0,scale=-8:-8,harddup</string>
+			<key>encoderAudioOptions</key>
+			<string>-af volume=13:1 -oac faac -faacopts mpeg=4:object=2:raw:br=128</string>
+			<key>encoderOtherOptions</key>
+			<string>-hr-edl-seek</string>
+			<key>iTunes</key>
+			<true/>
+		</dict>
+		<dict>
+			<key>comSkip</key>
+			<true/>
+			<key>filenameExtension</key>
+			<string>.mp4</string>
+			<key>encoderUsed</key>
+			<string>mencoder</string>
+			<key>name</key>
+			<string>Zune</string>
+			<key>encoderVideoOptions</key>
+			<string>-of lavf -lavfopts format=zune -ovc x264 -x264encopts nocabac:level_idc=30:bitrate=256:threads=auto:bframes=0:global_header -vf pp=lb,dsize=320:240:0,scale=-8:-8,harddup</string>
+			<key>encoderAudioOptions</key>
+			<string>-af volume=13:1 -oac faac -faacopts mpeg=4:object=2:raw:br=128</string>
+			<key>encoderOtherOptions</key>
+			<string>-hr-edl-seek</string>
+			<key>iTunes</key>
+			<false/>
+		</dict>
+		<dict>
+			<key>comSkip</key>
+			<true/>
+			<key>filenameExtension</key>
+			<string>.mp4</string>
+			<key>encoderUsed</key>
+			<string>mencoder</string>
+			<key>name</key>
+			<string>AppleTV</string>
+			<key>encoderVideoOptions</key>
+			<string>-of lavf -lavfopts format=mp4 -ovc x264 -x264encopts nocabac:level_idc=30:bitrate=960:threads=auto:bframes=0:global_header -vf pp=lb,dsize=1200:720:0,scale=-8:-8,harddup</string>
+			<key>encoderAudioOptions</key>
+			<string>-af volume=13:1 -oac faac -faacopts mpeg=4:object=2:raw:br=128</string>
+			<key>encoderOtherOptions</key>
+			<string>-hr-edl-seek</string>
+			<key>iTunes</key>
+			<true/>
+		</dict>
+		<dict>
+			<key>comSkip</key>
+			<true/>
+			<key>filenameExtension</key>
+			<string>.mp4</string>
+			<key>encoderUsed</key>
+			<string>mencoder</string>
+			<key>name</key>
+			<string>PSP</string>
+			<key>encoderVideoOptions</key>
+			<string>-of lavf -lavfopts format=psp -ovc x264 -x264encopts nocabac:level_idc=21:bitrate=256:threads=auto:bframes=0:global_header:subq=5:me=umh -vf pp=lb,dsize=480:272:0,scale=-8:-8,harddup</string>
+			<key>encoderAudioOptions</key>
+			<string>-af volume=13:1 -oac faac -faacopts mpeg=4:object=2:raw:br=128</string>
+			<key>encoderOtherOptions</key>
+			<string>-hr-edl-seek</string>
+			<key>iTunes</key>
+			<false/>
+		</dict>
+		<dict>
+			<key>comSkip</key>
+			<true/>
+			<key>filenameExtension</key>
+			<string>.mp4</string>
+			<key>encoderUsed</key>
+			<string>mencoder</string>
+			<key>name</key>
+			<string>PlayStation 3</string>
+			<key>encoderVideoOptions</key>
+			<string>-of lavf -lavfopts format=mp4 -ovc x264 -x264encopts level_idc=41:bitrate=1500:threads=auto:bframes=0:global_header:subq=5:me=umh -vf pp=lb,dsize=1920:1080:0,scale=-8:-8,harddup</string>
+			<key>encoderAudioOptions</key>
+			<string>-af volume=13:1 -oac faac -faacopts mpeg=4:object=2:raw:br=128</string>
+			<key>encoderOtherOptions</key>
+			<string>-hr-edl-seek</string>
+			<key>iTunes</key>
+			<false/>
+		</dict>
+		<dict>
+			<key>comSkip</key>
+			<true/>
+			<key>filenameExtension</key>
+			<string>.mpg</string>
+			<key>encoderUsed</key>
+			<string>mencoder</string>
+			<key>name</key>
+			<string>DVD (widescreen NTSC)</string>
+			<key>encoderVideoOptions</key>
+			<string>-ovc lavc -of mpeg -mpegopts format=dvd:tsaf:telecine -vf scale=720:480,harddup -lavcopts vcodec=mpeg2video:vrc_buf_size=1835:vrc_maxrate=9800:vbitrate=5000:keyint=15:vstrict=0:aspect=16/9 -ofps 24000/1001</string>
+			<key>encoderAudioOptions</key>
+			<string>-oac copy</string>
+			<key>encoderOtherOptions</key>
+			<string>-hr-edl-seek</string>
+			<key>iTunes</key>
+			<true/>
+		</dict>
+		<dict>
+			<key>comSkip</key>
+			<true/>
+			<key>filenameExtension</key>
+			<string>.mpg</string>
+			<key>encoderUsed</key>
+			<string>mencoder</string>
+			<key>name</key>
+			<string>MPEG2 (minimal re-encode)</string>
+			<key>encoderVideoOptions</key>
+			<string>-ovc copy -of mpeg -mpegopts format=mpeg2:tsaf:muxrate=36000 -noskip -mc 0 -forceidx</string>
+			<key>encoderAudioOptions</key>
+			<string>-oac copy</string>
+			<key>encoderOtherOptions</key>
+			<string>-hr-edl-seek</string>
+			<key>iTunes</key>
+			<true/>
+		</dict>
+	</array>
+</dict>
+</plist>
