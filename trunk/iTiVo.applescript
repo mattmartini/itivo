@@ -1339,7 +1339,9 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 				set timeOn to 0.0
 				set prevtimeOn to 0
 				set visible of progress indicator "Status" to true
-				set ShellScriptCommand to "perl " & myPath & "Contents/Resources/re-encoder.pl " & myPath2 & " " & myHomePathP2 & " " & showFullNameEncoded & filenameExtension & " " & encodeMode
+				set ShellScriptCommand to "perl " & myPath & "Contents/Resources/re-encoder.pl " & myPath2 & " " & myHomePathP2 & " " & showFullNameEncoded & filenameExtension & " "
+				set ShellScriptCommand to ShellScriptCommand & quoted form of encoderUsed & " " & quoted form of encoderVideoOptions & " "
+				set ShellScriptCommand to ShellScriptCommand & quoted form of encoderAudioOptions & " " & quoted form of encoderOtherOptions
 				set ShellScriptCommand to ShellScriptCommand & " &> /dev/null & echo $! ;exit 0"
 				my debug_log(ShellScriptCommand)
 				do shell script ShellScriptCommand
