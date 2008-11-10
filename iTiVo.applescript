@@ -1164,7 +1164,7 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 				my debug_log(shellCmd)
 				do shell script shellCmd
 			end try
-			if (comSkip = 0 and downloadFirst = 0) then
+			if (comSkip = 0 and downloadFirst = false) then
 				set shellCmd to "mkfifo /tmp/iTiVoDLPipe-" & UserName & " /tmp/iTiVoDLPipe2-" & UserName & ".mpg"
 			else
 				set shellCmd to "mkfifo /tmp/iTiVoDLPipe-" & UserName & " ; touch /tmp/iTiVoDLPipe{2,3}-" & UserName & ".mpg"
@@ -1179,7 +1179,7 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 			set ShellScriptCommand to ShellScriptCommand & " &> /dev/null & echo $! ;exit 0"
 			my debug_log(ShellScriptCommand)
 			do shell script ShellScriptCommand
-			if (comSkip = 0 and downloadFirst = 0) then
+			if (comSkip = 0 and downloadFirst = false) then
 				set ShellScriptCommand to "perl " & myPath & "Contents/Resources/re-encoder.pl " & myPath2 & " " & myHomePathP2 & " " & showFullNameEncoded & filenameExtension & " "
 				set ShellScriptCommand to ShellScriptCommand & quoted form of encoderUsed & " " & quoted form of encoderVideoOptions & " "
 				set ShellScriptCommand to ShellScriptCommand & quoted form of encoderAudioOptions & " " & quoted form of encoderOtherOptions & " "
@@ -1341,7 +1341,8 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 					delay 0.5
 				end repeat
 			end if
-			if (my isDownloadComplete(filePath, fullFileSize, currentTry) and (comSkip = 1 or downloadFirst = 1)) then
+			my debug_log("Ok am here: " & downloadFirst & "  comskip?: " & comSkip & "    complete?: " & my isDownloadComplete(filePath, fullFileSize, currentTry))
+			if (my isDownloadComplete(filePath, fullFileSize, currentTry) and (comSkip = 1 or downloadFirst = true)) then
 				tell progress indicator "Status" to increment by -1 * currentProgress
 				set currentProgresss to 0
 				set downloadExistsCmdString to "du -k -d 0 /tmp/iTiVoDLPipe2-" & UserName & ".mpg ;exit 0"
