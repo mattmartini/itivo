@@ -23,11 +23,11 @@ $Edl = "/tmp/iTiVoDLPipe2-$ENV{'USER'}.edl";
 `touch $Edl`;
 $shellScript = "";
 
-if ($Encoder == "mencoder") {
+if ($Encoder eq "mencoder") {
  $shellScript = $shellScript . $AppDir . "Contents/Resources/mencoder -edl $Edl";
-} elsif ($Encoder == "ffmpeg") {
+} elsif ($Encoder eq "ffmpeg") {
 	$shellScript = $shellScript . $AppDir . "Contents/Resources/mencoder -edl $Edl";
-} elsif ($Encoder == "cat") {
+} elsif ($Encoder eq "cat") {
 	$shellScript = $shellScript . "cat -u";
 } else  {
 	$shellScript = $shellScript . $Encoder;
@@ -35,16 +35,17 @@ if ($Encoder == "mencoder") {
 
 $shellScript = $shellScript . " $VideoOpts $AudioOpts $OtherOpts ";
 
-if ($Encoder == "mencoder") {
+if ($Encoder eq "mencoder") {
 	$shellScript = $shellScript . "-o $Target $Src >$Progress 2>&1";
-} elsif ($Encoder == "ffmpeg") {
+} elsif ($Encoder eq "ffmpeg") {
 	$shellScript = $shellScript . "-o $Target $Src >$Progress 2>&1";
-} elsif ($Encoder == "cat") {
+} elsif ($Encoder eq "cat") {
 	$shellScript = $shellScript . "$Src > $Target";
 } else  {
 	$shellScript = $shellScript . "$Src > $Target";
 }
 
+print "\n\n$shellScript\n\n";
 `$shellScript`;
 
 `rm -f /tmp/iTiVoDLPipe-$ENV{'USER'} /tmp/iTiVoDLPipe2-$ENV{'USER'}.mpg`;
