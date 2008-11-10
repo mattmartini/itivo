@@ -1140,7 +1140,10 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 		end if
 	end tell
 	set currentTry to 0
-	my performCancelDownload()
+	if (encoderUsed = "") then set encoderUsed to " "
+	if (encoderVideoOptions = "") then set encoderVideoOptions to " "
+	if (encoderAudioOptions = "") then set encoderAudioOptions to " "
+	if (encoderOtherOptions = "") then set encoderOtherOptions to " "
 	try
 		set shellCmd to "rm /tmp/iTiVoDL*-" & UserName
 		do shell script shellCmd
@@ -1148,6 +1151,7 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 	set cancelDownload to 0
 	set timeRemaining to 0
 	repeat while ((not (my isDownloadComplete(filePath, fullFileSize, currentTry) and (timeRemaining ≤ 5 * (retryCount + 1)))) and currentTry < retryCount and cancelDownload = 0)
+		my performCancelDownload()
 		tell window "iTiVo"
 			try
 				set shellCmd to "rm /tmp/iTiVoDLPipe*-" & UserName & "*"
@@ -1172,7 +1176,7 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 			if (comSkip = 0) then
 				set ShellScriptCommand to "perl " & myPath & "Contents/Resources/re-encoder.pl " & myPath2 & " " & myHomePathP2 & " " & showFullNameEncoded & filenameExtension & " "
 				set ShellScriptCommand to ShellScriptCommand & quoted form of encoderUsed & " " & quoted form of encoderVideoOptions & " "
-				set ShellScriptCommand to ShellScriptCommand & quoted form of encoderAudioOptions & " " & quoted form of encoderOtherOptions
+				set ShellScriptCommand to ShellScriptCommand & quoted form of encoderAudioOptions & " " & quoted form of encoderOtherOptions & " "
 				set ShellScriptCommand to ShellScriptCommand & " &> /dev/null & echo $! ;exit 0"
 				my debug_log(ShellScriptCommand)
 				do shell script ShellScriptCommand
