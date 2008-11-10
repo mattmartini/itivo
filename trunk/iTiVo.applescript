@@ -47,6 +47,7 @@ property postDownloadCmd : ""
 property comSkip : 0
 property SUFeedURL : "http://itivo.googlecode.com/svn/trunk/www/iTiVo.xml"
 property debugLog : false
+property downloadFirst : false
 
 property panelWIndow : missing value
 property currentPrefsTab : "DownloadingTab"
@@ -253,6 +254,7 @@ on setupPrefsTab(tabName)
 				set state of button "betaUpdate" of view "AdvancedView" of tab view "TopTab" to false
 			end if
 			set state of button "debugLog" of view "AdvancedView" of tab view "TopTab" to debugLog
+			set state of button "downloadFirst" of view "AdvancedView" of tab view "TopTab" to downloadFirst
 			set contents of text field "filenameExtension" of view "AdvancedView" of tab view "TopTab" to filenameExtension
 			set contents of text field "encoderUsed" of view "AdvancedView" of tab view "TopTab" to encoderUsed
 			set contents of text field "encoderVideoOptions" of view "AdvancedView" of tab view "TopTab" to encoderVideoOptions
@@ -281,6 +283,7 @@ on recordPrefsTab()
 			if (debugLog is true) then
 				set debug_level to 3
 			end if
+			set downloadFirst to state of button "downloadFirst" of view "AdvancedView" of tab view "TopTab" as boolean
 			if (state of button "betaUpdate" of view "AdvancedView" of tab view "TopTab" = 1) then
 				set SUFeedURL to "http://itivo.googlecode.com/svn/trunk/www/iTiVo-beta.xml"
 			else
@@ -337,6 +340,7 @@ on registerSettings()
 		make new default entry at end of default entries with properties {name:"comSkip", contents:comSkip}
 		make new default entry at end of default entries with properties {name:"postDownloadCmd", contents:postDownloadCmd}
 		make new default entry at end of default entries with properties {name:"debugLog", contents:debugLog}
+		make new default entry at end of default entries with properties {name:"downloadFirst", contents:downloadFirst}
 		make new default entry at end of default entries with properties {name:"SUFeedURL", contents:SUFeedURL}
 		make new default entry at end of default entries with properties {name:"encoderUsed", contents:encoderUsed}
 		make new default entry at end of default entries with properties {name:"encoderVideoOptions", contents:encoderVideoOptions}
@@ -388,6 +392,7 @@ on readSettings()
 			if (debugLog = true) then
 				set debug_level to 3
 			end if
+			set downloadFirst to contents of default entry "downloadFirst"
 		end try
 	end tell
 	try
@@ -483,6 +488,7 @@ on writeSettings()
 			set contents of default entry "DLHistory" to DLHistory as list
 			set contents of default entry "targetDataSList" to targetDataSList as list
 			set contents of default entry "debugLog" to debugLog
+			set contents of default entry "downloadFirst" to downloadFirst
 		end tell
 	on error
 		my debug_log("Failed to write out initial settings")
@@ -1158,7 +1164,7 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 				my debug_log(shellCmd)
 				do shell script shellCmd
 			end try
-			if (comSkip = 0) then
+			if (comSkip = 0 and downloadFirst = 0) then
 				set shellCmd to "mkfifo /tmp/iTiVoDLPipe-" & UserName & " /tmp/iTiVoDLPipe2-" & UserName & ".mpg"
 			else
 				set shellCmd to "mkfifo /tmp/iTiVoDLPipe-" & UserName & " ; touch /tmp/iTiVoDLPipe{2,3}-" & UserName & ".mpg"
@@ -1173,7 +1179,7 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 			set ShellScriptCommand to ShellScriptCommand & " &> /dev/null & echo $! ;exit 0"
 			my debug_log(ShellScriptCommand)
 			do shell script ShellScriptCommand
-			if (comSkip = 0) then
+			if (comSkip = 0 and downloadFirst = 0) then
 				set ShellScriptCommand to "perl " & myPath & "Contents/Resources/re-encoder.pl " & myPath2 & " " & myHomePathP2 & " " & showFullNameEncoded & filenameExtension & " "
 				set ShellScriptCommand to ShellScriptCommand & quoted form of encoderUsed & " " & quoted form of encoderVideoOptions & " "
 				set ShellScriptCommand to ShellScriptCommand & quoted form of encoderAudioOptions & " " & quoted form of encoderOtherOptions & " "
@@ -1334,9 +1340,12 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 					end try
 					delay 0.5
 				end repeat
+			end if
+			if (my isDownloadComplete(filePath, fullFileSize, currentTry) and (comSkip = 1 or downloadFirst = 1)) then
 				tell progress indicator "Status" to increment by -1 * currentProgress
 				set currentProgresss to 0
 				set downloadExistsCmdString to "du -k -d 0 /tmp/iTiVoDLPipe2-" & UserName & ".mpg ;exit 0"
+				set timeRemaining to 200
 				set timeoutCount to 0
 				set downloadExists to 1
 				set currentPercent to 0
