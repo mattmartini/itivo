@@ -1960,4 +1960,5 @@ on should close theObject
 			end if
 		end if
 	end if
+	return true
 end should close

@@ -68,11 +68,29 @@
 			<key>encoderUsed</key>
 			<string>mencoder</string>
 			<key>name</key>
+			<string>Quicktime (H.264   10Mbps)</string>
+			<key>encoderVideoOptions</key>
+			<string>-of lavf -lavfopts format=ipod -ovc x264 -x264encopts bitrate=10000:bframes=0:level_idc=41:threads=auto:global_header -vf pp=lb,harddup,scale=-10:-1</string>
+			<key>encoderAudioOptions</key>
+			<string>-af volume=13:1 -oac faac -faacopts mpeg=4:object=2:raw:br=256</string>
+			<key>encoderOtherOptions</key>
+			<string>-hr-edl-seek</string>
+			<key>iTunes</key>
+			<true/>
+		</dict>
+		<dict>
+			<key>comSkip</key>
+			<true/>
+			<key>filenameExtension</key>
+			<string>.mp4</string>
+			<key>encoderUsed</key>
+			<string>mencoder</string>
+			<key>name</key>
 			<string>Quicktime (H.264   5Mbps)</string>
 			<key>encoderVideoOptions</key>
-			<string>-of lavf -lavfopts format=mp4 -ovc x264 -x264encopts bitrate=5000:bframes=0:level_idc=41:threads=auto:global_header -vf harddup,scale=-10:-1</string>
+			<string>-of lavf -lavfopts format=ipod -ovc x264 -x264encopts bitrate=5000:bframes=0:level_idc=41:threads=auto:global_header -vf pp=lb,harddup,scale=-10:-1</string>
 			<key>encoderAudioOptions</key>
-			<string>-af volume=13:1 -oac faac -faacopts mpeg=4:object=2:raw:br=128</string>
+			<string>-af volume=13:1 -oac faac -faacopts mpeg=4:object=2:raw:br=192</string>
 			<key>encoderOtherOptions</key>
 			<string>-hr-edl-seek</string>
 			<key>iTunes</key>
@@ -88,7 +106,7 @@
 			<key>name</key>
 			<string>Quicktime (H.264   1Mbps)</string>
 			<key>encoderVideoOptions</key>
-			<string>-of lavf -lavfopts format=mp4 -ovc x264 -x264encopts bitrate=1000:bframes=0:level_idc=41:threads=auto:global_header -vf harddup,scale=-10:-1</string>
+			<string>-of lavf -lavfopts format=ipod -ovc x264 -x264encopts bitrate=1000:bframes=0:level_idc=41:threads=auto:global_header -vf pp=lb,harddup,scale=-10:-1</string>
 			<key>encoderAudioOptions</key>
 			<string>-af volume=13:1 -oac faac -faacopts mpeg=4:object=2:raw:br=128</string>
 			<key>encoderOtherOptions</key>
@@ -106,9 +124,9 @@
 			<key>name</key>
 			<string>Zune</string>
 			<key>encoderVideoOptions</key>
-			<string>-of lavf -lavfopts format=zune -ovc x264 -x264encopts nocabac:level_idc=30:bitrate=256:threads=auto:bframes=0:global_header -vf pp=lb,dsize=320:240:0,scale=-8:-8,harddup</string>
+			<string>-of lavf -lavfopts format=mp4 -ovc x264 -x264encopts nocabac:level_idc=21:bitrate=384:threads=auto:bframes=0:global_header -vf dsize=320:240:0,scale=-8:-8,harddup</string>
 			<key>encoderAudioOptions</key>
-			<string>-af volume=13:1 -oac faac -faacopts mpeg=4:object=2:raw:br=128</string>
+			<string>-af volume=13:1 -oac mp3lame -lameopts br=192</string>
 			<key>encoderOtherOptions</key>
 			<string>-hr-edl-seek</string>
 			<key>iTunes</key>
@@ -176,11 +194,11 @@
 			<key>encoderUsed</key>
 			<string>mencoder</string>
 			<key>name</key>
-			<string>DVD (widescreen NTSC mpeg-2)</string>
+			<string>MPEG-2   ( 8Mbps )</string>
 			<key>encoderVideoOptions</key>
-			<string>-ovc lavc -of mpeg -mpegopts format=dvd:tsaf -vf scale=720:480,harddup -lavcopts vcodec=mpeg2video:vrc_buf_size=1835:vrc_maxrate=9800:vbitrate=5000:keyint=15:trell:mbd=2:precmp=2:subcmp=2:cmp=2:dia=-10:predia=-10:cbp:mv0:vqmin=1:lmin=1:dc=10:vstrict=0:aspect=16/9</string>
+			<string>-ovc lavc -of mpeg -mpegopts format=dvd:tsaf:muxrate=36000 -vf pp=lb,scale=-1:-1,harddup -lavcopts vcodec=mpeg2video:vrc_buf_size=1835:vrc_maxrate=12000:vbitrate=8000:keyint=15:trell:mbd=2:precmp=2:subcmp=2:cmp=2:dia=-10:predia=-10:cbp:mv0:vqmin=1:lmin=1:dc=10:vstrict=0:autoaspect</string>
 			<key>encoderAudioOptions</key>
-			<string>-oac lavc -srate 48000 -af lavcresample=48000</string>
+			<string>-af volume=13:1 -srate 48000 -af lavcresample=48000 -oac lavc -lavcopts acodec=mp2:abitrate=192</string>
 			<key>encoderOtherOptions</key>
 			<string>-hr-edl-seek</string>
 			<key>iTunes</key>
@@ -194,7 +212,61 @@
 			<key>encoderUsed</key>
 			<string>mencoder</string>
 			<key>name</key>
-			<string>MPEG2 (minimal re-encode)</string>
+			<string>MPEG-2   ( 5Mbps )</string>
+			<key>encoderVideoOptions</key>
+			<string>-ovc lavc -of mpeg -mpegopts format=dvd:tsaf:muxrate=36000 -vf pp=lb,scale=-1:-1,harddup -lavcopts vcodec=mpeg2video:vrc_buf_size=1835:vrc_maxrate=9800:vbitrate=5000:keyint=15:trell:mbd=2:precmp=2:subcmp=2:cmp=2:dia=-10:predia=-10:cbp:mv0:vqmin=1:lmin=1:dc=10:vstrict=0:autoaspect</string>
+			<key>encoderAudioOptions</key>
+			<string>-af volume=13:1 -srate 48000 -af lavcresample=48000 -oac lavc -lavcopts acodec=mp2:abitrate=192</string>
+			<key>encoderOtherOptions</key>
+			<string>-hr-edl-seek</string>
+			<key>iTunes</key>
+			<true/>
+		</dict>
+		<dict>
+			<key>comSkip</key>
+			<true/>
+			<key>filenameExtension</key>
+			<string>.mpg</string>
+			<key>encoderUsed</key>
+			<string>mencoder</string>
+			<key>name</key>
+			<string>MPEG-2   ( 1Mbps )</string>
+			<key>encoderVideoOptions</key>
+			<string>-ovc lavc -of mpeg -mpegopts format=dvd:tsaf:muxrate=36000 -vf pp=lb,scale=-1:-1,harddup -lavcopts vcodec=mpeg2video:vrc_buf_size=1835:vrc_maxrate=2000:vbitrate=1000:keyint=15:trell:mbd=2:precmp=2:subcmp=2:cmp=2:dia=-10:predia=-10:cbp:mv0:vqmin=1:lmin=1:dc=10:vstrict=0:autoaspect</string>
+			<key>encoderAudioOptions</key>
+			<string>-af volume=13:1 -srate 48000 -af lavcresample=48000 -oac lavc -lavcopts acodec=mp2:abitrate=128</string>
+			<key>encoderOtherOptions</key>
+			<string>-hr-edl-seek</string>
+			<key>iTunes</key>
+			<true/>
+		</dict>
+		<dict>
+			<key>comSkip</key>
+			<true/>
+			<key>filenameExtension</key>
+			<string>.mpg</string>
+			<key>encoderUsed</key>
+			<string>mencoder</string>
+			<key>name</key>
+			<string>DVD (widescreen NTSC mpeg-2)</string>
+			<key>encoderVideoOptions</key>
+			<string>-ovc lavc -of mpeg -mpegopts format=dvd:tsaf -vf scale=720:480,harddup -lavcopts vcodec=mpeg2video:vrc_buf_size=1835:vrc_maxrate=9800:vbitrate=5000:keyint=15:trell:mbd=2:precmp=2:subcmp=2:cmp=2:dia=-10:predia=-10:cbp:mv0:vqmin=1:lmin=1:dc=10:vstrict=0:aspect=16/9</string>
+			<key>encoderAudioOptions</key>
+			<string>-oac mp3lame -lameopts vbr=2:q=5:br=192</string>
+			<key>encoderOtherOptions</key>
+			<string>-hr-edl-seek</string>
+			<key>iTunes</key>
+			<true/>
+		</dict>
+		<dict>
+			<key>comSkip</key>
+			<true/>
+			<key>filenameExtension</key>
+			<string>.mpg</string>
+			<key>encoderUsed</key>
+			<string>mencoder</string>
+			<key>name</key>
+			<string>MPEG2-TS (unplayable in quicktime)</string>
 			<key>encoderVideoOptions</key>
 			<string>-ovc copy -of mpeg -mpegopts format=mpeg2:tsaf:muxrate=36000 -noskip -mc 0 -forceidx</string>
 			<key>encoderAudioOptions</key>
@@ -212,11 +284,11 @@
 			<key>encoderUsed</key>
 			<string>mencoder</string>
 			<key>name</key>
-			<string>Audio (mp3)</string>
+			<string>Audio only (mp3)</string>
 			<key>encoderVideoOptions</key>
 			<string>-ovc frameno</string>
 			<key>encoderAudioOptions</key>
-			<string>-oac mp3lame -lameopts vbr=2:q=5</string>
+			<string>-oac mp3lame -lameopts vbr=2:q=5:br=192</string>
 			<key>encoderOtherOptions</key>
 			<string>-of rawaudio -hr-edl-seek</string>
 			<key>iTunes</key>
