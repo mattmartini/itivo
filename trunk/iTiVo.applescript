@@ -1948,3 +1948,16 @@ end idle
 on should quit after last window closed theObject
 	return true
 end should quit after last window closed
+
+on should close theObject
+	if name of theObject = "iTiVo" then
+		if not enabled of button "ConnectButton" of window "iTiVo" is true then
+			set theReply to display dialog "You have a download in progress.  Closing will exit the program and terminate the download.  Are you *SURE* you want to quit?" buttons {"Yes", "No"} default button "Yes" --attached to window "iTiVo"
+			if button returned of theReply = "Yes" then
+				return true
+			else
+				return false
+			end if
+		end if
+	end if
+end should close
