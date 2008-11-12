@@ -206,7 +206,7 @@
 		</dict>
 		<dict>
 			<key>comSkip</key>
-			<false/>
+			<true/>
 			<key>filenameExtension</key>
 			<string>.mp3</string>
 			<key>encoderUsed</key>
