@@ -18,6 +18,7 @@ foreach $procname (@tokill) {
 }
 
 sleep 1;
+
 foreach $procname (@tokill) {
 	$processes = `ps -ww -U $ENV{'USER'} -o pid,command | grep -e 'iTiVo'`;
 	@lines = split('\n', $processes);
