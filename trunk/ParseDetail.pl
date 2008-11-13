@@ -94,16 +94,47 @@ if ($show =~ m/<displayMajorNumber>(.*?)<\/displayMajorNumber>/) {
 else {
 	$output = $output . "|";
 }
+
+
 if ($show =~ m/<vActor>(.*?)<\/vActor>/) {
-	$actors = $1;
-	$actors =~ s/<\/element><element>/, /g;
-	$actors =~ s/([A-Za-z.'\-]*)~([A-Za-z.'\-]*)/$2 $1/g;
-	$actors =~ s/<.*?>//g;
-	$output = $output . "$actors|";
+$actors = $1;
+$actors =~ s/<\/element><element>/, /g;
+$actors =~ s/([A-Za-z.'\-]*)~([A-Za-z.'\-]*)/$2 $1/g;
+$actors =~ s/<.*?>//g;
+$output = $output . "$actors";
+}
+if ($show =~ m/<vGuestStar>(.*?)<\/vGuestStar>/) {
+$actors = $1;
+$actors =~ s/<\/element><element>/, /g;
+$actors =~ s/([A-Za-z.'\-]*)~([A-Za-z.'\-]*)/$2 $1/g;
+$actors =~ s/<.*?>//g;
+$output = $output . "\n\nGUESTS: $actors";
+}
+$output = $output . "|";
+
+
+if ($show =~ m/<vWriter>(.*?)<\/vWriter>/) {
+$actors = $1;
+$actors =~ s/<\/element><element>/, /g;
+$actors =~ s/([A-Za-z.'\-]*)~([A-Za-z.'\-]*)/$2 $1/g;
+$actors =~ s/<.*?>//g;
+$output = $output . "$actors|";
 }
 else {
-	$output = $output . "|";
+$output = $output . "|";
 }
+
+if ($show =~ m/<vDirector>(.*?)<\/vDirector>/) {
+$actors = $1;
+$actors =~ s/<\/element><element>/, /g;
+$actors =~ s/([A-Za-z.'\-]*)~([A-Za-z.'\-]*)/$2 $1/g;
+$actors =~ s/<.*?>//g;
+$output = $output . "$actors|";
+}
+else {
+$output = $output . "|";
+}
+
 if ($show =~ m/<mpaaRating.*?>(.*?)<\/mpaaRating>.*<tvRating.*?>(.*?)<\/tvRating>/) {
 		$rating1 = $1;
 		$rating2 = $2;
@@ -128,14 +159,19 @@ if ($show =~ m/<originalAirDate>(.*?)<\/originalAirDate>/) {
 	$originalAirDate = substr($1, 0, 10);
 	$originalAirYear = substr($1, 0, 4);
 	$output = $output . "$originalAirDate|$originalAirYear|";
-}
-else {
+} else {
 	$output = $output . "||";
 }
+
 if ($show =~ m/<episodeNumber>(.*?)<\/episodeNumber>/) {
-	$output = $output . "$1|";
-}
-else {
+  if ($1 != 0) {
+	  $output = $output . "$1|";
+  } else {
+    $output = $output . "|";
+  }
+} else {
 	$output = $output . "|";
 }
+
+
 print substr($output, 0, length($output)-1);
