@@ -543,6 +543,12 @@ on clicked theObject
 		else if theObjectName = "CancelDownload" then
 			set cancelDownload to 1
 			set enabled of button "CancelDownload" to false
+		else if theObjectName = "imdb" then
+			set imdbURL to "http://imdb.com/find?q="
+			set component to my encode_text(contents of text field "detailTitle" of drawer "Drawer2", true, true)
+			set imdbURL to imdbURL & component & ";s=tt"
+			my debug_log("Opening " & imdbURL)
+			tell application "System Events" to open location imdbURL
 		else if theObjectName = "ConnectButton" then
 			my ConnectTiVo()
 		else if theObjectName = "queueButton" then
@@ -789,6 +795,7 @@ on selection changed theObject
 			try
 				set currentProcessSelectionsTEMP to selected data rows of theObject
 				set rowCount to count of currentProcessSelectionsTEMP
+				set enabled of button "imdb" of drawer "Drawer2" to false
 				set contents of text field "detailTitle" of drawer "Drawer2" to ""
 				set contents of text field "detailTime" of drawer "Drawer2" to ""
 				set contents of text field "detailDescription" of drawer "Drawer2" to ""
@@ -811,8 +818,8 @@ on selection changed theObject
 					set item_list to do shell script ShellScriptCommand
 					set AppleScript's text item delimiters to "|"
 					set the parts to every text item of item_list
-					my debug_log("count is " & (count of parts))
 					if (count of parts) = 16 then
+						set enabled of button "imdb" of drawer "Drawer2" to true
 						set contents of text field "detailTitle" of drawer "Drawer2" to item 2 of parts
 						set contents of text field "detailTime" of drawer "Drawer2" to item 7 of parts
 						set contents of text field "detailDescription" of drawer "Drawer2" to item 4 of parts
@@ -863,6 +870,7 @@ on selection changed theObject
 			try
 				set currentProcessSelectionsTEMP to selected data rows of theObject
 				set rowCount to count of currentProcessSelectionsTEMP
+				set enabled of button "imdb" of drawer "Drawer2" to false
 				set contents of text field "detailTitle" of drawer "Drawer2" to ""
 				set contents of text field "detailTime" of drawer "Drawer2" to ""
 				set contents of text field "detailDescription" of drawer "Drawer2" to ""
@@ -884,6 +892,7 @@ on selection changed theObject
 					set AppleScript's text item delimiters to "|"
 					set the parts to every text item of item_list
 					if (count of parts) = 14 then
+						set enabled of button "imdb" of drawer "Drawer2" to true
 						set contents of text field "detailTitle" of drawer "Drawer2" to item 2 of parts
 						set contents of text field "detailTime" of drawer "Drawer2" to item 7 of parts
 						set contents of text field "detailDescription" of drawer "Drawer2" to item 4 of parts
