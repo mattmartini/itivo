@@ -789,18 +789,20 @@ on selection changed theObject
 			try
 				set currentProcessSelectionsTEMP to selected data rows of theObject
 				set rowCount to count of currentProcessSelectionsTEMP
-				if rowCount > 1 then
-					set contents of text field "detailTitle" of drawer "Drawer2" to "Multiple shows selected"
-					set contents of text field "detailTime" of drawer "Drawer2" to ""
-					set contents of text field "detailDescription" of drawer "Drawer2" to ""
-					set contents of text field "detailQuality" of drawer "Drawer2" to ""
-					set contents of text field "detailGenre" of drawer "Drawer2" to ""
-					set contents of text field "detailChannel" of drawer "Drawer2" to ""
-					set contents of text field "detailActors" of drawer "Drawer2" to ""
-					set contents of text field "detailRating" of drawer "Drawer2" to ""
-					set contents of text field "detailEpisode" of drawer "Drawer2" to ""
-					set contents of text field "detailDate" of drawer "Drawer2" to ""
-				else if rowCount = 1 then
+				set contents of text field "detailTitle" of drawer "Drawer2" to ""
+				set contents of text field "detailTime" of drawer "Drawer2" to ""
+				set contents of text field "detailDescription" of drawer "Drawer2" to ""
+				set contents of text field "detailQuality" of drawer "Drawer2" to ""
+				set contents of text field "detailGenre" of drawer "Drawer2" to ""
+				set contents of text field "detailChannel" of drawer "Drawer2" to ""
+				set contents of text field "detailActors" of drawer "Drawer2" to ""
+				set contents of text field "detailWriter" of drawer "Drawer2" to ""
+				set contents of text field "detailDirector" of drawer "Drawer2" to ""
+				set contents of text field "detailRating" of drawer "Drawer2" to ""
+				set contents of text field "detailEpisode" of drawer "Drawer2" to ""
+				set contents of text field "detailEpisodeNum" of drawer "Drawer2" to ""
+				set contents of text field "detailDate" of drawer "Drawer2" to ""
+				if rowCount = 1 then
 					set currentProcessSelectionTEMP to item 1 of currentProcessSelectionsTEMP
 					set id to contents of (data cell "IDVal" of currentProcessSelectionTEMP)
 					set myPath to my prepareCommand(POSIX path of (path to me))
@@ -809,7 +811,8 @@ on selection changed theObject
 					set item_list to do shell script ShellScriptCommand
 					set AppleScript's text item delimiters to "|"
 					set the parts to every text item of item_list
-					if (count of parts) = 14 then
+					my debug_log("count is " & (count of parts))
+					if (count of parts) = 16 then
 						set contents of text field "detailTitle" of drawer "Drawer2" to item 2 of parts
 						set contents of text field "detailTime" of drawer "Drawer2" to item 7 of parts
 						set contents of text field "detailDescription" of drawer "Drawer2" to item 4 of parts
@@ -817,32 +820,13 @@ on selection changed theObject
 						set contents of text field "detailGenre" of drawer "Drawer2" to item 8 of parts
 						set contents of text field "detailChannel" of drawer "Drawer2" to item 9 of parts
 						set contents of text field "detailActors" of drawer "Drawer2" to item 10 of parts
-						set contents of text field "detailRating" of drawer "Drawer2" to item 11 of parts
+						set contents of text field "detailWriter" of drawer "Drawer2" to item 11 of parts
+						set contents of text field "detailDirector" of drawer "Drawer2" to item 12 of parts
+						set contents of text field "detailRating" of drawer "Drawer2" to item 13 of parts
 						set contents of text field "detailEpisode" of drawer "Drawer2" to item 3 of parts
-						set contents of text field "detailDate" of drawer "Drawer2" to item 12 of parts
-					else
-						set contents of text field "detailTitle" of drawer "Drawer2" to ""
-						set contents of text field "detailTime" of drawer "Drawer2" to ""
-						set contents of text field "detailDescription" of drawer "Drawer2" to ""
-						set contents of text field "detailQuality" of drawer "Drawer2" to ""
-						set contents of text field "detailGenre" of drawer "Drawer2" to ""
-						set contents of text field "detailChannel" of drawer "Drawer2" to ""
-						set contents of text field "detailActors" of drawer "Drawer2" to ""
-						set contents of text field "detailRating" of drawer "Drawer2" to ""
-						set contents of text field "detailEpisode" of drawer "Drawer2" to ""
-						set contents of text field "detailDate" of drawer "Drawer2" to ""
+						set contents of text field "detailEpisodeNum" of drawer "Drawer2" to item 16 of parts
+						set contents of text field "detailDate" of drawer "Drawer2" to item 14 of parts
 					end if
-				else
-					set contents of text field "detailTitle" of drawer "Drawer2" to ""
-					set contents of text field "detailTime" of drawer "Drawer2" to ""
-					set contents of text field "detailDescription" of drawer "Drawer2" to ""
-					set contents of text field "detailQuality" of drawer "Drawer2" to ""
-					set contents of text field "detailGenre" of drawer "Drawer2" to ""
-					set contents of text field "detailChannel" of drawer "Drawer2" to ""
-					set contents of text field "detailActors" of drawer "Drawer2" to ""
-					set contents of text field "detailRating" of drawer "Drawer2" to ""
-					set contents of text field "detailEpisode" of drawer "Drawer2" to ""
-					set contents of text field "detailDate" of drawer "Drawer2" to ""
 				end if
 				if rowCount = 0 then
 					set enabled of button "queueButton" of box "topBox" of split view "splitView1" to false
@@ -879,18 +863,18 @@ on selection changed theObject
 			try
 				set currentProcessSelectionsTEMP to selected data rows of theObject
 				set rowCount to count of currentProcessSelectionsTEMP
-				if rowCount > 1 then
-					set contents of text field "detailTitle" of drawer "Drawer2" to "Multiple shows selected"
-					set contents of text field "detailTime" of drawer "Drawer2" to ""
-					set contents of text field "detailDescription" of drawer "Drawer2" to ""
-					set contents of text field "detailQuality" of drawer "Drawer2" to ""
-					set contents of text field "detailGenre" of drawer "Drawer2" to ""
-					set contents of text field "detailChannel" of drawer "Drawer2" to ""
-					set contents of text field "detailActors" of drawer "Drawer2" to ""
-					set contents of text field "detailRating" of drawer "Drawer2" to ""
-					set contents of text field "detailEpisode" of drawer "Drawer2" to ""
-					set contents of text field "detailDate" of drawer "Drawer2" to ""
-				else if rowCount = 1 then
+				set contents of text field "detailTitle" of drawer "Drawer2" to ""
+				set contents of text field "detailTime" of drawer "Drawer2" to ""
+				set contents of text field "detailDescription" of drawer "Drawer2" to ""
+				set contents of text field "detailQuality" of drawer "Drawer2" to ""
+				set contents of text field "detailGenre" of drawer "Drawer2" to ""
+				set contents of text field "detailChannel" of drawer "Drawer2" to ""
+				set contents of text field "detailActors" of drawer "Drawer2" to ""
+				set contents of text field "detailRating" of drawer "Drawer2" to ""
+				set contents of text field "detailEpisode" of drawer "Drawer2" to ""
+				set contents of text field "detailEpisodeNum" of drawer "Drawer2" to ""
+				set contents of text field "detailDate" of drawer "Drawer2" to ""
+				if rowCount = 1 then
 					set currentProcessSelectionTEMP to item 1 of currentProcessSelectionsTEMP
 					set id to contents of (data cell "IDVal" of currentProcessSelectionTEMP)
 					set myPath to my prepareCommand(POSIX path of (path to me))
@@ -907,32 +891,13 @@ on selection changed theObject
 						set contents of text field "detailGenre" of drawer "Drawer2" to item 8 of parts
 						set contents of text field "detailChannel" of drawer "Drawer2" to item 9 of parts
 						set contents of text field "detailActors" of drawer "Drawer2" to item 10 of parts
-						set contents of text field "detailRating" of drawer "Drawer2" to item 11 of parts
+						set contents of text field "detailWriter" of drawer "Drawer2" to item 11 of parts
+						set contents of text field "detailDirector" of drawer "Drawer2" to item 12 of parts
+						set contents of text field "detailRating" of drawer "Drawer2" to item 13 of parts
 						set contents of text field "detailEpisode" of drawer "Drawer2" to item 3 of parts
-						set contents of text field "detailDate" of drawer "Drawer2" to item 12 of parts
-					else
-						set contents of text field "detailTitle" of drawer "Drawer2" to ""
-						set contents of text field "detailTime" of drawer "Drawer2" to ""
-						set contents of text field "detailDescription" of drawer "Drawer2" to ""
-						set contents of text field "detailQuality" of drawer "Drawer2" to ""
-						set contents of text field "detailGenre" of drawer "Drawer2" to ""
-						set contents of text field "detailChannel" of drawer "Drawer2" to ""
-						set contents of text field "detailActors" of drawer "Drawer2" to ""
-						set contents of text field "detailRating" of drawer "Drawer2" to ""
-						set contents of text field "detailEpisode" of drawer "Drawer2" to ""
-						set contents of text field "detailDate" of drawer "Drawer2" to ""
+						set contents of text field "detailEpisodeNum" of drawer "Drawer2" to item 16 of parts
+						set contents of text field "detailDate" of drawer "Drawer2" to item 14 of parts
 					end if
-				else
-					set contents of text field "detailTitle" of drawer "Drawer2" to ""
-					set contents of text field "detailTime" of drawer "Drawer2" to ""
-					set contents of text field "detailDescription" of drawer "Drawer2" to ""
-					set contents of text field "detailQuality" of drawer "Drawer2" to ""
-					set contents of text field "detailGenre" of drawer "Drawer2" to ""
-					set contents of text field "detailChannel" of drawer "Drawer2" to ""
-					set contents of text field "detailActors" of drawer "Drawer2" to ""
-					set contents of text field "detailRating" of drawer "Drawer2" to ""
-					set contents of text field "detailEpisode" of drawer "Drawer2" to ""
-					set contents of text field "detailDate" of drawer "Drawer2" to ""
 				end if
 				set enabled of button "deleteSubscriptionButton" of view "bottomRightView" of split view "splitView2" of box "bottomBox" of split view "splitView1" to false
 				if rowCount = 0 then
