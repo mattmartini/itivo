@@ -549,6 +549,12 @@ on clicked theObject
 			set imdbURL to imdbURL & component & ";s=tt"
 			my debug_log("Opening " & imdbURL)
 			tell application "System Events" to open location imdbURL
+		else if theObjectName = "tvdb" then
+			set imdbURL to "http://www.thetvdb.com/index.php?seriesname="
+			set component to my encode_text(contents of text field "detailTitle" of drawer "Drawer2", true, true)
+			set imdbURL to imdbURL & component & "&fieldlocation=1&language=7&genre=&year=&network=&zap2it_id=&tvcom_id=&imdb_id=&order=translation&searching=Search&tab=advancedsearch"
+			my debug_log("Opening " & imdbURL)
+			tell application "System Events" to open location imdbURL
 		else if theObjectName = "ConnectButton" then
 			my ConnectTiVo()
 		else if theObjectName = "queueButton" then
@@ -797,6 +803,8 @@ on selection changed theObject
 				set rowCount to count of currentProcessSelectionsTEMP
 				set transparent of button "imdb" of drawer "Drawer2" to true
 				set enabled of button "imdb" of drawer "Drawer2" to false
+				set transparent of button "tvdb" of drawer "Drawer2" to true
+				set enabled of button "tvdb" of drawer "Drawer2" to false
 				set contents of text field "detailTitle" of drawer "Drawer2" to ""
 				set contents of text field "detailTime" of drawer "Drawer2" to ""
 				set contents of text field "detailDescription" of drawer "Drawer2" to ""
@@ -822,6 +830,8 @@ on selection changed theObject
 					if (count of parts) = 16 then
 						set transparent of button "imdb" of drawer "Drawer2" to false
 						set enabled of button "imdb" of drawer "Drawer2" to true
+						set transparent of button "tvdb" of drawer "Drawer2" to false
+						set enabled of button "tvdb" of drawer "Drawer2" to true
 						set contents of text field "detailTitle" of drawer "Drawer2" to item 2 of parts
 						set contents of text field "detailTime" of drawer "Drawer2" to item 7 of parts
 						set contents of text field "detailDescription" of drawer "Drawer2" to item 4 of parts
@@ -874,6 +884,8 @@ on selection changed theObject
 				set rowCount to count of currentProcessSelectionsTEMP
 				set transparent of button "imdb" of drawer "Drawer2" to true
 				set enabled of button "imdb" of drawer "Drawer2" to false
+				set transparent of button "tvdb" of drawer "Drawer2" to true
+				set enabled of button "tvdb" of drawer "Drawer2" to false
 				set contents of text field "detailTitle" of drawer "Drawer2" to ""
 				set contents of text field "detailTime" of drawer "Drawer2" to ""
 				set contents of text field "detailDescription" of drawer "Drawer2" to ""
@@ -897,6 +909,8 @@ on selection changed theObject
 					if (count of parts) = 14 then
 						set transparent of button "imdb" of drawer "Drawer2" to false
 						set enabled of button "imdb" of drawer "Drawer2" to true
+						set transparent of button "tvdb" of drawer "Drawer2" to false
+						set enabled of button "tvdb" of drawer "Drawer2" to true
 						set contents of text field "detailTitle" of drawer "Drawer2" to item 2 of parts
 						set contents of text field "detailTime" of drawer "Drawer2" to item 7 of parts
 						set contents of text field "detailDescription" of drawer "Drawer2" to item 4 of parts

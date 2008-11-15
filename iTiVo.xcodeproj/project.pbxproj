@@ -43,6 +43,7 @@
 		257572CD072881A4000BE9CA /* AppleScriptKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA206CF1015C4E2903C91932 /* AppleScriptKit.framework */; };
 		5304AD990E4CBDBF00E77CA0 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5304AD980E4CBDBF00E77CA0 /* Sparkle.framework */; };
 		5304ADC30E4CBDFE00E77CA0 /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 5304AD980E4CBDBF00E77CA0 /* Sparkle.framework */; };
+		531280FE0ECED47500B748E0 /* tvdb.png in Resources */ = {isa = PBXBuildFile; fileRef = 531280FD0ECED47500B748E0 /* tvdb.png */; };
 		532226E40EB0698400062D5F /* PrefsPanel.xib in Resources */ = {isa = PBXBuildFile; fileRef = 532226E30EB0698400062D5F /* PrefsPanel.xib */; };
 		5352F8690EC6752400A83D95 /* formats.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5352F8680EC6752400A83D95 /* formats.plist */; };
 		53AF175F0EB6936100C68D2E /* http-fetcher.pl in Resources */ = {isa = PBXBuildFile; fileRef = 53AF175E0EB6936100C68D2E /* http-fetcher.pl */; };
@@ -99,6 +100,7 @@
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		5304AD980E4CBDBF00E77CA0 /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Sparkle.framework; sourceTree = "<group>"; };
+		531280FD0ECED47500B748E0 /* tvdb.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tvdb.png; sourceTree = "<group>"; };
 		532226E30EB0698400062D5F /* PrefsPanel.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PrefsPanel.xib; sourceTree = "<group>"; };
 		5352F8680EC6752400A83D95 /* formats.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = formats.plist; sourceTree = "<group>"; };
 		53AF175E0EB6936100C68D2E /* http-fetcher.pl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.perl; path = "http-fetcher.pl"; sourceTree = "<group>"; };
@@ -213,6 +215,7 @@
 			isa = PBXGroup;
 			children = (
 				53C1A0DA0ECBCDFB0006B929 /* imdb.png */,
+				531280FD0ECED47500B748E0 /* tvdb.png */,
 				5352F8680EC6752400A83D95 /* formats.plist */,
 				53D5B8390EBFB2B0004F537D /* comskip.ini */,
 				53E8CDD50EB8492F00439BE1 /* dsa_pub.pem */,
@@ -315,6 +318,7 @@
 				53F129320EC1B73800AF9D56 /* mencoderSize.pl in Resources */,
 				5352F8690EC6752400A83D95 /* formats.plist in Resources */,
 				53C1A0DB0ECBCDFB0006B929 /* imdb.png in Resources */,
+				531280FE0ECED47500B748E0 /* tvdb.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
