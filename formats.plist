@@ -122,6 +122,24 @@
 			<key>encoderUsed</key>
 			<string>mencoder</string>
 			<key>name</key>
+			<string>Quicktime (H.264   256kbps)</string>
+			<key>encoderVideoOptions</key>
+			<string>-of lavf -lavfopts format=ipod -ovc x264 -x264encopts bitrate=128:bframes=0:level_idc=41:threads=auto:global_header -vf pp=lb,harddup,scale=-10:-1</string>
+			<key>encoderAudioOptions</key>
+			<string>-af volume=13:1 -oac faac -faacopts mpeg=4:object=2:raw:br=128</string>
+			<key>encoderOtherOptions</key>
+			<string>-hr-edl-seek</string>
+			<key>iTunes</key>
+			<true/>
+		</dict>
+		<dict>
+			<key>comSkip</key>
+			<true/>
+			<key>filenameExtension</key>
+			<string>.mp4</string>
+			<key>encoderUsed</key>
+			<string>mencoder</string>
+			<key>name</key>
 			<string>Zune</string>
 			<key>encoderVideoOptions</key>
 			<string>-of lavf -lavfopts format=mp4 -ovc x264 -x264encopts nocabac:level_idc=21:bitrate=384:threads=auto:bframes=0:global_header -vf dsize=320:240:0,scale=-8:-8,harddup</string>
@@ -194,29 +212,11 @@
 			<key>encoderUsed</key>
 			<string>mencoder</string>
 			<key>name</key>
-			<string>MPEG-2   ( 8Mbps )</string>
-			<key>encoderVideoOptions</key>
-			<string>-ovc lavc -of mpeg -mpegopts format=dvd:tsaf:muxrate=36000 -vf pp=lb,scale=-1:-1,harddup -lavcopts vcodec=mpeg2video:vrc_buf_size=1835:vrc_maxrate=12000:vbitrate=8000:keyint=15:trell:mbd=2:precmp=2:subcmp=2:cmp=2:dia=-10:predia=-10:cbp:mv0:vqmin=1:lmin=1:dc=10:vstrict=0:autoaspect</string>
-			<key>encoderAudioOptions</key>
-			<string>-af volume=13:1 -srate 48000 -af lavcresample=48000 -oac lavc -lavcopts acodec=mp2:abitrate=192</string>
-			<key>encoderOtherOptions</key>
-			<string>-hr-edl-seek</string>
-			<key>iTunes</key>
-			<true/>
-		</dict>
-		<dict>
-			<key>comSkip</key>
-			<true/>
-			<key>filenameExtension</key>
-			<string>.mpg</string>
-			<key>encoderUsed</key>
-			<string>mencoder</string>
-			<key>name</key>
 			<string>MPEG-2   ( 5Mbps )</string>
 			<key>encoderVideoOptions</key>
-			<string>-ovc lavc -of mpeg -mpegopts format=dvd:tsaf:muxrate=36000 -vf pp=lb,scale=-1:-1,harddup -lavcopts vcodec=mpeg2video:vrc_buf_size=1835:vrc_maxrate=9800:vbitrate=5000:keyint=15:trell:mbd=2:precmp=2:subcmp=2:cmp=2:dia=-10:predia=-10:cbp:mv0:vqmin=1:lmin=1:dc=10:vstrict=0:autoaspect</string>
+			<string>-ovc lavc -of mpeg -mpegopts format=dvd:tsaf:muxrate=36000 -vf pp=lb,scale=-1:-1,harddup -lavcopts vcodec=mpeg2video:vrc_buf_size=1835:vrc_maxrate=9000:vbitrate=5000:keyint=15:trell:mbd=2:precmp=2:subcmp=2:cmp=2:dia=-10:predia=-10:cbp:mv0:vqmin=1:lmin=1:dc=10:vstrict=0:autoaspect</string>
 			<key>encoderAudioOptions</key>
-			<string>-af volume=13:1 -srate 48000 -af lavcresample=48000 -oac lavc -lavcopts acodec=mp2:abitrate=192</string>
+			<string>-af volume=13:1 -srate 48000 -af lavcresample=48000 -oac lavc -lavcopts acodec=mp2:abitrate=128</string>
 			<key>encoderOtherOptions</key>
 			<string>-hr-edl-seek</string>
 			<key>iTunes</key>
@@ -232,7 +232,25 @@
 			<key>name</key>
 			<string>MPEG-2   ( 1Mbps )</string>
 			<key>encoderVideoOptions</key>
-			<string>-ovc lavc -of mpeg -mpegopts format=dvd:tsaf:muxrate=36000 -vf pp=lb,scale=-1:-1,harddup -lavcopts vcodec=mpeg2video:vrc_buf_size=1835:vrc_maxrate=2000:vbitrate=1000:keyint=15:trell:mbd=2:precmp=2:subcmp=2:cmp=2:dia=-10:predia=-10:cbp:mv0:vqmin=1:lmin=1:dc=10:vstrict=0:autoaspect</string>
+			<string>-ovc lavc -of mpeg -mpegopts format=dvd:tsaf:muxrate=36000 -vf pp=lb,scale=-1:-1,harddup -lavcopts vcodec=mpeg2video:vrc_buf_size=1835:vrc_maxrate=2400:vbitrate=1000:keyint=15:trell:mbd=2:precmp=2:subcmp=2:cmp=2:dia=-10:predia=-10:cbp:mv0:vqmin=1:lmin=1:dc=10:vstrict=0:autoaspect</string>
+			<key>encoderAudioOptions</key>
+			<string>-af volume=13:1 -srate 48000 -af lavcresample=48000 -oac lavc -lavcopts acodec=mp2:abitrate=128</string>
+			<key>encoderOtherOptions</key>
+			<string>-hr-edl-seek</string>
+			<key>iTunes</key>
+			<true/>
+		</dict>
+		<dict>
+			<key>comSkip</key>
+			<true/>
+			<key>filenameExtension</key>
+			<string>.mpg</string>
+			<key>encoderUsed</key>
+			<string>mencoder</string>
+			<key>name</key>
+			<string>MPEG-2   ( 250 kbps )</string>
+			<key>encoderVideoOptions</key>
+			<string>-ovc lavc -of mpeg -mpegopts format=dvd:tsaf:muxrate=36000 -vf pp=lb,scale=-1:-1,harddup -lavcopts vcodec=mpeg2video:vrc_buf_size=1835:vrc_maxrate=256:vbitrate=128:keyint=15:trell:mbd=2:precmp=2:subcmp=2:cmp=2:dia=-10:predia=-10:cbp:mv0:vqmin=1:lmin=1:dc=10:vstrict=0:autoaspect</string>
 			<key>encoderAudioOptions</key>
 			<string>-af volume=13:1 -srate 48000 -af lavcresample=48000 -oac lavc -lavcopts acodec=mp2:abitrate=128</string>
 			<key>encoderOtherOptions</key>

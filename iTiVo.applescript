@@ -795,6 +795,7 @@ on selection changed theObject
 			try
 				set currentProcessSelectionsTEMP to selected data rows of theObject
 				set rowCount to count of currentProcessSelectionsTEMP
+				set transparent of button "imdb" of drawer "Drawer2" to true
 				set enabled of button "imdb" of drawer "Drawer2" to false
 				set contents of text field "detailTitle" of drawer "Drawer2" to ""
 				set contents of text field "detailTime" of drawer "Drawer2" to ""
@@ -819,6 +820,7 @@ on selection changed theObject
 					set AppleScript's text item delimiters to "|"
 					set the parts to every text item of item_list
 					if (count of parts) = 16 then
+						set transparent of button "imdb" of drawer "Drawer2" to false
 						set enabled of button "imdb" of drawer "Drawer2" to true
 						set contents of text field "detailTitle" of drawer "Drawer2" to item 2 of parts
 						set contents of text field "detailTime" of drawer "Drawer2" to item 7 of parts
@@ -870,6 +872,7 @@ on selection changed theObject
 			try
 				set currentProcessSelectionsTEMP to selected data rows of theObject
 				set rowCount to count of currentProcessSelectionsTEMP
+				set transparent of button "imdb" of drawer "Drawer2" to true
 				set enabled of button "imdb" of drawer "Drawer2" to false
 				set contents of text field "detailTitle" of drawer "Drawer2" to ""
 				set contents of text field "detailTime" of drawer "Drawer2" to ""
@@ -892,6 +895,7 @@ on selection changed theObject
 					set AppleScript's text item delimiters to "|"
 					set the parts to every text item of item_list
 					if (count of parts) = 14 then
+						set transparent of button "imdb" of drawer "Drawer2" to false
 						set enabled of button "imdb" of drawer "Drawer2" to true
 						set contents of text field "detailTitle" of drawer "Drawer2" to item 2 of parts
 						set contents of text field "detailTime" of drawer "Drawer2" to item 7 of parts
@@ -1438,7 +1442,7 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 			else
 				set shellCmd to shellCmd & "success=0; "
 			end if
-			set shellCmd to shellCmd & postDownloadCmd
+			set shellCmd to shellCmd & postDownloadCmd & "2>&1"
 			my debug_log("Running: " & shellCmd)
 			set shellCmdResult to do shell script shellCmd
 			my debug_log(shellCmdResult)
