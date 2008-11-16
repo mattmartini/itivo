@@ -8,10 +8,11 @@ foreach $procname (@tokill) {
 	$processes = `ps -ww -U $ENV{'USER'} -o pid,command | grep -e 'iTiVo'`;
 	@lines = split('\n', $processes);
 	foreach $n (@lines) {
-		if ($n =~ /^(\d+)\s+(\S+)/) {
+		if ($n =~ /^\s*(\d+)\s+(\S+)/) {
 		    $pid = $1;
 		    if ($2 =~ /$procname$/) {
-			`kill $pid`;
+					print "$procname:$pid ,";
+					`kill $pid`;
 		    }
 		}
 	}
@@ -23,10 +24,10 @@ foreach $procname (@tokill) {
 	$processes = `ps -ww -U $ENV{'USER'} -o pid,command | grep -e 'iTiVo'`;
 	@lines = split('\n', $processes);
 	foreach $n (@lines) {
-		if ($n =~ /^(\d+)\s+(\S+)/) {
+		if ($n =~ /^\s*(\d+)\s+(\S+)/) {
 		    $pid = $1;
 		    if ($2 =~ /$procname$/) {
-			`kill -9 $pid`;
+					`kill -9 $pid`;
 		    }
 		}
 	}

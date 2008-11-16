@@ -6,7 +6,6 @@
 --  Copyright 2006-2007 David Benesch. All rights reserved.
 property debug_level : 1
 property already_launched : 0
-property filenameExtension : ".mp4"
 property targetData : missing value
 property targetDataQ : missing value
 property targetDataS : missing value
@@ -44,6 +43,7 @@ property encoderVideoOptions : ""
 property encoderAudioOptions : ""
 property encoderOtherOptions : ""
 property postDownloadCmd : ""
+property filenameExtension : ".mp4"
 property comSkip : 0
 property SUFeedURL : "http://itivo.googlecode.com/svn/trunk/www/iTiVo.xml"
 property debugLog : false
@@ -342,6 +342,7 @@ on registerSettings()
 		make new default entry at end of default entries with properties {name:"debugLog", contents:debugLog}
 		make new default entry at end of default entries with properties {name:"downloadFirst", contents:downloadFirst}
 		make new default entry at end of default entries with properties {name:"SUFeedURL", contents:SUFeedURL}
+		make new default entry at end of default entries with properties {name:"filenameExtension", contents:filenameExtension}
 		make new default entry at end of default entries with properties {name:"encoderUsed", contents:encoderUsed}
 		make new default entry at end of default entries with properties {name:"encoderVideoOptions", contents:encoderVideoOptions}
 		make new default entry at end of default entries with properties {name:"encoderAudioOptions", contents:encoderAudioOptions}
@@ -386,6 +387,7 @@ on readSettings()
 			set encoderVideoOptions to contents of default entry "encoderVideoOptions"
 			set encoderAudioOptions to contents of default entry "encoderAudioOptions"
 			set encoderOtherOptions to contents of default entry "encoderOtherOptions"
+			set filenameExtension to contents of default entry "filenameExtension"
 		end try
 		try
 			set debugLog to contents of default entry "debugLog"
@@ -483,6 +485,7 @@ on writeSettings()
 			set contents of default entry "encoderVideoOptions" to encoderVideoOptions
 			set contents of default entry "encoderAudioOptions" to encoderAudioOptions
 			set contents of default entry "encoderOtherOptions" to encoderOtherOptions
+			set contents of default entry "filenameExtension" to filenameExtension
 			set contents of default entry "SUFeedURL" to SUFeedURL
 			set contents of default entry "openDetail" to (openDetail as integer)
 			set contents of default entry "DLHistory" to DLHistory as list
@@ -1674,8 +1677,8 @@ end post_process_item
 
 on performCancelDownload()
 	set myPath to my prepareCommand(POSIX path of (path to me))
-	do shell script "perl " & myPath & "Contents/Resources/killProcesses.pl ;exit 0"
-	my debug_log("performCancelDownload")
+	set result to do shell script "perl " & myPath & "Contents/Resources/killProcesses.pl ;exit 0"
+	my debug_log("killed : " & result)
 end performCancelDownload
 
 on registerGrowl()

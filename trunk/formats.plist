@@ -160,9 +160,9 @@
 			<key>name</key>
 			<string>AppleTV</string>
 			<key>encoderVideoOptions</key>
-			<string>-of lavf -lavfopts format=mp4 -ovc x264 -x264encopts nocabac:level_idc=30:bitrate=960:threads=auto:bframes=0:global_header -vf pp=lb,dsize=1200:720:0,scale=-8:-8,harddup</string>
+			<string>-of lavf -lavfopts format=mp4 -ovc x264 -x264encopts nocabac:level_idc=30:bitrate=3000:threads=auto:bframes=0:global_header -vf pp=lb,dsize=1200:720:0,scale=-8:-8,harddup</string>
 			<key>encoderAudioOptions</key>
-			<string>-oac copy</string>
+			<string>-channels 6 -af volume=13:1 -oac faac -faacopts mpeg=4:object=2:raw:br=480</string>
 			<key>encoderOtherOptions</key>
 			<string>-hr-edl-seek</string>
 			<key>iTunes</key>
