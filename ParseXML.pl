@@ -27,6 +27,7 @@ while ($anchor < $TotalItems) {
     @shows = split(/<Item>/, $file);
     $count = 0;
     foreach (@shows) {
+	$count += 1;
 	$total_shows += 1;
 	$current_size = 0;
 	$show_type = "regular";
@@ -121,11 +122,12 @@ while ($anchor < $TotalItems) {
 		$space_save_until += $current_size;
 	    }	    
 	}
-	$anchor = $anchor + 128;
-	if ($anchor < $TotalItems) {
-	    $shellScript = "curl -s 'https://" . $IP . ":443/TiVoConnect?Command=QueryContainer&Container=%2FNowPlaying&Recurse=Yes&AnchorOffset=" . $anchor . "' -k --digest -u tivo:" . $MAK;
-	    $file =  `$shellScript`;
-	}
+    }
+    $anchor += $count;
+    if ($anchor < $TotalItems) {
+	$shellScript = "curl -s 'https://" . $IP . ":443/TiVoConnect?Command=QueryContainer&Container=%2FNowPlaying&Recurse=Yes&AnchorOffset=" . $anchor . "' -k --digest -u tivo:" . $MAK;
+	$file =  `$shellScript`;
+	$count = 0;
     }
 }
 
