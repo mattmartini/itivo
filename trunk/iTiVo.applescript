@@ -1454,10 +1454,10 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 			else
 				set shellCmd to shellCmd & "success=0; "
 			end if
-			set shellCmd to shellCmd & postDownloadCmd & "2>&1"
+			set shellCmd to shellCmd & postDownloadCmd & " 2>&1"
 			my debug_log("Running: " & shellCmd)
 			set shellCmdResult to do shell script shellCmd
-			my debug_log(shellCmdResult)
+			my debug_log("Result: " & shellCmdResult)
 		end try
 	end if
 	if cancelDownload = 0 then
