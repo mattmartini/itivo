@@ -104,6 +104,24 @@
 			<key>encoderUsed</key>
 			<string>mencoder</string>
 			<key>name</key>
+			<string>Quicktime (H.264   3Mbps)</string>
+			<key>encoderVideoOptions</key>
+			<string>-of lavf -lavfopts format=ipod -ovc x264 -x264encopts bitrate=3000:bframes=0:level_idc=41:threads=auto:global_header -vf pp=lb,harddup,scale=-10:-1</string>
+			<key>encoderAudioOptions</key>
+			<string>-af volume=13:1 -oac faac -faacopts mpeg=4:object=2:raw:br=192</string>
+			<key>encoderOtherOptions</key>
+			<string>-hr-edl-seek</string>
+			<key>iTunes</key>
+			<true/>
+		</dict>
+		<dict>
+			<key>comSkip</key>
+			<true/>
+			<key>filenameExtension</key>
+			<string>.mp4</string>
+			<key>encoderUsed</key>
+			<string>mencoder</string>
+			<key>name</key>
 			<string>Quicktime (H.264   1Mbps)</string>
 			<key>encoderVideoOptions</key>
 			<string>-of lavf -lavfopts format=ipod -ovc x264 -x264encopts bitrate=1000:bframes=0:level_idc=41:threads=auto:global_header -vf pp=lb,harddup,scale=-10:-1</string>
