@@ -24,7 +24,7 @@ property cancelAllDownloads : 0
 property showListObject : missing value
 property sortOrder : ""
 property sortColumn : ""
-property openDetail : 1
+property openDetail : 2
 property DLHistory : {}
 property GrowlAppName : ""
 property encodeMode : 0
@@ -131,9 +131,7 @@ on launched theObject
 	if autoConnect = 1 then
 		my ConnectTiVo()
 	end if
-	if openDetail = 1 then
-		switchDrawer2()
-	end if
+	setDrawers()
 end launched
 
 on displayPrefs()
@@ -312,19 +310,15 @@ on selected tab view item theObject tab view item tabViewItem
 end selected tab view item
 
 
-on switchDrawer2()
+on setDrawers()
+	if (openDetail > 2) then set openDetail to 0
 	tell window "iTiVo"
-		if state of drawer "Drawer2" is drawer closed then
-			tell drawer "Drawer2" to open drawer on right edge
-			set state of button "detailButton" to false
-			set openDetail to 1
-		else
-			tell drawer "Drawer2" to close drawer
-			set state of button "detailButton" to true
-			set openDetail to 0
-		end if
+		tell drawer "Drawer1" to close drawer
+		tell drawer "Drawer2" to close drawer
+		if (openDetail = 1) then tell drawer "Drawer1" to open drawer on right edge
+		if (openDetail = 2) then tell drawer "Drawer2" to open drawer on right edge
 	end tell
-end switchDrawer2
+end setDrawers
 
 on registerSettings()
 	tell user defaults
@@ -537,7 +531,8 @@ on clicked theObject
 		else if theObjectName = "PrefsCancel" then
 			close panel (window of theObject) with result 0
 		else if theObjectName = "detailButton" then
-			my switchDrawer2()
+			set openDetail to openDetail + 1
+			my setDrawers()
 		else if theObjectName = "locationButton" then
 			set DL to POSIX path of (choose folder)
 			tell panelWIndow
@@ -1534,9 +1529,40 @@ on ConnectTiVo()
 		if TiVoList ≠ "" then
 			set addedItems to {}
 			set AppleScript's text item delimiters to return
-			set the item_list to every text item of TiVoList
+			set the tivo_usage to text item 1 of TiVoList
+			set the item_list to text items 2 thru -1 of TiVoList
 			set processInfoRecord to {}
 			set AppleScript's text item delimiters to "|"
+			-- First we parse out the usage information and set it in the drawer
+			set total_memory to second text item of tivo_usage
+			set contents of text field "tivoName" of drawer "Drawer1" to title of popup button "MyTiVos"
+			set contents of text field "tivoIP" of drawer "Drawer1" to IPA
+			set contents of text field "tivoShows" of drawer "Drawer1" to first text item of tivo_usage
+			set contents of text field "tivoSpace" of drawer "Drawer1" to (((total_memory / (1024 * 1024 * 1024)) as integer) as string) & " GB"
+			set contents of text field "tivoRegular" of drawer "Drawer1" to ((((third text item of tivo_usage) / 1024 / 1024) as integer) as string) & " MB"
+			set contents of text field "tivoSuggestion" of drawer "Drawer1" to ((((fourth text item of tivo_usage) / 1024 / 1024) as integer) as string) & " MB"
+			set contents of text field "tivoExpired" of drawer "Drawer1" to ((((fifth text item of tivo_usage) / 1024 / 1024) as integer) as string) & " MB"
+			set contents of text field "tivoExpiresSoon" of drawer "Drawer1" to ((((sixth text item of tivo_usage) / 1024 / 1024) as integer) as string) & " MB"
+			set contents of text field "tivoInProgress" of drawer "Drawer1" to ((((seventh text item of tivo_usage) / 1024 / 1024) as integer) as string) & " MB"
+			set contents of text field "tivoCopyrighted" of drawer "Drawer1" to ((((eighth text item of tivo_usage) / 1024 / 1024) as integer) as string) & " MB"
+			set contents of text field "tivoSaved" of drawer "Drawer1" to ((((ninth text item of tivo_usage) / 1024 / 1024) as integer) as string) & " MB"
+			set theURL to "http://chart.apis.google.com/chart?cht=p3&chs=180x180&chd=t:"
+			set theURL to theURL & ((((third text item of tivo_usage) / total_memory * 100) as integer) as string) & ","
+			set theURL to theURL & ((((fourth text item of tivo_usage) / total_memory * 100) as integer) as string) & ","
+			set theURL to theURL & ((((fifth text item of tivo_usage) / total_memory * 100) as integer) as string) & ","
+			set theURL to theURL & ((((sixth text item of tivo_usage) / total_memory * 100) as integer) as string) & ","
+			set theURL to theURL & ((((seventh text item of tivo_usage) / total_memory * 100) as integer) as string) & ","
+			set theURL to theURL & ((((eighth text item of tivo_usage) / total_memory * 100) as integer) as string) & ","
+			set theURL to theURL & ((((ninth text item of tivo_usage) / total_memory * 100) as integer) as string)
+			set myURL to "33CCFF|003300|FF3333|CC9900|33CC00|9900CC|00CC00"
+			set theURL to theURL & "&chco=" & my encode_text(myURL, true, true)
+			my debug_log("fetching : " & theURL)
+			set URLWithString to call method "URLWithString:" of class "NSURL" with parameter theURL
+			set requestWithURL to call method "requestWithURL:" of class "NSURLRequest" with parameter URLWithString
+			set mainFrame to call method "mainFrame" of object (view "tivoWeb" of drawer "Drawer1")
+			call method "loadRequest:" of mainFrame with parameter requestWithURL
+			
+			-- Now we work on the actual shows
 			repeat with currentLine in item_list
 				set the parts to every text item of currentLine
 				if (count of parts) = 8 then
