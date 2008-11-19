@@ -48,3 +48,4 @@
 {{{
   rm -f $file
 }}}
+    This will delete the file from the download location AFTER itunes copies it out.
