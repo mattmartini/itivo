@@ -29,18 +29,13 @@
 == Download Formats ==
   # I want the original mpeg-2 from the tivo.
   The tivo stores its movies as an mpeg-2 transport stream (TS).  It also encrypts it.  If you want to see the unencrypted transport stream, choose the 'No Encode' format.  However, keep in mind that quicktime can't play such a file.  You will need to install [http://www.videolan.org/vlc/download-macosx.html VLC] or [http://mplayerosx.sourceforge.net/ MplayerOSX] to view it.
-
   # I want the original mpeg-2 but without commercials.
   MPEG2-TS will cut up the file appropriately.  However, you will most likely end up with horrible audio/video sync issues.
-
   # What is iphone super-res?
   The iphone can play movies up to 640x480, although its display is only 480x320.  You can hook up a video cable to hook up your iphone to a TV, and that's the main reason for super-res..  It also uses a much higher bitrate for people who think the iphone setting isn't of a high enough quality.
-
   # Audio-only?
   The audio only re-encodes the video stream, throwing away ALL the movie, and just keeping the soundtrack.  Useful for people who plan on listening but not viewing, as it takes up a LOT less memory, and uses less battery life to play back.
-
   # PSP ?
   Connect your PSP via usb or insert the memory stick into a reader. Create a folder named "VIDEO" at the toplevel, and copy the movie into it.  Your PSP will now play your movie for you.
-
   # I chose the right download format but it's not working.
   Submit a bug report under 'Issues' above.  Keep in mind I don't have all these devices, so I appreciate any encoder suggestions you may have.
