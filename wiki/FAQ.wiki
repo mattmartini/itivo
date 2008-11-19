@@ -1,4 +1,6 @@
 = F.A.Q. =
+
+== Program Issues ==
   # My program crashes / I get 'mencoder' errors / I get tivodecode errors
     iTiVo is actually a front-end for several programs written by multiple people.  Many of these programs are not perfect (and iTiVo has its own bugs).  If you report bugs in the interface above (under Issues), I will hopefully get around to fixing it.  However, it may be related to underlying programs which I have no control over. The short version:  sorry.
   # This program is buggy!
@@ -13,8 +15,8 @@
     Certain shows and certain channels can be marked 'copyrighted'.  Any show marked as such is not available for download from the tivo, and is therefore not listed.
   # I managed to hide the Show Description drawer
     To unhide the show description drawer, click the little triangle on the top right of the main window.
-  # I chose to download 'no conversion (native MPEG-2)' and Quicktime will not play my video
-    While the tivo does indeed store the file as an mpeg-2 file which you download, it turns out that the mpeg2 format the tivo uses is not compatible with quicktime (and many other apple programs).  This is a 'known issue' with quicktime not supporting mpeg2 transport streams.   You can either download http://www.videolan.org/vlc/download-macosx.html and use that to play the file, or else tell iTiVo to convert it into a different format.
+  # I chose a download format and Quicktime will not play my video
+    Some formats are not inteded for playing on your computer, and quicktime is unable to play them.  Read the later subsection about download formats for advice.
   # Is it supposed to be *this* slow?
     Several things affect the speed of the download:
     * Model of Tivo.  S3 is fastest, then HD then S2.
@@ -22,4 +24,23 @@
     * The speed of your computer.  Your CPU is used to convert the movies once they get to the computer.
     * Format you are converting to.  The high resolution, high quality formats take a lot of processing power from your computer.
     * The quality of your Tivo->computer network.  Wired 100Mbps will not be fully utilized, but is your best connection.  Wireless will slow it down somewhat.
-    Over a wired connection, from a TiVo S3, converting to iPhone low-res, I can usually get a 1000 megabyte 30 minute show down in about 20 mins. Use those settings as a starting point to see.  If you're seeing MUCH worse times, then something is wrong.
+    Over a wired connection, from a TiVo S3, converting to iPhone, I can usually get a 1000 megabyte 30 minute show down in about 20 mins. Use those settings as a starting point to see.  If you're seeing MUCH worse times, then something is wrong.
+
+== Download Formats ==
+  # I want the original mpeg-2 from the tivo.
+  The tivo stores its movies as an mpeg-2 transport stream (TS).  It also encrypts it.  If you want to see the unencrypted transport stream, choose the 'No Encode' format.  However, keep in mind that quicktime can't play such a file.  You will need to install [http://www.videolan.org/vlc/download-macosx.html VLC] or [http://mplayerosx.sourceforge.net/ MplayerOSX] to view it.
+
+  # I want the original mpeg-2 but without commercials.
+  MPEG2-TS will cut up the file appropriately.  However, you will most likely end up with horrible audio/video sync issues.
+
+  # What is iphone super-res?
+  The iphone can play movies up to 640x480, although its display is only 480x320.  You can hook up a video cable to hook up your iphone to a TV, and that's the main reason for super-res..  It also uses a much higher bitrate for people who think the iphone setting isn't of a high enough quality.
+
+  # Audio-only?
+  The audio only re-encodes the video stream, throwing away ALL the movie, and just keeping the soundtrack.  Useful for people who plan on listening but not viewing, as it takes up a LOT less memory, and uses less battery life to play back.
+
+  # PSP ?
+  Connect your PSP via usb or insert the memory stick into a reader. Create a folder named "VIDEO" at the toplevel, and copy the movie into it.  Your PSP will now play your movie for you.
+
+  # I chose the right download format but it's not working.
+  Submit a bug report under 'Issues' above.  Keep in mind I don't have all these devices, so I appreciate any encoder suggestions you may have.
