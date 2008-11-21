@@ -814,7 +814,6 @@ on selection changed theObject
 				set contents of text field "detailDescription" of drawer "Drawer2" to ""
 				set contents of text field "detailQuality" of drawer "Drawer2" to ""
 				set contents of text field "detailGenre" of drawer "Drawer2" to ""
-				set contents of text field "detailChannel" of drawer "Drawer2" to ""
 				set contents of text field "detailActors" of drawer "Drawer2" to ""
 				set contents of text field "detailWriter" of drawer "Drawer2" to ""
 				set contents of text field "detailDirector" of drawer "Drawer2" to ""
@@ -831,7 +830,7 @@ on selection changed theObject
 					set item_list to do shell script ShellScriptCommand
 					set AppleScript's text item delimiters to "|"
 					set the parts to every text item of item_list
-					if (count of parts) = 16 then
+					if (count of parts) = 15 then
 						set transparent of button "imdb" of drawer "Drawer2" to false
 						set enabled of button "imdb" of drawer "Drawer2" to true
 						set transparent of button "tvdb" of drawer "Drawer2" to false
@@ -841,14 +840,13 @@ on selection changed theObject
 						set contents of text field "detailDescription" of drawer "Drawer2" to item 4 of parts
 						set contents of text field "detailQuality" of drawer "Drawer2" to item 6 of parts
 						set contents of text field "detailGenre" of drawer "Drawer2" to item 8 of parts
-						set contents of text field "detailChannel" of drawer "Drawer2" to item 9 of parts
-						set contents of text field "detailActors" of drawer "Drawer2" to item 10 of parts
-						set contents of text field "detailWriter" of drawer "Drawer2" to item 11 of parts
-						set contents of text field "detailDirector" of drawer "Drawer2" to item 12 of parts
-						set contents of text field "detailRating" of drawer "Drawer2" to item 13 of parts
+						set contents of text field "detailActors" of drawer "Drawer2" to item 9 of parts
+						set contents of text field "detailWriter" of drawer "Drawer2" to item 10 of parts
+						set contents of text field "detailDirector" of drawer "Drawer2" to item 11 of parts
+						set contents of text field "detailRating" of drawer "Drawer2" to item 12 of parts
 						set contents of text field "detailEpisode" of drawer "Drawer2" to item 3 of parts
-						set contents of text field "detailEpisodeNum" of drawer "Drawer2" to item 16 of parts
-						set contents of text field "detailDate" of drawer "Drawer2" to item 14 of parts
+						set contents of text field "detailEpisodeNum" of drawer "Drawer2" to item 15 of parts
+						set contents of text field "detailDate" of drawer "Drawer2" to item 13 of parts
 					end if
 				end if
 				if rowCount = 0 then
@@ -895,7 +893,6 @@ on selection changed theObject
 				set contents of text field "detailDescription" of drawer "Drawer2" to ""
 				set contents of text field "detailQuality" of drawer "Drawer2" to ""
 				set contents of text field "detailGenre" of drawer "Drawer2" to ""
-				set contents of text field "detailChannel" of drawer "Drawer2" to ""
 				set contents of text field "detailActors" of drawer "Drawer2" to ""
 				set contents of text field "detailRating" of drawer "Drawer2" to ""
 				set contents of text field "detailEpisode" of drawer "Drawer2" to ""
@@ -910,7 +907,7 @@ on selection changed theObject
 					set item_list to do shell script ShellScriptCommand
 					set AppleScript's text item delimiters to "|"
 					set the parts to every text item of item_list
-					if (count of parts) = 14 then
+					if (count of parts) = 13 then
 						set transparent of button "imdb" of drawer "Drawer2" to false
 						set enabled of button "imdb" of drawer "Drawer2" to true
 						set transparent of button "tvdb" of drawer "Drawer2" to false
@@ -920,14 +917,13 @@ on selection changed theObject
 						set contents of text field "detailDescription" of drawer "Drawer2" to item 4 of parts
 						set contents of text field "detailQuality" of drawer "Drawer2" to item 6 of parts
 						set contents of text field "detailGenre" of drawer "Drawer2" to item 8 of parts
-						set contents of text field "detailChannel" of drawer "Drawer2" to item 9 of parts
-						set contents of text field "detailActors" of drawer "Drawer2" to item 10 of parts
-						set contents of text field "detailWriter" of drawer "Drawer2" to item 11 of parts
-						set contents of text field "detailDirector" of drawer "Drawer2" to item 12 of parts
-						set contents of text field "detailRating" of drawer "Drawer2" to item 13 of parts
+						set contents of text field "detailActors" of drawer "Drawer2" to item 9 of parts
+						set contents of text field "detailWriter" of drawer "Drawer2" to item 10 of parts
+						set contents of text field "detailDirector" of drawer "Drawer2" to item 11 of parts
+						set contents of text field "detailRating" of drawer "Drawer2" to item 12 of parts
 						set contents of text field "detailEpisode" of drawer "Drawer2" to item 3 of parts
-						set contents of text field "detailEpisodeNum" of drawer "Drawer2" to item 16 of parts
-						set contents of text field "detailDate" of drawer "Drawer2" to item 14 of parts
+						set contents of text field "detailEpisodeNum" of drawer "Drawer2" to item 15 of parts
+						set contents of text field "detailDate" of drawer "Drawer2" to item 13 of parts
 					end if
 				end if
 				set enabled of button "deleteSubscriptionButton" of view "bottomRightView" of split view "splitView2" of box "bottomBox" of split view "splitView1" to false
