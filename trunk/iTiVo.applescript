@@ -3,7 +3,7 @@
 
 --  Created by David Benesch on 12/03/06.
 --  Last updated by Yoav Yerushalmi on 11/09/08.
---  Copyright 2006-2007 David Benesch. All rights reserved.
+--  Copyright 2006-2008 David Benesch, Yoav Yerushalmi. All rights reserved.
 property debug_level : 1
 property already_launched : 0
 property targetData : missing value
@@ -396,7 +396,13 @@ on readSettings()
 	end try
 	if GrowlAppName = "GrowlHelperApp.app" then
 		try
-			my registerGrowl()
+			if my growlIsRunning() then
+				my debug_log("Found Growl")
+				my registerGrowl()
+			else
+				my debug_log("No Growl")
+				set GrowlAppName to ""
+			end if
 		on error
 			my debug_log("Failed to register growl")
 			set GrowlAppName to ""
@@ -1353,7 +1359,7 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 					if (debug_level ≥ 3) then
 						my debug_log("mencoder timeout: " & timeoutCount & " download:" & downloadExists & "   timeRemaining: " & timeRemaining & "  timeOn:" & timeOn & "   currentPercent: " & currentPercent)
 					end if
-					set {timeOn, currentPercent, timeRemaining} to my getmencoder()
+					set {timeOn, currentPercent, timeRemaining} to my getEncoderProgress(encoderUsed)
 					set downloadExistsCmd to do shell script downloadExistsCmdString
 					if downloadExistsCmd is not equal to "" then
 						set downloadExists to 1
@@ -1801,15 +1807,15 @@ on getcomskip()
 	end if
 end getcomskip
 
-on getmencoder()
+on getEncoderProgress(encoderUsed)
 	set myPath to my prepareCommand(POSIX path of (path to me))
-	set myresult to (do shell script "perl " & myPath & "Contents/Resources/mencoderSize.pl")
+	set myresult to (do shell script "perl " & myPath & "Contents/Resources/encoderProgress.pl " & encoderUsed)
 	if (myresult = "") then
 		return {0, 0, 0}
 	else
 		return words in myresult
 	end if
-end getmencoder
+end getEncoderProgress
 
 on updateSubscriptionList(nname, ndate, umissing)
 	set newdate to my getDate(ndate)
@@ -1923,6 +1929,12 @@ on isDownloadComplete(filePath, fullFileSize, tryCount)
 		return true
 	end if
 end isDownloadComplete
+
+on growlIsRunning()
+	tell application "System Events" to set myRunning to ((application processes whose (name is equal to "GrowlHelperApp")) count)
+	my debug_log("growlisrun: " & myRunning)
+	return (myRunning > 0)
+end growlIsRunning
 
 on debug_log(log_string)
 	try

@@ -29,6 +29,8 @@ if ($Encoder eq "mencoder") {
 	$shellScript = $shellScript . $AppDir . "Contents/Resources/mencoder -edl $Edl";
 } elsif ($Encoder eq "cat") {
 	$shellScript = $shellScript . "cat -u";
+} elsif ($Encoder eq "turbo.264") {
+	$shellScript = $shellScript . "osascript $AppDir/Contents/Resources/Scripts/elgato.scpt";
 } else  {
 	$shellScript = $shellScript . $Encoder;
 }
@@ -41,11 +43,13 @@ if ($Encoder eq "mencoder") {
 	$shellScript = $shellScript . "-o $Target $Src >$Progress 2>&1";
 } elsif ($Encoder eq "cat") {
 	$shellScript = $shellScript . "$Src > $Target";
+} elsif ($Encoder eq "turbo.264") {
+	$shellScript = $shellScript . "$Src $Target $Progress 2>&1";
 } else  {
 	$shellScript = $shellScript . "$Src > $Target";
 }
 
 print "\n\n$shellScript\n\n";
-`$shellScript`;
+print `$shellScript`;
 
 `rm -f /tmp/iTiVoDLPipe-$ENV{'USER'} /tmp/iTiVoDLPipe2-$ENV{'USER'}.mpg`;
