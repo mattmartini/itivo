@@ -10,7 +10,7 @@
     <language>en-us</language>
 		<item>
 			<title>Version 1.5b5</title>
-			<sparkle:releaseNotesLink>http://itivo.googlecode.com/svn/trunk/www/changelog.html</sparkle:releaseNotesLink>
+			<sparkle:releaseNotesLink>http://itivo.googlecode.com/svn/trunk/www/changelog-beta.html</sparkle:releaseNotesLink>
 			<pubDate>Fri, 21 Nov 2008 15:04:37 -0800</pubDate>
 			<enclosure
 				url="http://itivo.googlecode.com/files/iTiVo-1.5b5.zip"
