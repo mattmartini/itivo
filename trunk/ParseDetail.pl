@@ -42,7 +42,7 @@ if ($show =~ m/<recordingQuality value="(.*?)">(.*?)<\/recordingQuality>/) {
 	$output = $output . "$1|$quality|";
 }
 else {
-	$output = $output . "100|HD|";
+	$output = $output . "100|Digital|";
 }
 if ($show =~ m/<recordedDuration>(.*?)<\/recordedDuration>/) {
 	#$output = $output . "$1|";
@@ -88,13 +88,6 @@ if ($show =~ m/<vProgramGenre>(.*?)<\/vProgramGenre>/) {
 else {
 	$output = $output . "|";
 }
-if ($show =~ m/<displayMajorNumber>(.*?)<\/displayMajorNumber>/) {
-	$output = $output . "$1|";
-}
-else {
-	$output = $output . "|";
-}
-
 
 if ($show =~ m/<vActor>(.*?)<\/vActor>/) {
 $actors = $1;
