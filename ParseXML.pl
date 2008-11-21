@@ -125,6 +125,7 @@ while ($anchor < $TotalItems) {
     }
     $anchor += $count;
     if ($anchor < $TotalItems) {
+	print "$anchor  :  $count\n";
 	$shellScript = "curl -s 'https://" . $IP . ":443/TiVoConnect?Command=QueryContainer&Container=%2FNowPlaying&Recurse=Yes&AnchorOffset=" . $anchor . "' -k --digest -u tivo:" . $MAK;
 	$file =  `$shellScript`;
 	$count = 0;

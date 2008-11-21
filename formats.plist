@@ -314,6 +314,24 @@
 		</dict>
 		<dict>
 			<key>comSkip</key>
+			<false/>
+			<key>filenameExtension</key>
+			<string>.mp4</string>
+			<key>encoderUsed</key>
+			<string>turbo.264</string>
+			<key>name</key>
+			<string>ElGato Turbo.264 USB encoder</string>
+			<key>encoderVideoOptions</key>
+			<string></string>
+			<key>encoderAudioOptions</key>
+			<string></string>
+			<key>encoderOtherOptions</key>
+			<string></string>
+			<key>iTunes</key>
+			<true/>
+		</dict>
+		<dict>
+			<key>comSkip</key>
 			<true/>
 			<key>filenameExtension</key>
 			<string>.mp3</string>
