@@ -10,14 +10,14 @@
     <language>en-us</language>
 		<item>
 			<title>Version 1.5b5</title>
-			<sparkle:releaseNotesLink>http://itivo.googlecode.com/svn/trunk/www/changelog-beta.html</sparkle:releaseNotesLink>
-			<pubDate>Fri, 21 Nov 2008 11:17:34 -0800</pubDate>
+			<sparkle:releaseNotesLink>http://itivo.googlecode.com/svn/trunk/www/changelog.html</sparkle:releaseNotesLink>
+			<pubDate>Fri, 21 Nov 2008 15:04:37 -0800</pubDate>
 			<enclosure
 				url="http://itivo.googlecode.com/files/iTiVo-1.5b5.zip"
 				sparkle:version="1.5b5"
 				type="application/octet-stream"
 				length="8632132"
-				sparkle:dsaSignature="MCwCFDbJctmmnk4nu4aQO0H5m4ZqSU4sAhRUzt3kGBsaq9kkehaEl1y7OHWH5w=="
+				sparkle:dsaSignature="MCwCFDl7h+Kyy0OvkGWRG8ZrloJJIMweAhRQmTsU39Qi5HDFhM0Th2cfjdqa+Q=="
 			/>
 		</item>
  </channel>
