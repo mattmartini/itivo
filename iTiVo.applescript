@@ -30,6 +30,7 @@ property GrowlAppName : ""
 property encodeMode : 0
 property UserName : ""
 property formats_plist : missing value
+property formatsList : {}
 
 (* User-controlled properties *)
 property MAK : ""
@@ -154,10 +155,9 @@ on panel ended thePanel with result theResult
 end panel ended
 
 on formatCompatComSkip(formatName)
-	tell application "System Events" to set formatsArray to value of property list item "formats" of formats_plist
-	repeat with currentFormat in formatsArray
-		if |name| of currentFormat is formatName then
-			return |comSkip| of currentFormat
+	repeat with currentFormat in formatsList
+		if name of currentFormat is formatName then
+			return comSkip of currentFormat
 		end if
 	end repeat
 	my debug_log("Couldn't find comSkip of format " & formatName)
@@ -165,52 +165,101 @@ on formatCompatComSkip(formatName)
 end formatCompatComSkip
 
 on formatCompatItunes(formatName)
-	tell application "System Events" to set formatsArray to value of property list item "formats" of formats_plist
-	repeat with currentFormat in formatsArray
-		if |name| of currentFormat is formatName then
-			return |iTunes| of currentFormat
+	repeat with currentFormat in formatsList
+		if name of currentFormat is formatName then
+			return iTunes of currentFormat
 		end if
 	end repeat
 	my debug_log("Couldn't find itunes of format " & formatName)
 	return false
 end formatCompatItunes
 
+on formatDescription(formatName)
+	repeat with currentFormat in formatsList
+		if name of currentFormat is formatName then
+			return formatDescription of currentFormat
+		end if
+	end repeat
+	my debug_log("Couldn't find description of format " & formatName)
+	return ""
+end formatDescription
+
 on getFormatSettings(formatName)
-	tell application "System Events" to set formatsArray to value of property list item "formats" of formats_plist
-	repeat with currentFormat in formatsArray
-		if |name| of currentFormat is formatName then
-			return {|encoderUsed| of currentFormat, |encoderVideoOptions| of currentFormat, |encoderAudioOptions| of currentFormat, |encoderOtherOptions| of currentFormat, |filenameExtension| of currentFormat}
+	repeat with currentFormat in formatsList
+		if name of currentFormat is formatName then
+			return {encoderUsed of currentFormat, encoderVideoOptions of currentFormat, encoderAudioOptions of currentFormat, encoderOtherOptions of currentFormat, filenameExtension of currentFormat}
 		end if
 	end repeat
 	return {"mencoder", "", "", "", ".mp4"}
 end getFormatSettings
 
-on getFormats()
-	my debug_log("getFormats")
-	set formatsList to {} as list
-	tell application "System Events" to set formatsArray to value of property list item "formats" of formats_plist
-	repeat with currentFormat in formatsArray
-		set formatsList to formatsList & {|name| of currentFormat}
+on getFormatsNames()
+	my debug_log("getFormatsNames")
+	set formatsNameList to {} as list
+	repeat with currentFormat in formatsList
+		set formatsNameList to formatsNameList & {name of currentFormat}
 	end repeat
-	return formatsList
-end getFormats
+	return formatsNameList
+end getFormatsNames
+
+on readFormats()
+	set formatsList to {}
+	set myPath to path to me
+	try
+		set myExtraFormats to path to home folder as string
+		set myExtraFormats to myExtraFormats & "Library:Preferences:iTiVo:formats:"
+		tell application "Finder" to set other_formats to name of every file in folder myExtraFormats
+	on error
+		set other_formats to {}
+	end try
+	set files_list to {(myPath & "Contents:Resources:formats.plist") as string}
+	repeat with filename in other_formats
+		set files_list to files_list & (myExtraFormats & filename)
+	end repeat
+	repeat with filename in files_list
+		my debug_log("Using format file : " & filename)
+		tell application "System Events"
+			set formats_plist to contents of property list file filename
+			set formatsArray to (value of property list item "formats" of formats_plist)
+			try
+				repeat with currentFormat in formatsArray
+					set newItem to {}
+					set newItem to newItem & {name:|name| of currentFormat}
+					set newItem to newItem & {encoderUsed:|encoderUsed| of currentFormat}
+					set newItem to newItem & {encoderVideoOptions:|encoderVideoOptions| of currentFormat}
+					set newItem to newItem & {encoderAudioOptions:|encoderAudioOptions| of currentFormat}
+					set newItem to newItem & {encoderOtherOptions:|encoderOtherOptions| of currentFormat}
+					set newItem to newItem & {filenameExtension:|filenameExtension| of currentFormat}
+					set newItem to newItem & {iTunes:|iTunes| of currentFormat}
+					set newItem to newItem & {comSkip:|comSkip| of currentFormat}
+					set newItem to newItem & {formatDescription:|formatDescription| of currentFormat}
+					set formatsList to formatsList & {newItem}
+				end repeat
+			on error
+				my debug_log("Couldn't read formats from " & filename)
+				display dialog "Unable to read formats from " & filename & "."
+			end try
+		end tell
+	end repeat
+end readFormats
 
 on setupPrefsTab(tabName)
 	tell panelWIndow
 		if (tabName = "DownloadingTab") then
 			set contents of text field "MAK" of view "DownloadingView" of tab view "TopTab" to MAK
 			set contents of text field "Location" of view "DownloadingView" of tab view "TopTab" to DL
-			set formats to my getFormats()
+			set formats to my getFormatsNames()
 			delete every menu item of menu of popup button "format" of view "DownloadingView" of tab view "TopTab"
 			repeat with formatitem in formats
 				make new menu item at the end of menu items of menu of popup button "format" of view "DownloadingView" of tab view "TopTab" with properties {title:formatitem, enabled:true}
 			end repeat
 			if format is not in formats then
-				set {encoderUsed, encoderVideoOptions, encoderAudioOptions, encoderOtherOptions, filenameExtension} to getFormatSettings(format)
 				set format to first item of formats
 				set title of popup button "format" of view "DownloadingView" of tab view "TopTab" to format
+				set {encoderUsed, encoderVideoOptions, encoderAudioOptions, encoderOtherOptions, filenameExtension} to getFormatSettings(format)
 			end if
 			set title of popup button "format" of view "DownloadingView" of tab view "TopTab" to format
+			set contents of text field "formatDescription" of view "DownloadingView" of tab view "TopTab" to my formatDescription(format) 
 			if (my formatCompatItunes(format)) then
 				set enabled of button "iTunes" of view "DownloadingView" of tab view "TopTab" to true
 				set enabled of button "iTunesSync" of view "DownloadingView" of tab view "TopTab" to true
@@ -408,13 +457,9 @@ on readSettings()
 			set GrowlAppName to ""
 		end try
 	end if
-	my debug_log("using format : " & format)
-	set myPath to POSIX path of (path to me)
-	set myHomePath to POSIX path of (path to home folder)
-	set plistfile_path to myPath & "Contents/Resources/formats.plist"
-	tell application "Finder" to if exists (myHomePath & "Library/Preferences/iTiVo/formats.plist") as POSIX file then set plistfile_path to myHomePath & "Library/Preferences/iTiVo/formats.plist"
-	tell application "System Events" to set formats_plist to contents of property list file plistfile_path
-	set formats to my getFormats()
+	my readFormats()
+	set formats to my getFormatsNames()
+	my debug_log("Format is " & format)
 	if format is not in formats then
 		set format to first item of formats
 		set {encoderUsed, encoderVideoOptions, encoderAudioOptions, encoderOtherOptions, filenameExtension} to getFormatSettings(format)
@@ -423,6 +468,7 @@ on readSettings()
 			set {encoderUsed, encoderVideoOptions, encoderAudioOptions, encoderOtherOptions, filenameExtension} to getFormatSettings(format)
 		end if
 	end if
+	my debug_log("using format : " & format)
 	set TiVos to title of every menu item of popup button "MyTiVos" of window "iTiVo"
 	if TiVo is in TiVos then
 		if TiVo ≠ "My TiVos" then
@@ -986,6 +1032,7 @@ on choose menu item theObject
 		local myformat
 		set myformat to title of popup button "format" of view "DownloadingView" of tab view "TopTab" of panelWIndow
 		set {encoderUsed, encoderVideoOptions, encoderAudioOptions, encoderOtherOptions, filenameExtension} to getFormatSettings(myformat)
+		set contents of text field "formatDescription" of view "DownloadingView" of tab view "TopTab" of panelWindow to my formatDescription(myformat)
 		if (not my formatCompatComSkip(myformat)) then
 			set comSkip to 0
 		end if

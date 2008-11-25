@@ -7,6 +7,8 @@
 	<key>formats</key>
 	<array>
 		<dict>
+			<key>formatDescription</key>
+			<string>for viewing on iPhone video: 480x320 h.264 at 384kbps audio: aac at 128kbs</string>
 			<key>comSkip</key>
 			<true/>
 			<key>filenameExtension</key>
@@ -25,6 +27,8 @@
 			<true/>
 		</dict>
 		<dict>
+			<key>formatDescription</key>
+			<string>for viewing on video iPod video: 320x240 h.264 at 256kbps audio: aac at 128kbs</string>
 			<key>comSkip</key>
 			<true/>
 			<key>filenameExtension</key>
@@ -43,6 +47,8 @@
 			<true/>
 		</dict>
 		<dict>
+			<key>formatDescription</key>
+			<string>for viewing on TV hooked up to iPod/iPhone video: 640x480 h.264 at 1500kbps audio: aac at 128kbs</string>
 			<key>filenameExtension</key>
 			<string>.mp4</string>
 			<key>comSkip</key>
@@ -61,6 +67,8 @@
 			<true/>
 		</dict>
 		<dict>
+			<key>formatDescription</key>
+			<string>for archival at super quality video: original resolution h.264 at 10Mbps audio: aac at 256kbps</string>
 			<key>comSkip</key>
 			<true/>
 			<key>filenameExtension</key>
@@ -79,6 +87,8 @@
 			<true/>
 		</dict>
 		<dict>
+			<key>formatDescription</key>
+			<string>for archival at high quality video: original resolution h.264 at 5Mbps audio: aac at 192kbs</string>
 			<key>comSkip</key>
 			<true/>
 			<key>filenameExtension</key>
@@ -97,6 +107,8 @@
 			<true/>
 		</dict>
 		<dict>
+			<key>formatDescription</key>
+			<string>for archival at medium quality video: original h.264 at 3Mbps audio: aac at 192kbs</string>
 			<key>comSkip</key>
 			<true/>
 			<key>filenameExtension</key>
@@ -115,6 +127,8 @@
 			<true/>
 		</dict>
 		<dict>
+			<key>formatDescription</key>
+			<string>for archival at low quality video: original h.264 at 1Mbps audio: aac at 128kbs</string>
 			<key>comSkip</key>
 			<true/>
 			<key>filenameExtension</key>
@@ -133,6 +147,8 @@
 			<true/>
 		</dict>
 		<dict>
+			<key>formatDescription</key>
+			<string>for compressing to very small size video: original h.264 at 128kbps audio: aac at 128kbs</string>
 			<key>comSkip</key>
 			<true/>
 			<key>filenameExtension</key>
@@ -151,6 +167,8 @@
 			<true/>
 		</dict>
 		<dict>
+			<key>formatDescription</key>
+			<string>for Microsoft Zune (untested) video: 320x240 h.264 at 384kbps audio: mp3 at 192kbs</string>
 			<key>comSkip</key>
 			<true/>
 			<key>filenameExtension</key>
@@ -169,6 +187,8 @@
 			<false/>
 		</dict>
 		<dict>
+			<key>formatDescription</key>
+			<string>for playback on AppleTV video: 960x540 h.264 at 2Mbps audio: 2-channel aac at 128kbs</string>
 			<key>comSkip</key>
 			<true/>
 			<key>filenameExtension</key>
@@ -187,6 +207,8 @@
 			<true/>
 		</dict>
 		<dict>
+			<key>formatDescription</key>
+			<string>for Sony PSP video: 480x272 h.264 at 256kbps audio: aac at 128kbs (put in a folder named VIDEO on your PSP memory stick)</string>
 			<key>comSkip</key>
 			<true/>
 			<key>filenameExtension</key>
@@ -205,6 +227,8 @@
 			<false/>
 		</dict>
 		<dict>
+			<key>formatDescription</key>
+			<string>for Sony PS3 video: 1920x1080 h.264 at 1.5Mbps audio: aac at 128kbs *UNTESTED*</string>
 			<key>comSkip</key>
 			<true/>
 			<key>filenameExtension</key>
@@ -214,7 +238,7 @@
 			<key>name</key>
 			<string>PlayStation 3</string>
 			<key>encoderVideoOptions</key>
-			<string>-of lavf -lavfopts format=mp4 -ovc x264 -x264encopts level_idc=41:bitrate=1500:threads=auto:bframes=0:global_header:subq=5:me=umh -vf pp=lb,dsize=1920:1080:0,scale=-8:-8,harddup</string>
+			<string>-of lavf -lavfopts format=mp4 -ovc x264 -x264encopts level_idc=41:bitrate=1500:threads=auto:bframes=0:global_header:subq=5:me=umh -vf pp=lb,scale=-1:-1,harddup</string>
 			<key>encoderAudioOptions</key>
 			<string>-oac faac -faacopts mpeg=4:object=2:raw:br=128</string>
 			<key>encoderOtherOptions</key>
@@ -223,6 +247,48 @@
 			<false/>
 		</dict>
 		<dict>
+			<key>formatDescription</key>
+			<string>for Microsoft XBOX 360 video: original h.264 at 2Mbps audio: aac at 128kbs *UNTESTED*</string>
+			<key>comSkip</key>
+			<true/>
+			<key>filenameExtension</key>
+			<string>.mp4</string>
+			<key>encoderUsed</key>
+			<string>mencoder</string>
+			<key>name</key>
+			<string>XBOX 360</string>
+			<key>encoderVideoOptions</key>
+			<string>-of lavf -lavfopts format=mp4 -ovc x264 -x264encopts bitrate=1500:threads=auto:global_header:me=umh -vf harddup</string>
+			<key>encoderAudioOptions</key>
+			<string>-oac faac -faacopts mpeg=4:object=1:br=128</string>
+			<key>encoderOtherOptions</key>
+			<string>-hr-edl-seek</string>
+			<key>iTunes</key>
+			<false/>
+		</dict>
+		<dict>
+			<key>formatDescription</key>
+			<string>for uploading to YouTube video: 640x480 h.264 at 1500kbps audio: aac at 128kbs  *MAKE SURE* your video is under 10 minutes</string>
+			<key>filenameExtension</key>
+			<string>.mp4</string>
+			<key>comSkip</key>
+			<true/>
+			<key>encoderUsed</key>
+			<string>mencoder</string>
+			<key>name</key>
+			<string>YouTube</string>
+			<key>encoderVideoOptions</key>
+			<string>-of lavf -lavfopts format=ipod -ovc x264 -x264encopts nocabac:level_idc=30:bitrate=128:threads=auto:bframes=0:global_header -vf dsize=640:360:0,harddup</string>
+			<key>encoderAudioOptions</key>
+			<string>-af volume=13:1 -oac faac -faacopts mpeg=4:object=2:raw:br=128</string>
+			<key>encoderOtherOptions</key>
+			<string>-hr-edl-seek</string>
+			<key>iTunes</key>
+			<true/>
+		</dict>
+		<dict>
+			<key>formatDescription</key>
+			<string>MPEG-2 Program Stream video: original resolution, mpeg-2 at 5Mbps audio: mp2 at 128kbs</string>
 			<key>comSkip</key>
 			<true/>
 			<key>filenameExtension</key>
@@ -241,6 +307,8 @@
 			<true/>
 		</dict>
 		<dict>
+			<key>formatDescription</key>
+			<string>MPEG-2 Program Stream video: original resolution, mpeg-2 at 1Mbps audio: mp2 at 128kbs</string>
 			<key>comSkip</key>
 			<true/>
 			<key>filenameExtension</key>
@@ -259,6 +327,8 @@
 			<true/>
 		</dict>
 		<dict>
+			<key>formatDescription</key>
+			<string>MPEG-2 Program Stream video: original resolution, mpeg-2 at 128kbps audio: mp2 at 128kbs</string>
 			<key>comSkip</key>
 			<true/>
 			<key>filenameExtension</key>
@@ -277,6 +347,8 @@
 			<true/>
 		</dict>
 		<dict>
+			<key>formatDescription</key>
+			<string>for burning to DVD widescreen NTSC video: 720x480, mpeg2 at 5Mbps (variable &lt;9.8) audio: mp2 at 192kbs</string>
 			<key>comSkip</key>
 			<true/>
 			<key>filenameExtension</key>
@@ -284,17 +356,19 @@
 			<key>encoderUsed</key>
 			<string>mencoder</string>
 			<key>name</key>
-			<string>DVD (widescreen NTSC mpeg-2)</string>
+			<string>DVD</string>
 			<key>encoderVideoOptions</key>
 			<string>-ovc lavc -of mpeg -mpegopts format=dvd:tsaf -vf scale=720:480,harddup -lavcopts vcodec=mpeg2video:vrc_buf_size=1835:vrc_maxrate=9800:vbitrate=5000:keyint=15:trell:mbd=2:precmp=2:subcmp=2:cmp=2:dia=-10:predia=-10:cbp:mv0:vqmin=1:lmin=1:dc=10:vstrict=0:aspect=16/9</string>
 			<key>encoderAudioOptions</key>
-			<string>-oac mp3lame -lameopts vbr=2:q=5:br=192</string>
+			<string>-srate 48000 -af lavcresample=48000 -oac lavc -lavcopts acodec=mp2:abitrate=192</string>
 			<key>encoderOtherOptions</key>
 			<string>-hr-edl-seek</string>
 			<key>iTunes</key>
 			<true/>
 		</dict>
 		<dict>
+			<key>formatDescription</key>
+			<string>Mpeg-2 transport stream from tivo video: original copy audio: original copy note: This will *NOT* play in quicktime.  This is for people who need to edit out commercials off the tivo stream only.</string>
 			<key>comSkip</key>
 			<true/>
 			<key>filenameExtension</key>
@@ -302,7 +376,7 @@
 			<key>encoderUsed</key>
 			<string>mencoder</string>
 			<key>name</key>
-			<string>MPEG2-TS (unplayable in quicktime)</string>
+			<string>MPEG2-TS</string>
 			<key>encoderVideoOptions</key>
 			<string>-ovc copy -of mpeg -mpegopts format=mpeg2:tsaf:muxrate=36000 -noskip -mc 0 -forceidx</string>
 			<key>encoderAudioOptions</key>
@@ -313,6 +387,8 @@
 			<true/>
 		</dict>
 		<dict>
+			<key>formatDescription</key>
+			<string>use an external encoder: ElGato Turbo.264 you *MUST* have the device installed for this to work set your video settings on the ElGato software. *UNTESTED*</string>
 			<key>comSkip</key>
 			<false/>
 			<key>filenameExtension</key>
@@ -320,7 +396,7 @@
 			<key>encoderUsed</key>
 			<string>turbo.264</string>
 			<key>name</key>
-			<string>ElGato Turbo.264 USB encoder</string>
+			<string>ElGato Turbo.264</string>
 			<key>encoderVideoOptions</key>
 			<string></string>
 			<key>encoderAudioOptions</key>
@@ -331,6 +407,8 @@
 			<true/>
 		</dict>
 		<dict>
+			<key>formatDescription</key>
+			<string>For people who want to listen to the show audio: mp3 at 192kbps</string>
 			<key>comSkip</key>
 			<true/>
 			<key>filenameExtension</key>
@@ -349,6 +427,8 @@
 			<true/>
 		</dict>
 		<dict>
+			<key>formatDescription</key>
+			<string>a direct copy of the data from your tivo, decrypted. UNPLAYABLE in quicktime. install VLC or Mplayer to view</string>
 			<key>comSkip</key>
 			<false/>
 			<key>filenameExtension</key>
