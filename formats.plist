@@ -268,7 +268,7 @@
 		</dict>
 		<dict>
 			<key>formatDescription</key>
-			<string>for uploading to YouTube video: 640x480 h.264 at 1500kbps audio: aac at 128kbs  *MAKE SURE* your video is under 10 minutes</string>
+			<string>for uploading to YouTube video: 640x360 h.264 at 256kbps audio: aac at 128kbs  *MAKE SURE* your video is under 10 minutes</string>
 			<key>filenameExtension</key>
 			<string>.mp4</string>
 			<key>comSkip</key>
@@ -368,7 +368,7 @@
 		</dict>
 		<dict>
 			<key>formatDescription</key>
-			<string>Mpeg-2 transport stream from tivo video: original copy audio: original copy note: This will *NOT* play in quicktime.  This is for people who need to edit out commercials off the tivo stream only.</string>
+			<string>Mpeg-2 transport stream from tivo video: original copy audio: original copy note: This will *NOT* play in quicktime.  This is for people who need to edit out commercials off the tivo stream only. Can&apos;t be added to iTunes</string>
 			<key>comSkip</key>
 			<true/>
 			<key>filenameExtension</key>
@@ -384,7 +384,7 @@
 			<key>encoderOtherOptions</key>
 			<string>-hr-edl-seek</string>
 			<key>iTunes</key>
-			<true/>
+			<false/>
 		</dict>
 		<dict>
 			<key>formatDescription</key>
@@ -428,7 +428,7 @@
 		</dict>
 		<dict>
 			<key>formatDescription</key>
-			<string>a direct copy of the data from your tivo, decrypted. UNPLAYABLE in quicktime. install VLC or Mplayer to view</string>
+			<string>a direct copy of the data from your tivo, decrypted. UNPLAYABLE in quicktime. Can&apos;t be added to iTunes install VLC or Mplayer to view</string>
 			<key>comSkip</key>
 			<false/>
 			<key>filenameExtension</key>
