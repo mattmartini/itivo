@@ -31,6 +31,7 @@ property encodeMode : 0
 property UserName : ""
 property formats_plist : missing value
 property formatsList : {}
+property tableImages : {}
 
 (* User-controlled properties *)
 property MAK : ""
@@ -49,6 +50,7 @@ property comSkip : 0
 property SUFeedURL : "http://itivo.googlecode.com/svn/trunk/www/iTiVo.xml"
 property debugLog : false
 property downloadFirst : false
+property tivoSize : 0
 
 property panelWIndow : missing value
 property currentPrefsTab : "DownloadingTab"
@@ -75,6 +77,8 @@ on awake from nib theObject
 			make new data column at end of data columns with properties {name:"DateVal", sort order:descending, sort type:alphabetical, sort case sensitivity:case sensitive}
 			make new data column at end of data columns with properties {name:"LengthVal", sort order:ascending, sort type:alphabetical, sort case sensitivity:case sensitive}
 			make new data column at end of data columns with properties {name:"SizeVal", sort order:descending, sort type:numerical, sort case sensitivity:case sensitive}
+			make new data column at end of data columns with properties {name:"ChannelVal", sort order:descending, sort type:alphabetical, sort case sensitivity:case sensitive}
+			make new data column at end of data columns with properties {name:"HDVal", sort order:descending, sort type:numerical, sort case sensitivity:case sensitive}
 			make new data column at end of data columns with properties {name:"IDVal", sort order:descending, sort type:numerical, sort case sensitivity:case sensitive}
 		end tell
 		set data source of theObject to targetData
@@ -87,6 +91,18 @@ on awake from nib theObject
 		set data source of theObject to targetDataS
 		set content of targetDataS to targetDataSList
 	end if
+	
+	set tableImages to {empty:load image "empty.png"}
+	set tableImages to tableImages & {empty_check:load image "empty-check.png"}
+	set tableImages to tableImages & {expired_recording:load image "expired-recording.png"}
+	set tableImages to tableImages & {expired_recording_check:load image "expired-recording-check.png"}
+	set tableImages to tableImages & {expires_soon_recording:load image "empty.png"}
+	set tableImages to tableImages & {expires_soon_recording_check:load image "empty-check.png"}
+	set tableImages to tableImages & {save_until_i_delete_recording:load image "save-until-i-delete-recording.png"}
+	set tableImages to tableImages & {save_until_i_delete_recording_check:load image "save-until-i-delete-recording-check.png"}
+	set tableImages to tableImages & {suggestion_recording:load image "suggestion-recording.png"}
+	set tableImages to tableImages & {suggestion_recording_check:load image "suggestion-recording-check.png"}
+	
 end awake from nib
 
 on will open theObject
@@ -259,7 +275,7 @@ on setupPrefsTab(tabName)
 				set {encoderUsed, encoderVideoOptions, encoderAudioOptions, encoderOtherOptions, filenameExtension} to getFormatSettings(format)
 			end if
 			set title of popup button "format" of view "DownloadingView" of tab view "TopTab" to format
-			set contents of text field "formatDescription" of view "DownloadingView" of tab view "TopTab" to my formatDescription(format) 
+			set contents of text field "formatDescription" of view "DownloadingView" of tab view "TopTab" to my formatDescription(format)
 			if (my formatCompatItunes(format)) then
 				set enabled of button "iTunes" of view "DownloadingView" of tab view "TopTab" to true
 				set enabled of button "iTunesSync" of view "DownloadingView" of tab view "TopTab" to true
@@ -393,6 +409,7 @@ on registerSettings()
 		make new default entry at end of default entries with properties {name:"openDetail", contents:""}
 		make new default entry at end of default entries with properties {name:"DLHistory", contents:""}
 		make new default entry at end of default entries with properties {name:"targetDataSList", contents:{}}
+		make new default entry at end of default entries with properties {name:"tivoSize", contents:0}
 		register
 	end tell
 end registerSettings
@@ -431,6 +448,7 @@ on readSettings()
 			set encoderAudioOptions to contents of default entry "encoderAudioOptions"
 			set encoderOtherOptions to contents of default entry "encoderOtherOptions"
 			set filenameExtension to contents of default entry "filenameExtension"
+			set tivoSize to contents of default entry "tivoSize"
 		end try
 		try
 			set debugLog to contents of default entry "debugLog"
@@ -538,6 +556,7 @@ on writeSettings()
 			set contents of default entry "targetDataSList" to targetDataSList as list
 			set contents of default entry "debugLog" to debugLog
 			set contents of default entry "downloadFirst" to downloadFirst
+			set contents of default entry "tivoSize" to tivoSize
 		end tell
 	on error
 		my debug_log("Failed to write out initial settings")
@@ -1032,7 +1051,7 @@ on choose menu item theObject
 		local myformat
 		set myformat to title of popup button "format" of view "DownloadingView" of tab view "TopTab" of panelWIndow
 		set {encoderUsed, encoderVideoOptions, encoderAudioOptions, encoderOtherOptions, filenameExtension} to getFormatSettings(myformat)
-		set contents of text field "formatDescription" of view "DownloadingView" of tab view "TopTab" of panelWindow to my formatDescription(myformat)
+		set contents of text field "formatDescription" of view "DownloadingView" of tab view "TopTab" of panelWIndow to my formatDescription(myformat)
 		if (not my formatCompatComSkip(myformat)) then
 			set comSkip to 0
 		end if
@@ -1580,14 +1599,19 @@ on ConnectTiVo()
 			set AppleScript's text item delimiters to return
 			set the tivo_usage to text item 1 of TiVoList
 			set the item_list to text items 2 thru -1 of TiVoList
-			set processInfoRecord to {}
 			set AppleScript's text item delimiters to "|"
 			-- First we parse out the usage information and set it in the drawer
-			set total_memory to second text item of tivo_usage
+			set total_memory to second text item of tivo_usage as integer
+			if total_memory < (tivoSize * 1024 * 1024 * 1024) then
+				set total_memory to tivoSize * 1024 * 1024 * 1024
+			else
+				my debug_log("fixing: " & tivoSize * 1024 * 1024 * 1024 & " , " & total_memory)
+				set tivoSize to total_memory / (1024 * 1024 * 1024) as integer
+			end if
 			set contents of text field "tivoName" of drawer "Drawer1" to title of popup button "MyTiVos"
 			set contents of text field "tivoIP" of drawer "Drawer1" to IPA
 			set contents of text field "tivoShows" of drawer "Drawer1" to first text item of tivo_usage
-			set contents of text field "tivoSpace" of drawer "Drawer1" to (((total_memory / (1024 * 1024 * 1024)) as integer) as string) & " GB"
+			set contents of text field "tivoSpace" of drawer "Drawer1" to tivoSize as string
 			set contents of text field "tivoRegular" of drawer "Drawer1" to ((((third text item of tivo_usage) / 1024 / 1024) as integer) as string) & " MB"
 			set contents of text field "tivoSuggestion" of drawer "Drawer1" to ((((fourth text item of tivo_usage) / 1024 / 1024) as integer) as string) & " MB"
 			set contents of text field "tivoExpired" of drawer "Drawer1" to ((((fifth text item of tivo_usage) / 1024 / 1024) as integer) as string) & " MB"
@@ -1596,14 +1620,15 @@ on ConnectTiVo()
 			set contents of text field "tivoCopyrighted" of drawer "Drawer1" to ((((eighth text item of tivo_usage) / 1024 / 1024) as integer) as string) & " MB"
 			set contents of text field "tivoSaved" of drawer "Drawer1" to ((((ninth text item of tivo_usage) / 1024 / 1024) as integer) as string) & " MB"
 			set theURL to "http://chart.apis.google.com/chart?cht=p3&chs=180x180&chd=t:"
-			set theURL to theURL & ((((third text item of tivo_usage) / total_memory * 100) as integer) as string) & ","
-			set theURL to theURL & ((((fourth text item of tivo_usage) / total_memory * 100) as integer) as string) & ","
-			set theURL to theURL & ((((fifth text item of tivo_usage) / total_memory * 100) as integer) as string) & ","
-			set theURL to theURL & ((((sixth text item of tivo_usage) / total_memory * 100) as integer) as string) & ","
-			set theURL to theURL & ((((seventh text item of tivo_usage) / total_memory * 100) as integer) as string) & ","
-			set theURL to theURL & ((((eighth text item of tivo_usage) / total_memory * 100) as integer) as string) & ","
-			set theURL to theURL & ((((ninth text item of tivo_usage) / total_memory * 100) as integer) as string)
-			set myURL to "33CCFF|003300|FF3333|CC9900|33CC00|9900CC|00CC00"
+			set sum to 0
+			repeat with usage_item in text items 3 thru 9 of tivo_usage
+				set current_percent to ((usage_item / total_memory * 1000) as integer) / 10
+				set theURL to theURL & (current_percent as string) & ","
+				set sum to sum + current_percent
+			end repeat
+			
+			set theURL to theURL & (((100 - sum) as integer) as string)
+			set myURL to "33CCFF|003300|FF3333|CC9900|33CC00|9900CC|00CC00|999999"
 			set theURL to theURL & "&chco=" & my encode_text(myURL, true, true)
 			my debug_log("fetching : " & theURL)
 			set URLWithString to call method "URLWithString:" of class "NSURL" with parameter theURL
@@ -1612,15 +1637,39 @@ on ConnectTiVo()
 			call method "loadRequest:" of mainFrame with parameter requestWithURL
 			
 			-- Now we work on the actual shows
+			set showcount to 0
+			set update views of targetData to false
+			delete every data row of targetData
 			repeat with currentLine in item_list
+				set theDataRow to make new data row at end of data rows of targetData
 				set the parts to every text item of currentLine
-				if (count of parts) = 8 then
+				if (count of parts) = 10 then
 					set historyCheck to second item of parts & "-" & item 7 of parts
-					if item 8 of parts = "1" then
-						set first item of parts to "•"
-					end if
+					set flags to item 10 of parts
 					if historyCheck is in DLHistory then
-						set first item of parts to "✔"
+						if flags = "1" then
+							set downloadImage to suggestion_recording_check of tableImages
+						else if flags = "2" then
+							set downloadImage to expired_recording_check of tableImages
+						else if flags = "3" then
+							set downloadImage to expires_soon_recording_check of tableImages
+						else if flags = "4" then
+							set downloadImage to save_until_i_delete_recording_check of tableImages
+						else
+							set downloadImage to empty_check of tableImages
+						end if
+					else
+						if flags = "1" then
+							set downloadImage to suggestion_recording of tableImages
+						else if flags = "2" then
+							set downloadImage to expired_recording of tableImages
+						else if flags = "3" then
+							set downloadImage to expires_soon_recording of tableImages
+						else if flags = "4" then
+							set downloadImage to save_until_i_delete_recording of tableImages
+						else
+							set downloadImage to empty of tableImages
+						end if
 					end if
 					set fileSize to ((item 6 of parts) / 1048576)
 					set item 6 of parts to ((fileSize as integer) as string) & " MB"
@@ -1629,7 +1678,9 @@ on ConnectTiVo()
 					set showDate to item 4 of parts
 					set showLength to item 5 of parts
 					set showSize to item 6 of parts
-					set showID to item 7 of parts
+					set showStation to item 7 of parts
+					set showHD to item 8 of parts
+					set showID to item 9 of parts
 					if (my isSubscribed(showName, showDate) = true) then
 						set currentProcessSelectionQ to {}
 						set end of currentProcessSelectionQ to showName
@@ -1641,27 +1692,35 @@ on ConnectTiVo()
 						my addSelectionToQueue(currentProcessSelectionQ)
 						set end of addedItems to {showName, showDate}
 					end if
-					set end of processInfoRecord to parts
+					set contents of data cell "DLVal" of theDataRow to downloadImage
+					set contents of data cell "ShowVal" of theDataRow to showName
+					set contents of data cell "EpisodeVal" of theDataRow to episodeVal
+					set contents of data cell "DateVal" of theDataRow to showDate
+					set contents of data cell "LengthVal" of theDataRow to showLength
+					set contents of data cell "SizeVal" of theDataRow to showSize
+					set contents of data cell "ChannelVal" of theDataRow to showStation
+					set contents of data cell "HDVal" of theDataRow to showHD
+					set contents of data cell "IDVal" of theDataRow to showID
+					set showcount to showcount + 1
 				end if
 			end repeat
+			set update views of targetData to true
 			repeat with currentItem in addedItems
 				my updateSubscriptionList(item 1 of currentItem, item 2 of currentItem, true)
 			end repeat
 			if (count of addedItems) > 0 then
 				set enabled of button "decodeQueue" of view "bottomLeftView" of split view "splitView2" of box "bottomBox" of split view "splitView1" to true
 			end if
-			if (count of processInfoRecord) = 1 then
+			if showcount = 1 then
 				set contents of text field "nowPlaying" of box "topBox" of split view "splitView1" to "Now Playing (1 item)"
 			else
-				set contents of text field "nowPlaying" of box "topBox" of split view "splitView1" to "Now Playing (" & (count of processInfoRecord) & " items)"
+				set contents of text field "nowPlaying" of box "topBox" of split view "splitView1" to "Now Playing (" & showcount & " items)"
 			end if
 			set DLHistoryCount to (count of DLHistory)
-			set ListCount to (count of processInfoRecord)
-			if (DLHistoryCount > ListCount) then
-				set DLHistoryTemp to items (DLHistoryCount - ListCount) thru -1 of DLHistory
+			if (DLHistoryCount > showcount) then
+				set DLHistoryTemp to items (DLHistoryCount - showcount) thru -1 of DLHistory
 				set DLHistory to DLHistoryTemp
 			end if
-			set content of targetData to processInfoRecord
 			set title of button "ConnectButton" to "Update from TiVo"
 		end if
 		set enabled of button "DownloadButton" of box "topBox" of split view "splitView1" to false
@@ -1986,12 +2045,12 @@ on debug_log(log_string)
 		end if
 		if (debug_level ≥ 2) then
 			set theLine to (do shell script "date  +'%Y-%m-%d %H:%M:%S'" as string) & " " & log_string
-			do shell script "echo '" & theLine & "' >> ~/iTiVo.log"
+			do shell script "echo '" & theLine & "' >> /tmp/iTiVo.log"
 		end if
 	on error
 		log "Failed to output string"
 		set theLine to (do shell script "date  +'%Y-%m-%d %H:%M:%S'" as string) & " ERROR: Failing to output correct string"
-		do shell script "echo '" & theLine & "' >> ~/iTiVo.log"
+		do shell script "echo '" & theLine & "' >> /tmp/iTiVo.log"
 	end try
 end debug_log
 
@@ -2038,3 +2097,12 @@ on should close theObject
 	end if
 	return true
 end should close
+
+on end editing theObject
+	if name of theObject = "tivoSpace" then
+		set tivoSize to contents of text field "tivoSpace" of drawer "Drawer1" of window "iTiVo"
+		if enabled of button "ConnectButton" of window "iTiVo" is true then
+			my ConnectTiVo()
+		end if
+	end if
+end end editing

@@ -78,21 +78,37 @@ while ($anchor < $TotalItems) {
 	    else {
 		$output = $output . "|";
 	    }
-	    $output = $output . "$id|";
+if ($show =~ m/<SourceStation>(.*?)<\/SourceStation>/) {
+$output = $output . "$1|";
+}
+else {
+$output = $output . "|";
+}
+
+if ($show =~ m/<HighDefinition>Y.*<\/HighDefinition>/) {
+$output = $output . "√|";
+}
+else {
+$output = $output . "|";
+}
+
+$output = $output . "$id|";
 
 	    $flags = 0;
 	    if ($show =~ m/<Url>urn:tivo:image:suggestion-recording<\/Url>/) {
-		$flags |= 1;
+		$flags = 1;
 		$show_type = "suggestion";
 	    }
 	    if ($show =~ m/<Url>urn:tivo:image:expired-recording<\/Url>/) {
-		$flags |= 2;
+$flags = 2;
 		$show_type = "expired";
 	    }
 	    if ($show =~ m/<Url>urn:tivo:image:expires-soon-recording<\/Url>/) {
+$flags = 3;
 		$show_type = "expires-soon";
 	    }
 	    if ($show =~ m/<Url>urn:tivo:image:save-until-i-delete-recording<\/Url>/) {
+    $flags = 4;
 		$show_type = "save-until-delete";
 	    }
 	    $output = $output . "$flags";
