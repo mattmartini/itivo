@@ -4,8 +4,16 @@ _Please note that since the program is undergoing significant code changes, thes
 
 == Warnings ==
 
-While custom formats are now supported, it is possible that this support will be changed/broken in the future, so use only if you're able to hack plist files and are aware...
+These steps are intended for people who are happy hacking around files.  There is no front-end interface for doing this.
+
+  You will either need the free property list editor that comes with the Apple Developer Tools, or you can edit the raw XML, or you can find another plist editor somewhere.
 
 = How to create a custom format =
 
-First you must download
+  First you must download the [http://itivo.googlecode.com/svn/trunk/www/blankformat.plist blankformat.plist] file.  In your homedir, create the `Library/Preferences/iTiVo/formats/` directory, and place the blankformat.plist.
+
+  Edit it with the plist editor (double clicking should do it).
+
+  Save it in the directory you created.
+
+  Re-start iTiVo
