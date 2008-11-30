@@ -1,0 +1,11 @@
+= Custom Formats =
+
+_Please note that since the program is undergoing significant code changes, these instructions may become invalid, or your custom format may become broken in the future_
+
+== Warnings ==
+
+While custom formats are now supported, it is possible that this support will be changed/broken in the future, so use only if you're able to hack plist files and are aware...
+
+= How to create a custom format =
+
+First you must download
