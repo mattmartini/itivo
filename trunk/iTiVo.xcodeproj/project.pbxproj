@@ -48,6 +48,16 @@
 		531ED4320ED622C20021359A /* encoderProgress.pl in Resources */ = {isa = PBXBuildFile; fileRef = 531ED4310ED622C20021359A /* encoderProgress.pl */; };
 		532226E40EB0698400062D5F /* PrefsPanel.xib in Resources */ = {isa = PBXBuildFile; fileRef = 532226E30EB0698400062D5F /* PrefsPanel.xib */; };
 		5352F8690EC6752400A83D95 /* formats.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5352F8680EC6752400A83D95 /* formats.plist */; };
+		536575E40EE2791800B68A56 /* empty-check.png in Resources */ = {isa = PBXBuildFile; fileRef = 536575DA0EE2791800B68A56 /* empty-check.png */; };
+		536575E50EE2791800B68A56 /* empty.png in Resources */ = {isa = PBXBuildFile; fileRef = 536575DB0EE2791800B68A56 /* empty.png */; };
+		536575E60EE2791800B68A56 /* expired-recording-check.png in Resources */ = {isa = PBXBuildFile; fileRef = 536575DC0EE2791800B68A56 /* expired-recording-check.png */; };
+		536575E70EE2791800B68A56 /* expired-recording.png in Resources */ = {isa = PBXBuildFile; fileRef = 536575DD0EE2791800B68A56 /* expired-recording.png */; };
+		536575E80EE2791800B68A56 /* expires-soon-recording-check.png in Resources */ = {isa = PBXBuildFile; fileRef = 536575DE0EE2791800B68A56 /* expires-soon-recording-check.png */; };
+		536575E90EE2791800B68A56 /* expires-soon-recording.png in Resources */ = {isa = PBXBuildFile; fileRef = 536575DF0EE2791800B68A56 /* expires-soon-recording.png */; };
+		536575EA0EE2791800B68A56 /* save-until-i-delete-recording-check.png in Resources */ = {isa = PBXBuildFile; fileRef = 536575E00EE2791800B68A56 /* save-until-i-delete-recording-check.png */; };
+		536575EB0EE2791800B68A56 /* save-until-i-delete-recording.png in Resources */ = {isa = PBXBuildFile; fileRef = 536575E10EE2791800B68A56 /* save-until-i-delete-recording.png */; };
+		536575EC0EE2791800B68A56 /* suggestion-recording-check.png in Resources */ = {isa = PBXBuildFile; fileRef = 536575E20EE2791800B68A56 /* suggestion-recording-check.png */; };
+		536575ED0EE2791800B68A56 /* suggestion-recording.png in Resources */ = {isa = PBXBuildFile; fileRef = 536575E30EE2791800B68A56 /* suggestion-recording.png */; };
 		53A16DC10ED5DC95004A33E4 /* elgato.applescript in AppleScript */ = {isa = PBXBuildFile; fileRef = 53A16DC00ED5DC95004A33E4 /* elgato.applescript */; settings = {ATTRIBUTES = (Debug, ); }; };
 		53AF175F0EB6936100C68D2E /* http-fetcher.pl in Resources */ = {isa = PBXBuildFile; fileRef = 53AF175E0EB6936100C68D2E /* http-fetcher.pl */; };
 		53AF17610EB6937700C68D2E /* tivo-decoder.pl in Resources */ = {isa = PBXBuildFile; fileRef = 53AF17600EB6937700C68D2E /* tivo-decoder.pl */; };
@@ -106,6 +116,16 @@
 		531ED4310ED622C20021359A /* encoderProgress.pl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.perl; path = encoderProgress.pl; sourceTree = "<group>"; };
 		532226E30EB0698400062D5F /* PrefsPanel.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PrefsPanel.xib; sourceTree = "<group>"; };
 		5352F8680EC6752400A83D95 /* formats.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = formats.plist; sourceTree = "<group>"; };
+		536575DA0EE2791800B68A56 /* empty-check.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "empty-check.png"; sourceTree = "<group>"; };
+		536575DB0EE2791800B68A56 /* empty.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = empty.png; sourceTree = "<group>"; };
+		536575DC0EE2791800B68A56 /* expired-recording-check.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "expired-recording-check.png"; sourceTree = "<group>"; };
+		536575DD0EE2791800B68A56 /* expired-recording.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "expired-recording.png"; sourceTree = "<group>"; };
+		536575DE0EE2791800B68A56 /* expires-soon-recording-check.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "expires-soon-recording-check.png"; sourceTree = "<group>"; };
+		536575DF0EE2791800B68A56 /* expires-soon-recording.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "expires-soon-recording.png"; sourceTree = "<group>"; };
+		536575E00EE2791800B68A56 /* save-until-i-delete-recording-check.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "save-until-i-delete-recording-check.png"; sourceTree = "<group>"; };
+		536575E10EE2791800B68A56 /* save-until-i-delete-recording.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "save-until-i-delete-recording.png"; sourceTree = "<group>"; };
+		536575E20EE2791800B68A56 /* suggestion-recording-check.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "suggestion-recording-check.png"; sourceTree = "<group>"; };
+		536575E30EE2791800B68A56 /* suggestion-recording.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "suggestion-recording.png"; sourceTree = "<group>"; };
 		53A16DC00ED5DC95004A33E4 /* elgato.applescript */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.applescript; path = elgato.applescript; sourceTree = "<group>"; };
 		53AF175E0EB6936100C68D2E /* http-fetcher.pl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.perl; path = "http-fetcher.pl"; sourceTree = "<group>"; };
 		53AF17600EB6937700C68D2E /* tivo-decoder.pl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.perl; path = "tivo-decoder.pl"; sourceTree = "<group>"; };
@@ -218,6 +238,16 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				536575DA0EE2791800B68A56 /* empty-check.png */,
+				536575DB0EE2791800B68A56 /* empty.png */,
+				536575DC0EE2791800B68A56 /* expired-recording-check.png */,
+				536575DD0EE2791800B68A56 /* expired-recording.png */,
+				536575DE0EE2791800B68A56 /* expires-soon-recording-check.png */,
+				536575DF0EE2791800B68A56 /* expires-soon-recording.png */,
+				536575E00EE2791800B68A56 /* save-until-i-delete-recording-check.png */,
+				536575E10EE2791800B68A56 /* save-until-i-delete-recording.png */,
+				536575E20EE2791800B68A56 /* suggestion-recording-check.png */,
+				536575E30EE2791800B68A56 /* suggestion-recording.png */,
 				53C1A0DA0ECBCDFB0006B929 /* imdb.png */,
 				531280FD0ECED47500B748E0 /* tvdb.png */,
 				5352F8680EC6752400A83D95 /* formats.plist */,
@@ -323,6 +353,16 @@
 				53C1A0DB0ECBCDFB0006B929 /* imdb.png in Resources */,
 				531280FE0ECED47500B748E0 /* tvdb.png in Resources */,
 				531ED4320ED622C20021359A /* encoderProgress.pl in Resources */,
+				536575E40EE2791800B68A56 /* empty-check.png in Resources */,
+				536575E50EE2791800B68A56 /* empty.png in Resources */,
+				536575E60EE2791800B68A56 /* expired-recording-check.png in Resources */,
+				536575E70EE2791800B68A56 /* expired-recording.png in Resources */,
+				536575E80EE2791800B68A56 /* expires-soon-recording-check.png in Resources */,
+				536575E90EE2791800B68A56 /* expires-soon-recording.png in Resources */,
+				536575EA0EE2791800B68A56 /* save-until-i-delete-recording-check.png in Resources */,
+				536575EB0EE2791800B68A56 /* save-until-i-delete-recording.png in Resources */,
+				536575EC0EE2791800B68A56 /* suggestion-recording-check.png in Resources */,
+				536575ED0EE2791800B68A56 /* suggestion-recording.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
