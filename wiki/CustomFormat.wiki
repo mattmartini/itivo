@@ -10,7 +10,7 @@ These steps are intended for people who are happy hacking around files.  There i
 
 = How to create a custom format =
 
-  First you must download the [http://itivo.googlecode.com/svn/trunk/www/blankformat.plist blankformat.plist] file.  In your homedir, create the `Library/Preferences/iTiVo/formats/` directory, and place the blankformat.plist.
+  First you must download the [http://itivo.googlecode.com/svn/trunk/www/blankformat.plist blankformat.plist] file (right click and save as).  In your homedir, create the `Library/Preferences/iTiVo/formats/` directory, and place the blankformat.plist there, naming it anything you like.
 
   Edit it with the plist editor (double clicking should do it).
 
