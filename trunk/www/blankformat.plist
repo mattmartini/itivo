@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>version</key>
+	<integer>1</integer>
+	<key>formats</key>
+	<array>
+		<dict>
+			<key>name</key>
+			<string>blank format</string>
+			<key>formatDescription</key>
+			<string>Sample Format</string>
+			<key>filenameExtension</key>
+			<string>.mp4</string>
+			<key>encoderUsed</key>
+			<string>mencoder</string>
+			<key>encoderVideoOptions</key>
+			<string>-ovc copy</string>
+			<key>encoderAudioOptions</key>
+			<string>-oac copy</string>
+			<key>encoderOtherOptions</key>
+			<string></string>
+			<key>comSkip</key>
+			<true/>
+			<key>iTunes</key>
+			<true/>
+		</dict>
+	</array>
+</dict>
+</plist>
