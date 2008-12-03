@@ -58,6 +58,7 @@
 		536575EB0EE2791800B68A56 /* save-until-i-delete-recording.png in Resources */ = {isa = PBXBuildFile; fileRef = 536575E10EE2791800B68A56 /* save-until-i-delete-recording.png */; };
 		536575EC0EE2791800B68A56 /* suggestion-recording-check.png in Resources */ = {isa = PBXBuildFile; fileRef = 536575E20EE2791800B68A56 /* suggestion-recording-check.png */; };
 		536575ED0EE2791800B68A56 /* suggestion-recording.png in Resources */ = {isa = PBXBuildFile; fileRef = 536575E30EE2791800B68A56 /* suggestion-recording.png */; };
+		536F4DDF0EE5EEA200743C2C /* HandBrakeCLI in Resources */ = {isa = PBXBuildFile; fileRef = 536F4DDE0EE5EEA200743C2C /* HandBrakeCLI */; };
 		53A16DC10ED5DC95004A33E4 /* elgato.applescript in AppleScript */ = {isa = PBXBuildFile; fileRef = 53A16DC00ED5DC95004A33E4 /* elgato.applescript */; settings = {ATTRIBUTES = (Debug, ); }; };
 		53AF175F0EB6936100C68D2E /* http-fetcher.pl in Resources */ = {isa = PBXBuildFile; fileRef = 53AF175E0EB6936100C68D2E /* http-fetcher.pl */; };
 		53AF17610EB6937700C68D2E /* tivo-decoder.pl in Resources */ = {isa = PBXBuildFile; fileRef = 53AF17600EB6937700C68D2E /* tivo-decoder.pl */; };
@@ -126,6 +127,7 @@
 		536575E10EE2791800B68A56 /* save-until-i-delete-recording.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "save-until-i-delete-recording.png"; sourceTree = "<group>"; };
 		536575E20EE2791800B68A56 /* suggestion-recording-check.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "suggestion-recording-check.png"; sourceTree = "<group>"; };
 		536575E30EE2791800B68A56 /* suggestion-recording.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "suggestion-recording.png"; sourceTree = "<group>"; };
+		536F4DDE0EE5EEA200743C2C /* HandBrakeCLI */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; name = HandBrakeCLI; path = "External Software/HandBrakeCLI"; sourceTree = "<group>"; };
 		53A16DC00ED5DC95004A33E4 /* elgato.applescript */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.applescript; path = elgato.applescript; sourceTree = "<group>"; };
 		53AF175E0EB6936100C68D2E /* http-fetcher.pl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.perl; path = "http-fetcher.pl"; sourceTree = "<group>"; };
 		53AF17600EB6937700C68D2E /* tivo-decoder.pl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.perl; path = "tivo-decoder.pl"; sourceTree = "<group>"; };
@@ -217,6 +219,7 @@
 		29B97315FDCFA39411CA2CEA /* Other Sources */ = {
 			isa = PBXGroup;
 			children = (
+				536F4DDE0EE5EEA200743C2C /* HandBrakeCLI */,
 				53D5B8840EC0C7A3004F537D /* remove-commercials.pl */,
 				531ED4310ED622C20021359A /* encoderProgress.pl */,
 				53D5B8820EC0C78A004F537D /* comskipSize.pl */,
@@ -363,6 +366,7 @@
 				536575EB0EE2791800B68A56 /* save-until-i-delete-recording.png in Resources */,
 				536575EC0EE2791800B68A56 /* suggestion-recording-check.png in Resources */,
 				536575ED0EE2791800B68A56 /* suggestion-recording.png in Resources */,
+				536F4DDF0EE5EEA200743C2C /* HandBrakeCLI in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

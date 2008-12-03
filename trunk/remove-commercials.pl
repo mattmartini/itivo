@@ -1,5 +1,7 @@
 #!/usr/bin/perl
-$file2 = $ARGV[0];
+$file2     = $ARGV[0];
+$encoder   = $ARGV[1];
+
 $file2 =~ s/\%([A-Fa-f0-9]{2})/pack('C', hex($1))/seg;
 
 $Progress = "/tmp/iTiVoDL3-$ENV{'USER'}";

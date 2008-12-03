@@ -78,7 +78,7 @@ on awake from nib theObject
 			make new data column at end of data columns with properties {name:"LengthVal", sort order:ascending, sort type:alphabetical, sort case sensitivity:case sensitive}
 			make new data column at end of data columns with properties {name:"SizeVal", sort order:descending, sort type:numerical, sort case sensitivity:case sensitive}
 			make new data column at end of data columns with properties {name:"ChannelVal", sort order:descending, sort type:alphabetical, sort case sensitivity:case sensitive}
-			make new data column at end of data columns with properties {name:"HDVal", sort order:descending, sort type:numerical, sort case sensitivity:case sensitive}
+			make new data column at end of data columns with properties {name:"HDVal", sort order:descending, sort type:alphabetical, sort case sensitivity:case sensitive}
 			make new data column at end of data columns with properties {name:"IDVal", sort order:descending, sort type:numerical, sort case sensitivity:case sensitive}
 		end tell
 		set data source of theObject to targetData
@@ -107,12 +107,12 @@ end awake from nib
 
 on will open theObject
 	if name of theObject is "iTiVo" and already_launched = 0 then
+		set UserName to do shell script "whoami"
 		my debug_log("     ================    Starting   ===================")
 		getTiVos()
 		update
 		readSettings()
 		set already_launched to 1
-		set UserName to do shell script "whoami"
 		if MAK is not greater than 0 then
 			my displayPrefs()
 		end if
@@ -129,9 +129,9 @@ on was miniaturized theObject
 end was miniaturized
 
 on will finish launching theObject
-	set haveOS1040 to minOSVers at 1040
-	if not haveOS1040 then
-		display dialog "This Application requires Mac OS X 10.4 or later." buttons {"OK"} default button "OK" attached to window "iTiVo"
+	set haveOS1050 to minOSVers at 1050
+	if not haveOS1050 then
+		display dialog "This Application requires Mac OS X 10.5 or later." buttons {"OK"} default button "OK" attached to window "iTiVo"
 		quit
 	end if
 	performCancelDownload()
@@ -179,6 +179,16 @@ on formatCompatComSkip(formatName)
 	my debug_log("Couldn't find comSkip of format " & formatName)
 	return false
 end formatCompatComSkip
+
+on formatMustDownloadFirst(formatName)
+	repeat with currentFormat in formatsList
+		if name of currentFormat is formatName then
+			return mustDownloadFirst of currentFormat
+		end if
+	end repeat
+	my debug_log("Couldn't find mustDownloadFirst of format " & formatName)
+	return false
+end formatMustDownloadFirst
 
 on formatCompatItunes(formatName)
 	repeat with currentFormat in formatsList
@@ -248,12 +258,13 @@ on readFormats()
 					set newItem to newItem & {filenameExtension:|filenameExtension| of currentFormat}
 					set newItem to newItem & {iTunes:|iTunes| of currentFormat}
 					set newItem to newItem & {comSkip:|comSkip| of currentFormat}
+					set newItem to newItem & {mustDownloadFirst:|mustDownloadFirst| of currentFormat}
 					set newItem to newItem & {formatDescription:|formatDescription| of currentFormat}
 					set formatsList to formatsList & {newItem}
 				end repeat
 			on error
 				my debug_log("Couldn't read formats from " & filename)
-				display dialog "Unable to read formats from " & filename & "."
+				display alert "Unable to read formats from " & filename & "."
 			end try
 		end tell
 	end repeat
@@ -1025,6 +1036,9 @@ end selection changed
 
 on column clicked theObject table column tableColumn
 	if name of theObject = "ShowListTable" then
+		if (name of tableColumn = "DLVal") then
+			return
+		end if
 		set use sort indicators of theObject to true
 		set sorted of targetData to true
 		if sortColumn = name of tableColumn then
@@ -1066,6 +1080,7 @@ on choose menu item theObject
 			set enabled of popup button "icon" of view "DownloadingView" of tab view "TopTab" of panelWIndow to false
 		end if
 	else if name of theObject = "MyTiVos" and not title of theObject = "My TiVos" then
+		set tivoSize to 0
 		if title of theObject ≠ "My TiVos" then
 			tell window "iTiVo"
 				try
@@ -1210,6 +1225,7 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 	if (encoderOtherOptions = "") then set encoderOtherOptions to " "
 	try
 		set shellCmd to "rm /tmp/iTiVoDL*-" & UserName
+		my debug_log(shellCmd)
 		do shell script shellCmd
 	end try
 	set cancelDownload to 0
@@ -1222,10 +1238,16 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 				my debug_log(shellCmd)
 				do shell script shellCmd
 			end try
-			if (comSkip = 0 and downloadFirst = false) then
+			if (comSkip = 0 and downloadFirst = false and my formatMustDownloadFirst(format) = false) then
 				set shellCmd to "mkfifo /tmp/iTiVoDLPipe-" & UserName & " /tmp/iTiVoDLPipe2-" & UserName & ".mpg"
+				call method "setMaxValue:" of control "StatusLevel" with parameters {1}
 			else
 				set shellCmd to "mkfifo /tmp/iTiVoDLPipe-" & UserName & " ; touch /tmp/iTiVoDLPipe{2,3}-" & UserName & ".mpg"
+				if (comSkip = 1) then
+					call method "setMaxValue:" of control "StatusLevel" with parameters {3}
+				else
+					call method "setMaxValue:" of control "StatusLevel" with parameters {2}
+				end if
 			end if
 			my debug_log(shellCmd)
 			do shell script shellCmd
@@ -1237,7 +1259,7 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 			set ShellScriptCommand to ShellScriptCommand & " &> /dev/null & echo $! ;exit 0"
 			my debug_log(ShellScriptCommand)
 			do shell script ShellScriptCommand
-			if (comSkip = 0 and downloadFirst = false) then
+			if (comSkip = 0 and downloadFirst = false and my formatMustDownloadFirst(format) = false) then
 				set ShellScriptCommand to "perl " & myPath & "Contents/Resources/re-encoder.pl " & myPath2 & " " & myHomePathP2 & " " & showFullNameEncoded & filenameExtension & " "
 				set ShellScriptCommand to ShellScriptCommand & quoted form of encoderUsed & " " & quoted form of encoderVideoOptions & " "
 				set ShellScriptCommand to ShellScriptCommand & quoted form of encoderAudioOptions & " " & quoted form of encoderOtherOptions & " "
@@ -1278,9 +1300,12 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 			end try
 		end if
 		set currentTry to currentTry + 1
+		set currentStep to 1
 		tell window "iTiVo"
 			set ETA to ""
 			set visible of progress indicator "Status" to true
+			set visible of control "StatusLevel" to true
+			set integer value of control "StatusLevel" to currentStep
 			set starttime to ((do shell script "date +%s") as integer) - 10
 			repeat while timeoutCount < 480 and cancelDownload as integer = 0 and downloadExists as integer = 1 and cancelAllDownloads as integer = 0
 				if (debug_level ≥ 3) then
@@ -1361,11 +1386,12 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 				set timeOn to "0:0:0"
 				set frameOn to 0
 				set prevframeOn to 0
-				set visible of progress indicator "Status" to true
-				set ShellScriptCommand to "perl " & myPath & "Contents/Resources/remove-commercials.pl " & myPath2
+				set ShellScriptCommand to "perl " & myPath & "Contents/Resources/remove-commercials.pl " & myPath2 & " " & encoderUsed
 				set ShellScriptCommand to ShellScriptCommand & " &> /dev/null & echo $! ;exit 0"
 				my debug_log(ShellScriptCommand)
 				do shell script ShellScriptCommand
+				set currentStep to currentStep + 1
+				set integer value of control "StatusLevel" to currentStep
 				repeat while timeoutCount < 120 and cancelDownload as integer = 0 and downloadExists as integer = 1 and cancelAllDownloads as integer = 0
 					if (debug_level ≥ 3) then
 						my debug_log("comskip timeout: " & timeoutCount & " download:" & downloadExists & "   frameOn: " & frameOn & "  timeOn:" & timeOn & "   currentPercent: " & currentPercent)
@@ -1400,7 +1426,7 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 				end repeat
 			end if
 			my debug_log("Ok am here: " & downloadFirst & "  comskip?: " & comSkip & "    complete?: " & my isDownloadComplete(filePath, fullFileSize, currentTry))
-			if (my isDownloadComplete(filePath, fullFileSize, currentTry) and (comSkip = 1 or downloadFirst = true)) then
+			if (my isDownloadComplete(filePath, fullFileSize, currentTry) and (comSkip = 1 or downloadFirst = true or my formatMustDownloadFirst(format) = true)) then
 				tell progress indicator "Status" to increment by -1 * currentProgress
 				set currentProgresss to 0
 				set downloadExistsCmdString to "du -k -d 0 /tmp/iTiVoDLPipe2-" & UserName & ".mpg ;exit 0"
@@ -1410,13 +1436,14 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 				set currentPercent to 0
 				set timeOn to 0.0
 				set prevtimeOn to 0
-				set visible of progress indicator "Status" to true
 				set ShellScriptCommand to "perl " & myPath & "Contents/Resources/re-encoder.pl " & myPath2 & " " & myHomePathP2 & " " & showFullNameEncoded & filenameExtension & " "
 				set ShellScriptCommand to ShellScriptCommand & quoted form of encoderUsed & " " & quoted form of encoderVideoOptions & " "
 				set ShellScriptCommand to ShellScriptCommand & quoted form of encoderAudioOptions & " " & quoted form of encoderOtherOptions
 				set ShellScriptCommand to ShellScriptCommand & " &> /dev/null & echo $! ;exit 0"
 				my debug_log(ShellScriptCommand)
 				do shell script ShellScriptCommand
+				set currentStep to currentStep + 1
+				set integer value of control "StatusLevel" to currentStep
 				repeat while timeoutCount < 120 and cancelDownload as integer = 0 and downloadExists as integer = 1 and cancelAllDownloads as integer = 0
 					if (debug_level ≥ 3) then
 						my debug_log("mencoder timeout: " & timeoutCount & " download:" & downloadExists & "   timeRemaining: " & timeRemaining & "  timeOn:" & timeOn & "   currentPercent: " & currentPercent)
@@ -1494,6 +1521,7 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 		set contents of text field "status" to "Finished at " & (current date)
 		set contents of text field "status2" to ""
 		set visible of progress indicator "Status" to false
+		set visible of control "StatusLevel" to false
 		tell progress indicator "Status" to increment by -1 * currentProgress
 		set title of button "ConnectButton" to "Update from TiVo"
 		set enabled of button "CancelDownload" to false
@@ -1644,7 +1672,17 @@ on ConnectTiVo()
 				set theDataRow to make new data row at end of data rows of targetData
 				set the parts to every text item of currentLine
 				if (count of parts) = 10 then
-					set historyCheck to second item of parts & "-" & item 7 of parts
+					set fileSize to ((item 6 of parts) / 1048576)
+					set item 6 of parts to ((fileSize as integer) as string) & " MB"
+					set showName to item 2 of parts
+					set episodeVal to item 3 of parts
+					set showDate to item 4 of parts
+					set showLength to item 5 of parts
+					set showSize to item 6 of parts
+					set showStation to item 7 of parts
+					set showHD to item 8 of parts
+					set showID to item 9 of parts
+					set historyCheck to showName & "-" & showID
 					set flags to item 10 of parts
 					if historyCheck is in DLHistory then
 						if flags = "1" then
@@ -1671,16 +1709,6 @@ on ConnectTiVo()
 							set downloadImage to empty of tableImages
 						end if
 					end if
-					set fileSize to ((item 6 of parts) / 1048576)
-					set item 6 of parts to ((fileSize as integer) as string) & " MB"
-					set showName to item 2 of parts
-					set episodeVal to item 3 of parts
-					set showDate to item 4 of parts
-					set showLength to item 5 of parts
-					set showSize to item 6 of parts
-					set showStation to item 7 of parts
-					set showHD to item 8 of parts
-					set showID to item 9 of parts
 					if (my isSubscribed(showName, showDate) = true) then
 						set currentProcessSelectionQ to {}
 						set end of currentProcessSelectionQ to showName
@@ -2045,12 +2073,12 @@ on debug_log(log_string)
 		end if
 		if (debug_level ≥ 2) then
 			set theLine to (do shell script "date  +'%Y-%m-%d %H:%M:%S'" as string) & " " & log_string
-			do shell script "echo '" & theLine & "' >> /tmp/iTiVo.log"
+			do shell script "echo '" & theLine & "' >> /tmp/iTiVo-" & UserName & ".log"
 		end if
 	on error
 		log "Failed to output string"
 		set theLine to (do shell script "date  +'%Y-%m-%d %H:%M:%S'" as string) & " ERROR: Failing to output correct string"
-		do shell script "echo '" & theLine & "' >> /tmp/iTiVo.log"
+		do shell script "echo '" & theLine & "' >> /tmp/iTiVo-" & UserName & ".log"
 	end try
 end debug_log
 
@@ -2089,6 +2117,7 @@ on should close theObject
 		if not enabled of button "ConnectButton" of window "iTiVo" is true then
 			set theReply to display dialog "You have a download in progress.  Closing will exit the program and terminate the download.  Are you *SURE* you want to quit?" buttons {"Yes", "No"} default button "Yes" --attached to window "iTiVo"
 			if button returned of theReply = "Yes" then
+				my performCancelDownload()
 				return true
 			else
 				return false

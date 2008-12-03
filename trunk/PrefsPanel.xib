@@ -8,7 +8,7 @@
 		<string key="IBDocument.HIToolboxVersion">352.00</string>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="93"/>
+			<integer value="205"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -55,7 +55,7 @@
 								<object class="NSTabViewItem" id="86406616">
 									<string key="NSIdentifier">1</string>
 									<object class="NSView" key="NSView" id="658555387">
-										<reference key="NSNextResponder" ref="723454822"/>
+										<nil key="NSNextResponder"/>
 										<int key="NSvFlags">256</int>
 										<object class="NSMutableArray" key="NSSubviews">
 											<bool key="EncodedWithXMLCoder">YES</bool>
@@ -446,7 +446,6 @@
 											</object>
 										</object>
 										<string key="NSFrame">{{10, 33}, {582, 382}}</string>
-										<reference key="NSSuperview" ref="723454822"/>
 									</object>
 									<string key="NSLabel">Downloading</string>
 									<reference key="NSColor" ref="617283945"/>
@@ -536,7 +535,7 @@ eW91ciBIYXJkIERyaXZlIHdoaWxlIHByb2Nlc3NpbmcuA</string>
 								<object class="NSTabViewItem" id="419040806">
 									<string key="NSIdentifier">3</string>
 									<object class="NSView" key="NSView" id="892228411">
-										<nil key="NSNextResponder"/>
+										<reference key="NSNextResponder" ref="723454822"/>
 										<int key="NSvFlags">256</int>
 										<object class="NSMutableArray" key="NSSubviews">
 											<bool key="EncodedWithXMLCoder">YES</bool>
@@ -652,13 +651,13 @@ eW91ciBIYXJkIERyaXZlIHdoaWxlIHByb2Nlc3NpbmcuA</string>
 											<object class="NSTextField" id="947162933">
 												<reference key="NSNextResponder" ref="892228411"/>
 												<int key="NSvFlags">256</int>
-												<string key="NSFrame">{{335, 312}, {158, 28}}</string>
+												<string key="NSFrame">{{335, 316}, {158, 17}}</string>
 												<reference key="NSSuperview" ref="892228411"/>
 												<bool key="NSEnabled">YES</bool>
 												<object class="NSTextFieldCell" key="NSCell" id="688829496">
 													<int key="NSCellFlags">67239424</int>
 													<int key="NSCellFlags2">71303168</int>
-													<string key="NSContents">Log debugging information in your home directory</string>
+													<string key="NSContents">Put debugging info in /tmp/</string>
 													<reference key="NSSupport" ref="26"/>
 													<reference key="NSControlView" ref="947162933"/>
 													<reference key="NSBackgroundColor" ref="617283945"/>
@@ -876,20 +875,21 @@ eW91ciBIYXJkIERyaXZlIHdoaWxlIHByb2Nlc3NpbmcuA</string>
 											</object>
 										</object>
 										<string key="NSFrame">{{10, 33}, {582, 382}}</string>
+										<reference key="NSSuperview" ref="723454822"/>
 									</object>
 									<string key="NSLabel">Advanced</string>
 									<reference key="NSColor" ref="617283945"/>
 									<reference key="NSTabView" ref="723454822"/>
 								</object>
 							</object>
-							<reference key="NSSelectedTabViewItem" ref="86406616"/>
+							<reference key="NSSelectedTabViewItem" ref="419040806"/>
 							<reference key="NSFont" ref="43896795"/>
 							<int key="NSTvFlags">0</int>
 							<bool key="NSAllowTruncatedLabels">YES</bool>
 							<bool key="NSDrawsBackground">YES</bool>
 							<object class="NSMutableArray" key="NSSubviews">
 								<bool key="EncodedWithXMLCoder">YES</bool>
-								<reference ref="658555387"/>
+								<reference ref="892228411"/>
 							</object>
 						</object>
 						<object class="NSButton" id="566168886">
@@ -1341,7 +1341,6 @@ eW91ciBIYXJkIERyaXZlIHdoaWxlIHByb2Nlc3NpbmcuA</string>
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<reference ref="794548123"/>
 							<reference ref="1000837055"/>
-							<reference ref="947162933"/>
 							<reference ref="605538352"/>
 							<reference ref="740177266"/>
 							<reference ref="462134856"/>
@@ -1358,6 +1357,7 @@ eW91ciBIYXJkIERyaXZlIHdoaWxlIHByb2Nlc3NpbmcuA</string>
 							<reference ref="281588635"/>
 							<reference ref="557245414"/>
 							<reference ref="662878594"/>
+							<reference ref="947162933"/>
 						</object>
 						<reference key="parent" ref="419040806"/>
 					</object>

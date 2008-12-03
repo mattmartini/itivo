@@ -25,6 +25,8 @@
 			<string>-hr-edl-seek</string>
 			<key>iTunes</key>
 			<true/>
+			<key>mustDownloadFirst</key>
+			<false/>
 		</dict>
 		<dict>
 			<key>formatDescription</key>
@@ -45,6 +47,8 @@
 			<string>-hr-edl-seek</string>
 			<key>iTunes</key>
 			<true/>
+			<key>mustDownloadFirst</key>
+			<false/>
 		</dict>
 		<dict>
 			<key>formatDescription</key>
@@ -65,6 +69,8 @@
 			<string>-hr-edl-seek</string>
 			<key>iTunes</key>
 			<true/>
+			<key>mustDownloadFirst</key>
+			<false/>
 		</dict>
 		<dict>
 			<key>formatDescription</key>
@@ -85,6 +91,8 @@
 			<string>-hr-edl-seek</string>
 			<key>iTunes</key>
 			<true/>
+			<key>mustDownloadFirst</key>
+			<false/>
 		</dict>
 		<dict>
 			<key>formatDescription</key>
@@ -105,6 +113,8 @@
 			<string>-hr-edl-seek</string>
 			<key>iTunes</key>
 			<true/>
+			<key>mustDownloadFirst</key>
+			<false/>
 		</dict>
 		<dict>
 			<key>formatDescription</key>
@@ -125,6 +135,8 @@
 			<string>-hr-edl-seek</string>
 			<key>iTunes</key>
 			<true/>
+			<key>mustDownloadFirst</key>
+			<false/>
 		</dict>
 		<dict>
 			<key>formatDescription</key>
@@ -145,6 +157,8 @@
 			<string>-hr-edl-seek</string>
 			<key>iTunes</key>
 			<true/>
+			<key>mustDownloadFirst</key>
+			<false/>
 		</dict>
 		<dict>
 			<key>formatDescription</key>
@@ -165,6 +179,8 @@
 			<string>-hr-edl-seek</string>
 			<key>iTunes</key>
 			<true/>
+			<key>mustDownloadFirst</key>
+			<false/>
 		</dict>
 		<dict>
 			<key>formatDescription</key>
@@ -184,6 +200,8 @@
 			<key>encoderOtherOptions</key>
 			<string>-hr-edl-seek</string>
 			<key>iTunes</key>
+			<false/>
+			<key>mustDownloadFirst</key>
 			<false/>
 		</dict>
 		<dict>
@@ -205,6 +223,8 @@
 			<string>-hr-edl-seek</string>
 			<key>iTunes</key>
 			<true/>
+			<key>mustDownloadFirst</key>
+			<false/>
 		</dict>
 		<dict>
 			<key>formatDescription</key>
@@ -224,6 +244,8 @@
 			<key>encoderOtherOptions</key>
 			<string>-hr-edl-seek</string>
 			<key>iTunes</key>
+			<false/>
+			<key>mustDownloadFirst</key>
 			<false/>
 		</dict>
 		<dict>
@@ -245,6 +267,8 @@
 			<string>-hr-edl-seek</string>
 			<key>iTunes</key>
 			<false/>
+			<key>mustDownloadFirst</key>
+			<false/>
 		</dict>
 		<dict>
 			<key>formatDescription</key>
@@ -264,6 +288,8 @@
 			<key>encoderOtherOptions</key>
 			<string>-hr-edl-seek</string>
 			<key>iTunes</key>
+			<false/>
+			<key>mustDownloadFirst</key>
 			<false/>
 		</dict>
 		<dict>
@@ -285,6 +311,8 @@
 			<string>-hr-edl-seek</string>
 			<key>iTunes</key>
 			<true/>
+			<key>mustDownloadFirst</key>
+			<false/>
 		</dict>
 		<dict>
 			<key>formatDescription</key>
@@ -296,15 +324,17 @@
 			<key>encoderUsed</key>
 			<string>mencoder</string>
 			<key>name</key>
-			<string>MPEG-2  HD ( 7Mbps )</string>
+			<string>MPEG-2  HD ( 5Mbps )</string>
 			<key>encoderVideoOptions</key>
-			<string>-ovc lavc -of mpeg -mpegopts format=dvd:tsaf:muxrate=36000 -vf pp=lb,scale=-1:-1,harddup -lavcopts vcodec=mpeg2video:vrc_buf_size=18350:vrc_maxrate=9800:vbitrate=7000:keyint=15:trell:mbd=2:precmp=2:subcmp=2:cmp=2:dia=-10:predia=-10:cbp:mv0:vqmin=1:lmin=1:dc=10:vstrict=0:autoaspect</string>
+			<string>-ovc lavc -of mpeg -mpegopts format=dvd:tsaf:muxrate=36000 -vf pp=lb,scale=-1:-1,harddup -lavcopts vcodec=mpeg2video:vrc_buf_size=18350:vrc_maxrate=9800:vbitrate=5000:keyint=15:trell:mbd=2:precmp=2:subcmp=2:cmp=2:dia=-10:predia=-10:cbp:mv0:vqmin=1:lmin=1:dc=10:vstrict=0:autoaspect</string>
 			<key>encoderAudioOptions</key>
 			<string>-srate 48000 -af lavcresample=48000 -oac lavc -lavcopts acodec=mp2:abitrate=128</string>
 			<key>encoderOtherOptions</key>
 			<string>-hr-edl-seek</string>
 			<key>iTunes</key>
 			<true/>
+			<key>mustDownloadFirst</key>
+			<false/>
 		</dict>
 		<dict>
 			<key>formatDescription</key>
@@ -325,6 +355,8 @@
 			<string>-hr-edl-seek</string>
 			<key>iTunes</key>
 			<true/>
+			<key>mustDownloadFirst</key>
+			<false/>
 		</dict>
 		<dict>
 			<key>formatDescription</key>
@@ -345,6 +377,8 @@
 			<string>-hr-edl-seek</string>
 			<key>iTunes</key>
 			<true/>
+			<key>mustDownloadFirst</key>
+			<false/>
 		</dict>
 		<dict>
 			<key>formatDescription</key>
@@ -365,6 +399,8 @@
 			<string>-hr-edl-seek</string>
 			<key>iTunes</key>
 			<true/>
+			<key>mustDownloadFirst</key>
+			<false/>
 		</dict>
 		<dict>
 			<key>formatDescription</key>
@@ -384,6 +420,8 @@
 			<key>encoderOtherOptions</key>
 			<string>-hr-edl-seek</string>
 			<key>iTunes</key>
+			<false/>
+			<key>mustDownloadFirst</key>
 			<false/>
 		</dict>
 		<dict>
@@ -405,6 +443,8 @@
 			<string></string>
 			<key>iTunes</key>
 			<true/>
+			<key>mustDownloadFirst</key>
+			<true/>
 		</dict>
 		<dict>
 			<key>formatDescription</key>
@@ -425,6 +465,8 @@
 			<string>-of rawaudio -hr-edl-seek</string>
 			<key>iTunes</key>
 			<true/>
+			<key>mustDownloadFirst</key>
+			<false/>
 		</dict>
 		<dict>
 			<key>formatDescription</key>
@@ -445,6 +487,74 @@
 			<string></string>
 			<key>iTunes</key>
 			<false/>
+			<key>mustDownloadFirst</key>
+			<false/>
+		</dict>
+		<dict>
+			<key>formatDescription</key>
+			<string>HandBrake using the built-in AppleTV preset</string>
+			<key>comSkip</key>
+			<false/>
+			<key>filenameExtension</key>
+			<string>.mp4</string>
+			<key>encoderUsed</key>
+			<string>HandBrake</string>
+			<key>name</key>
+			<string>HandBrake AppleTV</string>
+			<key>encoderVideoOptions</key>
+			<string>-Z &quot;AppleTV&quot;</string>
+			<key>encoderAudioOptions</key>
+			<string></string>
+			<key>encoderOtherOptions</key>
+			<string></string>
+			<key>iTunes</key>
+			<true/>
+			<key>mustDownloadFirst</key>
+			<true/>
+		</dict>
+		<dict>
+			<key>formatDescription</key>
+			<string>HandBrake using the built-in iPhone preset</string>
+			<key>comSkip</key>
+			<false/>
+			<key>filenameExtension</key>
+			<string>.mp4</string>
+			<key>encoderUsed</key>
+			<string>HandBrake</string>
+			<key>name</key>
+			<string>HandBrake iPhone</string>
+			<key>encoderVideoOptions</key>
+			<string>-Z &quot;iPhone &amp; iPod Touch&quot;</string>
+			<key>encoderAudioOptions</key>
+			<string></string>
+			<key>encoderOtherOptions</key>
+			<string></string>
+			<key>iTunes</key>
+			<true/>
+			<key>mustDownloadFirst</key>
+			<true/>
+		</dict>
+		<dict>
+			<key>formatDescription</key>
+			<string>HandBrake using the built-in Television preset</string>
+			<key>comSkip</key>
+			<false/>
+			<key>filenameExtension</key>
+			<string>.mp4</string>
+			<key>encoderUsed</key>
+			<string>HandBrake</string>
+			<key>name</key>
+			<string>HandBrake TV</string>
+			<key>encoderVideoOptions</key>
+			<string>-Z &quot;Television&quot;</string>
+			<key>encoderAudioOptions</key>
+			<string></string>
+			<key>encoderOtherOptions</key>
+			<string></string>
+			<key>iTunes</key>
+			<true/>
+			<key>mustDownloadFirst</key>
+			<true/>
 		</dict>
 	</array>
 </dict>
