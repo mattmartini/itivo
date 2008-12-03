@@ -1,7 +1,7 @@
 {\rtf1\ansi\ansicpg1252\cocoartf949\cocoasubrtf350
 {\fonttbl\f0\fswiss\fcharset0 Helvetica;}
 {\colortbl;\red255\green255\blue255;}
-\margl1440\margr1440\vieww18040\viewh11820\viewkind0
+\margl1440\margr1440\vieww23300\viewh16460\viewkind0
 \pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\ql\qnatural\pardirnatural
 
 \f0\b\fs24 \cf0 iTiVo\
@@ -9,7 +9,7 @@ by David Benesch\
 and Yoav Yerushalmi\
 \
 
-\fs30 Please read the documentation at http://code.google.com/itivo
+\fs30 Please read the {\field{\*\fldinst{HYPERLINK "http://code.google.com/p/itivo/wiki/Installation"}}{\fldrslt installation documentation}} on the web ({\field{\*\fldinst{HYPERLINK "http://code.google.com/p/itivo/wiki/Installation"}}{\fldrslt http://code.google.com/p/itivo/wiki/Installation}})
 \b0 \
 
 \fs24 \
@@ -23,266 +23,24 @@ This product is distributed as a front-end interface for software written by oth
 \b Basic Usage
 \b0 \
 \
-
-\b You need to get your Media Access Key from the TiVo website
-\b0  (under 
-\i Manage My Account
-\i0 ).  While there, make sure that "Enable Transfers" is turned on for your TiVo.  You can either manually type in an IP address for your TiVo, or your TiVos should be listed in the TiVos menu (via Bonjour).  When you click the Connect to TiVo button, a list of your shows should appear.  Click the show you want to decode, and click the "Decode Show" button.  The resulting file should appear on your Desktop.  If you want to set up a list of shows to download and decode, you can add/remove shows to a queue and click "Decode Queue" to sequentially process each item in your list.\
+Documentation can be found\
 \
 
 \b Limitations
 \b0 \
 \
 - This will never work with Series 1TiVos.\
-- The resulting MPEG-2 files are likely unplayable in Quicktime and may require a player such as VLC or MPlayer.  This is a limitation of the Quicktime MPEG-2 Extension.  Use MPEG-4 compression to play in Quicktime.\
 - 
 \i\b This is an unsupported product, and there may be many other bugs
 \i0\b0 .\
 \
 
-\b Version History
-\b0 \
-
-\i Version 1.0 (11-24-2008)\
-
-\i0      - Initial code based on tivodecode manager.\
-\
-\
-
-\b TivoDecodeManager History\
-
-\i\b0 Version 2.1
-\i0  (01-08-2007)\
-\'a0\'a0\'a0\'a0\'a0- Rewrote download process to improve reliability (redesigned decoding/conversion process, revised cancel procedure, revised auto-retry detection and recovery, plus additional improvements to prevent failures and to compensate for poor network connections)\
-\'a0\'a0\'a0\'a0\'a0- Download times are far more accurate for MPEG-4 files (as a result of the revised download process) \
-\'a0\'a0\'a0\'a0\'a0- For MPEG-4 files, estimated download size has been replaced by a more accurate percentage completed \
-\'a0\'a0\'a0\'a0\'a0- Option-clicking of Cancel Download button while downloading a queue will stop download queue, not just the individual active download\
-\'a0\'a0\'a0\'a0\'a0- Return key now set to download selected show and not refresh the Now Playing list \
-\'a0\'a0\'a0\'a0\'a0- Shows can now be removed from the queue using the delete key \
-\'a0\'a0\'a0\'a0\'a0- Added original show date in detail panel \
-\'a0\'a0\'a0\'a0\'a0- Fixed problem when sorting by show length \
-\'a0\'a0\'a0\'a0\'a0- Removed overwrite check when using the queue \
-\'a0\'a0\'a0\'a0\'a0- Fixed problem with overwrite check with files with certain characters in the name \
-\'a0\'a0\'a0\'a0\'a0- Fixed problem with download location check with FileVault-enabled accounts \
-\'a0\'a0\'a0\'a0\'a0- Fixed inconsistency with show length in Now Playing list and detail panel \
-\'a0\'a0\'a0\'a0\'a0- Added keyframes for MPEG-4 files, allowing for smoother seeking in Quicktime\
-\'a0\'a0\'a0\'a0\'a0- Auto-import into iTunes no longer imports cancelled downloads and sets shows over 70 minutes without an episode name as Movies (not TV Shows) \
-\'a0\'a0\'a0\'a0\'a0- PPC version of MPEG-4 encoder recompiled using newer compiler, increasing efficiency and possibly fixing some problems\
-
-\i Version 2.0.1
-\i0  (01-02-2007)\
-\'a0\'a0\'a0\'a0\'a0- Added check for valid download location before downloading \
-\'a0\'a0\'a0\'a0\'a0- Added prompt to ask to overwrite existing file \
-\'a0\'a0\'a0\'a0\'a0- Fixed connection delay and 128 show limit when TiVo has more than 128 shows\
-\'a0\'a0\'a0\'a0\'a0- Fixed iTunes import bug where Show Name and Episode metatags were incorrect, and added episode number and year \
-\'a0\'a0\'a0\'a0\'a0- Fixed odd filename when there is no episode name\
-\'a0\'a0\'a0\'a0\'a0- Fixed at least one "divide by zero" error when downloading an MPEG-4 \
-
-\i Version 2.0
-\i0  (01-01-2007)\
-\'a0\'a0\'a0\'a0\'a0- MPEG-4 on-the-fly encoding now supported on both Intel and PowerPC, fixes some problems with some shows not converting at all and increased conversion speed. \
-\'a0\'a0\'a0\'a0\'a0- Significantly improved reliability of downloads, especially on slow transfers and large files\
-\'a0\'a0\'a0\'a0\'a0- Moved Media Access Key, download location and file format to a preferences panel\
-\'a0\'a0\'a0\'a0\'a0- Added option in preferences panel to automatically add MPEG-4 file to iTunes TV Shows (iTunes does not support MPEG-2)\
-\'a0\'a0\'a0\'a0\'a0- Added option to select custom MPEG-4 compression settings\
-\'a0\'a0\'a0\'a0\'a0- Added estimated time of download completion\
-\'a0\'a0\'a0\'a0\'a0- Added indicator of completed downloads (not shown if download is manually cancelled) \
-\'a0\'a0\'a0\'a0\'a0- Added additional detail panel, including actors/actresses, channel, genres, rating, length, and recording quality\
-\'a0\'a0\'a0\'a0\'a0- Added length of show to Now Playing list \
-\'a0\'a0\'a0\'a0\'a0- Added option to automatically check for a new version of TDM upon launch\
-\'a0\'a0\'a0\'a0\'a0- Improved Bonjour detection reliability\
-\'a0\'a0\'a0\'a0\'a0- Added Growl notification support. Requires Growl to be installed and running. See http://growl.info for more information.\
-\'a0\'a0\'a0\'a0\'a0- Added show description to Spotlight comments\
-\'a0\'a0\'a0\'a0\'a0- Fixed bug where Cancel Download button would remain active after a download completes\
-\'a0\'a0\'a0\'a0\'a0- Fixed bug where non-administrator users could not download programs \
-\'a0\'a0\'a0\'a0\'a0- Fixed visual glitch where window would briefly display at default size before switching to saved size\
-\'a0\'a0\'a0\'a0\'a0- Can now reverse-sort any column in Now Playing\
-\'a0\'a0\'a0\'a0\'a0- Added Help menu that links to the FAQ \
-
-\i Version 1.5.5
-\i0  (12-17-2006) \
-\'a0\'a0\'a0\'a0\'a0- Changed MPEG-4 compressor to mencoder (rather than ffmpeg) to fix audio sync issue with MPEG-4 movies. This feature is Intel-only for this release, but will be Universal soon. \
-\'a0\'a0\'a0\'a0\'a0- Fixed problem when a quote was in the name of the TiVo \
-\'a0\'a0\'a0\'a0\'a0- Increased amount of time TDM waits for TiVo to send data \
-
-\i Version 1.5
-\i0  (12-14-2006) \
-\'a0\'a0\'a0\'a0\'a0- Added preliminary support for on-the-fly transcoding to an iPod-compatible MPEG-4 compressed Quicktime movie\
-
-\i Version 1.2.1
-\i0  (12-13-2006)\
-\'a0\'a0\'a0\'a0\'a0- Added ability to select multiple items at once (using the shift or Apple key) to add/remove items in the queue\
-\'a0\'a0\'a0\'a0\'a0- Main window is now split so you can resize the "Now Playing" and "Download Queue" lists\
-\'a0\'a0\'a0\'a0\'a0- Fixes problem when downloading where one received "error -51" message in the Finder when copying files\
-
-\i Version 1.2
-\i0  (12-13-2006) \
-\'a0\'a0\'a0\'a0\'a0- Thanks to the great input by a lot of users, this version really should improve compatibility. It introduces a new way to determine if a file is downloading, and also slightly changes the way it connects to the TiVo.\
-\'a0\'a0\'a0\'a0\'a0- If your window disappears immediately after launching or any graphics/text overlap, try deleting the "com.TiVoDecode.TiVoDecode.plist" file from your ~/Library/Preferences folder\
-
-\i Version 1.1.6
-\i0  (12-11-2006) \
-\'a0\'a0\'a0\'a0\'a0- Continued to work on compatibility issues\
-\'a0\'a0\'a0\'a0\'a0- Will auto-connect to last selected TiVo (even if IP changes). You must select the TiVo from the menu using this version.\
-\'a0\'a0\'a0\'a0\'a0- Changed location of cancel button\
-\'a0\'a0\'a0\'a0\'a0- Changed compile options for tivodecode \
-
-\i Version 1.1.5
-\i0  (12-10-2006) \
-\'a0\'a0\'a0\'a0\'a0- Fixed many problems downloading, especially when there are special characters in the application and/or download path\
-\'a0\'a0\'a0\'a0\'a0- Added check for Mac OS X 10.4\
-\'a0\'a0\'a0\'a0\'a0- Added Cancel Download button\
-\'a0\'a0\'a0\'a0\'a0- Added list counts\
-\'a0\'a0\'a0\'a0\'a0- Modified date format to allow for proper sorting \
-
-\i Version 1.1.2
-\i0  (12-09-2006)\
-\'a0\'a0\'a0\'a0\'a0- Added user-selectable download location\
-
-\i Version 1.1.1
-\i0  (12-09-2006)\
-\'a0\'a0\'a0\'a0\'a0- Fixed limitation where only first 128 TiVo shows were listed\
-\'a0\'a0\'a0\'a0 - Size column is now listed in megabytes\
-
-\i Version 1.1
-\i0  (12-09-2006) \
-\'a0\'a0\'a0\'a0\'a0- Added batch processing queue to allow for sequential downloads of multiple files\
-\'a0\'a0\'a0\'a0\'a0- Fixed several problems related to folders with spaces in the name \
-\'a0\'a0\'a0\'a0\'a0- Fixed problem when certain TiVoCast programs were present\
-\'a0\'a0\'a0\'a0\'a0- Reduced the frequency of the startup copyright warning message \
-\'a0\'a0\'a0\'a0\'a0- Upgraded to tivodecode 0.1.4\
-\'a0\'a0\'a0\'a0\'a0- New icon (thanks Yudonomi!) \
-
-\i Version 1.0
-\i0  (12-07-2006) \
-\'a0\'a0\'a0\'a0\'a0\'a0- Initial Release\
-\
-
-\b Copyrighted Material
-\b0 \
-\
-Do not distribute material downloaded and decoded using this program.  This interface is designed to assist Mac OS X users in viewing their personal TiVo recordings until such time that there is an TiVo-To-Go client for Mac OS X.  If a company believes that this tool infringes upon the law, please contact me and I will gladly remove the tool from distribution.\
-\
-
 \b Availability of code
 \b0 \
 \
-I am not currently distributing the code to the front-end, only because it is a rapid work-in-progress and the code is quite messy.  It may eventually be released.\
+The entirety of the source code is available (GPL v3 license) from the itivo homepage at: {\field{\*\fldinst{HYPERLINK "http://itivo.googlecode.com/"}}{\fldrslt http://itivo.googlecode.com/}}\
 \
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural
 
-\i\b \cf0 The following programs are included with TDM, but the TDM developer has/had no role in their development.\
-\
-
-\i0 TDM Icon
-\b0  - by Yudonomi - used with permission\
-\
-
-\b mencoder
-\b0  - used under the GPL license\
-{\field{\*\fldinst{HYPERLINK "http://www.mplayerhq.hu/"}}{\fldrslt http://www.mplayerhq.hu/\
-}}
-\b xvid
-\b0  - used under the GPL license\
-{\field{\*\fldinst{HYPERLINK "http://www.xvid.org/"}}{\fldrslt http://www.xvid.org/}}{\field{\*\fldinst{HYPERLINK "http://www.mplayerhq.hu/"}}{\fldrslt \
-}}
-\b faac
-\b0  - used under the LGPL license\
-{\field{\*\fldinst{HYPERLINK "http://www.audiocoding.com/"}}{\fldrslt http://www.audiocoding.com/}}{\field{\*\fldinst{HYPERLINK "http://www.mplayerhq.hu/"}}{\fldrslt \
-}}mencoder & xvid are licensed under the GNU General Public License (GPL).  faac is licensed under the GNU Lesser General Public License (LGPL).  See the included text file for the complete license.  They are used as separate programs, communicating via pipes, and fall under the "mere aggregation" clause of the licenses.\
-	\
-
-\b tivodecode (command line program):
-\b0 \
-\
-
-\b Copyright (c) 2006, Jeremy Drake\
-All rights reserved.\
-{\field{\*\fldinst{HYPERLINK "http://tivodecode.sourceforge.net/"}}{\fldrslt 
-\b0 http://tivodecode.sourceforge.net/}}
-\b0 \
-\
-Portions derived from mpegcat, copyright 2006 Kees Cook, used with permission\
-\
-This product includes software developed by the University of California,\
-Berkeley and its contributors.\
-\
-Redistribution and use in source and binary forms, with or without\
-modification, are permitted provided that the following conditions are met:\
-\
-* Redistributions of source code must retain the above copyright notice,\
-  this list of conditions and the following disclaimer.\
-\
-* Redistributions in binary form must reproduce the above copyright notice,\
-  this list of conditions and the following disclaimer in the documentation\
-  and/or other materials provided with the distribution.\
-\
-* Neither the name of the software nor the names of its contributors may\
-  be used to endorse or promote products derived from this software without\
-  specific prior written permission.\
-\
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND\
-ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED\
-WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE\
-DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR\
-ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES\
-(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;\
-LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON\
-ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT\
-(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS\
-SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.\
-\
-\
-This software incorporates the Turing encryption algorithm developed by\
-QUALCOMM Incorporated.  Encryption by QUALCOMM.\
-\
-1.  Copyright remains vested in QUALCOMM Incorporated, and Copyright\
-notices in the code are not to be removed.  If this package is used in\
-a product, QUALCOMM should be given attribution as the author of the\
-Turing encryption algorithm. This can be in the form of a textual\
-message at program startup or in documentation (online or textual)\
-provided with the package.\
-\
-2.  Redistribution and use in source and binary forms, with or without\
-modification, are permitted provided that the following conditions are\
-met:\
-\
-a. Redistributions of source code must retain the copyright notice,\
-   this list of conditions and the following disclaimer.\
-\
-b. Redistributions in binary form must reproduce the above copyright\
-   notice, this list of conditions and the following disclaimer in the\
-   documentation and/or other materials provided with the\
-   distribution.\
-\
-c. All advertising materials mentioning features or use of this\
-   software must display the following acknowledgement:  This product\
-   includes software developed by QUALCOMM Incorporated.\
-\
-3.  THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED\
-WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF\
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE AND AGAINST\
-INFRINGEMENT ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR\
-CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,\
-EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,\
-PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR\
-PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF\
-LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING\
-NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS\
-SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.\
-\
-4.  The license and distribution terms for any publically available version\
-or derivative of this code cannot be changed, that is, this code cannot\
-simply be copied and put under another distribution license including\
-the GNU Public License.\
-\
-5.  The Turing family of encryption algorithms are covered by patents in\
-the United States of America and other countries. A free and\
-irrevocable license is hereby granted for the use of such patents to\
-the extent required to utilize the Turing family of encryption\
-algorithms for any purpose, subject to the condition that any\
-commercial product utilising any of the Turing family of encryption\
-algorithms should show the words "Encryption by QUALCOMM" either on the\
-product or in the associated documentation.\
-\
+\i\b \cf0 There are additional programs included with iTiVo written and maintained by others.  See the itivo page for full info.\
 }

@@ -11,13 +11,13 @@
 		<item>
 			<title>Version 1.6b2</title>
 			<sparkle:releaseNotesLink>http://itivo.googlecode.com/svn/trunk/www/changelog-beta.html</sparkle:releaseNotesLink>
-			<pubDate>Tue, 02 Dec 2008 20:10:21 -0800</pubDate>
+			<pubDate>Wed, 03 Dec 2008 00:45:27 -0800</pubDate>
 			<enclosure
 				url="http://itivo.googlecode.com/files/iTiVo-1.6b2.zip"
 				sparkle:version="1.6b2"
 				type="application/octet-stream"
-				length="17029386"
-				sparkle:dsaSignature="MCwCFFJXXU1BrgR7c0UCBHAzgxXQNa7oAhQBzbojYtL9lOtnp3x8w9MV9KoLcA=="
+				length="17014501"
+				sparkle:dsaSignature="MCwCFDvfrEIxCHH6M1bGUMmpGAbmunb3AhRJAVGWzDjhCBMfPsaqF4lwj3mXwQ=="
 			/>
 		</item>
  </channel>

@@ -2,7 +2,7 @@
 -- iTiVo
 
 --  Created by David Benesch on 12/03/06.
---  Last updated by Yoav Yerushalmi on 11/09/08.
+--  Updated by Yoav Yerushalmi.
 --  Copyright 2006-2008 David Benesch, Yoav Yerushalmi. All rights reserved.
 property debug_level : 1
 property already_launched : 0
@@ -139,8 +139,8 @@ on will finish launching theObject
 end will finish launching
 
 on launched theObject
-	if LaunchCount > 10 or LaunchCount ≤ 0 then
-		display dialog "This is a very alpha program.  For an officially supported program, check http://www.roxio.com/   *Do not distribute copyrighted material*" buttons {"OK"} default button "OK" attached to window "iTiVo"
+	if LaunchCount > 100 or LaunchCount ≤ 0 then
+		display dialog "This program is under active development. Some features may not work. *Do not distribute copyrighted material*" buttons {"OK"} default button "OK" attached to window "iTiVo"
 		set LaunchCount to 0
 	end if
 	set LaunchCount to LaunchCount + 1

@@ -492,7 +492,7 @@
 		</dict>
 		<dict>
 			<key>formatDescription</key>
-			<string>HandBrake using the built-in AppleTV preset</string>
+			<string>HandBrake using the built-in AppleTV preset TESTING: may not work</string>
 			<key>comSkip</key>
 			<false/>
 			<key>filenameExtension</key>
@@ -514,7 +514,7 @@
 		</dict>
 		<dict>
 			<key>formatDescription</key>
-			<string>HandBrake using the built-in iPhone preset</string>
+			<string>HandBrake using the built-in iPhone preset TESTING: may not work</string>
 			<key>comSkip</key>
 			<false/>
 			<key>filenameExtension</key>
@@ -536,7 +536,7 @@
 		</dict>
 		<dict>
 			<key>formatDescription</key>
-			<string>HandBrake using the built-in Television preset</string>
+			<string>HandBrake using the built-in Television preset TESTING: may not work</string>
 			<key>comSkip</key>
 			<false/>
 			<key>filenameExtension</key>
