@@ -13,12 +13,20 @@ Before you can use iTiVo, you need to install it, tell your TiVo to allow transf
 = Setting the Media Access Key =
 Instructions on finding out your MAK is documented in the [http://code.google.com/p/itivo/wiki/Installation Installation Document].
 
+= Basic Usage =
+Once the media access key is set (see above), bring up the main window of iTiVo
+  * Select the tivo from the "My TiVos" button
+  * Choose "Connect to TiVo", and a list of shows should appear after a few seconds
+  * Click on a show you wish to download
+  * Click the "Download Show" button.
+  * _wait_
+
 = What the Buttons/Options Mean =
   * TiVo IP Address
     The IP address to connect to for your tivo.  Only use this if you failed to automatically find your tivo in the "My TiVos" dropdown.
 
   * My TiVos dropdown
-    This will attempt to use bonjour to find your tivo if it's on the local network.  If it is a remote tivo, you will need to specify an IP address, which you can find from the network settings of your tivo.
+    This will attempt to find your tivo if it's on the local network.  If it is a remote tivo, you will need to specify an IP address, which you can find from the network settings of your tivo.
 
   * Update from TiVo
     Clicking this button will attempt to connect to your tivo, and download show information.  This goes much faster if you are using a wired instead of wireless connection, and can also be slow if this is an old tivo with a LOT of shows.
@@ -36,7 +44,7 @@ Instructions on finding out your MAK is documented in the [http://code.google.co
     Immediately download the selected show.  This is only available if iTiVo is not already busy downloading something.
 
 === Download Queue ===
-  This part of the window is a queue of downloads that are scheduled to happen.  Subscriptions automatically add to the queue, and clicking "Add to Queue" above will also add to the queue.  The queue is processed about once an hour as long as the program is running.
+  This part of the window is a queue of downloads that are scheduled to happen.  Subscriptions automatically add to the queue, and clicking "Add to Queue" above will also add to the queue.  The queue is processed regularly.
 
   * Remove
     Delete the selected show from the download queue.
@@ -81,10 +89,10 @@ To access the preferences window, click on the 'Prefs' button at the bottom of t
     If a download is successfully added, then selecting this will tell iTunes to 'sync' to all attached devices.  If you had earlier configured your iTunes to add all TV shows to you iPhone, then a completed download will automatically be downloaded to your iPhone if it is connected.
 
   * Commercial Skip
-    If enabled, it will attempt to use a program named "comskip" to detect where commercials are in your show, and remove them.  Turning this option on slows down downloads considerably. It also takes up a LOT of hard drive space for temporary data.  And most importantly, it does its best to figure out what a commercial is, but can make mistakes (leaving commercials in, or worse, cutting out parts of your show).  You can read up on comskip on [http://www.kaashoek.com/comskip/ its homepage].
+    If enabled, it will attempt to use a program named "comskip" to detect where commercials are in your show, and remove them.  Turning this option on slows down downloads considerably. It also takes up a LOT of hard drive space on your Main Drive for temporary data.  And most importantly, it does its best to figure out what a commercial is, but can make mistakes (leaving commercials in, or worse, cutting out parts of your show).  You can read up on comskip on [http://www.kaashoek.com/comskip/ its homepage].
 
 = Download Queue =
-The download queue is simply a list of shows scheduled for downloading.  Since the tivo only allows you to download one show at a time, it's sometimes easier to make a list of shows you wanted downloaded, and then have them all go at once while you go out for a while.  The list is processed top-to-bottom.  Although there is no mechanism for moving shows around the list, you can "cheat".  Adding a show already on the queue will push that show to the bottom.  Even if you do not select to 'download queue', if the program has been idle, it will attempt to download the queue (this is to support subscriptions).
+The download queue is simply a list of shows scheduled for downloading.  Since the tivo only allows you to download one show at a time, it's sometimes easier to make a list of shows you want downloaded, and then have them all go at once while you go out for a while.  The list is processed top-to-bottom.  Even if you do not select to 'download queue', if the program has been idle, it will attempt to download the queue (this is to support subscriptions).
 
 = Subscriptions =
 If there is a show you always choose to download from your tivo (daily news for example, or a show you always watch on your iphone) you can 'subscribe' to that show.  When a subscription exists, the iTiVo program checks hourly for shows on that list.  If a new show with that title has become available, it will add it to the queue automatically.  A show only gets added once (so if you cancel, or quit iTiVo, you will need to manually add the show to the queue again if you still want it).
