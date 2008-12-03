@@ -25,8 +25,8 @@ $shellScript = "";
 
 if ($Encoder eq "mencoder") {
  $shellScript = $shellScript . $AppDir . "Contents/Resources/mencoder -edl $Edl";
-} elsif ($Encoder eq "ffmpeg") {
-	$shellScript = $shellScript . $AppDir . "Contents/Resources/mencoder -edl $Edl";
+} elsif ($Encoder eq "HandBrake") {
+	$shellScript = $shellScript . $AppDir . "Contents/Resources/HandBrakeCLI";
 } elsif ($Encoder eq "cat") {
 	$shellScript = $shellScript . "cat -u";
 } elsif ($Encoder eq "turbo.264") {
@@ -39,8 +39,8 @@ $shellScript = $shellScript . " $VideoOpts $AudioOpts $OtherOpts ";
 
 if ($Encoder eq "mencoder") {
 	$shellScript = $shellScript . "-o $Target $Src >$Progress 2>&1";
-} elsif ($Encoder eq "ffmpeg") {
-	$shellScript = $shellScript . "-o $Target $Src >$Progress 2>&1";
+} elsif ($Encoder eq "HandBrake") {
+	$shellScript = $shellScript . "-o $Target -i $Src >$Progress 2>&1 < /dev/null";
 } elsif ($Encoder eq "cat") {
 	$shellScript = $shellScript . "$Src > $Target";
 } elsif ($Encoder eq "turbo.264") {

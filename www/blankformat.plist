@@ -25,6 +25,8 @@
 			<true/>
 			<key>iTunes</key>
 			<true/>
+			<key>mustDownloadFirst</key>
+			<false/>
 		</dict>
 	</array>
 </dict>
