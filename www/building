@@ -3,49 +3,77 @@
 #
 # git clone git://git.videolan.org/x264.git
 # 
+# sudo ln -s /Developer/SDKs/MacOSX10.4u.sdk/usr/lib/crt1.o /Developer/SDKs/MacOSX10.4u.sdk/usr/lib/crt1.10.5.o
+
+SRCDIR=/Users/yoav/src
+LAME=lame-398-2
+HANDBRAKE=HandBrake-0.9.3
+
+  cd $SRCDIR
   mkdir binaries
 
-  export CFLAGS="-arch i386 -arch ppc"
-  export LDFLAGS="-arch i386 -arch ppc"
-  cd tivodecode-0.2pre4
+  export CFLAGS="-isysroot /Developer/SDKs/MacOSX10.4u.sdk -arch i386 -arch ppc7400"
+  export CPPFLAGS=""
+  export LDFLAGS="-arch i386 -arch ppc7400 -Wl,-syslibroot,/Developer/SDKs/MacOSX10.4u.sdk"
+  cd $SRCDIR/tivodecode-0.2pre4
   make distclean
   ./configure --disable-dependency-tracking
   make
   cp tivodecode ../binaries/tivodecode
 
-   export CFLAGS=''
-   export LDFLAGS=''
-  cd ../x264
+  cd $SRCDIR/etv-comskip/src/comskip
+  make clean; rm -f ../../comskip
+  make ../../comskip CFLAGS="$CFLAGS -O2 -fasm-blocks -Wno-unused  -DHAVE_CONFIG_H -force_cpusubtype_ALL -I. -Ilibmpeg2 -IAC3Dec -Iargtable2-7/src" LFLAGS="$LDFLAGS -headerpad_max_install_names -prebind -force_cpusubtype_ALL"
+  cp ../../comskip ../../../binaries/comskip
+
+   export CFLAGS='-isysroot /Developer/SDKs/MacOSX10.4u.sdk -arch i386'
+   export CPPFLAGS='-arch i386'
+   export LDFLAGS='-arch i386 -Wl,-syslibroot,/Developer/SDKs/MacOSX10.4u.sdk'
+  cd $SRCDIR/x264
   ./configure
   make clean
   make
 
-  cd ../faac
-  ./configure --without-mp4v2
+  cd $SRCDIR/faac
+  ./configure --without-mp4v2 --enable-shared=no --enable-static=yes
   make clean
   make 
 
-  cd ../mplayer
+  cd $SRCDIR/$LAME
+  ./configure  --disable-shared --disable-frontend
+  make clean
+  make
+
+   export CFLAGS='-isysroot /Developer/SDKs/MacOSX10.4u.sdk -arch i386 -O2 -fomit-frame-pointer'
+   export CPPFLAGS='-arch i386'
+   export LDFLAGS='-arch i386 -Wl,-syslibroot,/Developer/SDKs/MacOSX10.4u.sdk'
+  cd $SRCDIR/mplayer
   make distclean
   rm ./uname
-  ./configure --disable-png --enable-x264 --disable-mplayer --enable-faac --enable-faad-internal --with-extraincdir=/Users/yoav/src/faac/include/:/Users/yoav/src/x264 --with-extralibdir=/Users/yoav/src/faac/libfaac/.libs/:/Users/yoav/src/x264 --extra-libs-mencoder='-lx264 /Users/yoav/src/faac/libfaac/.libs/libfaac.a'
+  ./configure --disable-png --enable-mp3lame --enable-x264 --disable-mplayer --enable-faac --enable-faad-internal --disable-freetype --with-extraincdir=$SRCDIR/faac/include/:$SRCDIR/x264:$SRCDIR/$LAME/include --with-extralibdir=$SRCDIR/faac/libfaac/.libs/:$SRCDIR/x264:$SRCDIR/$LAME/libmp3lame/.libs --extra-libs-mencoder="-lx264 $SRCDIR/faac/libfaac/.libs/libfaac.a"
   make
   cp ./mencoder ../binaries/mencoder-i386
 
-   export CFLAGS='-arch ppc'
-   export LDFLAGS='-arch ppc'
-
-   cd ../x264
+   export CFLAGS='-arch ppc7400 -isysroot /Developer/SDKs/MacOSX10.4u.sdk'
+   export CPPFLAGS='-arch ppc7400 -isysroot /Developer/SDKs/MacOSX10.4u.sdk'
+   export LDFLAGS='-arch ppc7400 -Wl,-syslibroot,/Developer/SDKs/MacOSX10.4u.sdk'
+ 
+   cd $SRCDIR/x264
    make distclean
-   ./configure --host=ppc-apple-darwin --disable-asm
+   ./configure --host=ppc-apple-darwin
    make
 
-  cd ../faac
+  cd $SRCDIR/faac
   make distclean
-   ./configure --host=ppc-apple-darwin --without-mp4v2
+   ./configure --host=ppc-apple-darwin --without-mp4v2 --enable-shared=no --enable-static=yes
   make
 
-  cd ../mplayer
+  cd $SRCDIR/$LAME
+  make distclean
+  ./configure --host=ppc-apple-darwin --disable-shared --disable-frontend
+  make
+
+  cd $SRCDIR/mplayer
   make distclean
   export OPATH=$PATH
   export PATH=.:$PATH
@@ -53,11 +81,14 @@
 echo powerpc
 ' > uname
   chmod a+rx uname
-  ./configure --enable-altivec --disable-png --enable-x264 --disable-mplayer --enable-faac --enable-faad-internal --with-extraincdir=/Users/yoav/src/faac/include/:/Users/yoav/src/x264 --with-extralibdir=/Users/yoav/src/faac/libfaac/.libs/:/Users/yoav/src/x264 --extra-libs-mencoder='-lx264 /Users/yoav/src/faac/libfaac/.libs/libfaac.a'
+  ./configure --disable-png --enable-mp3lame --enable-x264 --disable-mplayer --enable-faac --enable-faad-internal --disable-freetype --with-extraincdir=$SRCDIR/faac/include/:$SRCDIR/x264:$SRCDIR/$LAME/include --with-extralibdir=$SRCDIR/faac/libfaac/.libs/:$SRCDIR/x264:$SRCDIR/$LAME/libmp3lame/.libs --extra-libs-mencoder="-lx264 $SRCDIR/faac/libfaac/.libs/libfaac.a"
   export PATH=$OPATH
   rm uname
   make
   cp ./mencoder ../binaries/mencoder-ppc
 
-  cd ../binaries
+  cd $SRCDIR/binaries
   lipo -create mencoder-i386 mencoder-ppc -output mencoder
+  rm -f mencoder-*
+  strip *
+  cp * "../itivo/External Software/"
