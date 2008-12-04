@@ -32,6 +32,8 @@ property UserName : ""
 property formats_plist : missing value
 property formatsList : {}
 property tableImages : {}
+property haveOS1050 : false
+property queue_len : 0
 
 (* User-controlled properties *)
 property MAK : ""
@@ -129,9 +131,10 @@ on was miniaturized theObject
 end was miniaturized
 
 on will finish launching theObject
+	set haveOS1040 to minOSVers at 1040
 	set haveOS1050 to minOSVers at 1050
-	if not haveOS1050 then
-		display dialog "This Application requires Mac OS X 10.5 or later." buttons {"OK"} default button "OK" attached to window "iTiVo"
+	if not haveOS1040 then
+		display dialog "This Application requires Mac OS X 10.4 or later." buttons {"OK"} default button "OK" attached to window "iTiVo"
 		quit
 	end if
 	performCancelDownload()
@@ -726,10 +729,16 @@ on clicked theObject
 				set rowCount to rowCount + 1
 			end repeat
 			set content of targetDataQ to processInfoRecord
-			if (count of processInfoRecord) = 1 then
+			set queue_len to count of processInfoRecord
+			if queue_len = 0 then
+				set contents of text field "downloadQueue" of view "bottomLeftView" of split view "splitView2" of box "bottomBox" of split view "splitView1" to "Download Queue (empty)"
+				my setDockTile("")
+			else if queue_len = 1 then
 				set contents of text field "downloadQueue" of view "bottomLeftView" of split view "splitView2" of box "bottomBox" of split view "splitView1" to "Download Queue (1 item)"
+				my setDockTile(queue_len as string)
 			else
-				set contents of text field "downloadQueue" of view "bottomLeftView" of split view "splitView2" of box "bottomBox" of split view "splitView1" to "Download Queue (" & (count of processInfoRecord) & " items)"
+				set contents of text field "downloadQueue" of view "bottomLeftView" of split view "splitView2" of box "bottomBox" of split view "splitView1" to "Download Queue (" & queue_len & " items)"
+				my setDockTile(queue_len as string)
 			end if
 			if totalCount = 0 then
 				set enabled of button "decodeQueue" of view "bottomLeftView" of split view "splitView2" of box "bottomBox" of split view "splitView1" to false
@@ -786,10 +795,16 @@ on clicked theObject
 						set rowCount to rowCount + 1
 					end repeat
 					set content of targetDataQ to processInfoRecord
-					if (count of processInfoRecord) = 1 then
+					set queue_len to count of processInfoRecord
+					if queue_len = 0 then
+						set contents of text field "downloadQueue" of view "bottomLeftView" of split view "splitView2" of box "bottomBox" of split view "splitView1" to "Download Queue (empty)"
+						my setDockTile("")
+					else if queue_len = 1 then
 						set contents of text field "downloadQueue" of view "bottomLeftView" of split view "splitView2" of box "bottomBox" of split view "splitView1" to "Download Queue (1 item)"
+						my setDockTile(queue_len as string)
 					else
-						set contents of text field "downloadQueue" of view "bottomLeftView" of split view "splitView2" of box "bottomBox" of split view "splitView1" to "Download Queue (" & (count of processInfoRecord) & " items)"
+						set contents of text field "downloadQueue" of view "bottomLeftView" of split view "splitView2" of box "bottomBox" of split view "splitView1" to "Download Queue (" & queue_len & " items)"
+						my setDockTile(queue_len as string)
 					end if
 					set rowCountQ to count of data rows of data source 1 of table view "queueListTable" of scroll view "queueList" of view "bottomLeftView" of split view "splitView2" of box "bottomBox" of split view "splitView1"
 				else
@@ -983,7 +998,7 @@ on selection changed theObject
 					set item_list to do shell script ShellScriptCommand
 					set AppleScript's text item delimiters to "|"
 					set the parts to every text item of item_list
-					if (count of parts) = 13 then
+					if (count of parts) = 15 then
 						set transparent of button "imdb" of drawer "Drawer2" to false
 						set enabled of button "imdb" of drawer "Drawer2" to true
 						set transparent of button "tvdb" of drawer "Drawer2" to false
@@ -2044,12 +2059,18 @@ on addSelectionToQueue(currentProcessSelection)
 	end repeat
 	set end of processInfoRecord to currentProcessSelection
 	set content of targetDataQ to processInfoRecord
+	set queue_len to count of processInfoRecord
 	if (count of processInfoRecord) = 1 then
 		set contents of text field "downloadQueue" of view "bottomLeftView" of split view "splitView2" of box "bottomBox" of split view "splitView1" of window "iTiVo" to "Download Queue (1 item)"
 	else
-		set contents of text field "downloadQueue" of view "bottomLeftView" of split view "splitView2" of box "bottomBox" of split view "splitView1" of window "iTiVo" to "Download Queue (" & (count of processInfoRecord) & " items)"
+		set contents of text field "downloadQueue" of view "bottomLeftView" of split view "splitView2" of box "bottomBox" of split view "splitView1" of window "iTiVo" to "Download Queue (" & queue_len & " items)"
 	end if
 	update table view "queueListTable" of scroll view "queueList" of view "bottomLeftView" of split view "splitView2" of box "bottomBox" of split view "splitView1" of window "iTiVo"
+	if (queue_len > 0) then
+		my setDockTile(queue_len as string)
+	else
+		my setDockTile("")
+	end if
 end addSelectionToQueue
 
 on isDownloadComplete(filePath, fullFileSize, tryCount)
@@ -2059,6 +2080,13 @@ on isDownloadComplete(filePath, fullFileSize, tryCount)
 		return true
 	end if
 end isDownloadComplete
+
+on setDockTile(message)
+	if (haveOS1050 = true) then
+		set docktile to call method "dockTile" of class "NSApp"
+		call method "setBadgeLabel:" of docktile with parameter message
+	end if
+end setDockTile
 
 on growlIsRunning()
 	tell application "System Events" to set myRunning to ((application processes whose (name is equal to "GrowlHelperApp")) count)
