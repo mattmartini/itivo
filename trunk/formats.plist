@@ -494,7 +494,7 @@
 			<key>formatDescription</key>
 			<string>HandBrake using the built-in AppleTV preset TESTING: may not work  10.5 (Leopard) only!!!</string>
 			<key>comSkip</key>
-			<false/>
+			<true/>
 			<key>filenameExtension</key>
 			<string>.mp4</string>
 			<key>encoderUsed</key>
@@ -516,7 +516,7 @@
 			<key>formatDescription</key>
 			<string>HandBrake using the built-in iPhone preset TESTING: may not work  10.5 (Leopard) ONLY!!</string>
 			<key>comSkip</key>
-			<false/>
+			<true/>
 			<key>filenameExtension</key>
 			<string>.mp4</string>
 			<key>encoderUsed</key>
@@ -538,7 +538,7 @@
 			<key>formatDescription</key>
 			<string>HandBrake using the built-in Television preset TESTING: may not work  10.5 (Leopard) ONLY!!</string>
 			<key>comSkip</key>
-			<false/>
+			<true/>
 			<key>filenameExtension</key>
 			<string>.mp4</string>
 			<key>encoderUsed</key>
