@@ -52,7 +52,7 @@ property comSkip : 0
 property SUFeedURL : "http://itivo.googlecode.com/svn/trunk/www/iTiVo.xml"
 property debugLog : false
 property downloadFirst : false
-property tivoSize : 0
+property tivoSize : 1
 
 property panelWIndow : missing value
 property currentPrefsTab : "DownloadingTab"
@@ -423,7 +423,7 @@ on registerSettings()
 		make new default entry at end of default entries with properties {name:"openDetail", contents:""}
 		make new default entry at end of default entries with properties {name:"DLHistory", contents:""}
 		make new default entry at end of default entries with properties {name:"targetDataSList", contents:{}}
-		make new default entry at end of default entries with properties {name:"tivoSize", contents:0}
+		make new default entry at end of default entries with properties {name:"tivoSize", contents:1}
 		register
 	end tell
 end registerSettings
@@ -1095,7 +1095,7 @@ on choose menu item theObject
 			set enabled of popup button "icon" of view "DownloadingView" of tab view "TopTab" of panelWIndow to false
 		end if
 	else if name of theObject = "MyTiVos" and not title of theObject = "My TiVos" then
-		set tivoSize to 0
+		set tivoSize to 1
 		if title of theObject ≠ "My TiVos" then
 			tell window "iTiVo"
 				try
@@ -1111,6 +1111,7 @@ killall mDNS"
 							end if
 						end try
 					end repeat
+					my ConnectTiVo()
 				on error
 					display dialog "Unable to connect to TiVo " & title of theObject & ".  It is no longer available on your network."
 				end try
@@ -1223,6 +1224,10 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 		set showLength to seventh item of parts
 		set fullFileSize to fourth item of currentProcessSelectionParam
 		set fullFileSize to (first word of fullFileSize as integer)
+		if (fullFileSize ≤ 0) then
+			my debug_log("fullFileSize is <= 0???")
+			set fullFileSize to 1
+		end if
 		set showName to my replace_chars(showName, ":", "-")
 		set showNameP to my replace_chars(showName, "/", ":")
 		set showNameCheck to showName & filenameExtension
