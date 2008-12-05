@@ -5,6 +5,7 @@
 --  Updated by Yoav Yerushalmi.
 --  Copyright 2006-2008 David Benesch, Yoav Yerushalmi. All rights reserved.
 property debug_level : 1
+property debug_file : "~/iTiVo.log"
 property already_launched : 0
 property targetData : missing value
 property targetDataQ : missing value
@@ -1250,6 +1251,7 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 	end try
 	set cancelDownload to 0
 	set timeRemaining to 0
+	set totalSteps to 0
 	repeat while ((not (my isDownloadComplete(filePath, fullFileSize, currentTry) and (timeRemaining ≤ 5 * (retryCount + 1)))) and currentTry < retryCount and cancelDownload = 0)
 		my performCancelDownload()
 		tell window "iTiVo"
@@ -1260,30 +1262,35 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 			end try
 			if (comSkip = 0 and downloadFirst = false and my formatMustDownloadFirst(format) = false) then
 				set shellCmd to "mkfifo /tmp/iTiVoDLPipe-" & UserName & " /tmp/iTiVoDLPipe2-" & UserName & ".mpg"
-				call method "setMaxValue:" of control "StatusLevel" with parameters {1}
+				set totalSteps to 1
 			else
 				set shellCmd to "mkfifo /tmp/iTiVoDLPipe-" & UserName & " ; touch /tmp/iTiVoDLPipe{2,3}-" & UserName & ".mpg"
 				if (comSkip = 1) then
-					call method "setMaxValue:" of control "StatusLevel" with parameters {3}
+					if (not encoderUsed = "mencoder") then
+						set totalSteps to 4
+					else
+						set totalSteps to 3
+					end if
 				else
-					call method "setMaxValue:" of control "StatusLevel" with parameters {2}
+					set totalSteps to 2
 				end if
 			end if
+			call method "setMaxValue:" of control "StatusLevel" with parameters {totalSteps}
 			my debug_log(shellCmd)
 			do shell script shellCmd
 			set ShellScriptCommand to "perl " & myPath & "Contents/Resources/http-fetcher.pl " & IPA & " " & id & " " & showNameEncoded & " " & MAK & " /tmp/iTiVoDLPipe-" & UserName
-			set ShellScriptCommand to ShellScriptCommand & " &> /dev/null & echo $! ;exit 0"
+			set ShellScriptCommand to ShellScriptCommand & " >> " & debug_file & " 2>&1 & echo $! ;exit 0"
 			my debug_log(ShellScriptCommand)
 			do shell script ShellScriptCommand
 			set ShellScriptCommand to "perl " & myPath & "Contents/Resources/tivo-decoder.pl " & myPath2 & " " & MAK
-			set ShellScriptCommand to ShellScriptCommand & " &> /dev/null & echo $! ;exit 0"
+			set ShellScriptCommand to ShellScriptCommand & " >> " & debug_file & " 2>&1 & echo $! ;exit 0"
 			my debug_log(ShellScriptCommand)
 			do shell script ShellScriptCommand
 			if (comSkip = 0 and downloadFirst = false and my formatMustDownloadFirst(format) = false) then
 				set ShellScriptCommand to "perl " & myPath & "Contents/Resources/re-encoder.pl " & myPath2 & " " & myHomePathP2 & " " & showFullNameEncoded & filenameExtension & " "
 				set ShellScriptCommand to ShellScriptCommand & quoted form of encoderUsed & " " & quoted form of encoderVideoOptions & " "
 				set ShellScriptCommand to ShellScriptCommand & quoted form of encoderAudioOptions & " " & quoted form of encoderOtherOptions & " "
-				set ShellScriptCommand to ShellScriptCommand & " &> /dev/null & echo $! ;exit 0"
+				set ShellScriptCommand to ShellScriptCommand & " >> " & debug_file & " 2>&1 & echo $! ;exit 0"
 				my debug_log(ShellScriptCommand)
 				do shell script ShellScriptCommand
 			end if
@@ -1327,6 +1334,8 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 			set visible of control "StatusLevel" to true
 			set integer value of control "StatusLevel" to currentStep
 			set starttime to ((do shell script "date +%s") as integer) - 10
+			
+			-- Download, decrypt, and potentially re-encode in one pipeline
 			repeat while timeoutCount < 480 and cancelDownload as integer = 0 and downloadExists as integer = 1 and cancelAllDownloads as integer = 0
 				if (debug_level ≥ 3) then
 					my debug_log("timeout: " & timeoutCount & "   currentFileSize: " & currentFileSize & "  fullFileSize:" & fullFileSize)
@@ -1345,11 +1354,11 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 				if currentFileSize as real > prevFileSize as real then
 					set prevFileSize to currentFileSize
 					set timeoutCount to 0
-					set contents of text field "status" to "Downloading " & first item of currentProcessSelectionParam & " - " & second item of currentProcessSelectionParam
+					set contents of text field "status" to "(phase " & currentStep & "/" & totalSteps & ") Downloading " & first item of currentProcessSelectionParam & " - " & second item of currentProcessSelectionParam
 				else
 					set timeoutCount to timeoutCount + 1
 					if timeoutCount = 20 then
-						set contents of text field "status" to "Downloading " & first item of currentProcessSelectionParam & " (waiting for TiVo)"
+						set contents of text field "status" to "(phase " & currentStep & "/" & totalSteps & ") Downloading " & first item of currentProcessSelectionParam & " (waiting for TiVo)"
 					end if
 				end if
 				try
@@ -1392,8 +1401,11 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 				end if
 				delay 0.5
 			end repeat
+			tell progress indicator "Status" to increment by -1 * currentProgress
+			
+			-- The following are only done if above didnt do everything in one pipeline
+			-- Scan for Commercials
 			if (my isDownloadComplete(filePath, fullFileSize, currentTry) and comSkip = 1) then
-				tell progress indicator "Status" to increment by -1 * currentProgress
 				set currentProgresss to 0
 				set downloadExistsCmdString to "du -k -d 0 /tmp/iTiVoDLPipe3-" & UserName & ".mpg ;exit 0"
 				set timeoutCount to 0
@@ -1407,7 +1419,7 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 				set frameOn to 0
 				set prevframeOn to 0
 				set ShellScriptCommand to "perl " & myPath & "Contents/Resources/remove-commercials.pl " & myPath2 & " " & encoderUsed
-				set ShellScriptCommand to ShellScriptCommand & " &> /dev/null & echo $! ;exit 0"
+				set ShellScriptCommand to ShellScriptCommand & " >> " & debug_file & " 2>&1  & echo $! ;exit 0"
 				my debug_log(ShellScriptCommand)
 				do shell script ShellScriptCommand
 				set currentStep to currentStep + 1
@@ -1426,11 +1438,11 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 					if frameOn as integer > prevframeOn as integer then
 						set prevframeOn to frameOn
 						set timeoutCount to 0
-						set contents of text field "status" to "Commercial Skip " & first item of currentProcessSelectionParam & " - " & second item of currentProcessSelectionParam
+						set contents of text field "status" to "(phase " & currentStep & "/" & totalSteps & ") Commercial Detect " & first item of currentProcessSelectionParam & " - " & second item of currentProcessSelectionParam
 					else
 						set timeoutCount to timeoutCount + 1
 						if timeoutCount = 20 then
-							set contents of text field "status" to "Commercial Skip " & first item of currentProcessSelectionParam & " (stalled)"
+							set contents of text field "status" to "(phase " & currentStep & "/" & totalSteps & ") Commercial Detect " & first item of currentProcessSelectionParam & " (stalled)"
 						end if
 					end if
 					try
@@ -1440,14 +1452,17 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 						if currentProgress > 100 then
 							set currentProgress to 100
 						end if
-						set contents of text field "status2" to ((timeOn as string) & " processed      (" & (100 - currentPercent) as string) & "% remaining)"
+						set contents of text field "status2" to (timeOn as string) & " processed      (" & (currentPercent as string) & "%"
 					end try
 					delay 0.5
 				end repeat
-			end if
-			my debug_log("Ok am here: " & downloadFirst & "  comskip?: " & comSkip & "    complete?: " & my isDownloadComplete(filePath, fullFileSize, currentTry))
-			if (my isDownloadComplete(filePath, fullFileSize, currentTry) and (comSkip = 1 or downloadFirst = true or my formatMustDownloadFirst(format) = true)) then
 				tell progress indicator "Status" to increment by -1 * currentProgress
+			end if
+			
+			-- Cut out the commercials using mencoder for other encoders
+			
+			if (my isDownloadComplete(filePath, fullFileSize, currentTry) and (comSkip = 1 and (not encoderUsed = "mencoder"))) then
+				my debug_log("Cutting Commercials")
 				set currentProgresss to 0
 				set downloadExistsCmdString to "du -k -d 0 /tmp/iTiVoDLPipe2-" & UserName & ".mpg ;exit 0"
 				set timeRemaining to 200
@@ -1456,10 +1471,10 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 				set currentPercent to 0
 				set timeOn to 0.0
 				set prevtimeOn to 0
-				set ShellScriptCommand to "perl " & myPath & "Contents/Resources/re-encoder.pl " & myPath2 & " " & myHomePathP2 & " " & showFullNameEncoded & filenameExtension & " "
-				set ShellScriptCommand to ShellScriptCommand & quoted form of encoderUsed & " " & quoted form of encoderVideoOptions & " "
-				set ShellScriptCommand to ShellScriptCommand & quoted form of encoderAudioOptions & " " & quoted form of encoderOtherOptions
-				set ShellScriptCommand to ShellScriptCommand & " &> /dev/null & echo $! ;exit 0"
+				set ShellScriptCommand to "perl " & myPath & "Contents/Resources/re-encoder.pl " & myPath2 & " /tmp/ iTiVoDLPipe3-" & UserName & ".mpg "
+				set ShellScriptCommand to ShellScriptCommand & "mencoder " & quoted form of "-ovc copy -of mpeg -mpegopts format=mpeg2:tsaf:muxrate=36000 -noskip -mc 0 -forceidx" & " "
+				set ShellScriptCommand to ShellScriptCommand & quoted form of "-oac copy" & " " & quoted form of " "
+				set ShellScriptCommand to ShellScriptCommand & " >> " & debug_file & " 2>&1 & echo $! ;exit 0"
 				my debug_log(ShellScriptCommand)
 				do shell script ShellScriptCommand
 				set currentStep to currentStep + 1
@@ -1478,11 +1493,11 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 					if timeOn as real > prevtimeOn as real then
 						set prevtimeOn to timeOn
 						set timeoutCount to 0
-						set contents of text field "status" to "Encoding " & first item of currentProcessSelectionParam & " - " & second item of currentProcessSelectionParam
+						set contents of text field "status" to "(phase " & currentStep & "/" & totalSteps & ") Commercial Cut " & first item of currentProcessSelectionParam & " - " & second item of currentProcessSelectionParam
 					else
 						set timeoutCount to timeoutCount + 1
 						if timeoutCount = 20 then
-							set contents of text field "status" to "Encoding " & first item of currentProcessSelectionParam & " (waiting)"
+							set contents of text field "status" to "(phase " & currentStep & "/" & totalSteps & ") Commercial Cut " & first item of currentProcessSelectionParam & " (waiting)"
 						end if
 					end if
 					try
@@ -1517,9 +1532,86 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 					end try
 					delay 0.5
 				end repeat
+				set ShellScriptCommand to "mv /tmp/iTiVoDLPipe3-" & UserName & ".mpg /tmp/iTiVoDLPipe2-" & UserName & ".mpg"
+				my debug_log(ShellScriptCommand)
+				do shell script ShellScriptCommand
+				tell progress indicator "Status" to increment by -1 * currentProgress
+			end if
+			
+			-- Finally run the encoder
+			if (my isDownloadComplete(filePath, fullFileSize, currentTry) and (comSkip = 1 or downloadFirst = true or my formatMustDownloadFirst(format) = true)) then
+				set currentProgresss to 0
+				set downloadExistsCmdString to "du -k -d 0 /tmp/iTiVoDLPipe2-" & UserName & ".mpg ;exit 0"
+				set timeRemaining to 200
+				set timeoutCount to 0
+				set downloadExists to 1
+				set currentPercent to 0
+				set timeOn to 0.0
+				set prevtimeOn to 0
+				set ShellScriptCommand to "perl " & myPath & "Contents/Resources/re-encoder.pl " & myPath2 & " " & myHomePathP2 & " " & showFullNameEncoded & filenameExtension & " "
+				set ShellScriptCommand to ShellScriptCommand & quoted form of encoderUsed & " " & quoted form of encoderVideoOptions & " "
+				set ShellScriptCommand to ShellScriptCommand & quoted form of encoderAudioOptions & " " & quoted form of encoderOtherOptions
+				set ShellScriptCommand to ShellScriptCommand & " >> " & debug_file & " 2>&1 & echo $! ;exit 0"
+				my debug_log(ShellScriptCommand)
+				do shell script ShellScriptCommand
+				set currentStep to currentStep + 1
+				set integer value of control "StatusLevel" to currentStep
+				repeat while timeoutCount < 120 and cancelDownload as integer = 0 and downloadExists as integer = 1 and cancelAllDownloads as integer = 0
+					if (debug_level ≥ 3) then
+						my debug_log("mencoder timeout: " & timeoutCount & " download:" & downloadExists & "   timeRemaining: " & timeRemaining & "  timeOn:" & timeOn & "   currentPercent: " & currentPercent)
+					end if
+					set {timeOn, currentPercent, timeRemaining} to my getEncoderProgress(encoderUsed)
+					set downloadExistsCmd to do shell script downloadExistsCmdString
+					if downloadExistsCmd is not equal to "" then
+						set downloadExists to 1
+					else
+						set downloadExists to 0
+					end if
+					if timeOn as real > prevtimeOn as real then
+						set prevtimeOn to timeOn
+						set timeoutCount to 0
+						set contents of text field "status" to "(phase " & currentStep & "/" & totalSteps & ") Encoding " & first item of currentProcessSelectionParam & " - " & second item of currentProcessSelectionParam
+					else
+						set timeoutCount to timeoutCount + 1
+						if timeoutCount = 20 then
+							set contents of text field "status" to "(phase " & currentStep & "/" & totalSteps & ") Encoding " & first item of currentProcessSelectionParam & " (waiting)"
+						end if
+					end if
+					try
+						set progressDifference to currentPercent - currentProgress
+						tell progress indicator "Status" to increment by progressDifference
+						set currentProgress to currentPercent as integer
+						if currentProgress > 100 then
+							set currentProgress to 100
+						end if
+						set timedone to timeOn as integer
+						set hrs to (timedone div 3600)
+						if (hrs < 10) then
+							set hrs to "0" & hrs as string
+						else
+							set hrs to hrs as string
+						end if
+						set timedone to timedone mod 3600
+						set mins to (timedone div 60)
+						if (mins < 10) then
+							set mins to "0" & mins as string
+						else
+							set mins to mins as string
+						end if
+						set secs to (timedone mod 60)
+						if (secs < 10) then
+							set secs to "0" & secs as string
+						else
+							set secs to secs as string
+						end if
+						set timedone to hrs & ":" & mins & ":" & secs
+						set contents of text field "status2" to (timedone & " encoded      (" & (timeRemaining + 1) as string) & " mins remaining)"
+					end try
+					delay 0.5
+				end repeat
+				tell progress indicator "Status" to increment by -1 * currentProgress
 			end if
 		end tell
-		my performCancelDownload()
 		my debug_log("Download completed")
 		if GrowlAppName = "GrowlHelperApp.app" then
 			try
@@ -1536,6 +1628,7 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 				end tell
 			end try
 		end if
+		my performCancelDownload()
 	end repeat
 	tell window "iTiVo"
 		set contents of text field "status" to "Finished at " & (current date)
@@ -1584,6 +1677,11 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 		return 2
 	end if
 end downloadItem
+
+on downloadEncodeItem()
+	tell window "iTiVo"
+	end tell
+end downloadEncodeItem
 
 on roundThis(n, numDecimals)
 	set x to 10 ^ numDecimals
@@ -1650,27 +1748,27 @@ on ConnectTiVo()
 			set AppleScript's text item delimiters to "|"
 			-- First we parse out the usage information and set it in the drawer
 			set total_memory to second text item of tivo_usage as integer
-			if total_memory < (tivoSize * 1024 * 1024 * 1024) then
-				set total_memory to tivoSize * 1024 * 1024 * 1024
+			if total_memory < (tivoSize * 1024) then
+				set total_memory to tivoSize * 1024
 			else
-				my debug_log("fixing: " & tivoSize * 1024 * 1024 * 1024 & " , " & total_memory)
-				set tivoSize to total_memory / (1024 * 1024 * 1024) as integer
+				my debug_log("fixing: " & tivoSize * 1024 & " , " & total_memory)
+				set tivoSize to (total_memory / 1024) as integer
 			end if
 			set contents of text field "tivoName" of drawer "Drawer1" to title of popup button "MyTiVos"
 			set contents of text field "tivoIP" of drawer "Drawer1" to IPA
 			set contents of text field "tivoShows" of drawer "Drawer1" to first text item of tivo_usage
 			set contents of text field "tivoSpace" of drawer "Drawer1" to tivoSize as string
-			set contents of text field "tivoRegular" of drawer "Drawer1" to ((((third text item of tivo_usage) / 1024 / 1024) as integer) as string) & " MB"
-			set contents of text field "tivoSuggestion" of drawer "Drawer1" to ((((fourth text item of tivo_usage) / 1024 / 1024) as integer) as string) & " MB"
-			set contents of text field "tivoExpired" of drawer "Drawer1" to ((((fifth text item of tivo_usage) / 1024 / 1024) as integer) as string) & " MB"
-			set contents of text field "tivoExpiresSoon" of drawer "Drawer1" to ((((sixth text item of tivo_usage) / 1024 / 1024) as integer) as string) & " MB"
-			set contents of text field "tivoInProgress" of drawer "Drawer1" to ((((seventh text item of tivo_usage) / 1024 / 1024) as integer) as string) & " MB"
-			set contents of text field "tivoCopyrighted" of drawer "Drawer1" to ((((eighth text item of tivo_usage) / 1024 / 1024) as integer) as string) & " MB"
-			set contents of text field "tivoSaved" of drawer "Drawer1" to ((((ninth text item of tivo_usage) / 1024 / 1024) as integer) as string) & " MB"
+			set contents of text field "tivoRegular" of drawer "Drawer1" to (((third text item of tivo_usage) as integer) as string) & " MB"
+			set contents of text field "tivoSuggestion" of drawer "Drawer1" to (((fourth text item of tivo_usage) as integer) as string) & " MB"
+			set contents of text field "tivoExpired" of drawer "Drawer1" to (((fifth text item of tivo_usage) as integer) as string) & " MB"
+			set contents of text field "tivoExpiresSoon" of drawer "Drawer1" to (((sixth text item of tivo_usage) as integer) as string) & " MB"
+			set contents of text field "tivoInProgress" of drawer "Drawer1" to (((seventh text item of tivo_usage) as integer) as string) & " MB"
+			set contents of text field "tivoCopyrighted" of drawer "Drawer1" to (((eighth text item of tivo_usage) as integer) as string) & " MB"
+			set contents of text field "tivoSaved" of drawer "Drawer1" to (((ninth text item of tivo_usage) as integer) as string) & " MB"
 			set theURL to "http://chart.apis.google.com/chart?cht=p3&chs=180x180&chd=t:"
 			set sum to 0
 			repeat with usage_item in text items 3 thru 9 of tivo_usage
-				set current_percent to ((usage_item / total_memory * 1000) as integer) / 10
+				set current_percent to my roundThis(usage_item / total_memory * 100, 1)
 				set theURL to theURL & (current_percent as string) & ","
 				set sum to sum + current_percent
 			end repeat
@@ -1692,13 +1790,11 @@ on ConnectTiVo()
 				set theDataRow to make new data row at end of data rows of targetData
 				set the parts to every text item of currentLine
 				if (count of parts) = 10 then
-					set fileSize to ((item 6 of parts) / 1048576)
-					set item 6 of parts to ((fileSize as integer) as string) & " MB"
 					set showName to item 2 of parts
 					set episodeVal to item 3 of parts
 					set showDate to item 4 of parts
 					set showLength to item 5 of parts
-					set showSize to item 6 of parts
+					set showSize to (item 6 of parts & " MB")
 					set showStation to item 7 of parts
 					set showHD to item 8 of parts
 					set showID to item 9 of parts
@@ -2101,17 +2197,21 @@ end growlIsRunning
 
 on debug_log(log_string)
 	try
+		if (debug_level ≤ 1) then
+			set debug_file to "/dev/null"
+		end if
 		if (debug_level ≥ 1) then
+			set debug_file to "/tmp/iTiVo-" & UserName & ".log"
 			log log_string
 		end if
 		if (debug_level ≥ 2) then
 			set theLine to (do shell script "date  +'%Y-%m-%d %H:%M:%S'" as string) & " " & log_string
-			do shell script "echo '" & theLine & "' >> /tmp/iTiVo-" & UserName & ".log"
+			do shell script "echo '" & theLine & "' >> " & debug_file
 		end if
 	on error
 		log "Failed to output string"
 		set theLine to (do shell script "date  +'%Y-%m-%d %H:%M:%S'" as string) & " ERROR: Failing to output correct string"
-		do shell script "echo '" & theLine & "' >> /tmp/iTiVo-" & UserName & ".log"
+		do shell script "echo '" & theLine & "' >> " & debug_file
 	end try
 end debug_log
 

@@ -72,8 +72,8 @@ while ($anchor < $TotalItems) {
 		$output = $output . "|";
 	    }
 	    if ($show =~ m/<SourceSize>(.*?)<\/SourceSize>/) {
-		$output = $output . "$1|";
-		$current_size = $1;
+		$current_size = $1 / 1024 / 1024;
+		$output = $output . "$current_size|";
 	    }
 	    else {
 		$output = $output . "|";

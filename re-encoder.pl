@@ -50,6 +50,6 @@ if ($Encoder eq "mencoder") {
 }
 
 print "\n\n$shellScript\n\n";
-print `$shellScript`;
+system($shellScript);
 
 `rm -f /tmp/iTiVoDLPipe-$ENV{'USER'} /tmp/iTiVoDLPipe2-$ENV{'USER'}.mpg`;
