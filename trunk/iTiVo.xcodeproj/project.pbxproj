@@ -47,9 +47,6 @@
 		531280FE0ECED47500B748E0 /* tvdb.png in Resources */ = {isa = PBXBuildFile; fileRef = 531280FD0ECED47500B748E0 /* tvdb.png */; };
 		531ED4320ED622C20021359A /* encoderProgress.pl in Resources */ = {isa = PBXBuildFile; fileRef = 531ED4310ED622C20021359A /* encoderProgress.pl */; };
 		532226E40EB0698400062D5F /* PrefsPanel.xib in Resources */ = {isa = PBXBuildFile; fileRef = 532226E30EB0698400062D5F /* PrefsPanel.xib */; };
-		5333A0A00EE728E400D0E0DA /* UKDockProgressIndicator.h in Headers */ = {isa = PBXBuildFile; fileRef = 5333A09E0EE728E400D0E0DA /* UKDockProgressIndicator.h */; };
-		5333A0A10EE728E400D0E0DA /* UKDockProgressIndicator.m in Sources */ = {isa = PBXBuildFile; fileRef = 5333A09F0EE728E400D0E0DA /* UKDockProgressIndicator.m */; };
-		5333A0A50EE7293700D0E0DA /* MiniProgressGradient.png in Resources */ = {isa = PBXBuildFile; fileRef = 5333A0A30EE7293700D0E0DA /* MiniProgressGradient.png */; };
 		5352F8690EC6752400A83D95 /* formats.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5352F8680EC6752400A83D95 /* formats.plist */; };
 		536575E40EE2791800B68A56 /* empty-check.png in Resources */ = {isa = PBXBuildFile; fileRef = 536575DA0EE2791800B68A56 /* empty-check.png */; };
 		536575E50EE2791800B68A56 /* empty.png in Resources */ = {isa = PBXBuildFile; fileRef = 536575DB0EE2791800B68A56 /* empty.png */; };
@@ -119,9 +116,6 @@
 		531280FD0ECED47500B748E0 /* tvdb.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tvdb.png; sourceTree = "<group>"; };
 		531ED4310ED622C20021359A /* encoderProgress.pl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.perl; path = encoderProgress.pl; sourceTree = "<group>"; };
 		532226E30EB0698400062D5F /* PrefsPanel.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PrefsPanel.xib; sourceTree = "<group>"; };
-		5333A09E0EE728E400D0E0DA /* UKDockProgressIndicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UKDockProgressIndicator.h; sourceTree = "<group>"; };
-		5333A09F0EE728E400D0E0DA /* UKDockProgressIndicator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UKDockProgressIndicator.m; sourceTree = "<group>"; };
-		5333A0A40EE7293700D0E0DA /* English */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = English; path = English.lproj/MiniProgressGradient.png; sourceTree = "<group>"; };
 		5352F8680EC6752400A83D95 /* formats.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = formats.plist; sourceTree = "<group>"; };
 		536575DA0EE2791800B68A56 /* empty-check.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "empty-check.png"; sourceTree = "<group>"; };
 		536575DB0EE2791800B68A56 /* empty.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = empty.png; sourceTree = "<group>"; };
@@ -239,8 +233,6 @@
 				612EF59B0B4459F000ACBBBF /* ParseDetail.pl */,
 				617286790B350D0200C39347 /* tivodecode */,
 				6100670C0B470D4700E38A87 /* mencoder */,
-				5333A09E0EE728E400D0E0DA /* UKDockProgressIndicator.h */,
-				5333A09F0EE728E400D0E0DA /* UKDockProgressIndicator.m */,
 				29B97316FDCFA39411CA2CEA /* main.m */,
 			);
 			name = "Other Sources";
@@ -249,7 +241,6 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				5333A0A30EE7293700D0E0DA /* MiniProgressGradient.png */,
 				536575DA0EE2791800B68A56 /* empty-check.png */,
 				536575DB0EE2791800B68A56 /* empty.png */,
 				536575DC0EE2791800B68A56 /* expired-recording-check.png */,
@@ -291,7 +282,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5333A0A00EE728E400D0E0DA /* UKDockProgressIndicator.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -377,7 +367,6 @@
 				536575EC0EE2791800B68A56 /* suggestion-recording-check.png in Resources */,
 				536575ED0EE2791800B68A56 /* suggestion-recording.png in Resources */,
 				536F4DDF0EE5EEA200743C2C /* HandBrakeCLI in Resources */,
-				5333A0A50EE7293700D0E0DA /* MiniProgressGradient.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -405,7 +394,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				257572CA072881A4000BE9CA /* main.m in Sources */,
-				5333A0A10EE728E400D0E0DA /* UKDockProgressIndicator.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -434,14 +422,6 @@
 				29B97319FDCFA39411CA2CEA /* English */,
 			);
 			name = MainMenu.nib;
-			sourceTree = "<group>";
-		};
-		5333A0A30EE7293700D0E0DA /* MiniProgressGradient.png */ = {
-			isa = PBXVariantGroup;
-			children = (
-				5333A0A40EE7293700D0E0DA /* English */,
-			);
-			name = MiniProgressGradient.png;
 			sourceTree = "<group>";
 		};
 		61354C890B2741D800EEF96F /* Credits.rtf */ = {
