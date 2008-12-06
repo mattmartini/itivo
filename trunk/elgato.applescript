@@ -5,7 +5,7 @@
 --  Copyright 2008 home. All rights reserved.
 
 property turboAppName : ""
-property logFile:"/dev/null"
+property logFile : "/dev/null"
 
 on wait_until_turbo264_idle()
 	set startdate to (current date)
@@ -25,18 +25,33 @@ on run argv
 	set sourcefile to first item of argv
 	set destfile to second item of argv
 	set logFile to third item of argv
+	set format to fourth item of argv
 	try
 		tell application "Finder" to set turboAppName to name of application file id "com.elgato.Turbo"
 	end try
-
+	
 	do shell script "echo " & (current date) as string & " : Starting ElGato>> " & logFile
 	if not turboAppName = "" then
 		my wait_until_turbo264_idle()
 		tell application turboAppName
 			activate
 			using terms from application "Turbo.264"
-				add file sourcefile with destination destfile replacing true
-				encode no error dialogs true
+				ignoring case
+					if (format = "ipodH") then
+						add file sourcefile with destination destfile exporting as iPod High with replacing
+					else if (format = "ipodS" or format = "ipod") then
+						add file sourcefile with destination destfile exporting as iPod High with replacing
+					else if (format = "psp") then
+						add file sourcefile with destination destfile exporting as Sony PSP with replacing
+					else if (format = "appleTV") then
+						add file sourcefile with destination destfile exporting as AppleTV with replacing
+					else if (format = "iPhone") then
+						add file sourcefile with destination destfile exporting as iPhone with replacing
+					else
+						add file sourcefile with destination destfile with replacing
+					end if
+					encode with no error dialogs
+				end ignoring
 			end using terms from
 		end tell
 		my wait_until_turbo264_idle()

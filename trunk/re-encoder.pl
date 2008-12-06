@@ -25,27 +25,18 @@ $shellScript = "";
 
 if ($Encoder eq "mencoder") {
  $shellScript = $shellScript . $AppDir . "Contents/Resources/mencoder -edl $Edl";
+ $shellScript = $shellScript . " $VideoOpts $AudioOpts $OtherOpts -o $Target $Src >$Progress 2>&1";
 } elsif ($Encoder eq "HandBrake") {
 	$shellScript = $shellScript . $AppDir . "Contents/Resources/HandBrakeCLI";
+	$shellScript = $shellScript . " $VideoOpts $AudioOpts $OtherOpts -o $Target -i $Src >$Progress 2>&1 < /dev/null";
 } elsif ($Encoder eq "cat") {
 	$shellScript = $shellScript . "cat -u";
+	$shellScript = $shellScript . " $VideoOpts $AudioOpts $OtherOpts $Src > $Target";
 } elsif ($Encoder eq "turbo.264") {
 	$shellScript = $shellScript . "osascript $AppDir/Contents/Resources/Scripts/elgato.scpt";
+	$shellScript = $shellScript . "$Src $Target $Progress $VideoOpts $AudioOpts $OtherOpts 2>&1";
 } else  {
 	$shellScript = $shellScript . $Encoder;
-}
-
-$shellScript = $shellScript . " $VideoOpts $AudioOpts $OtherOpts ";
-
-if ($Encoder eq "mencoder") {
-	$shellScript = $shellScript . "-o $Target $Src >$Progress 2>&1";
-} elsif ($Encoder eq "HandBrake") {
-	$shellScript = $shellScript . "-o $Target -i $Src >$Progress 2>&1 < /dev/null";
-} elsif ($Encoder eq "cat") {
-	$shellScript = $shellScript . "$Src > $Target";
-} elsif ($Encoder eq "turbo.264") {
-	$shellScript = $shellScript . "$Src $Target $Progress 2>&1";
-} else  {
 	$shellScript = $shellScript . "$Src > $Target";
 }
 
