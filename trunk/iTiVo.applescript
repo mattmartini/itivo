@@ -1204,12 +1204,12 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 		set myPath to my prepareCommand(POSIX path of (path to me))
 		set myHomePathP to POSIX path of (path to home folder)
 		set id to item 5 of currentProcessSelectionParam
-		set showName to first item of currentProcessSelectionParam
+		set showName to first item of currentProcessSelectionParam as string
 		set oShowName to showName
 		set oShowDate to third item of currentProcessSelectionParam
 		set showNameEncoded to my encode_text(my prepareCommand(showName), true, true)
 		if second item of currentProcessSelectionParam ≠ "" then
-			set oShowEpisode to second item of currentProcessSelectionParam
+			set oShowEpisode to second item of currentProcessSelectionParam as string
 		else
 			set oShowEpisode to id as string
 		end if
@@ -1222,7 +1222,11 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 		set item_list to do shell script ShellScriptCommand
 		set AppleScript's text item delimiters to "|"
 		set the parts to every text item of item_list
-		set showLength to seventh item of parts
+		set showDescription to item 4 of parts as string
+		set showEpisodeLength to item 7 of parts
+		set showEpisodeGenre to item 8 of parts
+		set showEpisodeNum to item 15 of parts
+		set showEpisodeYear to item 14 of parts
 		set fullFileSize to fourth item of currentProcessSelectionParam
 		set fullFileSize to (first word of fullFileSize as integer)
 		if (fullFileSize ≤ 0) then
@@ -1298,7 +1302,7 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 			set progressDifference to -1 * currentProgress
 			tell progress indicator "Status" to increment by progressDifference
 			set progressDifference to 0
-			set contents of text field "status" to "Downloading " & first item of currentProcessSelectionParam & " - " & second item of currentProcessSelectionParam
+			set contents of text field "status" to "Downloading " & showName
 			set currentFileSize to 0
 			set prevFileSize to 0
 			set timeoutCount to 0
@@ -1317,10 +1321,10 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 					using terms from application "GrowlHelperApp"
 						if currentTry > 0 then
 							notify with name "Beginning Download" title "Retrying (try number " & currentTry + 1 & ")
-" & (item 1 of currentProcessSelectionParam) description (item 2 of currentProcessSelectionParam) application name "iTiVo"
+" & (oShowName) description (oShowEpisode) application name "iTiVo"
 						else
 							notify with name "Beginning Download" title "Downloading 
-" & (item 1 of currentProcessSelectionParam) description (item 2 of currentProcessSelectionParam) application name "iTiVo"
+" & (oShowName) description (oShowEpisode) application name "iTiVo"
 						end if
 					end using terms from
 				end tell
@@ -1354,11 +1358,11 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 				if currentFileSize as real > prevFileSize as real then
 					set prevFileSize to currentFileSize
 					set timeoutCount to 0
-					set contents of text field "status" to "(phase " & currentStep & "/" & totalSteps & ") Downloading " & first item of currentProcessSelectionParam & " - " & second item of currentProcessSelectionParam
+					set contents of text field "status" to "(phase " & currentStep & "/" & totalSteps & ") Downloading " & showName
 				else
 					set timeoutCount to timeoutCount + 1
 					if timeoutCount = 20 then
-						set contents of text field "status" to "(phase " & currentStep & "/" & totalSteps & ") Downloading " & first item of currentProcessSelectionParam & " (waiting for TiVo)"
+						set contents of text field "status" to "(phase " & currentStep & "/" & totalSteps & ") Downloading " & oShowName & " (waiting for TiVo)"
 					end if
 				end if
 				try
@@ -1438,11 +1442,11 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 					if frameOn as integer > prevframeOn as integer then
 						set prevframeOn to frameOn
 						set timeoutCount to 0
-						set contents of text field "status" to "(phase " & currentStep & "/" & totalSteps & ") Commercial Detect " & first item of currentProcessSelectionParam & " - " & second item of currentProcessSelectionParam
+						set contents of text field "status" to "(phase " & currentStep & "/" & totalSteps & ") Commercial Detect " & showName
 					else
 						set timeoutCount to timeoutCount + 1
 						if timeoutCount = 20 then
-							set contents of text field "status" to "(phase " & currentStep & "/" & totalSteps & ") Commercial Detect " & first item of currentProcessSelectionParam & " (stalled)"
+							set contents of text field "status" to "(phase " & currentStep & "/" & totalSteps & ") Commercial Detect " & oShowName & " (stalled)"
 						end if
 					end if
 					try
@@ -1493,11 +1497,11 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 					if timeOn as real > prevtimeOn as real then
 						set prevtimeOn to timeOn
 						set timeoutCount to 0
-						set contents of text field "status" to "(phase " & currentStep & "/" & totalSteps & ") Commercial Cut " & first item of currentProcessSelectionParam & " - " & second item of currentProcessSelectionParam
+						set contents of text field "status" to "(phase " & currentStep & "/" & totalSteps & ") Commercial Cut " & showName
 					else
 						set timeoutCount to timeoutCount + 1
 						if timeoutCount = 20 then
-							set contents of text field "status" to "(phase " & currentStep & "/" & totalSteps & ") Commercial Cut " & first item of currentProcessSelectionParam & " (waiting)"
+							set contents of text field "status" to "(phase " & currentStep & "/" & totalSteps & ") Commercial Cut " & oShowName & " (waiting)"
 						end if
 					end if
 					try
@@ -1570,11 +1574,11 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 					if timeOn as real > prevtimeOn as real then
 						set prevtimeOn to timeOn
 						set timeoutCount to 0
-						set contents of text field "status" to "(phase " & currentStep & "/" & totalSteps & ") Encoding " & first item of currentProcessSelectionParam & " - " & second item of currentProcessSelectionParam
+						set contents of text field "status" to "(phase " & currentStep & "/" & totalSteps & ") Encoding " & showName
 					else
 						set timeoutCount to timeoutCount + 1
 						if timeoutCount = 20 then
-							set contents of text field "status" to "(phase " & currentStep & "/" & totalSteps & ") Encoding " & first item of currentProcessSelectionParam & " (waiting)"
+							set contents of text field "status" to "(phase " & currentStep & "/" & totalSteps & ") Encoding " & oShowName & " (waiting)"
 						end if
 					end if
 					try
@@ -1619,10 +1623,10 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 					using terms from application "GrowlHelperApp"
 						if (my isDownloadComplete(filePath, fullFileSize, currentTry)) then
 							notify with name "Ending Download" title "Finished
-" & (item 1 of currentProcessSelectionParam as string) description (item 2 of currentProcessSelectionParam as string) application name "iTiVo"
+" & (oShowName) description (oShowEpisode) application name "iTiVo"
 						else
 							notify with name "Ending Download" title "Incomplete Download!
-" & (item 1 of currentProcessSelectionParam as string) description (item 2 of currentProcessSelectionParam as string) application name "iTiVo"
+" & (oShowName) description (oShowEpisode) application name "iTiVo"
 						end if
 					end using terms from
 				end tell
@@ -1649,7 +1653,7 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 			if iTunes as integer > 0 then
 				my debug_log("Doing iTunes-related work ")
 				my create_playlist()
-				my post_process_item(DL & showNameP & filenameExtension, item 1 of currentProcessSelectionParam, item 2 of currentProcessSelectionParam, item 4 of parts, item 14 of parts, item 13 of parts, item 8 of parts, item 7 of parts)
+				my post_process_item(DL & showNameP & filenameExtension, oShowName, oShowEpisode, showDescription, showEpisodeNum, showEpisodeYear, showEpisodeGenre, showEpisodeLength)
 			end if
 		end if
 	end tell
@@ -1915,17 +1919,19 @@ on post_process_item(this_item, show_name, episodeName, file_description, episod
 			launch
 			set this_track to add (POSIX file this_item as alias) to playlist "Library" of source "Library"
 			duplicate this_track to playlist "TiVo Shows"
-			if episodeName = "" and episodeLength2 > 70 then
+			if episodeName = "" and episodeNum = "" and episodeLength2 > 70 then
 				set this_track's video kind to movie
+				set the name of this_track to show_name
 			else
 				set this_track's video kind to TV show
+				set the name of this_track to episodeName
+				set this_track's episode ID to episodeName as string
+				set this_track's episode number to episodeNum as string
 			end if
 			set this_track's comment to file_description as string
 			set this_track's description to file_description as string
 			set this_track's show to show_name as string
-			set this_track's episode ID to episodeName as string
 			set this_track's year to episodeYear as string
-			set this_track's episode number to episodeNum as string
 			set this_track's genre to episodeGenre as string
 			if iTunesIcon = "Generic iTiVo" then
 				set pict_item to path to me as string

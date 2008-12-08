@@ -496,7 +496,7 @@
 			<key>comSkip</key>
 			<true/>
 			<key>filenameExtension</key>
-			<string>.mp4</string>
+			<string>.m4v</string>
 			<key>encoderUsed</key>
 			<string>HandBrake</string>
 			<key>name</key>
