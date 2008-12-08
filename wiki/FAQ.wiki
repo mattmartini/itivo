@@ -28,9 +28,9 @@
 
 == Download Formats ==
   # I want the original mpeg-2 from the tivo.
-    The tivo stores its movies as an mpeg-2 transport stream (TS).  It also encrypts it.  If you want to see the unencrypted transport stream, choose the 'No Encode' format.  However, keep in mind that quicktime can't play such a file.  You will need to install [http://www.videolan.org/vlc/download-macosx.html VLC] or [http://mplayerosx.sourceforge.net/ MplayerOSX] to view it.
+    The tivo stores its movies as an mpeg-2 transport stream (TS).  It also encrypts it.  If you want to see the unencrypted transport stream, choose the 'Decrypt' format.  However, keep in mind that quicktime can't play such a file.  You will need to install [http://www.videolan.org/vlc/download-macosx.html VLC] or [http://mplayerosx.sourceforge.net/ MplayerOSX] to view it.
   # I want the original mpeg-2 but without commercials.
-    MPEG2-TS will cut up the file appropriately.  However, you will most likely end up with horrible audio/video sync issues.
+    Decrypt/Copy will cut up the file appropriately.  However, you will most likely end up with horrible audio/video sync issues.
   # What is iphone super-res?
     The iphone can play movies up to 640x480, although its display is only 480x320.  You can hook up a video cable to hook up your iphone to a TV, and that's the main reason for super-res..  It also uses a much higher bitrate for people who think the iphone setting isn't of a high enough quality.
   # Audio-only?
@@ -39,6 +39,14 @@
     Connect your PSP via usb or insert the memory stick into a reader. Create a folder named "VIDEO" at the toplevel, and copy the movie into it.  Your PSP will now play your movie for you.
   # I want to keep my movies as a library on my hard drive... What settings?
     I'd personally use H.264 at 5mbps.  But this is all personal choice.  You can edit the settings to your heart's content.
+  # What is HandBrake?
+    A popular mac encoding tool that is an alternative to mencoder.  Some people prefer the speed or the quality of handbrake.  (Even though a lot of code is shared between the two encoders).
+  # I use HandBrake, but I want to use different options from what you chose.
+    Go into the Advanced tab after selecting your handbrake encoder, and add options to the encoder video options.  You can read up on all the options [http://trac.handbrake.fr/wiki/CLIGuide on this page].
+  # What is ElGato Turbo.264?
+    It's a hardware encoder.  If you own an old mac, or just want to keep your mac from using a lot of processing power to encode, you can buy the elgato USB stick, and use that to encode shows instead.  As I don't own one, I can't vouch that it will work or do the right thing, although I will try to fix bugs if people tell me about them.
+  # I want to make a custom download format.
+    It's doable, but you're asking for trouble...  If you're sure you want to do that, read [http://code.google.com/p/itivo/wiki/CustomFormat], but be aware you may need to recreate your format with future releases (I can't promise backwards compatibility for custom formats).
   # I chose the right download format but it's not working.
     Submit a bug report under 'Issues' above.  Keep in mind I don't have all these devices, so I appreciate any encoder suggestions you may have.
 
@@ -46,6 +54,6 @@
   #  I have it automatically add it to itunes, and itunes manages my library.  So every time the download finishes, I have two copies of the movie.. one in the download location, and one in the iTunes library!!  HELP!!
     Go to your advanced preferences, and under *run when download completes* put:
 {{{
-  rm -f $file
+  rm -f "$file"
 }}}
-    This will delete the file from the download location AFTER itunes copies it out.
+    This will delete the file from the download location AFTER itunes copies it out. (the quotes around the $file are important, since there may be spaces in the show name).
