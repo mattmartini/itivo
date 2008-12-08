@@ -1208,12 +1208,13 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 		set oShowName to showName
 		set oShowDate to third item of currentProcessSelectionParam
 		set showNameEncoded to my encode_text(my prepareCommand(showName), true, true)
-		if second item of currentProcessSelectionParam ≠ "" then
-			set oShowEpisode to second item of currentProcessSelectionParam as string
+		set oShowEpisode to second item of currentProcessSelectionParam as string
+		if oShowEpisode ≠ "" then
+			set showEpisode to second item of currentProcessSelectionParam as string
 		else
-			set oShowEpisode to id as string
+			set showEpisode to id as string
 		end if
-		set showName to showName & " - " & oShowEpisode
+		set showName to showName & " - " & showEpisode
 		set showFullNameEncoded to my encode_text(my prepareCommand(showName), true, true)
 		set myHomePathP2 to my encode_text(my prepareCommand(DL), true, true)
 		set myPath2 to my encode_text(myPath, true, true)
@@ -1321,10 +1322,10 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 					using terms from application "GrowlHelperApp"
 						if currentTry > 0 then
 							notify with name "Beginning Download" title "Retrying (try number " & currentTry + 1 & ")
-" & (oShowName) description (oShowEpisode) application name "iTiVo"
+" & (oShowName) description (showEpisode) application name "iTiVo"
 						else
 							notify with name "Beginning Download" title "Downloading 
-" & (oShowName) description (oShowEpisode) application name "iTiVo"
+" & (oShowName) description (showEpisode) application name "iTiVo"
 						end if
 					end using terms from
 				end tell
@@ -1623,10 +1624,10 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 					using terms from application "GrowlHelperApp"
 						if (my isDownloadComplete(filePath, fullFileSize, currentTry)) then
 							notify with name "Ending Download" title "Finished
-" & (oShowName) description (oShowEpisode) application name "iTiVo"
+" & (oShowName) description (showEpisode) application name "iTiVo"
 						else
 							notify with name "Ending Download" title "Incomplete Download!
-" & (oShowName) description (oShowEpisode) application name "iTiVo"
+" & (oShowName) description (showEpisode) application name "iTiVo"
 						end if
 					end using terms from
 				end tell
@@ -1653,7 +1654,7 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 			if iTunes as integer > 0 then
 				my debug_log("Doing iTunes-related work ")
 				my create_playlist()
-				my post_process_item(DL & showNameP & filenameExtension, oShowName, oShowEpisode, showDescription, showEpisodeNum, showEpisodeYear, showEpisodeGenre, showEpisodeLength)
+				my post_process_item(DL & showNameP & filenameExtension, oShowName, oShowEpisode, id, showDescription, showEpisodeNum, showEpisodeYear, showEpisodeGenre, showEpisodeLength)
 			end if
 		end if
 	end tell
@@ -1661,7 +1662,7 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 		try
 			set shellCmd to "file=" & quoted form of DL & quoted form of showNameP & quoted form of filenameExtension & "; "
 			set shellCmd to shellCmd & "show=" & quoted form of oShowName & "; "
-			set shellCmd to shellCmd & "episode=" & quoted form of oShowEpisode & "; "
+			set shellCmd to shellCmd & "episode=" & quoted form of showEpisode & "; "
 			if isDownloadComplete(filePath, fullFileSize, currentTry) then
 				set shellCmd to shellCmd & "success=1; "
 			else
@@ -1896,8 +1897,8 @@ on create_playlist()
 	end tell
 end create_playlist
 
-on post_process_item(this_item, show_name, episodeName, file_description, episodeNum, episodeYear, episodeGenre, episodeLength)
-	my debug_log("post Process item" & " " & this_item & " " & show_name & " " & episodeName & " " & file_description & " " & episodeNum & " " & episodeYear & " " & episodeGenre & " " & episodeLength)
+on post_process_item(this_item, show_name, episodeName, id, file_description, episodeNum, episodeYear, episodeGenre, episodeLength)
+	my debug_log("post Process item" & " " & this_item & " " & show_name & " " & episodeName & " " & id & " " & file_description & " " & episodeNum & " " & episodeYear & " " & episodeGenre & " " & episodeLength)
 	set AppleScript's text item delimiters to ":"
 	set the parts to every text item of episodeLength
 	set episodeLength2 to (60 * ((first item of parts) as integer)) + ((second item of parts) as integer)
@@ -1924,9 +1925,18 @@ on post_process_item(this_item, show_name, episodeName, file_description, episod
 				set the name of this_track to show_name
 			else
 				set this_track's video kind to TV show
-				set the name of this_track to episodeName
-				set this_track's episode ID to episodeName as string
-				set this_track's episode number to episodeNum as string
+				set this_track's album to show_name
+				set this_track's album artist to show_name
+				if (episodeName = "") then
+					set the name of this_track to show_name & " - " & id
+					set this_track's episode ID to id as string
+				else
+					set the name of this_track to episodeName
+					set this_track's episode ID to episodeName as string
+				end if
+				if (not episodeNum = "") then
+					set this_track's episode number to episodeNum as integer
+				end if
 			end if
 			set this_track's comment to file_description as string
 			set this_track's description to file_description as string
