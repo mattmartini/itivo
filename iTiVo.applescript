@@ -1770,15 +1770,19 @@ on ConnectTiVo()
 			set contents of text field "tivoInProgress" of drawer "Drawer1" to (((seventh text item of tivo_usage) as integer) as string) & " MB"
 			set contents of text field "tivoCopyrighted" of drawer "Drawer1" to (((eighth text item of tivo_usage) as integer) as string) & " MB"
 			set contents of text field "tivoSaved" of drawer "Drawer1" to (((ninth text item of tivo_usage) as integer) as string) & " MB"
+			set contents of text field "tivoTotal" of drawer "Drawer1" to (my roundThis((text item 2 of tivo_usage) / 1024, 2) as string) & " GB"
 			set theURL to "http://chart.apis.google.com/chart?cht=p3&chs=180x180&chd=t:"
-			set sum to 0
+			set hd_sum to 0
+			set per_sum to 0
 			repeat with usage_item in text items 3 thru 9 of tivo_usage
+				set hd_sum to hd_sum + usage_item
 				set current_percent to my roundThis(usage_item / total_memory * 100, 1)
 				set theURL to theURL & (current_percent as string) & ","
-				set sum to sum + current_percent
+				set per_sum to per_sum + current_percent
 			end repeat
-			
-			set theURL to theURL & (((100 - sum) as integer) as string)
+			set hd_free to total_memory - hd_sum
+			set contents of text field "tivoWiggle" of drawer "Drawer1" to (my roundThis((hd_free + (text item 4 of tivo_usage)) / 1024, 2) as string) & " GB"
+			set theURL to theURL & (((100 - per_sum) as integer) as string)
 			set myURL to "33CCFF|003300|FF3333|CC9900|33CC00|9900CC|00CC00|999999"
 			set theURL to theURL & "&chco=" & my encode_text(myURL, true, true)
 			my debug_log("fetching : " & theURL)
@@ -2263,15 +2267,8 @@ end should quit after last window closed
 
 on should close theObject
 	if name of theObject = "iTiVo" then
-		if not enabled of button "ConnectButton" of window "iTiVo" is true then
-			set theReply to display dialog "You have a download in progress.  Closing will exit the program and terminate the download.  Are you *SURE* you want to quit?" buttons {"Yes", "No"} default button "Yes" --attached to window "iTiVo"
-			if button returned of theReply = "Yes" then
-				my performCancelDownload()
-				return true
-			else
-				return false
-			end if
-		end if
+		tell application "System Events" to set visible of process "iTiVo" to false
+		return false
 	end if
 	return true
 end should close
