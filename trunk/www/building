@@ -37,7 +37,12 @@ HANDBRAKE=HandBrake-0.9.3
   cd $SRCDIR/faac
   ./configure --without-mp4v2 --enable-shared=no --enable-static=yes
   make clean
-  make 
+  make
+
+  cd $SRCDIR/faad2
+  ./configure --enable-shared=no --enable-static=yes
+  make clean
+  make
 
   cd $SRCDIR/$LAME
   ./configure  --disable-shared --disable-frontend
@@ -54,6 +59,16 @@ HANDBRAKE=HandBrake-0.9.3
   make
   cp ./mencoder ../binaries/mencoder-i386
 
+   export CFLAGS='-isysroot /Developer/SDKs/MacOSX10.4u.sdk -arch i386'
+   export CPPFLAGS='-arch i386'
+   export LDFLAGS='-arch i386 -Wl,-syslibroot,/Developer/SDKs/MacOSX10.4u.sdk'
+   cd $SRCDIR/ffmpeg
+  make distclean
+  ./configure --arch=i386 --disable-vhook --disable-shared --enable-static --enable-pthreads --disable-mmx --enable-gpl --enable-libmp3lame --enable-libfaac --enable-libfaad --enable-libx264 --enable-swscale --extra-cflags="-I$SRCDIR/$LAME/include -I$SRCDIR/faad2/include -I$SRCDIR/faac/include -I$SRCDIR/x264" --extra-ldflags="-L$SRCDIR/$LAME/libmp3lame/.libs -L$SRCDIR/faad2/libfaad/.libs -L$SRCDIR/faac/libfaac/.libs -L$SRCDIR/x264/"
+  make
+  cp ./ffmpeg ../binaries/ffmpeg-i386
+
+
    export CFLAGS='-arch ppc7400 -isysroot /Developer/SDKs/MacOSX10.4u.sdk'
    export CPPFLAGS='-arch ppc7400 -isysroot /Developer/SDKs/MacOSX10.4u.sdk'
    export LDFLAGS='-arch ppc7400 -Wl,-syslibroot,/Developer/SDKs/MacOSX10.4u.sdk'
@@ -66,6 +81,11 @@ HANDBRAKE=HandBrake-0.9.3
   cd $SRCDIR/faac
   make distclean
    ./configure --host=ppc-apple-darwin --without-mp4v2 --enable-shared=no --enable-static=yes
+  make
+
+  cd $SRCDIR/faad2
+  ./configure --host=ppc-apple-darwin --enable-shared=no --enable-static=yes
+  make clean
   make
 
   cd $SRCDIR/$LAME
@@ -87,8 +107,17 @@ echo powerpc
   make
   cp ./mencoder ../binaries/mencoder-ppc
 
+  cd $SRCDIR/ffmpeg
+  make distclean
+  ./configure --arch=ppc64 --cpu=G5 --disable-vhook --disable-shared --enable-static --enable-pthreads --disable-mmx --enable-gpl --enable-libmp3lame --enable-libfaac --enable-libfaad --enable-libx264 --enable-swscale --extra-cflags="-I$SRCDIR/$LAME/include -I$SRCDIR/faad2/include -I$SRCDIR/faac/include -I$SRCDIR/x264" --extra-ldflags="-L$SRCDIR/$LAME/libmp3lame/.libs -L$SRCDIR/faad2/libfaad/.libs -L$SRCDIR/faac/libfaac/.libs -L$SRCDIR/x264/"
+  make
+  cp ./ffmpeg ../binaries/ffmpeg-ppc
+
   cd $SRCDIR/binaries
   lipo -create mencoder-i386 mencoder-ppc -output mencoder
   rm -f mencoder-*
+  lipo -create ffmpeg-i386 ffmpeg-ppc -output ffmpeg
+  rm -f ffmpeg-*
   strip *
-  cp * "../itivo/External Software/"
+  cp comskip mencoder tivodecode "../itivo/External Software/"
+  cp ffmpeg "../pytivox/External Software/"
