@@ -1714,8 +1714,10 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 		set shellCmd to myPath & "Contents/Resources/AtomicParsley " & quoted form of newFile
 		if (isMovie) then
 			set shellCmd to shellCmd & " --title " & quoted form of oShowName
+			set shellCmd to shellCmd & " --stik Movie"
 		else
 			set shellCmd to shellCmd & " --title " & quoted form of showEpisode
+			set shellCmd to shellCmd & " --stik \"TV Show\""
 			set shellCmd to shellCmd & " --TVShowName " & quoted form of oShowName
 			if not (oShowEpisode = "") then
 				set shellCmd to shellCmd & " --TVEpisode " & quoted form of oShowEpisode
