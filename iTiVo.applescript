@@ -42,7 +42,6 @@ property DL : ""
 property makeSubdirs : false
 property txtMetaData : false
 property tivoMetaData : false
-property APMetaData : false
 property iTunes : ""
 property iTunesSync : ""
 property iTunesIcon : ""
@@ -241,7 +240,7 @@ on readFormats()
 	set myPath to path to me
 	try
 		set myExtraFormats to path to home folder as string
-		set myExtraFormats to myExtraFormats & "Library:Preferences:iTiVo:formats:"
+		set myExtraFormats to myExtraFormats & "Library:Application Support:iTiVo:formats:"
 		tell application "Finder" to set other_formats to name of every file in folder myExtraFormats
 	on error
 		set other_formats to {}
@@ -277,6 +276,35 @@ on readFormats()
 		end tell
 	end repeat
 end readFormats
+
+on write_out_custom_format(outputfile, baseformat, newfilenameExtension, newencoderUsed, newencoderVideoOptions, newencoderAudioOptions, newencoderOtherOptions)
+	try
+		set shellCmd to "mkdir -p ~/Library/Application' 'Support/iTiVo/formats"
+		do shell script shellCmd
+	end try
+	set myExtraFormats to path to home folder as string
+	set myExtraFormats to myExtraFormats & "Library:Application Support:iTiVo:formats:"
+	set myfilename to myExtraFormats & outputfile & ".plist"
+	my debug_log("Writing to format file : " & myfilename)
+	tell application "System Events"
+		set parent_dictionary to make new property list item with properties {kind:record}
+		set my_plistfile to make new property list file with properties {contents:parent_dictionary, name:myfilename}
+		make new property list item at end of property list items of contents of my_plistfile with properties {kind:number, name:"version", value:1}
+		set result_list to {|name|:outputfile}
+		set result_list to result_list & {|formatDescription|:"Custom Format " & outputfile & " created on " & (current date) as string}
+		set result_list to result_list & {|encoderUsed|:newencoderUsed, |encoderVideoOptions|:newencoderVideoOptions}
+		set result_list to result_list & {|encoderAudioOptions|:newencoderAudioOptions, |encoderOtherOptions|:newencoderOtherOptions}
+		set result_list to result_list & {|filenameExtension|:newfilenameExtension}
+		set myitunes to my formatCompatItunes(baseformat)
+		set result_list to result_list & {|iTunes|:myitunes}
+		set mycomskip to my formatCompatComSkip(baseformat)
+		set result_list to result_list & {|comSkip|:mycomskip}
+		set mymustdlf to my formatMustDownloadFirst(baseformat)
+		set result_list to result_list & {|mustDownloadFirst|:mymustdlf}
+		set my_formats to {result_list}
+		make new property list item at end of property list items of contents of my_plistfile with properties {kind:list, name:"formats", value:my_formats}
+	end tell
+end write_out_custom_format
 
 on setupPrefsTab(tabName)
 	tell panelWIndow
@@ -323,7 +351,6 @@ on setupPrefsTab(tabName)
 			end if
 			set state of button "txtMetaData" of view "DownloadingView" of tab view "TopTab" to txtMetaData
 			set state of button "tivoMetaData" of view "DownloadingView" of tab view "TopTab" to tivoMetaData
-			set state of button "APMetaData" of view "DownloadingView" of tab view "TopTab" to APMetaData
 			
 		else if (tabName = "ComSkipTab") then
 			if (not my formatCompatComSkip(format)) then
@@ -365,7 +392,6 @@ on recordPrefsTab()
 			set iTunesIcon to title of popup button "icon" of view "DownloadingView" of tab view "TopTab"
 			set txtMetaData to state of button "txtMetaData" of view "DownloadingView" of tab view "TopTab" as boolean
 			set tivoMetaData to state of button "tivoMetaData" of view "DownloadingView" of tab view "TopTab" as boolean
-			set APMetaData to state of button "APMetaData" of view "DownloadingView" of tab view "TopTab" as boolean
 		else if (currentPrefsTab = "ComSkipTab") then
 			set comSkip to state of button "comSkip" of view "comSkipView" of tab view "TopTab"
 		else if (currentPrefsTab = "AdvancedTab") then
@@ -427,7 +453,6 @@ on registerSettings()
 		make new default entry at end of default entries with properties {name:"iTunesIcon", contents:""}
 		make new default entry at end of default entries with properties {name:"txtMetaData", contents:txtMetaData}
 		make new default entry at end of default entries with properties {name:"tivoMetaData", contents:tivoMetaData}
-		make new default entry at end of default entries with properties {name:"APMetaData", contents:APMetaData}
 		make new default entry at end of default entries with properties {name:"comSkip", contents:comSkip}
 		make new default entry at end of default entries with properties {name:"postDownloadCmd", contents:postDownloadCmd}
 		make new default entry at end of default entries with properties {name:"debugLog", contents:debugLog}
@@ -484,7 +509,6 @@ on readSettings()
 			set makeSubdirs to contents of default entry "makeSubdirs"
 			set txtMetaData to contents of default entry "txtMetaData"
 			set tivoMetaData to contents of default entry "tivoMetaData"
-			set APMetaData to contents of default entry "tivoMetaData"
 		end try
 		try
 			set debugLog to contents of default entry "debugLog"
@@ -582,7 +606,6 @@ on writeSettings()
 			set contents of default entry "iTunesIcon" to iTunesIcon as string
 			set contents of default entry "txtMetaData" to txtMetaData
 			set contents of default entry "tivoMetaData" to tivoMetaData
-			set contents of default entry "APMetaData" to APMetaData
 			set contents of default entry "comSkip" to comSkip
 			set contents of default entry "postDownloadCmd" to postDownloadCmd
 			set contents of default entry "encoderUsed" to encoderUsed
@@ -894,6 +917,20 @@ on clicked theObject
 			else
 				set enabled of button "iTunesSync" of view "DownloadingView" of tab view "TopTab" of panelWIndow to false
 				set enabled of popup button "icon" of view "DownloadingView" of tab view "TopTab" of panelWIndow to false
+			end if
+		else if theObjectName = "customFormat" then
+			set temp to display dialog "Enter a name for the custom format" default answer "Custom Format"
+			set text_user_entered to the text returned of temp
+			if button returned of temp is "OK" then
+				my debug_log("Writing out " & text_user_entered)
+				set newfilenameExtension to contents of text field "filenameExtension" of view "AdvancedView" of tab view "TopTab" of panelWIndow
+				set newencoderUsed to contents of text field "encoderUsed" of view "AdvancedView" of tab view "TopTab" of panelWIndow
+				set newencoderVideoOptions to contents of text field "encoderVideoOptions" of view "AdvancedView" of tab view "TopTab" of panelWIndow
+				set newencoderAudioOptions to contents of text field "encoderAudioOptions" of view "AdvancedView" of tab view "TopTab" of panelWIndow
+				set newencoderOtherOptions to contents of text field "encoderOtherOptions" of view "AdvancedView" of tab view "TopTab" of panelWIndow
+				my write_out_custom_format(text_user_entered, format, newfilenameExtension, newencoderUsed, newencoderVideoOptions, newencoderAudioOptions, newencoderOtherOptions)
+				set format to text_user_entered
+				my readFormats()
 			end if
 		end if
 	end tell
@@ -1709,7 +1746,7 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 		my generate_text_metadata(newFile & ".txt", oShowName, showEpisode, id, showDescription, showEpisodeNum, showEpisodeYear, showEpisodeGenre, showEpisodeLength)
 	end if
 	
-	if (complete = true and APMetaData = true) then
+	if (complete = true) then
 		my debug_log("Making Atomic Parsley metadata")
 		set shellCmd to myPath & "Contents/Resources/AtomicParsley " & quoted form of newFile
 		if (isMovie) then
@@ -2005,6 +2042,13 @@ end create_playlist
 
 on generate_text_metadata(this_item, show_name, episodeName, id, file_description, episodeNum, episodeYear, episodeGenre, episodeLength)
 	my debug_log("Writing new text file " & this_item)
+	set ASDbak to AppleScript's text item delimiters
+	set AppleScript's text item delimiters to " "
+	set mydate to first text item of episodeYear
+	set mytime to second text item of episodeYear
+	set myOrigAirDate mydate & "T" & mytime & ":00Z"
+	set AppleScript's text item delimiters to ASDBak
+
 	try
 		set the_file to open for access POSIX file this_item with write permission
 		set eof of the_file to 0
@@ -2013,6 +2057,10 @@ on generate_text_metadata(this_item, show_name, episodeName, id, file_descriptio
 		write "title : " & episodeName & "
 " to the_file
 		write "description : " & file_description & "
+" to the_file
+		write "episodeNumber : " & episodeNum & "
+" to the_file
+		write "originalAirDate : " & myOrigAirDate & "
 " to the_file
 		close access the_file
 	on error
