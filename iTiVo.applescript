@@ -1683,7 +1683,8 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 	set AppleScript's text item delimiters to ":"
 	set the parts to every text item of showEpisodeLength
 	set episodeLength2 to (60 * ((first item of parts) as integer)) + ((second item of parts) as integer)
-	set shouldSubdir to makeSubdirs and (not (oShowEpisode = "" and showEpisodeNum = "" and episodeLength2 > 70))
+	set isMovie to oShowEpisode = "" and showEpisodeNum = "" and episodeLength2 > 70
+	set shouldSubdir to makeSubdirs and not isMovie
 	if (complete = true and shouldSubdir = true) then
 		my debug_log("Moving to subdir")
 		set DLDest to DL & safeOShowName
@@ -1705,15 +1706,33 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 	
 	if (complete = true and txtMetaData = true) then
 		my debug_log("Making pytivo txt data")
-		my generate_text_metadata(newFile & ".txt", oShowName, oShowEpisode, id, showDescription, showEpisodeNum, showEpisodeYear, showEpisodeGenre, showEpisodeLength)
+		my generate_text_metadata(newFile & ".txt", oShowName, showEpisode, id, showDescription, showEpisodeNum, showEpisodeYear, showEpisodeGenre, showEpisodeLength)
 	end if
 	
 	if (complete = true and APMetaData = true) then
 		my debug_log("Making Atomic Parsley metadata")
-		set shellCmd to myPath & "Contents/Resources/AtomicParsley " & quoted form of newFile & " --overwrite "
+		set shellCmd to myPath & "Contents/Resources/AtomicParsley " & quoted form of newFile
+		if (isMovie) then
+			set shellCmd to shellCmd & " --title " & quoted form of oShowName
+		else
+			set shellCmd to shellCmd & " --title " & quoted form of showEpisode
+			set shellCmd to shellCmd & " --TVShowName " & quoted form of oShowName
+			if not (oShowEpisode = "") then
+				set shellCmd to shellCmd & " --TVEpisode " & quoted form of oShowEpisode
+			end if
+			if not (showEpisodeNum = "") then
+				set shellCmd to shellCmd & " --TVEpisodeNum " & quoted form of showEpisodeNum
+			end if
+		end if
+		if not (showDescription = "") then
+			set shellCmd to shellCmd & " --description " & quoted form of showDescription
+		end if
+		set shellCmd to shellCmd & " --overWrite "
 		my debug_log("Running: " & shellCmd)
-		set shellCmdResult to do shell script shellCmd
-		my debug_log("Result: " & shellCmdResult)
+		try
+			set shellCmdResult to do shell script shellCmd
+			my debug_log("Result: " & shellCmdResult)
+		end try
 	end if
 	
 	tell window "iTiVo"
@@ -1981,20 +2000,18 @@ on create_playlist()
 	end tell
 end create_playlist
 
+
 on generate_text_metadata(this_item, show_name, episodeName, id, file_description, episodeNum, episodeYear, episodeGenre, episodeLength)
 	my debug_log("Writing new text file " & this_item)
 	try
-		open for access this_item with write permission
-		set eof of this_item to 0
-		write "seriesTitle : " & show_name to the_file starting at eof as list
-		write "
-title : " & episodeName to the_file
-		write "
-description : " & file_description to the_file
-		write "
-description : " & file_description to the_file
-		write "
-" to the_file starting at eof as list
+		set the_file to open for access POSIX file this_item with write permission
+		set eof of the_file to 0
+		write "seriesTitle : " & show_name & "
+" to the_file
+		write "title : " & episodeName & "
+" to the_file
+		write "description : " & file_description & "
+" to the_file
 		close access the_file
 	on error
 		try
@@ -2297,7 +2314,7 @@ on addSelectionToQueue(currentProcessSelection)
 end addSelectionToQueue
 
 on isDownloadComplete(filePath, fullFileSize, tryCount)
-	if (my getCurrentFilesize(filePath)) as real < (fullFileSize * (1 - (0.2 * tryCount))) as real then
+	if (my getCurrentFilesize(filePath)) as real < (((fullFileSize * (1 - (0.2 * tryCount))) as real) - 5) then
 		return false
 	else
 		return true
