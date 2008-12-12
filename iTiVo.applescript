@@ -39,6 +39,10 @@ property queue_len : 0
 (* User-controlled properties *)
 property MAK : ""
 property DL : ""
+property makeSubdirs : false
+property txtMetaData : false
+property tivoMetaData : false
+property APMetaData : false
 property iTunes : ""
 property iTunesSync : ""
 property iTunesIcon : ""
@@ -279,6 +283,7 @@ on setupPrefsTab(tabName)
 		if (tabName = "DownloadingTab") then
 			set contents of text field "MAK" of view "DownloadingView" of tab view "TopTab" to MAK
 			set contents of text field "Location" of view "DownloadingView" of tab view "TopTab" to DL
+			set state of button "makeSubdirs" of view "DownloadingView" of tab view "TopTab" to makeSubdirs
 			set formats to my getFormatsNames()
 			delete every menu item of menu of popup button "format" of view "DownloadingView" of tab view "TopTab"
 			repeat with formatitem in formats
@@ -316,6 +321,10 @@ on setupPrefsTab(tabName)
 			else
 				set title of popup button "icon" of view "DownloadingView" of tab view "TopTab" to first item of iTunesIcons
 			end if
+			set state of button "txtMetaData" of view "DownloadingView" of tab view "TopTab" to txtMetaData
+			set state of button "tivoMetaData" of view "DownloadingView" of tab view "TopTab" to tivoMetaData
+			set state of button "APMetaData" of view "DownloadingView" of tab view "TopTab" to APMetaData
+			
 		else if (tabName = "ComSkipTab") then
 			if (not my formatCompatComSkip(format)) then
 				set comSkip to 0
@@ -349,10 +358,14 @@ on recordPrefsTab()
 		if (currentPrefsTab = "DownloadingTab") then
 			set MAK to contents of text field "MAK" of view "DownloadingView" of tab view "TopTab"
 			set DL to contents of text field "Location" of view "DownloadingView" of tab view "TopTab"
+			set makeSubdirs to state of button "makeSubdirs" of view "DownloadingView" of tab view "TopTab" as boolean
 			set format to title of popup button "format" of view "DownloadingView" of tab view "TopTab"
 			set iTunes to state of button "iTunes" of view "DownloadingView" of tab view "TopTab"
 			set iTunesSync to state of button "iTunesSync" of view "DownloadingView" of tab view "TopTab"
 			set iTunesIcon to title of popup button "icon" of view "DownloadingView" of tab view "TopTab"
+			set txtMetaData to state of button "txtMetaData" of view "DownloadingView" of tab view "TopTab" as boolean
+			set tivoMetaData to state of button "tivoMetaData" of view "DownloadingView" of tab view "TopTab" as boolean
+			set APMetaData to state of button "APMetaData" of view "DownloadingView" of tab view "TopTab" as boolean
 		else if (currentPrefsTab = "ComSkipTab") then
 			set comSkip to state of button "comSkip" of view "comSkipView" of tab view "TopTab"
 		else if (currentPrefsTab = "AdvancedTab") then
@@ -408,9 +421,13 @@ on registerSettings()
 		make new default entry at end of default entries with properties {name:"LaunchCount", contents:""}
 		make new default entry at end of default entries with properties {name:"TiVo", contents:""}
 		make new default entry at end of default entries with properties {name:"format", contents:""}
+		make new default entry at end of default entries with properties {name:"makeSubdirs", contents:makeSubdirs}
 		make new default entry at end of default entries with properties {name:"iTunes", contents:""}
 		make new default entry at end of default entries with properties {name:"iTunesSync", contents:""}
 		make new default entry at end of default entries with properties {name:"iTunesIcon", contents:""}
+		make new default entry at end of default entries with properties {name:"txtMetaData", contents:txtMetaData}
+		make new default entry at end of default entries with properties {name:"tivoMetaData", contents:tivoMetaData}
+		make new default entry at end of default entries with properties {name:"APMetaData", contents:APMetaData}
 		make new default entry at end of default entries with properties {name:"comSkip", contents:comSkip}
 		make new default entry at end of default entries with properties {name:"postDownloadCmd", contents:postDownloadCmd}
 		make new default entry at end of default entries with properties {name:"debugLog", contents:debugLog}
@@ -464,6 +481,10 @@ on readSettings()
 			set encoderOtherOptions to contents of default entry "encoderOtherOptions"
 			set filenameExtension to contents of default entry "filenameExtension"
 			set tivoSize to contents of default entry "tivoSize"
+			set makeSubdirs to contents of default entry "makeSubdirs"
+			set txtMetaData to contents of default entry "txtMetaData"
+			set tivoMetaData to contents of default entry "tivoMetaData"
+			set APMetaData to contents of default entry "tivoMetaData"
 		end try
 		try
 			set debugLog to contents of default entry "debugLog"
@@ -552,12 +573,16 @@ on writeSettings()
 			set contents of default entry "IPA" to IPA
 			set contents of default entry "MAK" to MAK
 			set contents of default entry "DL" to DL
+			set contents of default entry "makeSubdirs" to makeSubdirs
 			set contents of default entry "LaunchCount" to (LaunchCount as integer)
 			set contents of default entry "TiVo" to TiVo as string
 			set contents of default entry "format" to format as string
 			set contents of default entry "iTunes" to iTunes as string
 			set contents of default entry "iTunesSync" to iTunesSync as string
 			set contents of default entry "iTunesIcon" to iTunesIcon as string
+			set contents of default entry "txtMetaData" to txtMetaData
+			set contents of default entry "tivoMetaData" to tivoMetaData
+			set contents of default entry "APMetaData" to APMetaData
 			set contents of default entry "comSkip" to comSkip
 			set contents of default entry "postDownloadCmd" to postDownloadCmd
 			set contents of default entry "encoderUsed" to encoderUsed
@@ -1261,7 +1286,7 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 		my performCancelDownload()
 		tell window "iTiVo"
 			try
-				set shellCmd to "rm /tmp/iTiVoDLPipe*-" & UserName & "*"
+				set shellCmd to "rm -rf /tmp/iTiVoDLPipe*-" & UserName & "*" & " /tmp/iTiVoTDC*-" & UserName & "* /tmp/iTiVoDLMeta*-" & UserName & "*"
 				my debug_log(shellCmd)
 				do shell script shellCmd
 			end try
@@ -1635,6 +1660,62 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 		end if
 		my performCancelDownload()
 	end repeat
+	
+	set complete to false
+	if cancelDownload = 0 and my isDownloadComplete(filePath, fullFileSize, currentTry) then
+		set complete to true
+	end if
+	
+	my debug_log("Complete=" & complete & "  , 85% fullfilesize=" & (0.85 * fullFileSize) & " ;  currentfilesize=" & my getCurrentFilesize(filePath))
+	
+	tell window "iTiVo"
+		set contents of text field "status" to "Generating MetaData "
+		set contents of text field "status2" to ""
+	end tell
+	
+	set DLDest to DL
+	set safeOShowName to my replace_chars(oShowName, ":", "-")
+	set safeOShowName to my replace_chars(safeOShowName, "/", ":")
+	set safeName to my replace_chars(showName, ":", "-")
+	set safeName to my replace_chars(safeName, "/", ":")
+	set newFile to DL & safeName & filenameExtension
+	
+	set AppleScript's text item delimiters to ":"
+	set the parts to every text item of showEpisodeLength
+	set episodeLength2 to (60 * ((first item of parts) as integer)) + ((second item of parts) as integer)
+	set shouldSubdir to makeSubdirs and (not (oShowEpisode = "" and showEpisodeNum = "" and episodeLength2 > 70))
+	if (complete = true and shouldSubdir = true) then
+		my debug_log("Moving to subdir")
+		set DLDest to DL & safeOShowName
+		set newFile to DLDest & "/" & safeName & filenameExtension
+		set shellCmd to "mkdir -p " & quoted form of DLDest & " ;"
+		set shellCmd to shellCmd & " mv " & filePath & " " & quoted form of newFile
+		my debug_log("Running: " & shellCmd)
+		set shellCmdResult to do shell script shellCmd
+		my debug_log("Result: " & shellCmdResult)
+	end if
+	
+	if (complete = true and tivoMetaData = true) then
+		my debug_log("Making tivo metadata")
+		set shellCmd to "cp /tmp/iTiVoDLMeta-" & UserName & ".xml " & quoted form of (DLDest & "/" & safeName) & ".xml"
+		my debug_log("Running: " & shellCmd)
+		set shellCmdResult to do shell script shellCmd
+		my debug_log("Result: " & shellCmdResult)
+	end if
+	
+	if (complete = true and txtMetaData = true) then
+		my debug_log("Making pytivo txt data")
+		my generate_text_metadata(newFile & ".txt", oShowName, oShowEpisode, id, showDescription, showEpisodeNum, showEpisodeYear, showEpisodeGenre, showEpisodeLength)
+	end if
+	
+	if (complete = true and APMetaData = true) then
+		my debug_log("Making Atomic Parsley metadata")
+		set shellCmd to myPath & "Contents/Resources/AtomicParsley " & quoted form of newFile & " --overwrite "
+		my debug_log("Running: " & shellCmd)
+		set shellCmdResult to do shell script shellCmd
+		my debug_log("Result: " & shellCmdResult)
+	end if
+	
 	tell window "iTiVo"
 		set contents of text field "status" to "Finished at " & (current date)
 		set contents of text field "status2" to ""
@@ -1643,9 +1724,8 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 		tell progress indicator "Status" to increment by -1 * currentProgress
 		set title of button "ConnectButton" to "Update from TiVo"
 		set enabled of button "CancelDownload" to false
-		my debug_log("Finished Downloading, 85% fullfilesize=" & (0.85 * fullFileSize) & " ;  currentfilesize=" & my getCurrentFilesize(filePath))
-		if cancelDownload = 0 and my isDownloadComplete(filePath, fullFileSize, currentTry) then
-			set historyCheck to first item of currentProcessSelectionParam & "-" & id as string
+		set historyCheck to first item of currentProcessSelectionParam & "-" & id as string
+		if (complete = true) then
 			if historyCheck is not in DLHistory then
 				set DLHistory to DLHistory & {historyCheck}
 				my updateSubscriptionList(oShowName, oShowDate, false)
@@ -1654,16 +1734,16 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 			if iTunes as integer > 0 then
 				my debug_log("Doing iTunes-related work ")
 				my create_playlist()
-				my post_process_item(DL & showNameP & filenameExtension, oShowName, oShowEpisode, id, showDescription, showEpisodeNum, showEpisodeYear, showEpisodeGenre, showEpisodeLength)
+				my post_process_item(newFile, oShowName, oShowEpisode, id, showDescription, showEpisodeNum, showEpisodeYear, showEpisodeGenre, showEpisodeLength)
 			end if
 		end if
 	end tell
 	if (not postDownloadCmd = "") then
 		try
-			set shellCmd to "file=" & quoted form of DL & quoted form of showNameP & quoted form of filenameExtension & "; "
+			set shellCmd to "file=" & newFile & "; "
 			set shellCmd to shellCmd & "show=" & quoted form of oShowName & "; "
 			set shellCmd to shellCmd & "episode=" & quoted form of showEpisode & "; "
-			if isDownloadComplete(filePath, fullFileSize, currentTry) then
+			if isDownloadComplete(quoted form of newFile, fullFileSize, currentTry) then
 				set shellCmd to shellCmd & "success=1; "
 			else
 				set shellCmd to shellCmd & "success=0; "
@@ -1900,6 +1980,28 @@ on create_playlist()
 		end if
 	end tell
 end create_playlist
+
+on generate_text_metadata(this_item, show_name, episodeName, id, file_description, episodeNum, episodeYear, episodeGenre, episodeLength)
+	my debug_log("Writing new text file " & this_item)
+	try
+		open for access this_item with write permission
+		set eof of this_item to 0
+		write "seriesTitle : " & show_name to the_file starting at eof as list
+		write "
+title : " & episodeName to the_file
+		write "
+description : " & file_description to the_file
+		write "
+description : " & file_description to the_file
+		write "
+" to the_file starting at eof as list
+		close access the_file
+	on error
+		try
+			close access the_file
+		end try
+	end try
+end generate_text_metadata
 
 on post_process_item(this_item, show_name, episodeName, id, file_description, episodeNum, episodeYear, episodeGenre, episodeLength)
 	my debug_log("post Process item" & " " & this_item & " " & show_name & " " & episodeName & " " & id & " " & file_description & " " & episodeNum & " " & episodeYear & " " & episodeGenre & " " & episodeLength)
