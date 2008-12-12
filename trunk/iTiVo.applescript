@@ -2044,11 +2044,11 @@ on generate_text_metadata(this_item, show_name, episodeName, id, file_descriptio
 	my debug_log("Writing new text file " & this_item)
 	set ASDbak to AppleScript's text item delimiters
 	set AppleScript's text item delimiters to " "
-	set mydate to first text item of episodeYear
+	set myDate to first text item of episodeYear
 	set mytime to second text item of episodeYear
-	set myOrigAirDate mydate & "T" & mytime & ":00Z"
-	set AppleScript's text item delimiters to ASDBak
-
+	set myOrigAirDate to myDate & "T" & mytime & ":00Z"
+	set AppleScript's text item delimiters to ASDbak
+	
 	try
 		set the_file to open for access POSIX file this_item with write permission
 		set eof of the_file to 0
