@@ -42,11 +42,11 @@
   # What is HandBrake?
     A popular mac encoding tool that is an alternative to mencoder.  Some people prefer the speed or the quality of handbrake.  (Even though a lot of code is shared between the two encoders).
   # I use HandBrake, but I want to use different options from what you chose.
-    Go into the Advanced tab after selecting your handbrake encoder, and add options to the encoder video options.  You can read up on all the options [http://trac.handbrake.fr/wiki/CLIGuide on this page].
+    Go into the Advanced tab after selecting your handbrake encoder, and add options to the encoder video options.  You can read up on all the options [http://trac.handbrake.fr/wiki/CLIGuide on the handbrakeCLI config page].
   # What is ElGato Turbo.264?
     It's a hardware encoder.  If you own an old mac, or just want to keep your mac from using a lot of processing power to encode, you can buy the elgato USB stick, and use that to encode shows instead.  As I don't own one, I can't vouch that it will work or do the right thing, although I will try to fix bugs if people tell me about them.
   # I want to make a custom download format.
-    It's doable, but you're asking for trouble...  If you're sure you want to do that, read [http://code.google.com/p/itivo/wiki/CustomFormat], but be aware you may need to recreate your format with future releases (I can't promise backwards compatibility for custom formats).
+    Select Prefs / Downloading tab.  Select a format that is the most similar to the format you wish to create.  Then select the 'advanced' tab, and make changes to the encoder options.  Save the format via the button, and give it a unique name.  The format config is saved in ~/Library/Application Support/iTiVo/formats/ (in case you want to give it to others, or delete it).
   # I chose the right download format but it's not working.
     Submit a bug report under 'Issues' above.  Keep in mind I don't have all these devices, so I appreciate any encoder suggestions you may have.
 
