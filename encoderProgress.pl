@@ -2,7 +2,7 @@
 
 $encoder = $ARGV[0];
 
-$file = "/tmp/iTiVoDL2-$ENV{'USER'}";
+$file = "/tmp/iTiVo-$ENV{'USER'}/iTiVoDL2";
 open (CURLFILE, $file);
 seek (CURLFILE, -1024, 2);
 

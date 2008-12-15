@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 
-$file = "/tmp/iTiVoDL3-$ENV{'USER'}";
+$file = "/tmp/iTiVo-$ENV{'USER'}/iTiVoDL3";
 open (CURLFILE, $file);
 seek (CURLFILE, -1024, 2);
 
