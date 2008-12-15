@@ -114,6 +114,10 @@ end awake from nib
 on will open theObject
 	if name of theObject is "iTiVo" and already_launched = 0 then
 		set UserName to do shell script "whoami"
+		try
+			set shellCmd to "mkdir -p /tmp/iTiVo-" & UserName
+			do shell script shellCmd
+		end try
 		my debug_log("     ================    Starting   ===================")
 		getTiVos()
 		update
@@ -825,7 +829,7 @@ on clicked theObject
 				
 				set success to 1
 				try
-					set shellCmd to "rm /tmp/iTiVoDL*-" & UserName
+					set shellCmd to "rm /tmp/iTiVo-" & UserName & "/iTiVoDL{,2,3}"
 					do shell script shellCmd
 				end try
 				set success to my downloadItem(currentProcessSelectionQ2, 1, 4)
@@ -1312,7 +1316,7 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 	if (encoderAudioOptions = "") then set encoderAudioOptions to " "
 	if (encoderOtherOptions = "") then set encoderOtherOptions to " "
 	try
-		set shellCmd to "rm /tmp/iTiVoDL*-" & UserName
+		set shellCmd to "rm /tmp/iTiVo-" & UserName & "/iTiVoDL{,2,3}"
 		my debug_log(shellCmd)
 		do shell script shellCmd
 	end try
@@ -1323,15 +1327,15 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 		my performCancelDownload()
 		tell window "iTiVo"
 			try
-				set shellCmd to "rm -rf /tmp/iTiVoDLPipe*-" & UserName & "*" & " /tmp/iTiVoTDC*-" & UserName & "* /tmp/iTiVoDLMeta*-" & UserName & "*"
+				set shellCmd to "rm -rf /tmp/iTiVo-" & UserName & "/iTiVoDLPipe*" & " /tmp/iTiVo-" & UserName & "/iTiVoTDC* /tmp/iTiVo-" & UserName & "/iTiVoDLMeta*"
 				my debug_log(shellCmd)
 				do shell script shellCmd
 			end try
 			if (comSkip = 0 and downloadFirst = false and my formatMustDownloadFirst(format) = false) then
-				set shellCmd to "mkfifo /tmp/iTiVoDLPipe-" & UserName & " /tmp/iTiVoDLPipe2-" & UserName & ".mpg"
+				set shellCmd to "mkfifo /tmp/iTiVo-" & UserName & "/iTiVoDLPipe /tmp/iTiVo-" & UserName & "/iTiVoDLPipe2.mpg"
 				set totalSteps to 1
 			else
-				set shellCmd to "mkfifo /tmp/iTiVoDLPipe-" & UserName & " ; touch /tmp/iTiVoDLPipe{2,3}-" & UserName & ".mpg"
+				set shellCmd to "mkfifo /tmp/iTiVo-" & UserName & "/iTiVoDLPipe ; touch /tmp/iTiVo-" & UserName & "/iTiVoDLPipe{2,3}.mpg"
 				if (comSkip = 1) then
 					if (not encoderUsed = "mencoder") then
 						set totalSteps to 4
@@ -1345,7 +1349,7 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 			call method "setMaxValue:" of control "StatusLevel" with parameters {totalSteps}
 			my debug_log(shellCmd)
 			do shell script shellCmd
-			set ShellScriptCommand to "perl " & myPath & "Contents/Resources/http-fetcher.pl " & IPA & " " & id & " " & showNameEncoded & " " & MAK & " /tmp/iTiVoDLPipe-" & UserName
+			set ShellScriptCommand to "perl " & myPath & "Contents/Resources/http-fetcher.pl " & IPA & " " & id & " " & showNameEncoded & " " & MAK & " /tmp/iTiVo-" & UserName & "/iTiVoDLPipe"
 			set ShellScriptCommand to ShellScriptCommand & " >> " & debug_file & " 2>&1 & echo $! ;exit 0"
 			my debug_log(ShellScriptCommand)
 			do shell script ShellScriptCommand
@@ -1369,7 +1373,7 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 			set currentFileSize to 0
 			set prevFileSize to 0
 			set timeoutCount to 0
-			set downloadExistsCmdString to "du -k -d 0 /tmp/iTiVoDLPipe-" & UserName & " ;exit 0"
+			set downloadExistsCmdString to "du -k -d 0 /tmp/iTiVo-" & UserName & "/iTiVoDLPipe ;exit 0"
 			set downloadExistsCmd to do shell script downloadExistsCmdString
 			if downloadExistsCmd is not equal to "" then
 				set downloadExists to 1
@@ -1474,7 +1478,7 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 			-- Scan for Commercials
 			if (my isDownloadComplete(filePath, fullFileSize, currentTry) and comSkip = 1) then
 				set currentProgresss to 0
-				set downloadExistsCmdString to "du -k -d 0 /tmp/iTiVoDLPipe3-" & UserName & ".mpg ;exit 0"
+				set downloadExistsCmdString to "du -k -d 0 /tmp/iTiVo-" & UserName & "/iTiVoDLPipe3.mpg ;exit 0"
 				set timeoutCount to 0
 				set timeRemaining to 200
 				set downloadExists to 1
@@ -1531,14 +1535,14 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 			if (my isDownloadComplete(filePath, fullFileSize, currentTry) and (comSkip = 1 and (not encoderUsed = "mencoder"))) then
 				my debug_log("Cutting Commercials")
 				set currentProgresss to 0
-				set downloadExistsCmdString to "du -k -d 0 /tmp/iTiVoDLPipe2-" & UserName & ".mpg ;exit 0"
+				set downloadExistsCmdString to "du -k -d 0 /tmp/iTiVo-" & UserName & "/iTiVoDLPipe2.mpg ;exit 0"
 				set timeRemaining to 200
 				set timeoutCount to 0
 				set downloadExists to 1
 				set currentPercent to 0
 				set timeOn to 0.0
 				set prevtimeOn to 0
-				set ShellScriptCommand to "perl " & myPath & "Contents/Resources/re-encoder.pl " & myPath2 & " /tmp/ iTiVoDLPipe3-" & UserName & ".mpg "
+				set ShellScriptCommand to "perl " & myPath & "Contents/Resources/re-encoder.pl " & myPath2 & " /tmp/iTiVo-" & UserName & "/ iTiVoDLPipe3.mpg "
 				set ShellScriptCommand to ShellScriptCommand & "mencoder " & quoted form of "-ovc copy -of mpeg -mpegopts format=mpeg2:tsaf:muxrate=36000 -noskip -mc 0 -forceidx" & " "
 				set ShellScriptCommand to ShellScriptCommand & quoted form of "-oac copy" & " " & quoted form of " "
 				set ShellScriptCommand to ShellScriptCommand & " >> " & debug_file & " 2>&1 & echo $! ;exit 0"
@@ -1599,7 +1603,7 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 					end try
 					delay 0.5
 				end repeat
-				set ShellScriptCommand to "mv /tmp/iTiVoDLPipe3-" & UserName & ".mpg /tmp/iTiVoDLPipe2-" & UserName & ".mpg"
+				set ShellScriptCommand to "mv /tmp/iTiVo-" & UserName & "/iTiVoDLPipe3.mpg /tmp/iTiVo-" & UserName & "/iTiVoDLPipe2.mpg"
 				my debug_log(ShellScriptCommand)
 				do shell script ShellScriptCommand
 				tell progress indicator "Status" to increment by -1 * currentProgress
@@ -1608,7 +1612,7 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 			-- Finally run the encoder
 			if (my isDownloadComplete(filePath, fullFileSize, currentTry) and (comSkip = 1 or downloadFirst = true or my formatMustDownloadFirst(format) = true)) then
 				set currentProgresss to 0
-				set downloadExistsCmdString to "du -k -d 0 /tmp/iTiVoDLPipe2-" & UserName & ".mpg ;exit 0"
+				set downloadExistsCmdString to "du -k -d 0 /tmp/iTiVo-" & UserName & "/iTiVoDLPipe2.mpg ;exit 0"
 				set timeRemaining to 200
 				set timeoutCount to 0
 				set downloadExists to 1
@@ -1735,7 +1739,7 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 	
 	if (complete = true and tivoMetaData = true) then
 		my debug_log("Making tivo metadata")
-		set shellCmd to "cp /tmp/iTiVoDLMeta-" & UserName & ".xml " & quoted form of (DLDest & "/" & safeName) & ".xml"
+		set shellCmd to "cp /tmp/iTiVo-" & UserName & "/iTiVoDLMeta.xml " & quoted form of (DLDest & "/" & safeName) & ".xml"
 		my debug_log("Running: " & shellCmd)
 		set shellCmdResult to do shell script shellCmd
 		my debug_log("Result: " & shellCmdResult)
@@ -1743,7 +1747,7 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 	
 	if (complete = true and txtMetaData = true) then
 		my debug_log("Making pytivo txt data")
-		my generate_text_metadata(newFile & ".txt", oShowName, showEpisode, id, showDescription, showEpisodeNum, showEpisodeYear, showEpisodeGenre, showEpisodeLength)
+		my generate_text_metadata(newFile & ".txt", oShowName, showEpisode, id, showDescription, showEpisodeNum, oShowDate, showEpisodeGenre, showEpisodeLength)
 	end if
 	
 	if (complete = true) then
@@ -2041,15 +2045,15 @@ end create_playlist
 
 
 on generate_text_metadata(this_item, show_name, episodeName, id, file_description, episodeNum, episodeYear, episodeGenre, episodeLength)
-	my debug_log("Writing new text file " & this_item)
-	set ASDbak to AppleScript's text item delimiters
-	set AppleScript's text item delimiters to " "
-	set myDate to first text item of episodeYear
-	set mytime to second text item of episodeYear
-	set myOrigAirDate to myDate & "T" & mytime & ":00Z"
-	set AppleScript's text item delimiters to ASDbak
-	
+	my debug_log("Writing new text file " & this_item & "  year: " & episodeYear)
 	try
+		set ASDbak to AppleScript's text item delimiters
+		set AppleScript's text item delimiters to " "
+		set myDate to first text item of episodeYear
+		set mytime to second text item of episodeYear
+		set myOrigAirDate to myDate & "T" & mytime & ":00Z"
+		set AppleScript's text item delimiters to ASDbak
+		
 		set the_file to open for access POSIX file this_item with write permission
 		set eof of the_file to 0
 		write "seriesTitle : " & show_name & "
@@ -2390,7 +2394,7 @@ on debug_log(log_string)
 			set debug_file to "/dev/null"
 		end if
 		if (debug_level ≥ 1) then
-			set debug_file to "/tmp/iTiVo-" & UserName & ".log"
+			set debug_file to "/tmp/iTiVo-" & UserName & "/iTiVo.log"
 			log log_string
 		end if
 		if (debug_level ≥ 2) then

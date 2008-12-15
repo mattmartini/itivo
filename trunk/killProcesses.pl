@@ -33,5 +33,5 @@ foreach $procname (@tokill) {
 	}
 }
 
-`rm -f /tmp/iTiVoDLPipe*-$ENV{'USER'}*`;
+`rm -f /tmp/iTiVo-$ENV{'USER'}/iTiVoDLPipe*`;
 
