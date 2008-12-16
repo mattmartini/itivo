@@ -1747,7 +1747,7 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 	
 	if (complete = true and txtMetaData = true) then
 		my debug_log("Making pytivo txt data")
-		my generate_text_metadata(newFile & ".txt", oShowName, showEpisode, id, showDescription, showEpisodeNum, oShowDate, showEpisodeGenre, showEpisodeLength)
+		my generate_text_metadata(newFile & ".txt", "/tmp/iTiVo-" & UserName & "/iTiVoDLMeta.xml", myPath & "Contents/Resources/pytivo_txt.xslt")
 	end if
 	
 	if (complete = true) then
@@ -1802,7 +1802,7 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 	end tell
 	if (not postDownloadCmd = "") then
 		try
-			set shellCmd to "file=" & newFile & "; "
+			set shellCmd to "file=" & quoted form of newFile & "; "
 			set shellCmd to shellCmd & "show=" & quoted form of oShowName & "; "
 			set shellCmd to shellCmd & "episode=" & quoted form of showEpisode & "; "
 			if isDownloadComplete(quoted form of newFile, fullFileSize, currentTry) then
@@ -1812,8 +1812,12 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 			end if
 			set shellCmd to shellCmd & postDownloadCmd & " 2>&1"
 			my debug_log("Running: " & shellCmd)
-			set shellCmdResult to do shell script shellCmd
-			my debug_log("Result: " & shellCmdResult)
+			try
+				set shellCmdResult to do shell script shellCmd
+				my debug_log("Result: " & shellCmdResult)
+			on error
+				my debug_log("Command Failed")
+			end try
 		end try
 	end if
 	if cancelDownload = 0 then
@@ -2044,33 +2048,14 @@ on create_playlist()
 end create_playlist
 
 
-on generate_text_metadata(this_item, show_name, episodeName, id, file_description, episodeNum, episodeYear, episodeGenre, episodeLength)
-	my debug_log("Writing new text file " & this_item & "  year: " & episodeYear)
+on generate_text_metadata(this_item, srcXML, xsltFile)
+	set ShellScriptCommand to "/usr/bin/xsltproc " & quoted form of xsltFile & " " & quoted form of srcXML & " > " & quoted form of this_item
+	my debug_log(ShellScriptCommand)
 	try
-		set ASDbak to AppleScript's text item delimiters
-		set AppleScript's text item delimiters to " "
-		set myDate to first text item of episodeYear
-		set mytime to second text item of episodeYear
-		set myOrigAirDate to myDate & "T" & mytime & ":00Z"
-		set AppleScript's text item delimiters to ASDbak
-		
-		set the_file to open for access POSIX file this_item with write permission
-		set eof of the_file to 0
-		write "seriesTitle : " & show_name & "
-" to the_file
-		write "title : " & episodeName & "
-" to the_file
-		write "description : " & file_description & "
-" to the_file
-		write "episodeNumber : " & episodeNum & "
-" to the_file
-		write "originalAirDate : " & myOrigAirDate & "
-" to the_file
-		close access the_file
+		set scriptResult to (do shell script ShellScriptCommand)
+		my debug_log(scriptResult)
 	on error
-		try
-			close access the_file
-		end try
+		my debug_log("Command Failed")
 	end try
 end generate_text_metadata
 
