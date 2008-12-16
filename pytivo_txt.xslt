@@ -2,7 +2,7 @@
 xmlns="http://www.w3.org/1999/XSL/Transform">
 <output method="text"/>
 
-<template match="originalAirDate|time|movieYear|seriesTitle|title|episodeTitle|description|isEpisode|seriesId|episodeNumber|displayMajorNumber|callsign|showingBits|displayMinorNumber|startTime|stopTime|tvRating|starRating|mpaaRating|colorCode|vProgramGenre|vSeriesGenre">
+<template match="originalAirDate|time|movieYear|seriesTitle|title|episodeTitle|description|isEpisode|seriesId|episodeNumber|displayMajorNumber|callsign|displayMinorNumber|startTime|stopTime|starRating|mpaaRating|vProgramGenre|vSeriesGenre">
   <value-of select="name()"/>
   <text> : </text>
   <value-of select="."/>
