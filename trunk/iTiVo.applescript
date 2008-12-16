@@ -1752,8 +1752,8 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 	
 	if (complete = true) then
 		my debug_log("Making Atomic Parsley metadata")
-		set shellCmd to myPath & "Contents/Resources/AtomicParsley " & quoted form of newFile
-		if (isMovie) then
+		set shellCmd to "" & myPath & "Contents/Resources/AtomicParsley " & quoted form of newFile
+		if (isMovie = true) then
 			set shellCmd to shellCmd & " --title " & quoted form of oShowName
 			set shellCmd to shellCmd & " --stik Movie"
 		else
@@ -2353,7 +2353,7 @@ on addSelectionToQueue(currentProcessSelection)
 end addSelectionToQueue
 
 on isDownloadComplete(filePath, fullFileSize, tryCount)
-	if (my getCurrentFilesize(filePath)) as real < (((fullFileSize * (1 - (0.2 * tryCount))) as real) - 5) then
+	if (my getCurrentFilesize(filePath)) as real < (((fullFileSize * (1 - (0.25 * tryCount))) as real) - 5) then
 		return false
 	else
 		return true
