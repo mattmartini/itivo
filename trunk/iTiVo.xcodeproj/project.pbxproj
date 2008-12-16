@@ -47,6 +47,7 @@
 		531280FE0ECED47500B748E0 /* tvdb.png in Resources */ = {isa = PBXBuildFile; fileRef = 531280FD0ECED47500B748E0 /* tvdb.png */; };
 		531ED4320ED622C20021359A /* encoderProgress.pl in Resources */ = {isa = PBXBuildFile; fileRef = 531ED4310ED622C20021359A /* encoderProgress.pl */; };
 		532226E40EB0698400062D5F /* PrefsPanel.xib in Resources */ = {isa = PBXBuildFile; fileRef = 532226E30EB0698400062D5F /* PrefsPanel.xib */; };
+		534115830EF72E000011FFF6 /* pytivo_txt.xslt in Resources */ = {isa = PBXBuildFile; fileRef = 534115820EF72E000011FFF6 /* pytivo_txt.xslt */; };
 		5352F8690EC6752400A83D95 /* formats.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5352F8680EC6752400A83D95 /* formats.plist */; };
 		536575E40EE2791800B68A56 /* empty-check.png in Resources */ = {isa = PBXBuildFile; fileRef = 536575DA0EE2791800B68A56 /* empty-check.png */; };
 		536575E50EE2791800B68A56 /* empty.png in Resources */ = {isa = PBXBuildFile; fileRef = 536575DB0EE2791800B68A56 /* empty.png */; };
@@ -117,6 +118,7 @@
 		531280FD0ECED47500B748E0 /* tvdb.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tvdb.png; sourceTree = "<group>"; };
 		531ED4310ED622C20021359A /* encoderProgress.pl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.perl; path = encoderProgress.pl; sourceTree = "<group>"; };
 		532226E30EB0698400062D5F /* PrefsPanel.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PrefsPanel.xib; sourceTree = "<group>"; };
+		534115820EF72E000011FFF6 /* pytivo_txt.xslt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = pytivo_txt.xslt; sourceTree = "<group>"; };
 		5352F8680EC6752400A83D95 /* formats.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = formats.plist; sourceTree = "<group>"; };
 		536575DA0EE2791800B68A56 /* empty-check.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "empty-check.png"; sourceTree = "<group>"; };
 		536575DB0EE2791800B68A56 /* empty.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = empty.png; sourceTree = "<group>"; };
@@ -221,6 +223,7 @@
 		29B97315FDCFA39411CA2CEA /* Other Sources */ = {
 			isa = PBXGroup;
 			children = (
+				534115820EF72E000011FFF6 /* pytivo_txt.xslt */,
 				53960E450EF240DF0068EE27 /* AtomicParsley */,
 				536F4DDE0EE5EEA200743C2C /* HandBrakeCLI */,
 				53D5B8840EC0C7A3004F537D /* remove-commercials.pl */,
@@ -371,6 +374,7 @@
 				536575ED0EE2791800B68A56 /* suggestion-recording.png in Resources */,
 				536F4DDF0EE5EEA200743C2C /* HandBrakeCLI in Resources */,
 				53960E460EF240DF0068EE27 /* AtomicParsley in Resources */,
+				534115830EF72E000011FFF6 /* pytivo_txt.xslt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
