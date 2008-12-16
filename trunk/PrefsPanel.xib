@@ -2,12 +2,13 @@
 <archive type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="7.02">
 	<data>
 		<int key="IBDocument.SystemTarget">1050</int>
-		<string key="IBDocument.SystemVersion">9F33</string>
+		<string key="IBDocument.SystemVersion">9G55</string>
 		<string key="IBDocument.InterfaceBuilderVersion">670</string>
-		<string key="IBDocument.AppKitVersion">949.34</string>
-		<string key="IBDocument.HIToolboxVersion">352.00</string>
+		<string key="IBDocument.AppKitVersion">949.43</string>
+		<string key="IBDocument.HIToolboxVersion">353.00</string>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
+			<integer value="104"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -40,7 +41,7 @@
 				<nil key="NSViewClass"/>
 				<string key="NSWindowContentMaxSize">{3.40282e+38, 3.40282e+38}</string>
 				<object class="NSView" key="NSWindowView" id="143149616">
-					<nil key="NSNextResponder"/>
+					<reference key="NSNextResponder"/>
 					<int key="NSvFlags">256</int>
 					<object class="NSMutableArray" key="NSSubviews">
 						<bool key="EncodedWithXMLCoder">YES</bool>
@@ -394,7 +395,7 @@
 											<object class="NSTextField" id="653562313">
 												<reference key="NSNextResponder" ref="658555387"/>
 												<int key="NSvFlags">268</int>
-												<string key="NSFrame">{{295, 131}, {281, 89}}</string>
+												<string key="NSFrame">{{271, 131}, {281, 89}}</string>
 												<reference key="NSSuperview" ref="658555387"/>
 												<bool key="NSEnabled">YES</bool>
 												<object class="NSTextFieldCell" key="NSCell" id="31520852">
@@ -414,16 +415,16 @@
 											<object class="NSButton" id="134151147">
 												<reference key="NSNextResponder" ref="658555387"/>
 												<int key="NSvFlags">268</int>
-												<string key="NSFrame">{{203, 240}, {179, 18}}</string>
+												<string key="NSFrame">{{46, 246}, {192, 18}}</string>
 												<reference key="NSSuperview" ref="658555387"/>
 												<bool key="NSEnabled">YES</bool>
 												<object class="NSButtonCell" key="NSCell" id="691077869">
 													<int key="NSCellFlags">67239424</int>
 													<int key="NSCellFlags2">0</int>
-													<string key="NSContents">Place shows in subdirectories</string>
+													<string key="NSContents">Create subdirectories for shows</string>
 													<reference key="NSSupport" ref="658169573"/>
 													<reference key="NSControlView" ref="134151147"/>
-													<int key="NSButtonFlags">1211912703</int>
+													<int key="NSButtonFlags">1210864127</int>
 													<int key="NSButtonFlags2">130</int>
 													<reference key="NSNormalImage" ref="601198728"/>
 													<reference key="NSAlternateImage" ref="760251257"/>
@@ -458,13 +459,13 @@
 											<object class="NSButton" id="1017443682">
 												<reference key="NSNextResponder" ref="658555387"/>
 												<int key="NSvFlags">268</int>
-												<string key="NSFrame">{{336, 57}, {214, 18}}</string>
+												<string key="NSFrame">{{325, 57}, {208, 18}}</string>
 												<reference key="NSSuperview" ref="658555387"/>
 												<bool key="NSEnabled">YES</bool>
 												<object class="NSButtonCell" key="NSCell" id="901429746">
 													<int key="NSCellFlags">67239424</int>
 													<int key="NSCellFlags2">0</int>
-													<string key="NSContents">pyTivo compatible (.txt)</string>
+													<string key="NSContents">Create pyTivo data (showname.txt)</string>
 													<reference key="NSSupport" ref="658169573"/>
 													<reference key="NSControlView" ref="1017443682"/>
 													<int key="NSButtonFlags">1211912703</int>
@@ -480,13 +481,13 @@
 											<object class="NSButton" id="860487833">
 												<reference key="NSNextResponder" ref="658555387"/>
 												<int key="NSvFlags">268</int>
-												<string key="NSFrame">{{336, 33}, {132, 18}}</string>
+												<string key="NSFrame">{{325, 36}, {201, 18}}</string>
 												<reference key="NSSuperview" ref="658555387"/>
 												<bool key="NSEnabled">YES</bool>
 												<object class="NSButtonCell" key="NSCell" id="377464320">
 													<int key="NSCellFlags">67239424</int>
 													<int key="NSCellFlags2">0</int>
-													<string key="NSContents">.tivo XML</string>
+													<string key="NSContents">Extract tivo XML (showname.xml)</string>
 													<reference key="NSSupport" ref="658169573"/>
 													<reference key="NSControlView" ref="860487833"/>
 													<int key="NSButtonFlags">1211912703</int>
@@ -1029,6 +1030,7 @@ eW91ciBIYXJkIERyaXZlIHdoaWxlIHByb2Nlc3NpbmcuA</string>
 						</object>
 					</object>
 					<string key="NSFrameSize">{628, 474}</string>
+					<reference key="NSSuperview"/>
 				</object>
 				<string key="NSScreenRect">{{0, 0}, {1440, 878}}</string>
 				<string key="NSMaxSize">{3.40282e+38, 3.40282e+38}</string>
@@ -1160,19 +1162,19 @@ eW91ciBIYXJkIERyaXZlIHdoaWxlIHByb2Nlc3NpbmcuA</string>
 							<reference ref="398307858"/>
 							<reference ref="817502784"/>
 							<reference ref="646042902"/>
-							<reference ref="653562313"/>
 							<reference ref="784972764"/>
 							<reference ref="243759649"/>
 							<reference ref="178181579"/>
-							<reference ref="1017443682"/>
-							<reference ref="860487833"/>
 							<reference ref="405545189"/>
 							<reference ref="920693246"/>
 							<reference ref="126567365"/>
 							<reference ref="395980989"/>
 							<reference ref="931674480"/>
 							<reference ref="768809760"/>
+							<reference ref="860487833"/>
+							<reference ref="1017443682"/>
 							<reference ref="134151147"/>
+							<reference ref="653562313"/>
 						</object>
 						<reference key="parent" ref="86406616"/>
 					</object>
