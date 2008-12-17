@@ -11,7 +11,7 @@ xmlns="http://www.w3.org/1999/XSL/Transform">
 
 </template>
 
-<template match="tvRating|starRating|vProgramGenre|vSeriesGenre">
+<template match="tvRating|starRating">
   <value-of select="name()"/>
   <text> : 0</text>
   <value-of select="@value"/>
@@ -30,7 +30,7 @@ xmlns="http://www.w3.org/1999/XSL/Transform">
 
 </template>
 
-<template match="vActor|vGuestStar|vDirector|vExecProducer|vProducer|vWriter|vChoreographer">
+<template match="vActor|vGuestStar|vDirector|vExecProducer|vProducer|vWriter|vChoreographer|vProgramGenre|vSeriesGenre">
   <for-each select="element">
     <for-each select="parent::*">
       <if test="not(@id)">
