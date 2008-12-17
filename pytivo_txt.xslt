@@ -2,7 +2,7 @@
 xmlns="http://www.w3.org/1999/XSL/Transform">
 <output method="text"/>
 
-<template match="originalAirDate|episodeTitle|title|time|movieYear|seriesTitle|description|isEpisode|seriesId|episodeNumber|displayMajorNumber|callsign|displayMinorNumber|startTime|stopTime|vProgramGenre|vSeriesGenre">
+<template match="originalAirDate|episodeTitle|title|time|movieYear|seriesTitle|description|isEpisode|seriesId|episodeNumber|displayMajorNumber|callsign|displayMinorNumber|startTime|stopTime">
   <value-of select="name()"/>
   <text> : </text>
   <value-of select="."/>
@@ -11,7 +11,7 @@ xmlns="http://www.w3.org/1999/XSL/Transform">
 
 </template>
 
-<template match="tvRating|starRating">
+<template match="tvRating|starRating|vProgramGenre|vSeriesGenre">
   <value-of select="name()"/>
   <text> : 0</text>
   <value-of select="@value"/>
@@ -44,7 +44,10 @@ xmlns="http://www.w3.org/1999/XSL/Transform">
 </text>
   </for-each>
 </template>
-  
+
+<template match="showing">
+</template>
+
 <template match="*">
 <apply-templates />
 </template>
