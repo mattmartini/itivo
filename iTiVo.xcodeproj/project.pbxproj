@@ -70,7 +70,7 @@
 		53D5B83A0EBFB2B0004F537D /* comskip.ini in Resources */ = {isa = PBXBuildFile; fileRef = 53D5B8390EBFB2B0004F537D /* comskip.ini */; };
 		53D5B8830EC0C78A004F537D /* comskipSize.pl in Resources */ = {isa = PBXBuildFile; fileRef = 53D5B8820EC0C78A004F537D /* comskipSize.pl */; };
 		53D5B8850EC0C7A3004F537D /* remove-commercials.pl in Resources */ = {isa = PBXBuildFile; fileRef = 53D5B8840EC0C7A3004F537D /* remove-commercials.pl */; };
-		53E5328A0E9FBEB300E16E0D /* ParseXML.pl in Resources */ = {isa = PBXBuildFile; fileRef = 53E532890E9FBEB300E16E0D /* ParseXML.pl */; };
+		53E5328A0E9FBEB300E16E0D /* GetExtraInfo.pl in Resources */ = {isa = PBXBuildFile; fileRef = 53E532890E9FBEB300E16E0D /* GetExtraInfo.pl */; };
 		53E8CDD60EB8492F00439BE1 /* dsa_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = 53E8CDD50EB8492F00439BE1 /* dsa_pub.pem */; };
 		6100670D0B470D4700E38A87 /* mencoder in Resources */ = {isa = PBXBuildFile; fileRef = 6100670C0B470D4700E38A87 /* mencoder */; };
 		612EF59C0B4459F000ACBBBF /* ParseDetail.pl in Resources */ = {isa = PBXBuildFile; fileRef = 612EF59B0B4459F000ACBBBF /* ParseDetail.pl */; };
@@ -141,7 +141,7 @@
 		53D5B8390EBFB2B0004F537D /* comskip.ini */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = comskip.ini; path = "External Software/comskip.ini"; sourceTree = "<group>"; };
 		53D5B8820EC0C78A004F537D /* comskipSize.pl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.perl; path = comskipSize.pl; sourceTree = "<group>"; };
 		53D5B8840EC0C7A3004F537D /* remove-commercials.pl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.perl; path = "remove-commercials.pl"; sourceTree = "<group>"; };
-		53E532890E9FBEB300E16E0D /* ParseXML.pl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.perl; path = ParseXML.pl; sourceTree = "<group>"; };
+		53E532890E9FBEB300E16E0D /* GetExtraInfo.pl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.perl; path = GetExtraInfo.pl; sourceTree = "<group>"; };
 		53E8CDD50EB8492F00439BE1 /* dsa_pub.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = dsa_pub.pem; sourceTree = "<group>"; };
 		6100670C0B470D4700E38A87 /* mencoder */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; name = mencoder; path = "External Software/mencoder"; sourceTree = "<group>"; };
 		612EF59B0B4459F000ACBBBF /* ParseDetail.pl */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.script.perl; path = ParseDetail.pl; sourceTree = "<group>"; };
@@ -233,7 +233,7 @@
 				53AF17620EB6938A00C68D2E /* re-encoder.pl */,
 				53AF17600EB6937700C68D2E /* tivo-decoder.pl */,
 				53AF175E0EB6936100C68D2E /* http-fetcher.pl */,
-				53E532890E9FBEB300E16E0D /* ParseXML.pl */,
+				53E532890E9FBEB300E16E0D /* GetExtraInfo.pl */,
 				6156A9C20B4CA01B000373DF /* killProcesses.pl */,
 				61D699FF0B4C50BF00D69E4C /* curlSize.pl */,
 				612EF59B0B4459F000ACBBBF /* ParseDetail.pl */,
@@ -348,7 +348,7 @@
 				6100670D0B470D4700E38A87 /* mencoder in Resources */,
 				61D69A000B4C50BF00D69E4C /* curlSize.pl in Resources */,
 				6156A9C30B4CA01B000373DF /* killProcesses.pl in Resources */,
-				53E5328A0E9FBEB300E16E0D /* ParseXML.pl in Resources */,
+				53E5328A0E9FBEB300E16E0D /* GetExtraInfo.pl in Resources */,
 				532226E40EB0698400062D5F /* PrefsPanel.xib in Resources */,
 				53AF175F0EB6936100C68D2E /* http-fetcher.pl in Resources */,
 				53AF17610EB6937700C68D2E /* tivo-decoder.pl in Resources */,
