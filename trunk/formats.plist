@@ -262,7 +262,7 @@
 			<key>encoderVideoOptions</key>
 			<string>-of lavf -lavfopts format=mp4 -ovc x264 -x264encopts level_idc=41:bitrate=1500:threads=auto:bframes=0:global_header:subq=5:me=umh -vf pp=lb,scale=-1:-1,harddup</string>
 			<key>encoderAudioOptions</key>
-			<string>-oac faac -faacopts mpeg=4:object=2:raw:br=128</string>
+			<string>-oac faac -faacopts mpeg=4:object=2:raw:br=128 -channels 6</string>
 			<key>encoderOtherOptions</key>
 			<string>-hr-edl-seek</string>
 			<key>iTunes</key>

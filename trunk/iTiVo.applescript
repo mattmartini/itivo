@@ -1726,6 +1726,22 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 	set episodeLength2 to (60 * ((first item of parts) as integer)) + ((second item of parts) as integer)
 	set isMovie to oShowEpisode = "" and showEpisodeNum = "" and episodeLength2 > 70
 	set shouldSubdir to makeSubdirs and not isMovie
+	
+	if (complete = true) then
+		set myPath to my prepareCommand(POSIX path of (path to me))
+		set ShellScriptCommand to "perl " & myPath & "Contents/Resources/GetExtraInfo.pl " & IPA & " " & MAK & " " & id
+		my debug_log(ShellScriptCommand)
+		set item_list to do shell script ShellScriptCommand
+		set AppleScript's text item delimiters to "|"
+		set the parts to every text item of item_list
+		if (count of parts) = 6 then
+			set showSeriesID to item 2 of parts
+			set showEpisodeID to item 3 of parts
+			set showChannelNum to item 4 of parts
+			set showChannelCall to item 5 of parts
+		end if
+	end if
+	
 	if (complete = true and shouldSubdir = true) then
 		my debug_log("Moving to subdir")
 		set DLDest to DL & safeOShowName
@@ -1748,6 +1764,22 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 	if (complete = true and txtMetaData = true) then
 		my debug_log("Making pytivo txt data")
 		my generate_text_metadata(newFile & ".txt", "/tmp/iTiVo-" & UserName & "/iTiVoDLMeta.xml", myPath & "Contents/Resources/pytivo_txt.xslt")
+		set AddedData to "(echo"
+		if not (showSeriesID = "") then
+			set AddedData to AddedData & "; echo seriesID = " & quoted form of showSeriesID
+		end if
+		if not (showChannelNum = "") then
+			set AddedData to AddedData & "; echo displayMajorNumber = " & quoted form of showChannelNum
+		end if
+		if not (showChannelCall = "") then
+			set AddedData to AddedData & "; echo callsign = " & quoted form of showChannelCall
+		end if
+		set shellCmd to AddedData & " ) >> " & quoted form of (newFile & ".txt")
+		my debug_log("Running: " & shellCmd)
+		try
+			set shellCmdResult to do shell script shellCmd
+			my debug_log("Result: " & shellCmdResult)
+		end try
 	end if
 	
 	if (complete = true) then
@@ -1769,6 +1801,9 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 		end if
 		if not (showDescription = "") then
 			set shellCmd to shellCmd & " --description " & quoted form of showDescription
+		end if
+		if not (showChannelCall = "") then
+			set shellCmd to shellCmd & " --TVNetwork " & quoted form of showChannelCall
 		end if
 		set shellCmd to shellCmd & " --overWrite "
 		my debug_log("Running: " & shellCmd)
@@ -2133,8 +2168,10 @@ end post_process_item
 
 on performCancelDownload()
 	set myPath to my prepareCommand(POSIX path of (path to me))
-	set result to do shell script "perl " & myPath & "Contents/Resources/killProcesses.pl ;exit 0"
-	my debug_log("killed : " & result)
+	try
+		set result to do shell script "perl " & myPath & "Contents/Resources/killProcesses.pl ;exit 0"
+		my debug_log("killed : " & result)
+	end try
 end performCancelDownload
 
 on registerGrowl()
