@@ -60,6 +60,7 @@
 		536575EC0EE2791800B68A56 /* suggestion-recording-check.png in Resources */ = {isa = PBXBuildFile; fileRef = 536575E20EE2791800B68A56 /* suggestion-recording-check.png */; };
 		536575ED0EE2791800B68A56 /* suggestion-recording.png in Resources */ = {isa = PBXBuildFile; fileRef = 536575E30EE2791800B68A56 /* suggestion-recording.png */; };
 		536F4DDF0EE5EEA200743C2C /* HandBrakeCLI in Resources */ = {isa = PBXBuildFile; fileRef = 536F4DDE0EE5EEA200743C2C /* HandBrakeCLI */; };
+		537B18CF0EFEEB9C005E4191 /* ParseXML.pl in Resources */ = {isa = PBXBuildFile; fileRef = 537B18CE0EFEEB9C005E4191 /* ParseXML.pl */; };
 		53960E460EF240DF0068EE27 /* AtomicParsley in Resources */ = {isa = PBXBuildFile; fileRef = 53960E450EF240DF0068EE27 /* AtomicParsley */; };
 		53A16DC10ED5DC95004A33E4 /* elgato.applescript in AppleScript */ = {isa = PBXBuildFile; fileRef = 53A16DC00ED5DC95004A33E4 /* elgato.applescript */; settings = {ATTRIBUTES = (Debug, ); }; };
 		53AF175F0EB6936100C68D2E /* http-fetcher.pl in Resources */ = {isa = PBXBuildFile; fileRef = 53AF175E0EB6936100C68D2E /* http-fetcher.pl */; };
@@ -131,6 +132,7 @@
 		536575E20EE2791800B68A56 /* suggestion-recording-check.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "suggestion-recording-check.png"; sourceTree = "<group>"; };
 		536575E30EE2791800B68A56 /* suggestion-recording.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "suggestion-recording.png"; sourceTree = "<group>"; };
 		536F4DDE0EE5EEA200743C2C /* HandBrakeCLI */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; name = HandBrakeCLI; path = "External Software/HandBrakeCLI"; sourceTree = "<group>"; };
+		537B18CE0EFEEB9C005E4191 /* ParseXML.pl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.perl; path = ParseXML.pl; sourceTree = "<group>"; };
 		53960E450EF240DF0068EE27 /* AtomicParsley */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; name = AtomicParsley; path = "External Software/AtomicParsley"; sourceTree = "<group>"; };
 		53A16DC00ED5DC95004A33E4 /* elgato.applescript */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.applescript; path = elgato.applescript; sourceTree = "<group>"; };
 		53AF175E0EB6936100C68D2E /* http-fetcher.pl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.perl; path = "http-fetcher.pl"; sourceTree = "<group>"; };
@@ -223,6 +225,7 @@
 		29B97315FDCFA39411CA2CEA /* Other Sources */ = {
 			isa = PBXGroup;
 			children = (
+				537B18CE0EFEEB9C005E4191 /* ParseXML.pl */,
 				534115820EF72E000011FFF6 /* pytivo_txt.xslt */,
 				53960E450EF240DF0068EE27 /* AtomicParsley */,
 				536F4DDE0EE5EEA200743C2C /* HandBrakeCLI */,
@@ -375,6 +378,7 @@
 				536F4DDF0EE5EEA200743C2C /* HandBrakeCLI in Resources */,
 				53960E460EF240DF0068EE27 /* AtomicParsley in Resources */,
 				534115830EF72E000011FFF6 /* pytivo_txt.xslt in Resources */,
+				537B18CF0EFEEB9C005E4191 /* ParseXML.pl in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
