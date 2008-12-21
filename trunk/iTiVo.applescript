@@ -981,9 +981,9 @@ on selection changed theObject
 				set contents of text field "detailDate" of drawer "Drawer2" to ""
 				if rowCount = 1 then
 					set currentProcessSelectionTEMP to item 1 of currentProcessSelectionsTEMP
-					set id to contents of (data cell "IDVal" of currentProcessSelectionTEMP)
+					set showID to contents of (data cell "IDVal" of currentProcessSelectionTEMP)
 					set myPath to my prepareCommand(POSIX path of (path to me))
-					set ShellScriptCommand to "perl " & myPath & "Contents/Resources/ParseDetail.pl " & IPA & " " & MAK & " " & id
+					set ShellScriptCommand to "perl " & myPath & "Contents/Resources/ParseDetail.pl " & IPA & " " & MAK & " " & showID
 					my debug_log(ShellScriptCommand)
 					set item_list to do shell script ShellScriptCommand
 					set AppleScript's text item delimiters to "|"
@@ -1058,9 +1058,9 @@ on selection changed theObject
 				set contents of text field "detailDate" of drawer "Drawer2" to ""
 				if rowCount = 1 then
 					set currentProcessSelectionTEMP to item 1 of currentProcessSelectionsTEMP
-					set id to contents of (data cell "IDVal" of currentProcessSelectionTEMP)
+					set showID to contents of (data cell "IDVal" of currentProcessSelectionTEMP)
 					set myPath to my prepareCommand(POSIX path of (path to me))
-					set ShellScriptCommand to "perl " & myPath & "Contents/Resources/ParseDetail.pl " & IPA & " " & MAK & " " & id
+					set ShellScriptCommand to "perl " & myPath & "Contents/Resources/ParseDetail.pl " & IPA & " " & MAK & " " & showID
 					my debug_log(ShellScriptCommand)
 					set item_list to do shell script ShellScriptCommand
 					set AppleScript's text item delimiters to "|"
@@ -1269,7 +1269,7 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 		set enabled of button "CancelDownload" to true
 		set myPath to my prepareCommand(POSIX path of (path to me))
 		set myHomePathP to POSIX path of (path to home folder)
-		set id to item 5 of currentProcessSelectionParam
+		set showID to item 5 of currentProcessSelectionParam
 		set showName to first item of currentProcessSelectionParam as string
 		set oShowName to showName
 		set oShowDate to third item of currentProcessSelectionParam
@@ -1278,13 +1278,13 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 		if oShowEpisode ≠ "" then
 			set showEpisode to second item of currentProcessSelectionParam as string
 		else
-			set showEpisode to id as string
+			set showEpisode to showID as string
 		end if
 		set showName to showName & " - " & showEpisode
 		set showFullNameEncoded to my encode_text(my prepareCommand(showName), true, true)
 		set myHomePathP2 to my encode_text(my prepareCommand(DL), true, true)
 		set myPath2 to my encode_text(myPath, true, true)
-		set ShellScriptCommand to "perl " & myPath & "Contents/Resources/ParseDetail.pl " & IPA & " " & MAK & " " & id
+		set ShellScriptCommand to "perl " & myPath & "Contents/Resources/ParseDetail.pl " & IPA & " " & MAK & " " & showID
 		my debug_log(ShellScriptCommand)
 		set item_list to do shell script ShellScriptCommand
 		set AppleScript's text item delimiters to "|"
@@ -1349,7 +1349,7 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 			call method "setMaxValue:" of control "StatusLevel" with parameters {totalSteps}
 			my debug_log(shellCmd)
 			do shell script shellCmd
-			set ShellScriptCommand to "perl " & myPath & "Contents/Resources/http-fetcher.pl " & IPA & " " & id & " " & showNameEncoded & " " & MAK & " /tmp/iTiVo-" & UserName & "/iTiVoDLPipe"
+			set ShellScriptCommand to "perl " & myPath & "Contents/Resources/http-fetcher.pl " & IPA & " " & showID & " " & showNameEncoded & " " & MAK & " /tmp/iTiVo-" & UserName & "/iTiVoDLPipe"
 			set ShellScriptCommand to ShellScriptCommand & " >> " & debug_file & " 2>&1 & echo $! ;exit 0"
 			my debug_log(ShellScriptCommand)
 			do shell script ShellScriptCommand
@@ -1729,16 +1729,22 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 	
 	if (complete = true) then
 		set myPath to my prepareCommand(POSIX path of (path to me))
-		set ShellScriptCommand to "perl " & myPath & "Contents/Resources/GetExtraInfo.pl " & IPA & " " & MAK & " " & id
+		set ShellScriptCommand to "perl " & myPath & "Contents/Resources/GetExtraInfo.pl " & IPA & " " & MAK & " " & showID
 		my debug_log(ShellScriptCommand)
 		set item_list to do shell script ShellScriptCommand
 		set AppleScript's text item delimiters to "|"
 		set the parts to every text item of item_list
-		if (count of parts) = 6 then
-			set showSeriesID to item 2 of parts
-			set showEpisodeID to item 3 of parts
-			set showChannelNum to item 4 of parts
-			set showChannelCall to item 5 of parts
+		
+		if (count of parts) = 7 then
+			set showSeriesID to item 3 of parts
+			set showEpisodeID to item 4 of parts
+			set showChannelNum to item 5 of parts
+			set showChannelCall to item 6 of parts
+		else
+			set showSeriesID to ""
+			set showEpisodeID to ""
+			set showChannelNum to ""
+			set showChannelCall to ""
 		end if
 	end if
 	
@@ -1764,7 +1770,7 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 	if (complete = true and txtMetaData = true) then
 		my debug_log("Making pytivo txt data")
 		my generate_text_metadata(newFile & ".txt", "/tmp/iTiVo-" & UserName & "/iTiVoDLMeta.xml", myPath & "Contents/Resources/pytivo_txt.xslt")
-		set AddedData to "(echo"
+		set AddedData to "(/usr/bin/true"
 		if not (showSeriesID = "") then
 			set AddedData to AddedData & "; echo seriesID = " & quoted form of showSeriesID
 		end if
@@ -1775,7 +1781,7 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 			set AddedData to AddedData & "; echo callsign = " & quoted form of showChannelCall
 		end if
 		set shellCmd to AddedData & " ) >> " & quoted form of (newFile & ".txt")
-		my debug_log("Running: " & shellCmd)
+		my debug_log("Running: " & quoted form of shellCmd)
 		try
 			set shellCmdResult to do shell script shellCmd
 			my debug_log("Result: " & shellCmdResult)
@@ -1821,7 +1827,7 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 		tell progress indicator "Status" to increment by -1 * currentProgress
 		set title of button "ConnectButton" to "Update from TiVo"
 		set enabled of button "CancelDownload" to false
-		set historyCheck to first item of currentProcessSelectionParam & "-" & id as string
+		set historyCheck to first item of currentProcessSelectionParam & "-" & showID as string
 		if (complete = true) then
 			if historyCheck is not in DLHistory then
 				set DLHistory to DLHistory & {historyCheck}
@@ -1831,7 +1837,7 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 			if iTunes as integer > 0 then
 				my debug_log("Doing iTunes-related work ")
 				my create_playlist()
-				my post_process_item(newFile, oShowName, oShowEpisode, id, showDescription, showEpisodeNum, showEpisodeYear, showEpisodeGenre, showEpisodeLength)
+				my post_process_item(newFile, oShowName, oShowEpisode, showID, showDescription, showEpisodeNum, showEpisodeYear, showEpisodeGenre, showEpisodeLength)
 			end if
 		end if
 	end tell
@@ -2085,7 +2091,7 @@ end create_playlist
 
 on generate_text_metadata(this_item, srcXML, xsltFile)
 	set ShellScriptCommand to "/usr/bin/xsltproc " & quoted form of xsltFile & " " & quoted form of srcXML & " > " & quoted form of this_item
-	my debug_log(ShellScriptCommand)
+	my debug_log("Running: " & ShellScriptCommand)
 	try
 		set scriptResult to (do shell script ShellScriptCommand)
 		my debug_log(scriptResult)
@@ -2094,8 +2100,8 @@ on generate_text_metadata(this_item, srcXML, xsltFile)
 	end try
 end generate_text_metadata
 
-on post_process_item(this_item, show_name, episodeName, id, file_description, episodeNum, episodeYear, episodeGenre, episodeLength)
-	my debug_log("post Process item" & " " & this_item & " " & show_name & " " & episodeName & " " & id & " " & file_description & " " & episodeNum & " " & episodeYear & " " & episodeGenre & " " & episodeLength)
+on post_process_item(this_item, show_name, episodeName, showID, file_description, episodeNum, episodeYear, episodeGenre, episodeLength)
+	my debug_log("post Process item" & " " & this_item & " " & show_name & " " & episodeName & " " & showID & " " & file_description & " " & episodeNum & " " & episodeYear & " " & episodeGenre & " " & episodeLength)
 	set AppleScript's text item delimiters to ":"
 	set the parts to every text item of episodeLength
 	set episodeLength2 to (60 * ((first item of parts) as integer)) + ((second item of parts) as integer)
@@ -2125,8 +2131,8 @@ on post_process_item(this_item, show_name, episodeName, id, file_description, ep
 				set this_track's album to show_name
 				set this_track's album artist to show_name
 				if (episodeName = "") then
-					set the name of this_track to show_name & " - " & id
-					set this_track's episode ID to id as string
+					set the name of this_track to show_name & " - " & showID
+					set this_track's episode ID to showID as string
 				else
 					set the name of this_track to episodeName
 					set this_track's episode ID to episodeName as string
@@ -2420,7 +2426,7 @@ on debug_log(log_string)
 			log log_string
 		end if
 		if (debug_level ≥ 2) then
-			set theLine to (do shell script "date  +'%Y-%m-%d %H:%M:%S'" as string) & " " & log_string
+			set theLine to (do shell script "date  +'%Y-%m-%d %H:%M:%S'" as string) & " " & quoted form of log_string
 			do shell script "echo '" & theLine & "' >> " & debug_file
 		end if
 	on error
