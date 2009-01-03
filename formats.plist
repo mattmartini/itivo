@@ -84,7 +84,7 @@
 			<key>name</key>
 			<string>Quicktime (H.264   10Mbps)</string>
 			<key>encoderVideoOptions</key>
-			<string>-of lavf -lavfopts format=ipod -ovc x264 -x264encopts bitrate=10000:bframes=0:level_idc=41:threads=auto:global_header -vf pp=lb,harddup,scale=-10:-1</string>
+			<string>-of lavf -lavfopts format=ipod -ovc x264 -x264encopts bitrate=10000:bframes=0:level_idc=41:threads=auto:global_header -vf harddup</string>
 			<key>encoderAudioOptions</key>
 			<string>-oac faac -faacopts mpeg=4:object=2:raw:br=256</string>
 			<key>encoderOtherOptions</key>
@@ -106,7 +106,7 @@
 			<key>name</key>
 			<string>Quicktime (H.264   5Mbps)</string>
 			<key>encoderVideoOptions</key>
-			<string>-of lavf -lavfopts format=ipod -ovc x264 -x264encopts bitrate=5000:bframes=0:level_idc=41:threads=auto:global_header -vf pp=lb,harddup,scale=-10:-1</string>
+			<string>-of lavf -lavfopts format=ipod -ovc x264 -x264encopts bitrate=5000:bframes=0:level_idc=41:threads=auto:global_header -vf harddup</string>
 			<key>encoderAudioOptions</key>
 			<string>-oac faac -faacopts mpeg=4:object=2:raw:br=192</string>
 			<key>encoderOtherOptions</key>
@@ -128,7 +128,7 @@
 			<key>name</key>
 			<string>Quicktime (H.264   3Mbps)</string>
 			<key>encoderVideoOptions</key>
-			<string>-of lavf -lavfopts format=ipod -ovc x264 -x264encopts bitrate=3000:bframes=0:level_idc=41:threads=auto:global_header -vf pp=lb,harddup,scale=-10:-1</string>
+			<string>-of lavf -lavfopts format=ipod -ovc x264 -x264encopts bitrate=3000:bframes=0:level_idc=41:threads=auto:global_header -vf harddup</string>
 			<key>encoderAudioOptions</key>
 			<string>-oac faac -faacopts mpeg=4:object=2:raw:br=192</string>
 			<key>encoderOtherOptions</key>
@@ -150,7 +150,7 @@
 			<key>name</key>
 			<string>Quicktime (H.264   1Mbps)</string>
 			<key>encoderVideoOptions</key>
-			<string>-of lavf -lavfopts format=ipod -ovc x264 -x264encopts bitrate=1000:bframes=0:level_idc=41:threads=auto:global_header -vf pp=lb,harddup,scale=-10:-1</string>
+			<string>-of lavf -lavfopts format=ipod -ovc x264 -x264encopts bitrate=1000:bframes=0:level_idc=41:threads=auto:global_header -vf harddup</string>
 			<key>encoderAudioOptions</key>
 			<string>-oac faac -faacopts mpeg=4:object=2:raw:br=128</string>
 			<key>encoderOtherOptions</key>
@@ -172,7 +172,7 @@
 			<key>name</key>
 			<string>Quicktime (H.264   256kbps)</string>
 			<key>encoderVideoOptions</key>
-			<string>-of lavf -lavfopts format=ipod -ovc x264 -x264encopts bitrate=128:bframes=0:level_idc=41:threads=auto:global_header -vf pp=lb,harddup,scale=-10:-1</string>
+			<string>-of lavf -lavfopts format=ipod -ovc x264 -x264encopts bitrate=128:bframes=0:level_idc=41:threads=auto:global_header -vf harddup</string>
 			<key>encoderAudioOptions</key>
 			<string>-oac faac -faacopts mpeg=4:object=2:raw:br=128</string>
 			<key>encoderOtherOptions</key>

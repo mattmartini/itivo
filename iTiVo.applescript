@@ -1523,7 +1523,7 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 						if currentProgress > 100 then
 							set currentProgress to 100
 						end if
-						set contents of text field "status2" to (timeOn as string) & " processed      (" & (currentPercent as string) & "%"
+						set contents of text field "status2" to (timeOn as string) & " processed      (" & (currentPercent as string) & "% )"
 					end try
 					delay 0.5
 				end repeat
@@ -1784,7 +1784,6 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 		my debug_log("Running: " & quoted form of shellCmd)
 		try
 			set shellCmdResult to do shell script shellCmd
-			my debug_log("Result: " & shellCmdResult)
 		end try
 	end if
 	
@@ -1815,7 +1814,6 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 		my debug_log("Running: " & shellCmd)
 		try
 			set shellCmdResult to do shell script shellCmd
-			my debug_log("Result: " & shellCmdResult)
 		end try
 	end if
 	
