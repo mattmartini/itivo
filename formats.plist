@@ -392,7 +392,7 @@
 			<key>name</key>
 			<string>DVD</string>
 			<key>encoderVideoOptions</key>
-			<string>-ovc lavc -of mpeg -mpegopts format=dvd:tsaf -vf scale=720:480,harddup -lavcopts vcodec=mpeg2video:vrc_buf_size=1835:vrc_maxrate=9800:vbitrate=5000:keyint=15:trell:mbd=2:precmp=2:subcmp=2:cmp=2:dia=-10:predia=-10:cbp:mv0:vqmin=1:lmin=1:dc=10:vstrict=0:aspect=16/9</string>
+			<string>-ovc lavc -of mpeg -mpegopts format=dvd:tsaf:muxrate=36000 -vf scale=720:480,harddup -lavcopts vcodec=mpeg2video:vrc_buf_size=1835:vrc_maxrate=9800:vbitrate=5000:keyint=15:trell:mbd=2:precmp=2:subcmp=2:cmp=2:dia=-10:predia=-10:cbp:mv0:vqmin=1:lmin=1:dc=10:vstrict=0:aspect=16/9</string>
 			<key>encoderAudioOptions</key>
 			<string>-srate 48000 -af lavcresample=48000 -oac lavc -lavcopts acodec=mp2:abitrate=192</string>
 			<key>encoderOtherOptions</key>
