@@ -4,7 +4,7 @@
   # My program crashes / I get 'mencoder' errors / I get tivodecode errors
     iTiVo is actually a front-end for several programs written by multiple people.  Many of these programs are not perfect (and iTiVo has its own bugs).  If you report bugs in the interface above (under Issues), I will hopefully get around to fixing it.  However, it may be related to underlying programs which I have no control over. The short version:  sorry.  One thing to always try is a different download format, or a different encoder (for example, HandBrake iPhone instead of iPhone).
   # This program is buggy!
-    I only have a tivo 3 and an intel iMac running Leopard to test with.  I appreciate bug reports.
+    I only have a tivo 3 and an intel iMac running Leopard to test with.  I appreciate bug reports. But keep in mind I'm working on this in my spare time and am not charging you anything...
   # I clicked "subscribe" but it's not downloading all episodes of CSI!
     Subscribing only downloads 'future' episodes that show up on the tivo AFTER you started the subscription.  If you want to download all the CSI's currently on your tivo, select the table column heading 'show' (to sort all shows by name), find the first CSI and click on it.  Find the last CSI and shift-click on it.   Then select "Add Shows to Queue"
   # How do I get "The Daily Show" onto my iPhone automatically?
