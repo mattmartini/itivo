@@ -16,7 +16,9 @@
   # I managed to hide the Show Description drawer
     To unhide the show description drawer, click the little triangle on the top right of the main window.
   # I chose a download format and Quicktime will not play my video
-    Some formats are not inteded for playing on your computer, and quicktime is unable to play them.  Read the later subsection about download formats for advice.
+    Some formats are not intended for playing on your computer, and quicktime is unable to play them.  Read the later subsection about download formats for advice.
+  # The reported Hard Drive size is incorrect.
+    Tivo doesn't actually let iTiVo know the size of the hard drive.  So iTiVo tries to figure it out based on how much space is taken up by shows.  This generally works when you have Suggestions enabled.  You can correct the size by directly editting the number, but be aware that a 20G hard drive doesn't actually hold 20G of data.  So a safe guess is to go with 90% of the size of the hard drive.
   # Is it supposed to be *this* slow?
     Several things affect the speed of the download:
     * Model of Tivo.  S3 is fastest, then HD then S2.
