@@ -27,6 +27,8 @@
     * Format you are converting to.  The high resolution, high quality formats take a lot of processing power from your computer.
     * The quality of your Tivo->computer network.  Wired 100Mbps will not be fully utilized, but is your best connection.  Wireless will slow it down somewhat.
     Over a wired connection, from a TiVo S3, converting to iPhone, I can usually get a 1000 megabyte 30 minute show down in about 20 mins. Use those settings as a starting point to see.  If you're seeing MUCH worse times, then something is wrong.
+  # What should I do if I need it to download faster?
+    If you really need the faster downloads and are ok with using up more hard drive space, you should probably select the 'decrypt' format.  And install [http://www.videolan.org/vlc/download-macosx.html VLC] to view the downloaded movie.  It will download as fast as the tivo will allow, and do no conversion whatsoever.
 
 == Download Formats ==
   # I want the original mpeg-2 from the tivo.
