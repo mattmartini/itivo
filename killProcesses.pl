@@ -2,7 +2,7 @@
 
 # going through in order trying to kill gently first, and then again hard
 
-@tokill = ("curl", "http-fetcher.pl", "tivodecode", "comskip", "mencoder", "HandBrakeCLI", "osascript", "tivo-decoder.pl", "remove-commercials.pl", "re-encoder.pl", "cat", "tee" );
+@tokill = ("tivodecode", "curl", "http-fetcher.pl", "comskip", "mencoder", "HandBrakeCLI", "osascript", "tivo-decoder.pl", "remove-commercials.pl", "re-encoder.pl", "cat", "tee" );
 
 foreach $procname (@tokill) {
 	$processes = `ps -ww -U $ENV{'USER'} -o pid,command | grep -e 'iTiVo'`;
