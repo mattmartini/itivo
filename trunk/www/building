@@ -15,6 +15,22 @@ HANDBRAKE=HandBrake-0.9.3
   export CFLAGS="-isysroot /Developer/SDKs/MacOSX10.4u.sdk -arch i386 -arch ppc7400"
   export CPPFLAGS=""
   export LDFLAGS="-arch i386 -arch ppc7400 -Wl,-syslibroot,/Developer/SDKs/MacOSX10.4u.sdk"
+
+  cd $SRCDIR/streambaby
+#  find . -name \*.java | xargs -n 1 $SRCDIR/remove_override.pl
+  ant clean
+  ant
+  if [ "$?" -ne "0" ]; then
+      echo "Failed to build streambaby"
+      exit 1
+  fi
+  cd dist/
+  rm *-src.zip
+  rm -rf streambaby ../../binaries/streambaby
+  unzip streambaby*.zip
+  rm streambaby*.zip
+  mv streambaby* ../../binaries/streambaby
+
   cd $SRCDIR/tivodecode-0.2pre4
   make distclean
   ./configure --disable-dependency-tracking && make
@@ -96,17 +112,22 @@ HANDBRAKE=HandBrake-0.9.3
   fi
   cp ./mencoder ../binaries/mencoder-i386
 
-   export CFLAGS='-isysroot /Developer/SDKs/MacOSX10.4u.sdk -arch i386'
-   export CXXFLAGS='-isysroot /Developer/SDKs/MacOSX10.4u.sdk -arch i386'
+   export CFLAGS='-arch i386'
+   export CXXFLAGS='-arch i386'
    export CPPFLAGS='-arch i386'
-   export LDFLAGS='-arch i386 -Wl,-syslibroot,/Developer/SDKs/MacOSX10.4u.sdk'
-   cd $SRCDIR/ffmpeg
+   export LDFLAGS='-arch i386'
+  cd $SRCDIR/ffmpeg
   make distclean
-  ./configure --arch=i386 --disable-vhook --disable-shared --enable-static --enable-pthreads --disable-mmx --enable-gpl --enable-libmp3lame --enable-libfaac --enable-libfaad --enable-libx264 --enable-swscale --extra-cflags="-I$SRCDIR/$LAME/include -I$SRCDIR/faad2/include -I$SRCDIR/faac/include -I$SRCDIR/x264" --extra-ldflags="-L$SRCDIR/$LAME/libmp3lame/.libs -L$SRCDIR/faad2/libfaad/.libs -L$SRCDIR/faac/libfaac/.libs -L$SRCDIR/x264/" && make
+  ./configure --arch=i386 --disable-vhook --disable-static --enable-shared --enable-pthreads --disable-mmx --enable-gpl --enable-libmp3lame --enable-libfaac --enable-libfaad --enable-libx264 --enable-swscale --extra-cflags="-I$SRCDIR/$LAME/include -I$SRCDIR/faad2/include -I$SRCDIR/faac/include -I$SRCDIR/x264" --extra-ldflags="-L$SRCDIR/$LAME/libmp3lame/.libs -L$SRCDIR/faad2/libfaad/.libs -L$SRCDIR/faac/libfaac/.libs -L$SRCDIR/x264/" && make
   if [ "$?" -ne "0" ]; then
       echo "Failed to build i386 ffmpeg"
       exit 1
   fi
+  cp ./libavutil/libavutil.dylib ../binaries/libavutil.dylib.i386
+  cp ./libavformat/libavformat.dylib ../binaries/libavformat.dylib.i386
+  cp ./libavcodec/libavcodec.dylib ../binaries/libavcodec.dylib.i386
+  cp ./libavdevice/libavdevice.dylib ../binaries/libavdevice.dylib.i386
+  cp ./libswscale/libswscale.dylib ../binaries/libswscale.dylib.i386
   cp ./ffmpeg ../binaries/ffmpeg-i386
 
   if [ x"$ONLYX86" = x"yes" ] ; then
@@ -174,20 +195,41 @@ if ($arg eq "-p") {
   rm uname
   cp ./mencoder ../binaries/mencoder-ppc
 
-  cd $SRCDIR/ffmpeg
-  make distclean
-  ./configure --arch=ppc --cpu=G4 --disable-vhook --disable-shared --enable-static --enable-pthreads --disable-mmx --enable-gpl --enable-libmp3lame --enable-libfaac --enable-libfaad --enable-libx264 --enable-swscale --extra-cflags="-DHAVE_LLRINT -I$SRCDIR/$LAME/include -I$SRCDIR/faad2/include -I$SRCDIR/faac/include -I$SRCDIR/x264" --extra-ldflags="-L$SRCDIR/$LAME/libmp3lame/.libs -L$SRCDIR/faad2/libfaad/.libs -L$SRCDIR/faac/libfaac/.libs -L$SRCDIR/x264/" && make
+   export CFLAGS='-arch ppc7400'
+   export CXXFLAGS='-arch ppc7400'
+   export CPPFLAGS='-arch ppc7400'
+   export LDFLAGS='-arch ppc7400'
+   cd $SRCDIR/ffmpeg
+   make distclean
+   ./configure --arch=ppc --cpu=G4 --disable-vhook --enable-shared --disable-static --enable-pthreads --disable-mmx --enable-gpl --enable-libmp3lame --enable-libfaac --enable-libfaad --enable-libx264 --enable-swscale --extra-cflags="-DHAVE_LLRINT -I$SRCDIR/$LAME/include -I$SRCDIR/faad2/include -I$SRCDIR/faac/include -I$SRCDIR/x264" --extra-ldflags="-L$SRCDIR/$LAME/libmp3lame/.libs -L$SRCDIR/faad2/libfaad/.libs -L$SRCDIR/faac/libfaac/.libs -L$SRCDIR/x264/" && make
   if [ "$?" -ne "0" ]; then
-      echo "Failed to build ppc ffmpeg"
+      echo "Failed to build ppc ffmpeg shared libraries"
       exit 1
   fi
+  cp ./libavutil/libavutil.dylib ../binaries/libavutil.dylib.ppc
+  cp ./libavformat/libavformat.dylib ../binaries/libavformat.dylib.ppc
+  cp ./libavcodec/libavcodec.dylib ../binaries/libavcodec.dylib.ppc
+  cp ./libavdevice/libavdevice.dylib ../binaries/libavdevice.dylib.ppc
+  cp ./libswscale/libswscale.dylib ../binaries/libswscale.dylib.ppc
   cp ./ffmpeg ../binaries/ffmpeg-ppc
 
   cd $SRCDIR/binaries
+  rm -rf "../pytivox/streambaby"
+  cp -R streambaby "../pytivox/"
   lipo -create mencoder-i386 mencoder-ppc -output mencoder
   rm -f mencoder-*
   lipo -create ffmpeg-i386 ffmpeg-ppc -output ffmpeg
   rm -f ffmpeg-*
-  strip *
+  for x in libavutil libavformat libavcodec libavdevice libswscale;  do  echo $x 
+     lipo -create $x.dylib.ppc $x.dylib.i386 -output $x.dylib
+  done
   cp comskip mencoder tivodecode AtomicParsley "../itivo/External Software/"
-  cp ffmpeg "../pytivox/External Software/"
+  (cd "../itivo/External Software" && strip *)
+  cp ffmpeg "../pytivox/External Software/ffmpeg.bin"
+  echo '#!/bin/sh' > "../pytivox/External Software/ffmpeg"
+  echo 'export DYLD_LIBRARY_PATH=/Applications/pyTivoX.app/Contents/Resources' >> "../pytivox/External Software/ffmpeg"
+  echo '$0.bin "$@"' >> "../pytivox/External Software/ffmpeg"
+  chmod 0755 "../pytivox/External Software/ffmpeg"
+  cp *.dylib "../pytivox/External Software/"
+  (cd "../pytivox/External Software/" && strip ffmpeg.bin)
+  
