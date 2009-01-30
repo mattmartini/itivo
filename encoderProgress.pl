@@ -36,6 +36,14 @@ if ($encoder eq "mencoder") {
 			$lasttimeremain=$3;
     }
 	}
+} elsif ($encoder eq "ffmpeg") {
+	while ($line = <CURLFILE>) {
+		if ($line =~ /.*time=([\.[:digit:]]+)/)
+			$lasttime=$1;
+			$lastpercent=100;
+			$lasttimeremain=200;
+    }
+	}
 }
 print "$lasttime $lastpercent $lasttimeremain\n";
 close(CURLFILE);

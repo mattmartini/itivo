@@ -62,7 +62,7 @@
 											<object class="NSTextField" id="143724936">
 												<reference key="NSNextResponder" ref="658555387"/>
 												<int key="NSvFlags">268</int>
-												<string key="NSFrame">{{145, 350}, {124, 17}}</string>
+												<string key="NSFrame">{{85, 350}, {114, 17}}</string>
 												<reference key="NSSuperview" ref="658555387"/>
 												<bool key="NSEnabled">YES</bool>
 												<object class="NSTextFieldCell" key="NSCell" id="384540301">
@@ -98,7 +98,7 @@
 											<object class="NSTextField" id="535943165">
 												<reference key="NSNextResponder" ref="658555387"/>
 												<int key="NSvFlags">268</int>
-												<string key="NSFrame">{{274, 348}, {162, 22}}</string>
+												<string key="NSFrame">{{204, 348}, {162, 22}}</string>
 												<reference key="NSSuperview" ref="658555387"/>
 												<bool key="NSEnabled">YES</bool>
 												<object class="NSTextFieldCell" key="NSCell" id="213100521">
@@ -196,11 +196,15 @@
 												<object class="NSPopUpButtonCell" key="NSCell" id="780891851">
 													<int key="NSCellFlags">71433792</int>
 													<int key="NSCellFlags2">2048</int>
-													<reference key="NSSupport" ref="26"/>
+													<object class="NSFont" key="NSSupport" id="599265935">
+														<string key="NSName">LucidaGrande</string>
+														<double key="NSSize">9.000000e+00</double>
+														<int key="NSfFlags">16</int>
+													</object>
 													<reference key="NSControlView" ref="817502784"/>
 													<int key="NSButtonFlags">109199615</int>
 													<int key="NSButtonFlags2">1</int>
-													<reference key="NSAlternateImage" ref="26"/>
+													<reference key="NSAlternateImage" ref="599265935"/>
 													<string key="NSAlternateContents"/>
 													<object class="NSMutableString" key="NSKeyEquivalent">
 														<characters key="NS.bytes"/>
@@ -402,9 +406,9 @@
 													<int key="NSCellFlags">-2080244224</int>
 													<int key="NSCellFlags2">4194304</int>
 													<string key="NSContents"/>
-													<object class="NSFont" key="NSSupport" id="658169573">
+													<object class="NSFont" key="NSSupport">
 														<string key="NSName">LucidaGrande</string>
-														<double key="NSSize">1.100000e+01</double>
+														<double key="NSSize">1.000000e+01</double>
 														<int key="NSfFlags">16</int>
 													</object>
 													<reference key="NSControlView" ref="653562313"/>
@@ -422,7 +426,11 @@
 													<int key="NSCellFlags">67239424</int>
 													<int key="NSCellFlags2">0</int>
 													<string key="NSContents">Create subdirectories for shows</string>
-													<reference key="NSSupport" ref="658169573"/>
+													<object class="NSFont" key="NSSupport" id="658169573">
+														<string key="NSName">LucidaGrande</string>
+														<double key="NSSize">1.100000e+01</double>
+														<int key="NSfFlags">16</int>
+													</object>
 													<reference key="NSControlView" ref="134151147"/>
 													<int key="NSButtonFlags">1210864127</int>
 													<int key="NSButtonFlags2">130</int>
@@ -534,6 +542,28 @@
 													<reference key="NSControlView" ref="768809760"/>
 													<reference key="NSBackgroundColor" ref="617283945"/>
 													<reference key="NSTextColor" ref="525175176"/>
+												</object>
+											</object>
+											<object class="NSButton" id="842291475">
+												<reference key="NSNextResponder" ref="658555387"/>
+												<int key="NSvFlags">268</int>
+												<string key="NSFrame">{{403, 349}, {148, 18}}</string>
+												<reference key="NSSuperview" ref="658555387"/>
+												<bool key="NSEnabled">YES</bool>
+												<object class="NSButtonCell" key="NSCell" id="661477931">
+													<int key="NSCellFlags">-2080244224</int>
+													<int key="NSCellFlags2">0</int>
+													<string key="NSContents">Auto-connect at launch</string>
+													<reference key="NSSupport" ref="658169573"/>
+													<reference key="NSControlView" ref="842291475"/>
+													<int key="NSButtonFlags">1211912703</int>
+													<int key="NSButtonFlags2">130</int>
+													<reference key="NSNormalImage" ref="601198728"/>
+													<reference key="NSAlternateImage" ref="760251257"/>
+													<string key="NSAlternateContents"/>
+													<string key="NSKeyEquivalent"/>
+													<int key="NSPeriodicDelay">200</int>
+													<int key="NSPeriodicInterval">25</int>
 												</object>
 											</object>
 										</object>
@@ -1156,8 +1186,6 @@ eW91ciBIYXJkIERyaXZlIHdoaWxlIHByb2Nlc3NpbmcuA</string>
 						<reference key="object" ref="658555387"/>
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="143724936"/>
-							<reference ref="535943165"/>
 							<reference ref="29317554"/>
 							<reference ref="398307858"/>
 							<reference ref="817502784"/>
@@ -1175,6 +1203,9 @@ eW91ciBIYXJkIERyaXZlIHdoaWxlIHByb2Nlc3NpbmcuA</string>
 							<reference ref="1017443682"/>
 							<reference ref="134151147"/>
 							<reference ref="653562313"/>
+							<reference ref="842291475"/>
+							<reference ref="143724936"/>
+							<reference ref="535943165"/>
 						</object>
 						<reference key="parent" ref="86406616"/>
 					</object>
@@ -1812,6 +1843,20 @@ eW91ciBIYXJkIERyaXZlIHdoaWxlIHByb2Nlc3NpbmcuA</string>
 						<reference key="object" ref="129599287"/>
 						<reference key="parent" ref="848862638"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">285</int>
+						<reference key="object" ref="842291475"/>
+						<object class="NSMutableArray" key="children">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<reference ref="661477931"/>
+						</object>
+						<reference key="parent" ref="658555387"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">286</int>
+						<reference key="object" ref="661477931"/>
+						<reference key="parent" ref="842291475"/>
+					</object>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="flattenedProperties">
@@ -1957,6 +2002,9 @@ eW91ciBIYXJkIERyaXZlIHdoaWxlIHByb2Nlc3NpbmcuA</string>
 					<string>283.IBAttributePlaceholdersKey</string>
 					<string>283.IBPluginDependency</string>
 					<string>284.IBPluginDependency</string>
+					<string>285.IBAttributePlaceholdersKey</string>
+					<string>285.IBPluginDependency</string>
+					<string>286.IBPluginDependency</string>
 					<string>63.IBPluginDependency</string>
 					<string>63.ImportedFromIB2</string>
 					<string>92.IBAttributePlaceholdersKey</string>
@@ -2742,6 +2790,20 @@ IGlzIDEgaWYgdGhlIGRvd25sb2FkIGNvbXBsZXRlZA</string>
 					</object>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<object class="NSMutableDictionary">
+						<string key="NS.key.0">IBAppleScriptAttributeName</string>
+						<object class="IBAppleScriptInfoAttribute" key="NS.object.0">
+							<string key="name">IBAppleScriptAttributeName</string>
+							<reference key="object" ref="842291475"/>
+							<int key="appleScriptObjectID">0</int>
+							<int key="appleScriptScriptScope">0</int>
+							<nil key="appleScriptEventHandlerNames"/>
+							<string key="appleScriptScriptName">iTiVo.applescript</string>
+							<string key="appleScriptObjectName">shouldAutoConnect</string>
+						</object>
+					</object>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<reference ref="5"/>
 					<object class="NSMutableDictionary">
@@ -2860,7 +2922,7 @@ IGlzIDEgaWYgdGhlIGRvd25sb2FkIGNvbXBsZXRlZA</string>
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">284</int>
+			<int key="maxID">286</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">

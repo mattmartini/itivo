@@ -14,7 +14,7 @@ property targetDataSList : {}
 property IPA : ""
 property LaunchCount : 0
 property currentProgress : 0
-property autoConnect : 0
+property canAutoConnect : false
 property fullFileSize : 0
 property installedIdleHandler : 0
 property showName : ""
@@ -57,6 +57,7 @@ property SUFeedURL : "http://itivo.googlecode.com/svn/trunk/www/iTiVo.xml"
 property debugLog : false
 property downloadFirst : false
 property tivoSize : 1
+property shouldAutoConnect : true
 
 property panelWIndow : missing value
 property currentPrefsTab : "DownloadingTab"
@@ -156,7 +157,7 @@ on launched theObject
 	end if
 	set LaunchCount to LaunchCount + 1
 	setSettingsInUI()
-	if autoConnect = 1 then
+	if canAutoConnect = true and shouldAutoConnect = true then
 		my ConnectTiVo()
 	end if
 	setDrawers()
@@ -241,7 +242,7 @@ end getFormatsNames
 
 on readFormats()
 	set formatsList to {}
-	set myPath to path to me
+	set myLocalPath to path to me
 	try
 		set myExtraFormats to path to home folder as string
 		set myExtraFormats to myExtraFormats & "Library:Application Support:iTiVo:formats:"
@@ -249,7 +250,10 @@ on readFormats()
 	on error
 		set other_formats to {}
 	end try
-	set files_list to {(myPath & "Contents:Resources:formats.plist") as string}
+	set prev_delim to AppleScript's text item delimiters
+	set AppleScript's text item delimiters to ""
+	set files_list to {(myLocalPath & "Contents:Resources:formats.plist" as string)}
+	my debug_log("Using " & files_list)
 	repeat with filename in other_formats
 		set files_list to files_list & (myExtraFormats & filename)
 	end repeat
@@ -279,6 +283,7 @@ on readFormats()
 			end try
 		end tell
 	end repeat
+	set AppleScript's text item delimiters to prev_delim
 end readFormats
 
 on write_out_custom_format(outputfile, baseformat, newfilenameExtension, newencoderUsed, newencoderVideoOptions, newencoderAudioOptions, newencoderOtherOptions)
@@ -314,6 +319,7 @@ on setupPrefsTab(tabName)
 	tell panelWIndow
 		if (tabName = "DownloadingTab") then
 			set contents of text field "MAK" of view "DownloadingView" of tab view "TopTab" to MAK
+			set state of button "shouldAutoConnect" of view "DownloadingView" of tab view "TopTab" to shouldAutoConnect
 			set contents of text field "Location" of view "DownloadingView" of tab view "TopTab" to DL
 			set state of button "makeSubdirs" of view "DownloadingView" of tab view "TopTab" to makeSubdirs
 			set formats to my getFormatsNames()
@@ -355,7 +361,6 @@ on setupPrefsTab(tabName)
 			end if
 			set state of button "txtMetaData" of view "DownloadingView" of tab view "TopTab" to txtMetaData
 			set state of button "tivoMetaData" of view "DownloadingView" of tab view "TopTab" to tivoMetaData
-			
 		else if (tabName = "ComSkipTab") then
 			if (not my formatCompatComSkip(format)) then
 				set comSkip to 0
@@ -388,6 +393,7 @@ on recordPrefsTab()
 	tell panelWIndow
 		if (currentPrefsTab = "DownloadingTab") then
 			set MAK to contents of text field "MAK" of view "DownloadingView" of tab view "TopTab"
+			set shouldAutoConnect to state of button "shouldAutoConnect" of view "DownloadingView" of tab view "TopTab" as boolean
 			set DL to contents of text field "Location" of view "DownloadingView" of tab view "TopTab"
 			set makeSubdirs to state of button "makeSubdirs" of view "DownloadingView" of tab view "TopTab" as boolean
 			set format to title of popup button "format" of view "DownloadingView" of tab view "TopTab"
@@ -471,6 +477,7 @@ on registerSettings()
 		make new default entry at end of default entries with properties {name:"DLHistory", contents:""}
 		make new default entry at end of default entries with properties {name:"targetDataSList", contents:{}}
 		make new default entry at end of default entries with properties {name:"tivoSize", contents:1}
+		make new default entry at end of default entries with properties {name:"shouldAutoConnect", contents:shouldAutoConnect}
 		register
 	end tell
 end registerSettings
@@ -513,6 +520,7 @@ on readSettings()
 			set makeSubdirs to contents of default entry "makeSubdirs"
 			set txtMetaData to contents of default entry "txtMetaData"
 			set tivoMetaData to contents of default entry "tivoMetaData"
+			set shouldAutoConnect to contents of default entry "shouldAutoConnect"
 		end try
 		try
 			set debugLog to contents of default entry "debugLog"
@@ -565,7 +573,7 @@ killall mDNS"
 						if text 17 thru 19 of j is "443" then
 							set IPA to first word of j
 							set contents of text field "IP" of window "iTiVo" to IPA
-							set autoConnect to 1
+							set canAutoConnect to true
 						end if
 					end try
 				end repeat
@@ -624,6 +632,7 @@ on writeSettings()
 			set contents of default entry "debugLog" to debugLog
 			set contents of default entry "downloadFirst" to downloadFirst
 			set contents of default entry "tivoSize" to tivoSize
+			set contents of default entry "shouldAutoConnect" to shouldAutoConnect
 		end tell
 	on error
 		my debug_log("Failed to write out initial settings")
@@ -1006,6 +1015,7 @@ on selection changed theObject
 						set contents of text field "detailEpisodeNum" of drawer "Drawer2" to item 15 of parts
 						set contents of text field "detailDate" of drawer "Drawer2" to item 13 of parts
 					end if
+					set AppleScript's text item delimiters to ""
 				end if
 				if rowCount = 0 then
 					set enabled of button "queueButton" of box "topBox" of split view "splitView1" to false
@@ -1083,6 +1093,7 @@ on selection changed theObject
 						set contents of text field "detailEpisodeNum" of drawer "Drawer2" to item 15 of parts
 						set contents of text field "detailDate" of drawer "Drawer2" to item 13 of parts
 					end if
+					set AppleScript's text item delimiters to ""
 				end if
 				set enabled of button "deleteSubscriptionButton" of view "bottomRightView" of split view "splitView2" of box "bottomBox" of split view "splitView1" to false
 				if rowCount = 0 then
@@ -1309,6 +1320,7 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 				return 0
 			end if
 		end if
+		set AppleScript's text item delimiters to ""
 	end tell
 	set currentTry to 0
 	if (encoderUsed = "") then set encoderUsed to " "
@@ -1726,6 +1738,7 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 	set episodeLength2 to (60 * ((first item of parts) as integer)) + ((second item of parts) as integer)
 	set isMovie to oShowEpisode = "" and showEpisodeNum = "" and episodeLength2 > 70
 	set shouldSubdir to makeSubdirs and not isMovie
+	set AppleScript's text item delimiters to ""
 	
 	if (complete = true) then
 		set myPath to my prepareCommand(POSIX path of (path to me))
@@ -1746,6 +1759,7 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 			set showChannelNum to ""
 			set showChannelCall to ""
 		end if
+		set AppleScript's text item delimiters to ""
 	end if
 	
 	if (complete = true and shouldSubdir = true) then
@@ -1970,6 +1984,7 @@ on ConnectTiVo()
 			set theURL to theURL & (((100 - per_sum) as integer) as string)
 			set myURL to "33CCFF|003300|FF3333|CC9900|33CC00|9900CC|00CC00|999999"
 			set theURL to theURL & "&chco=" & my encode_text(myURL, true, true)
+			set AppleScript's text item delimiters to ""
 			my debug_log("fetching : " & theURL)
 			set URLWithString to call method "URLWithString:" of class "NSURL" with parameter theURL
 			set requestWithURL to call method "requestWithURL:" of class "NSURLRequest" with parameter URLWithString
@@ -1977,6 +1992,7 @@ on ConnectTiVo()
 			call method "loadRequest:" of mainFrame with parameter requestWithURL
 			
 			-- Now we work on the actual shows
+			set AppleScript's text item delimiters to "|"
 			set showcount to 0
 			set update views of targetData to false
 			delete every data row of targetData
@@ -2042,6 +2058,7 @@ on ConnectTiVo()
 					set showcount to showcount + 1
 				end if
 			end repeat
+			set AppleScript's text item delimiters to "|"
 			set update views of targetData to true
 			repeat with currentItem in addedItems
 				my updateSubscriptionList(item 1 of currentItem, item 2 of currentItem, true)
@@ -2100,10 +2117,11 @@ end generate_text_metadata
 
 on post_process_item(this_item, show_name, episodeName, showID, file_description, episodeNum, episodeYear, episodeGenre, episodeLength)
 	my debug_log("post Process item" & " " & this_item & " " & show_name & " " & episodeName & " " & showID & " " & file_description & " " & episodeNum & " " & episodeYear & " " & episodeGenre & " " & episodeLength)
+	set prev_delim to AppleScript's text item delimiters
 	set AppleScript's text item delimiters to ":"
 	set the parts to every text item of episodeLength
 	set episodeLength2 to (60 * ((first item of parts) as integer)) + ((second item of parts) as integer)
-	set AppleScript's text item delimiters to "|"
+	set AppleScript's text item delimiters to prev_delim
 	
 	try
 		set this_item2 to (this_item as string) as POSIX file
@@ -2190,12 +2208,13 @@ end registerGrowl
 on checkDL()
 	my debug_log("checkDL")
 	set FinderPath to (path to application "Finder") as string
+	set prev_delim to AppleScript's text item delimiters
 	set AppleScript's text item delimiters to ":"
 	set the parts to every text item of FinderPath
 	set the partsDL to every text item of ((DL as POSIX file) as string)
 	set HDName to first item of parts
 	set HDNameDL to first item of partsDL
-	set AppleScript's text item delimiters to "|"
+	set AppleScript's text item delimiters to prev_delim
 	
 	set DLLocation2 to (HDName & (DL as string)) as POSIX file
 	set DLLocation to (DL as POSIX file)
@@ -2217,12 +2236,13 @@ end checkDL
 on checkDLFile(showName)
 	my debug_log("CheckDLFile")
 	set FinderPath to (path to application "Finder") as string
+	set prev_delim to AppleScript's text item delimiters
 	set AppleScript's text item delimiters to ":"
 	set the parts to every text item of FinderPath
 	set the partsDL to every text item of ((DL as POSIX file) as string)
 	set HDName to first item of parts
 	set HDNameDL to first item of partsDL
-	set AppleScript's text item delimiters to "|"
+	set AppleScript's text item delimiters to prev_delim
 	
 	set DLLocation2 to (HDName & (DL as string)) as POSIX file
 	set DLLocation to (DL as POSIX file)

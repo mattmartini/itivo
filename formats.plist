@@ -184,6 +184,50 @@
 		</dict>
 		<dict>
 			<key>formatDescription</key>
+			<string>for faster encode (worse quality) video: 640x480 DivX 3 at 3000mbps audio: mp3 at 128kbs  NOTE: *MUST* install a codec (http://perian.org/)</string>
+			<key>comSkip</key>
+			<true/>
+			<key>filenameExtension</key>
+			<string>.mov</string>
+			<key>encoderUsed</key>
+			<string>mencoder</string>
+			<key>name</key>
+			<string>Quicktime fast (DivX 3)</string>
+			<key>encoderVideoOptions</key>
+			<string>-vf scale=640:480,harddup -ovc lavc -lavcopts vcodec=msmpeg4:vbitrate=3000:autoaspect</string>
+			<key>encoderAudioOptions</key>
+			<string>-oac mp3lame -lameopts br=128</string>
+			<key>encoderOtherOptions</key>
+			<string>-of lavf -lavfopts format=mov -hr-edl-seek</string>
+			<key>iTunes</key>
+			<true/>
+			<key>mustDownloadFirst</key>
+			<false/>
+		</dict>
+		<dict>
+			<key>formatDescription</key>
+			<string>for fastest encode (worst quality) video: 640x480 mpeg-1 at 3000mbps audio: mp2 at 128kbs</string>
+			<key>comSkip</key>
+			<true/>
+			<key>filenameExtension</key>
+			<string>.mpg</string>
+			<key>encoderUsed</key>
+			<string>mencoder</string>
+			<key>name</key>
+			<string>QuickTime superfast (mpeg-1)</string>
+			<key>encoderVideoOptions</key>
+			<string>-vf scale=640:480,harddup -ovc lavc -lavcopts vcodec=mpeg1video:vbitrate=3000</string>
+			<key>encoderAudioOptions</key>
+			<string>-oac lavc -lavcopts acodec=mp2:abitrate=128</string>
+			<key>encoderOtherOptions</key>
+			<string>-of lavf -lavfopts format=mpeg -hr-edl-seek</string>
+			<key>iTunes</key>
+			<true/>
+			<key>mustDownloadFirst</key>
+			<true/>
+		</dict>
+		<dict>
+			<key>formatDescription</key>
 			<string>for Microsoft Zune (untested) video: 320x240 h.264 at 384kbps audio: mp3 at 192kbs</string>
 			<key>comSkip</key>
 			<true/>
@@ -294,7 +338,29 @@
 		</dict>
 		<dict>
 			<key>formatDescription</key>
-			<string>for uploading to YouTube video: 640x360 h.264 at 256kbps audio: aac at 128kbs  *MAKE SURE* your video is under 10 minutes</string>
+			<string>YouTube High-Def video: 1280x720 h.264 at 1.5Mbps audio: aac at 192kbs  Note:  only YouTube Partners can upload this</string>
+			<key>filenameExtension</key>
+			<string>.mp4</string>
+			<key>comSkip</key>
+			<true/>
+			<key>encoderUsed</key>
+			<string>mencoder</string>
+			<key>name</key>
+			<string>YouTube HD</string>
+			<key>encoderVideoOptions</key>
+			<string>-ovc x264 -x264encopts nocabac:level_idc=30:bitrate=1500:threads=auto:bframes=0:global_header -vf scale=1280:720,harddup</string>
+			<key>encoderAudioOptions</key>
+			<string>-af volume=13:1 -oac faac -faacopts mpeg=4:object=2:raw:br=192</string>
+			<key>encoderOtherOptions</key>
+			<string>-hr-edl-seek -of lavf -lavfopts format=ipod </string>
+			<key>iTunes</key>
+			<true/>
+			<key>mustDownloadFirst</key>
+			<false/>
+		</dict>
+		<dict>
+			<key>formatDescription</key>
+			<string>for uploading to YouTube video: 640x360 h.264 at 512kbps audio: aac at 128kbs  *MAKE SURE* your video is under 10 minutes</string>
 			<key>filenameExtension</key>
 			<string>.mp4</string>
 			<key>comSkip</key>
@@ -304,11 +370,11 @@
 			<key>name</key>
 			<string>YouTube</string>
 			<key>encoderVideoOptions</key>
-			<string>-of lavf -lavfopts format=ipod -ovc x264 -x264encopts nocabac:level_idc=30:bitrate=128:threads=auto:bframes=0:global_header -vf dsize=640:360:0,harddup</string>
+			<string>-ovc x264 -x264encopts nocabac:level_idc=30:bitrate=512:threads=auto:bframes=0:global_header -vf scale=640:360,harddup</string>
 			<key>encoderAudioOptions</key>
 			<string>-af volume=13:1 -oac faac -faacopts mpeg=4:object=2:raw:br=128</string>
 			<key>encoderOtherOptions</key>
-			<string>-hr-edl-seek</string>
+			<string>-hr-edl-seek -of lavf -lavfopts format=ipod</string>
 			<key>iTunes</key>
 			<true/>
 			<key>mustDownloadFirst</key>
@@ -316,29 +382,31 @@
 		</dict>
 		<dict>
 			<key>formatDescription</key>
-			<string>MPEG-2 Program Stream intended for HD sources video: original resolution, mpeg-2 at 5Mbps audio: mp2 at 128kbs</string>
+			<string>MPEG-2 Program Stream intended for HD sources video: original resolution mpeg-2 at 5Mbps audio: mp2 at 128kbs  May not work in quicktime</string>
 			<key>comSkip</key>
 			<true/>
+			<key>New item</key>
+			<string></string>
 			<key>filenameExtension</key>
 			<string>.mpg</string>
 			<key>encoderUsed</key>
 			<string>mencoder</string>
 			<key>name</key>
-			<string>MPEG-2  HD ( 5Mbps )</string>
+			<string>MPEG-2  HD</string>
 			<key>encoderVideoOptions</key>
-			<string>-ovc lavc -of mpeg -mpegopts format=dvd:tsaf:muxrate=36000 -vf pp=lb,scale=-1:-1,harddup -lavcopts vcodec=mpeg2video:vrc_buf_size=18350:vrc_maxrate=9800:vbitrate=5000:keyint=15:trell:mbd=2:precmp=2:subcmp=2:cmp=2:dia=-10:predia=-10:cbp:mv0:vqmin=1:lmin=1:dc=10:vstrict=0:autoaspect</string>
+			<string>-ovc lavc -vf harddup -lavcopts vcodec=mpeg2video:vrc_buf_size=18350:vrc_maxrate=9800:vbitrate=5000:keyint=15:trell:mbd=2:precmp=2:subcmp=2:cmp=2:dia=-10:predia=-10:cbp:mv0:vqmin=1:lmin=1:dc=10:vstrict=0:autoaspect</string>
 			<key>encoderAudioOptions</key>
-			<string>-srate 48000 -af lavcresample=48000 -oac lavc -lavcopts acodec=mp2:abitrate=128</string>
+			<string>-srate 48000 -af lavcresample=48000 -oac lavc -lavcopts acodec=mp2:abitrate=192</string>
 			<key>encoderOtherOptions</key>
-			<string>-hr-edl-seek</string>
+			<string>-hr-edl-seek -of lavf -lavfopts format=dvd</string>
 			<key>iTunes</key>
-			<true/>
-			<key>mustDownloadFirst</key>
 			<false/>
+			<key>mustDownloadFirst</key>
+			<true/>
 		</dict>
 		<dict>
 			<key>formatDescription</key>
-			<string>MPEG-2 Program Stream video: original resolution, mpeg-2 at 1Mbps audio: mp2 at 128kbs</string>
+			<string>MPEG-2 Program Stream video: original resolution, mpeg-2 at 1Mbps audio: mp2 at 128kbs  May not work in Quicktime</string>
 			<key>comSkip</key>
 			<true/>
 			<key>filenameExtension</key>
@@ -348,37 +416,15 @@
 			<key>name</key>
 			<string>MPEG-2   ( 1Mbps )</string>
 			<key>encoderVideoOptions</key>
-			<string>-ovc lavc -of mpeg -mpegopts format=dvd:tsaf:muxrate=36000 -vf pp=lb,scale=-1:-1,harddup -lavcopts vcodec=mpeg2video:vrc_buf_size=1835:vrc_maxrate=2400:vbitrate=1000:keyint=15:trell:mbd=2:precmp=2:subcmp=2:cmp=2:dia=-10:predia=-10:cbp:mv0:vqmin=1:lmin=1:dc=10:vstrict=0:autoaspect</string>
+			<string>-ovc lavc -vf pp=lb,scale=-1:-1,harddup -lavcopts vcodec=mpeg2video:vrc_buf_size=1835:vrc_maxrate=2400:vbitrate=1000:keyint=15:trell:mbd=2:precmp=2:subcmp=2:cmp=2:dia=-10:predia=-10:cbp:mv0:vqmin=1:lmin=1:dc=10:vstrict=0:autoaspect</string>
 			<key>encoderAudioOptions</key>
 			<string>-srate 48000 -af lavcresample=48000 -oac lavc -lavcopts acodec=mp2:abitrate=128</string>
 			<key>encoderOtherOptions</key>
-			<string>-hr-edl-seek</string>
+			<string>-hr-edl-seek -of lavf -lavfopts format=dvd</string>
 			<key>iTunes</key>
-			<true/>
-			<key>mustDownloadFirst</key>
 			<false/>
-		</dict>
-		<dict>
-			<key>formatDescription</key>
-			<string>MPEG-2 Program Stream video: original resolution, mpeg-2 at 128kbps audio: mp2 at 128kbs</string>
-			<key>comSkip</key>
-			<true/>
-			<key>filenameExtension</key>
-			<string>.mpg</string>
-			<key>encoderUsed</key>
-			<string>mencoder</string>
-			<key>name</key>
-			<string>MPEG-2   ( 250 kbps )</string>
-			<key>encoderVideoOptions</key>
-			<string>-ovc lavc -of mpeg -mpegopts format=dvd:tsaf:muxrate=36000 -vf pp=lb,scale=-1:-1,harddup -lavcopts vcodec=mpeg2video:vrc_buf_size=1835:vrc_maxrate=256:vbitrate=128:keyint=15:trell:mbd=2:precmp=2:subcmp=2:cmp=2:dia=-10:predia=-10:cbp:mv0:vqmin=1:lmin=1:dc=10:vstrict=0:autoaspect</string>
-			<key>encoderAudioOptions</key>
-			<string>-srate 48000 -af lavcresample=48000 -oac lavc -lavcopts acodec=mp2:abitrate=128</string>
-			<key>encoderOtherOptions</key>
-			<string>-hr-edl-seek</string>
-			<key>iTunes</key>
-			<true/>
 			<key>mustDownloadFirst</key>
-			<false/>
+			<true/>
 		</dict>
 		<dict>
 			<key>formatDescription</key>
@@ -392,11 +438,33 @@
 			<key>name</key>
 			<string>DVD</string>
 			<key>encoderVideoOptions</key>
-			<string>-ovc lavc -of mpeg -mpegopts format=dvd:tsaf:muxrate=36000 -vf scale=720:480,harddup -lavcopts vcodec=mpeg2video:vrc_buf_size=1835:vrc_maxrate=9800:vbitrate=5000:keyint=15:trell:mbd=2:precmp=2:subcmp=2:cmp=2:dia=-10:predia=-10:cbp:mv0:vqmin=1:lmin=1:dc=10:vstrict=0:aspect=16/9</string>
+			<string>-ovc lavc -vf scale=720:480,harddup -lavcopts vcodec=mpeg2video:vrc_buf_size=1835:vrc_maxrate=9800:vbitrate=5000:keyint=15:trell:mbd=2:precmp=2:subcmp=2:cmp=2:dia=-10:predia=-10:cbp:mv0:vqmin=1:lmin=1:dc=10:vstrict=0:autoaspect</string>
 			<key>encoderAudioOptions</key>
 			<string>-srate 48000 -af lavcresample=48000 -oac lavc -lavcopts acodec=mp2:abitrate=192</string>
 			<key>encoderOtherOptions</key>
-			<string>-hr-edl-seek</string>
+			<string>-hr-edl-seek -of lavf -lavfopts format=dvd</string>
+			<key>iTunes</key>
+			<false/>
+			<key>mustDownloadFirst</key>
+			<true/>
+		</dict>
+		<dict>
+			<key>formatDescription</key>
+			<string>External Encoder:  ffmpeg video: original resolution h.264 audio: aac 128kbps  NOTE:  Must have pyTivoX installed for ffmpeg support NOTE: for testing purposes.. Not stable...</string>
+			<key>comSkip</key>
+			<true/>
+			<key>filenameExtension</key>
+			<string>.mp4</string>
+			<key>encoderUsed</key>
+			<string>ffmpeg</string>
+			<key>name</key>
+			<string>FFmpeg (h.264/aac)</string>
+			<key>encoderVideoOptions</key>
+			<string>-vcodec libx264 -sameq</string>
+			<key>encoderAudioOptions</key>
+			<string>-acodec libfaac -ab 128k</string>
+			<key>encoderOtherOptions</key>
+			<string>-threads 0</string>
 			<key>iTunes</key>
 			<true/>
 			<key>mustDownloadFirst</key>
@@ -414,7 +482,7 @@
 			<key>name</key>
 			<string>ElGato Turbo.264 iPhone</string>
 			<key>encoderVideoOptions</key>
-			<string></string>
+			<string>iPhone</string>
 			<key>encoderAudioOptions</key>
 			<string></string>
 			<key>encoderOtherOptions</key>
@@ -580,7 +648,7 @@
 		</dict>
 		<dict>
 			<key>formatDescription</key>
-			<string>a direct download from your tivo, decrypted. UNPLAYABLE in quicktime. Can&apos;t be added to iTunes install VLC or Mplayer to view</string>
+			<string>a direct download from your tivo, decrypted. very fast download, but UNPLAYABLE in quicktime. Can&apos;t be added to iTunes install VLC or Mplayer to view</string>
 			<key>comSkip</key>
 			<false/>
 			<key>filenameExtension</key>
