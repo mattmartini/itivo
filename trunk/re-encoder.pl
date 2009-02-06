@@ -15,10 +15,14 @@ $TargetFile =~ s/:/-/g;
 $TargetFile =~ s/\//:/g;
 $Target = $DestDir.$TargetFile;
 
+$TivoDir = "$ENV{'USER'}";
+$TivoDir =~ tr/ :\//_../;
+$TivoDir = "/tmp/iTiVo-$TivoDir";
 
-$Src = "/tmp/iTiVo-$ENV{'USER'}/iTiVoDLPipe2.mpg";
-$Progress = "/tmp/iTiVo-$ENV{'USER'}/iTiVoDL2";
-$Edl = "/tmp/iTiVo-$ENV{'USER'}/iTiVoDLPipe2.edl";
+
+$Src = "$TivoDir/iTiVoDLPipe2.mpg";
+$Progress = "$TivoDir/iTiVoDL2";
+$Edl = "$TivoDir/iTiVoDLPipe2.edl";
 
 `touch $Edl`;
 $shellScript = "";
@@ -47,4 +51,4 @@ if ($Encoder eq "mencoder") {
 print "\n\n$shellScript\n\n";
 system($shellScript);
 
-`rm -f /tmp/iTiVo-$ENV{'USER'}/iTiVoDLPipe /tmp/iTiVo-$ENV{'USER'}/iTiVoDLPipe2.mpg`;
+`rm -f $TivoDir/iTiVoDLPipe $TivoDir/iTiVoDLPipe2.mpg`;

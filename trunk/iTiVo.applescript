@@ -114,7 +114,7 @@ end awake from nib
 
 on will open theObject
 	if name of theObject is "iTiVo" and already_launched = 0 then
-		set UserName to do shell script "whoami"
+		set UserName to do shell script "whoami | tr ' /:' '_..'"
 		try
 			set shellCmd to "mkdir -p /tmp/iTiVo-" & UserName
 			do shell script shellCmd
@@ -1339,7 +1339,7 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 		my performCancelDownload()
 		tell window "iTiVo"
 			try
-				set shellCmd to "rm -rf /tmp/iTiVo-" & UserName & "/iTiVoDLPipe*" & " /tmp/iTiVo-" & UserName & "/iTiVoTDC* /tmp/iTiVo-" & UserName & "/iTiVoDLMeta*"
+				set shellCmd to "rm -f /tmp/iTiVo-" & UserName & "/iTiVoDLPipe*" & " /tmp/iTiVo-" & UserName & "/iTiVoTDC* /tmp/iTiVo-" & UserName & "/iTiVoDLMeta*"
 				my debug_log(shellCmd)
 				do shell script shellCmd
 			end try
@@ -1763,19 +1763,27 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 	end if
 	
 	if (complete = true and shouldSubdir = true) then
-		my debug_log("Moving to subdir")
-		set DLDest to DL & safeOShowName
-		set newFile to DLDest & "/" & safeName & filenameExtension
-		set shellCmd to "mkdir -p " & quoted form of DLDest & " ;"
-		set shellCmd to shellCmd & " mv " & filePath & " " & quoted form of newFile
-		my debug_log("Running: " & shellCmd)
-		set shellCmdResult to do shell script shellCmd
-		my debug_log("Result: " & shellCmdResult)
+		try
+			my debug_log("Moving to subdir")
+			set DLDest to DL & safeOShowName
+			set newFile to (DLDest & "/" & safeName & filenameExtension)
+			tell window "iTiVo"
+				set contents of text field "status" to "Moving file to subdirectory " & DLDest
+			end tell
+			set shellCmd to "mkdir -p " & my prepareCommand(DLDest) as string
+			set shellCmd to shellCmd & ";  mv " & filePath & " " & my prepareCommand(newFile) as string
+			my debug_log("Running: " & shellCmd)
+			set shellCmdResult to do shell script shellCmd
+			my debug_log("Result: " & shellCmdResult)
+		end try
 	end if
 	
 	if (complete = true and tivoMetaData = true) then
 		my debug_log("Making tivo metadata")
-		set shellCmd to "cp /tmp/iTiVo-" & UserName & "/iTiVoDLMeta.xml " & quoted form of (DLDest & "/" & safeName) & ".xml"
+		tell window "iTiVo"
+			set contents of text field "status" to "Making TiVo Metadata " & DLDest & "/" & safeName & ".xml"
+		end tell
+		set shellCmd to "cp /tmp/iTiVo-" & UserName & "/iTiVoDLMeta.xml " & my prepareCommand(DLDest & "/" & safeName & ".xml") as string
 		my debug_log("Running: " & shellCmd)
 		set shellCmdResult to do shell script shellCmd
 		my debug_log("Result: " & shellCmdResult)
@@ -1783,6 +1791,9 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 	
 	if (complete = true and txtMetaData = true) then
 		my debug_log("Making pytivo txt data")
+		tell window "iTiVo"
+			set contents of text field "status" to "Making pyTivo Metadata " & newFile & ".txt"
+		end tell
 		my generate_text_metadata(newFile & ".txt", "/tmp/iTiVo-" & UserName & "/iTiVoDLMeta.xml", myPath & "Contents/Resources/pytivo_txt.xslt")
 		set AddedData to "(/usr/bin/true"
 		if not (showSeriesID = "") then
@@ -1794,16 +1805,19 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 		if not (showChannelCall = "") then
 			set AddedData to AddedData & "; echo callsign = " & quoted form of showChannelCall
 		end if
-		set shellCmd to AddedData & " ) >> " & quoted form of (newFile & ".txt")
+		set shellCmd to AddedData & " ) >> " & my prepareCommand(newFile & ".txt") as string
 		my debug_log("Running: " & quoted form of shellCmd)
 		try
 			set shellCmdResult to do shell script shellCmd
 		end try
 	end if
 	
-	if (complete = true) then
+	if ((complete = true) and ((filenameExtension = ".mp4") or (filenameExtension = ".m4v"))) then
 		my debug_log("Making Atomic Parsley metadata")
-		set shellCmd to "" & myPath & "Contents/Resources/AtomicParsley " & quoted form of newFile
+		tell window "iTiVo"
+			set contents of text field "status" to "Using AtomicParsley"
+		end tell
+		set shellCmd to "" & myPath & "Contents/Resources/AtomicParsley " & my prepareCommand(newFile) as string
 		if (isMovie = true) then
 			set shellCmd to shellCmd & " --title " & quoted form of oShowName
 			set shellCmd to shellCmd & " --stik Movie"
@@ -1853,12 +1867,13 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 			end if
 		end if
 	end tell
+	
 	if (not postDownloadCmd = "") then
 		try
-			set shellCmd to "file=" & quoted form of newFile & "; "
+			set shellCmd to ("file=" & my prepareCommand(newFile) as string) & "; "
 			set shellCmd to shellCmd & "show=" & quoted form of oShowName & "; "
 			set shellCmd to shellCmd & "episode=" & quoted form of showEpisode & "; "
-			if isDownloadComplete(quoted form of newFile, fullFileSize, currentTry) then
+			if isDownloadComplete(my prepareCommand(newFile) as string, fullFileSize, currentTry) then
 				set shellCmd to shellCmd & "success=1; "
 			else
 				set shellCmd to shellCmd & "success=0; "
@@ -2445,10 +2460,10 @@ on debug_log(log_string)
 		end if
 		if (debug_level ≥ 2) then
 			set theLine to (do shell script "date  +'%Y-%m-%d %H:%M:%S'" as string) & " " & quoted form of log_string
-			do shell script "echo '" & theLine & "' >> " & debug_file
+			do shell script "echo " & theLine & ">> " & debug_file
 		end if
 	on error
-		log "Failed to output string"
+		log "Failed to output string :" & log_string
 		set theLine to (do shell script "date  +'%Y-%m-%d %H:%M:%S'" as string) & " ERROR: Failing to output correct string"
 		do shell script "echo '" & theLine & "' >> " & debug_file
 	end try

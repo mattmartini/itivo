@@ -4,8 +4,12 @@
 
 @tokill = ("tivodecode", "curl", "http-fetcher.pl", "comskip", "mencoder", "HandBrakeCLI", "osascript", "tivo-decoder.pl", "remove-commercials.pl", "re-encoder.pl", "cat", "tee" );
 
+$TivoDir = "$ENV{'USER'}";
+$TivoDir =~ tr/ :\//_../;
+$TivoDir = "/tmp/iTiVo-$TivoDir";
+
 foreach $procname (@tokill) {
-	$processes = `ps -ww -U $ENV{'USER'} -o pid,command | grep -e 'iTiVo'`;
+	$processes = `ps -ww -U "$ENV{'USER'}" -o pid,command | grep -e 'iTiVo'`;
 	@lines = split('\n', $processes);
 	foreach $n (@lines) {
 		if ($n =~ /^\s*(\d+)\s+(\S+)/) {
@@ -21,7 +25,7 @@ foreach $procname (@tokill) {
 sleep 1;
 
 foreach $procname (@tokill) {
-	$processes = `ps -ww -U $ENV{'USER'} -o pid,command | grep -e 'iTiVo'`;
+	$processes = `ps -ww -U "$ENV{'USER'}" -o pid,command | grep -e 'iTiVo'`;
 	@lines = split('\n', $processes);
 	foreach $n (@lines) {
 		if ($n =~ /^\s*(\d+)\s+(\S+)/) {
@@ -33,5 +37,5 @@ foreach $procname (@tokill) {
 	}
 }
 
-`rm -f /tmp/iTiVo-$ENV{'USER'}/iTiVoDLPipe*`;
+`rm -f $TivoDir/iTiVoDLPipe*`;
 

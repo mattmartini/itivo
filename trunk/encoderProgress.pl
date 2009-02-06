@@ -2,7 +2,11 @@
 
 $encoder = $ARGV[0];
 
-$file = "/tmp/iTiVo-$ENV{'USER'}/iTiVoDL2";
+$TivoDir = "$ENV{'USER'}";
+$TivoDir =~ tr/ :\//_../;
+$TivoDir = "/tmp/iTiVo-$TivoDir";
+
+$file = "$TivoDir/iTiVoDL2";
 open (CURLFILE, $file);
 seek (CURLFILE, -1024, 2);
 

@@ -6,7 +6,11 @@ $showNAME=$ARGV[2];
 $MAK=$ARGV[3];
 $target=$ARGV[4];
 
-$shellScript = "curl \'http://$tivoip\:80/download/$showNAME\.TiVo?Container=%2FNowPlaying&id=$showID\' -c /tmp/cookies.txt --retry 12 --retry-delay 10 --digest -u tivo:$MAK -o $target --stderr /tmp/iTiVo-$ENV{'USER'}/iTiVoDL";
+$TivoDir = "$ENV{'USER'}";
+$TivoDir =~ tr/ :\//_../;
+$TivoDir = "/tmp/iTiVo-$TivoDir";
+
+$shellScript = "curl \'http://$tivoip\:80/download/$showNAME\.TiVo?Container=%2FNowPlaying&id=$showID\' -c /tmp/cookies.txt --retry 12 --retry-delay 10 --digest -u tivo:$MAK -o $target --stderr $TivoDir/iTiVoDL";
 
 print "$shellScript\n";
 

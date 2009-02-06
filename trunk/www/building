@@ -7,7 +7,6 @@
 
 SRCDIR=/Users/yoav/src
 LAME=lame
-HANDBRAKE=HandBrake-0.9.3
 
   cd $SRCDIR
   mkdir binaries
@@ -118,7 +117,7 @@ HANDBRAKE=HandBrake-0.9.3
    export LDFLAGS='-arch i386'
   cd $SRCDIR/ffmpeg
   make distclean
-  ./configure --arch=i386 --disable-vhook --disable-static --enable-shared --enable-pthreads --disable-mmx --enable-gpl --enable-libmp3lame --enable-libfaac --enable-libfaad --enable-libx264 --enable-swscale --extra-cflags="-I$SRCDIR/$LAME/include -I$SRCDIR/faad2/include -I$SRCDIR/faac/include -I$SRCDIR/x264" --extra-ldflags="-L$SRCDIR/$LAME/libmp3lame/.libs -L$SRCDIR/faad2/libfaad/.libs -L$SRCDIR/faac/libfaac/.libs -L$SRCDIR/x264/" && make
+  ./configure --arch=i386 --cpu=i686 --disable-vhook --disable-static --enable-shared --enable-pthreads --enable-gpl --enable-libmp3lame --enable-libfaac --enable-libfaad --enable-libx264 --enable-swscale --extra-cflags="-I$SRCDIR/$LAME/include -I$SRCDIR/faad2/include -I$SRCDIR/faac/include -I$SRCDIR/x264" --extra-ldflags="-L$SRCDIR/$LAME/libmp3lame/.libs -L$SRCDIR/faad2/libfaad/.libs -L$SRCDIR/faac/libfaac/.libs -L$SRCDIR/x264/" && make
   if [ "$?" -ne "0" ]; then
       echo "Failed to build i386 ffmpeg"
       exit 1
@@ -226,10 +225,6 @@ if ($arg eq "-p") {
   cp comskip mencoder tivodecode AtomicParsley "../itivo/External Software/"
   (cd "../itivo/External Software" && strip *)
   cp ffmpeg "../pytivox/External Software/ffmpeg.bin"
-  echo '#!/bin/sh' > "../pytivox/External Software/ffmpeg"
-  echo 'export DYLD_LIBRARY_PATH=/Applications/pyTivoX.app/Contents/Resources' >> "../pytivox/External Software/ffmpeg"
-  echo '$0.bin "$@"' >> "../pytivox/External Software/ffmpeg"
-  chmod 0755 "../pytivox/External Software/ffmpeg"
   cp *.dylib "../pytivox/External Software/"
   (cd "../pytivox/External Software/" && strip ffmpeg.bin)
   

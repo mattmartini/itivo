@@ -1,6 +1,10 @@
 #!/usr/bin/perl
 
-$file = "/tmp/iTiVo-$ENV{'USER'}/iTiVoDL";
+$TivoDir = "$ENV{'USER'}";
+$TivoDir =~ tr/ :\//_../;
+$TivoDir = "/tmp/iTiVo-$TivoDir";
+
+$file = "$TivoDir/iTiVoDL";
 open (CURLFILE, $file);
 
 $line = "";
