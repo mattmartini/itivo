@@ -1,120 +1,51 @@
-iTiVo 1.7.2
-  emergency fix for a bug in encoder-progress.pl
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+ <title>iTiVo Changes</title>
+</head>
+<body>
+<h1>Changes in 1.7.2</h1>
+<ul>
+<li>emergency fix for a bug in encoder-progress.pl</li>
+</ul>
 
-iTiVo 1.7.1
-  Option to control auto-connect at startup
-  Fix Applescript bug with prefs Panel
-  Add support for ffmpeg as encoder choice
-    -- requires pyTivoX in /Applications
-  Bug fixes with encode formats:
-    DVD
-    mpeg-2
-  Add formats:
-    youtube HD
-    quicktime superfast (mpeg-1)
-    quicktime fast (divx3)
-    FFmpeg (for testing).
-  Update to latest versions of:
-    x264
-    mencoder
+<h1>Changes in 1.7.1</h1>
+<ul>
+<li>Option to control auto-connect at startup</li>
+<li>Fix Applescript bug with prefs Panel</li>
+<li>Add support for ffmpeg as encoder choice (requires pyTivoX in /Applications or another working build of ffmpeg to be installed)</li>
+<li>Bug fixes with encode formats:
+<ul><li>  DVD</li>
+  <li>  mpeg-2</li>
+</ul>
+<li>Add formats:<ul>
+<li>  youtube HD</li>
+<li>  quicktime superfast (mpeg-1)</li>
+<li>  quicktime fast (divx3)</li>
+<li>  FFmpeg (for testing).</li>
+</ul>
+<li>Update to latest versions of:<ul>
+<li>  x264</li>
+<li>  mencoder </li>
+</ul>
+</ul>
 
-iTiVo 1.7
-  Save new user-defined formats
-  Add support for metadata:
-    pyTivo support
-    AtomicParsley support
-    .xml from .tivo
-  Store shows in subdirs
-  Add 6-channel audio to PS3
-  update x264, mp3lame, mencoder
-  build with some new flags for powerpc
-  remove tags that were breaking pytivo
-  Fix elgato encoder bug
-  Move files in /tmp to /tmp/iTiVo-<user>/
-  Do not exit when closing window
-  More info in tivo space drawer
-
-iTiVo 1.6
-  Info icons for shows
-  Info on HD, channel in now playing list
-  Support for HandBrake as encoder
-  fix and change some encoder settings
-  Give more details about encoder phase
-  Better metadata settings in itunes
-  (10.5) add badge for shows in queue
-  Optimized encoder tools on ppc
-
-iTiVo 1.5
-  New versions of encoder tools
-  Should work with 10.4 ppc/intel
-  New encoding formats
-    - with format description
-    - user supplied
-  New drawer for tivo usage report
-    (click the little triangle)
-  Can download shows > 10G
-  Added writer/director in info drawer
-  add imdb, tvdb link buttons
-
-iTiVo 1.4
-  * --------------------------------- *
-  * MUST check prefs after install as *
-  * some settings changed!!!          *
-  * --------------------------------- *
-  New encode modes including:
-    mpeg-2 (various)
-    quicktime mpeg-4 (various)
-    mp3 (audio only)
-  User configuration of encoder options in advanced
-  Correctly clean up sub-programs
-  Support download THEN encode
-  Default to iphone instead of no-encode
-
-iTiVo 1.3.2
-  Emergency fix:  would loop forever downloading if comskip was off
-
-iTiVo 1.3.1
- Undo a situation where a download would not be considered done
-    and result in re-downloading over and over
- Don't let growl stop the process from working if growl fails.
-
-iTiVo 1.3
-  Added support for comskip.
-     -- Can strip out commercials!  
-  Reworked the Prefs system:
-    - beta downloads
-    - comskip support
-    - download options
-  Added mpeg-2 conversion options (DVD/Tivo2)
-  Redid iphone/ipod download options
-  Updated to latest release of mencoder/libx264.
-  Place temporary files in /tmp/
-  Fixed slowness of miniaturize
-  Fixed bug where same tivo would show up multiple times in list.
-  Update to Sparkle 1.5b6, and create a DSA signature of the bundle
-  Remove the option to control Growl. Always used.
-  Save window state on exit.
-  reduce idle time to 15 mins.
-
-iTiVo 1.2.1
-  emergency release to work on PowerPC Macs (G4/G5)
-  mencoder/tivodecode were compiled for i386-only (oops).  Fixed
-  Truncate DLHistory if it gets too long
-
-iTiVo 1.2
-  Added new versions of
-     mencoder: 1.0RC3 (nightly build)
-     libx264: core:65 r999 cc51047
-  Added keyboard shortcuts
-  Split subscriptions/downloads into resizeable panes
-  Measure file progress better, to avoid some early disconnects or failures.
-  Added backoff on expected filesize..
-  
-iTiVo 1.1
-  Add support for automatic 'sync' to iphone from iTunes when a download is completed
-  Fixed file naming tag bug
-  cleanly close partially downloaded files
-  cleanly kill helper programs when cancelling, quitting, or restarting iTiVo
-  
-iTiVo 1.0
-  Initial Release of Program
+<h1> Changes in 1.7</h>
+<ul>
+<li>Save new user-defined formats</li>
+<li>Add support for metadata:<ul>
+<li>  pyTivo support</li>
+<li>  AtomicParsley support</li>
+<li>  .xml from .tivo</li>
+</ul>
+<li>Store shows in subdirs</li>
+<li>Add 6-channel audio to PS3</li>
+<li>update x264, mp3lame, mencoder</li>
+<li>build with some new flags for powerpc</li>
+<li>remove tags that were breaking pytivo</li>
+<li>Fix elgato encoder bug</li>
+<li>Move files in /tmp to /tmp/iTiVo-<user>/</li>
+<li>Do not exit when closing window</li>
+<li>More info in tivo space drawer
