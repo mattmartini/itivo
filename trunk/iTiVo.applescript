@@ -58,6 +58,9 @@ property debugLog : false
 property downloadFirst : false
 property tivoSize : 1
 property shouldAutoConnect : true
+property useTime : false
+property useTimeStartTime : date "Tuesday, February 10, 2009 1:00:00 AM"
+property useTimeEndTime : date "Tuesday, February 10, 2009 3:00:00 AM"
 
 property panelWIndow : missing value
 property currentPrefsTab : "DownloadingTab"
@@ -109,6 +112,7 @@ on awake from nib theObject
 	set tableImages to tableImages & {save_until_i_delete_recording_check:load image "save-until-i-delete-recording-check.png"}
 	set tableImages to tableImages & {suggestion_recording:load image "suggestion-recording.png"}
 	set tableImages to tableImages & {suggestion_recording_check:load image "suggestion-recording-check.png"}
+	set tableImages to tableImages & {copyright:load image "copyright.png"}
 	
 end awake from nib
 
@@ -369,6 +373,17 @@ on setupPrefsTab(tabName)
 				set enabled of button "comSkip" of view "comSkipView" of tab view "TopTab" to true
 			end if
 			set state of button "comSkip" of view "comSkipView" of tab view "TopTab" to comSkip
+		else if (tabName = "SchedulingTab") then
+			set state of button useTime of view "SchedulingView" of tab view "TopTab" to useTime
+			set content of control "useTimeStartTime" of view "SchedulingView" of tab view "TopTab" to useTimeStartTime
+			set content of control "useTimeEndTime" of view "SchedulingView" of tab view "TopTab" to useTimeEndTime
+			if (useTime = true) then
+				set enabled of control "useTimeStartTime" of view "SchedulingView" of tab view "TopTab" to true
+				set enabled of control "useTimeEndTime" of view "SchedulingView" of tab view "TopTab" to true
+			else
+				set enabled of control "useTimeStartTime" of view "SchedulingView" of tab view "TopTab" to false
+				set enabled of control "useTimeEndTime" of view "SchedulingView" of tab view "TopTab" to false
+			end if
 		else if (tabName = "AdvancedTab") then
 			set contents of text field "postDownloadCmd" of view "AdvancedView" of tab view "TopTab" to postDownloadCmd
 			if (SUFeedURL = "http://itivo.googlecode.com/svn/trunk/www/iTiVo-beta.xml") then
@@ -404,6 +419,10 @@ on recordPrefsTab()
 			set tivoMetaData to state of button "tivoMetaData" of view "DownloadingView" of tab view "TopTab" as boolean
 		else if (currentPrefsTab = "ComSkipTab") then
 			set comSkip to state of button "comSkip" of view "comSkipView" of tab view "TopTab"
+		else if (currentPrefsTab = "SchedulingTab") then
+			set useTime to state of button useTime of view "SchedulingView" of tab view "TopTab" as boolean
+			set useTimeStartTime to content of control "useTimeStartTime" of view "SchedulingView" of tab view "TopTab"
+			set useTimeEndTime to content of control "useTimeEndTime" of view "SchedulingView" of tab view "TopTab"
 		else if (currentPrefsTab = "AdvancedTab") then
 			set postDownloadCmd to contents of text field "postDownloadCmd" of view "AdvancedView" of tab view "TopTab"
 			set debugLog to state of button "debugLog" of view "AdvancedView" of tab view "TopTab" as boolean
@@ -478,6 +497,9 @@ on registerSettings()
 		make new default entry at end of default entries with properties {name:"targetDataSList", contents:{}}
 		make new default entry at end of default entries with properties {name:"tivoSize", contents:1}
 		make new default entry at end of default entries with properties {name:"shouldAutoConnect", contents:shouldAutoConnect}
+		make new default entry at end of default entries with properties {name:"useTime", contents:useTime}
+		make new default entry at end of default entries with properties {name:"useTimeStartTime", contents:useTimeStartTime}
+		make new default entry at end of default entries with properties {name:"useTimeEndTime", contents:useTimeEndTime}
 		register
 	end tell
 end registerSettings
@@ -521,6 +543,9 @@ on readSettings()
 			set txtMetaData to contents of default entry "txtMetaData"
 			set tivoMetaData to contents of default entry "tivoMetaData"
 			set shouldAutoConnect to contents of default entry "shouldAutoConnect"
+			set useTime to contents of default entry "useTime"
+			set useTimeStartTime to contents of default entry "useTimeStartTime"
+			set useTimeEndTime to contents of default entry "useTimeEndTime"
 		end try
 		try
 			set debugLog to contents of default entry "debugLog"
@@ -633,6 +658,9 @@ on writeSettings()
 			set contents of default entry "downloadFirst" to downloadFirst
 			set contents of default entry "tivoSize" to tivoSize
 			set contents of default entry "shouldAutoConnect" to shouldAutoConnect
+			set contents of default entry "useTime" to useTime
+			set contents of default entry "useTimeStartTime" to useTimeStartTime
+			set contents of default entry "useTimeEndTime" to useTimeEndTime
 		end tell
 	on error
 		my debug_log("Failed to write out initial settings")
@@ -820,7 +848,6 @@ on clicked theObject
 				set currentProcessSelectionQ to (data row 1 of data source 1 of table view "queueListTable" of scroll view "queueList" of view "bottomLeftView" of split view "splitView2" of box "bottomBox" of split view "splitView1")
 				set end of currentProcessSelectionQ2 to contents of (data cell "ShowVal" of currentProcessSelectionQ)
 				set end of currentProcessSelectionQ2 to contents of (data cell "EpisodeVal" of currentProcessSelectionQ)
-				--set end of currentProcessSelectionQ2 to contents of (data cell "DescriptionVal" of currentProcessSelectionQ)
 				set end of currentProcessSelectionQ2 to contents of (data cell "DateVal" of currentProcessSelectionQ)
 				set end of currentProcessSelectionQ2 to contents of (data cell "SizeVal" of currentProcessSelectionQ)
 				set end of currentProcessSelectionQ2 to contents of (data cell "IDVal" of currentProcessSelectionQ)
@@ -894,7 +921,6 @@ on clicked theObject
 				set currentProcessSelectionTEMP to item 1 of currentProcessSelectionTEMP
 				set end of currentProcessSelection to contents of (data cell "ShowVal" of currentProcessSelectionTEMP)
 				set end of currentProcessSelection to contents of (data cell "EpisodeVal" of currentProcessSelectionTEMP)
-				--set end of currentProcessSelection to contents of (data cell "DescriptionVal" of currentProcessSelectionTEMP)
 				set end of currentProcessSelection to contents of (data cell "DateVal" of currentProcessSelectionTEMP)
 				set end of currentProcessSelection to contents of (data cell "SizeVal" of currentProcessSelectionTEMP)
 				set end of currentProcessSelection to contents of (data cell "IDVal" of currentProcessSelectionTEMP)
@@ -931,6 +957,16 @@ on clicked theObject
 				set enabled of button "iTunesSync" of view "DownloadingView" of tab view "TopTab" of panelWIndow to false
 				set enabled of popup button "icon" of view "DownloadingView" of tab view "TopTab" of panelWIndow to false
 			end if
+		else if theObjectName = "useTime" then
+			set useTime to state of theObject as boolean
+			my debug_log("useTime is set to " & useTime)
+			if (useTime = true) then
+				set enabled of control "useTimeStartTime" of view "SchedulingView" of tab view "TopTab" of panelWIndow to true
+				set enabled of control "useTimeEndTime" of view "SchedulingView" of tab view "TopTab" of panelWIndow to true
+			else
+				set enabled of control "useTimeStartTime" of view "SchedulingView" of tab view "TopTab" of panelWIndow to false
+				set enabled of control "useTimeEndTime" of view "SchedulingView" of tab view "TopTab" of panelWIndow to false
+			end if
 		else if theObjectName = "customFormat" then
 			set temp to display dialog "Enter a name for the custom format" default answer "Custom Format"
 			set text_user_entered to the text returned of temp
@@ -949,6 +985,19 @@ on clicked theObject
 	end tell
 	set AppleScript's text item delimiters to ""
 end clicked
+
+
+on should select row theObject row theRow
+	if name of theObject = "ShowListTable" then
+		set myvalue to contents of data cell "IDVal" of data row theRow of data source of theObject
+		if (myvalue = "copyright") then
+			return false
+		else
+			return true
+		end if
+	end if
+	return true
+end should select row
 
 on selection changing theObject
 	tell window "iTiVo"
@@ -2050,16 +2099,21 @@ on ConnectTiVo()
 							set downloadImage to empty of tableImages
 						end if
 					end if
-					if (my isSubscribed(showName, showDate) = true) then
-						set currentProcessSelectionQ to {}
-						set end of currentProcessSelectionQ to showName
-						set end of currentProcessSelectionQ to episodeVal
-						set end of currentProcessSelectionQ to showDate
-						set end of currentProcessSelectionQ to showLength
-						set end of currentProcessSelectionQ to showSize
-						set end of currentProcessSelectionQ to showID
-						my addSelectionToQueue(currentProcessSelectionQ)
-						set end of addedItems to {showName, showDate}
+					if (flags = "5") then
+						set showID to "copyright"
+						set downloadImage to copyright of tableImages
+					else
+						if (my isSubscribed(showName, showDate) = true) then
+							set currentProcessSelectionQ to {}
+							set end of currentProcessSelectionQ to showName
+							set end of currentProcessSelectionQ to episodeVal
+							set end of currentProcessSelectionQ to showDate
+							set end of currentProcessSelectionQ to showLength
+							set end of currentProcessSelectionQ to showSize
+							set end of currentProcessSelectionQ to showID
+							my addSelectionToQueue(currentProcessSelectionQ)
+							set end of addedItems to {showName, showDate}
+						end if
 					end if
 					set contents of data cell "DLVal" of theDataRow to downloadImage
 					set contents of data cell "ShowVal" of theDataRow to showName
@@ -2098,6 +2152,31 @@ on ConnectTiVo()
 		set contents of text field "status" to "Last Update : " & (current date)
 	end tell
 end ConnectTiVo
+
+on shouldDownloadNow()
+	my debug_log("Checking if should download: " & useTime & "   : " & time of useTimeStartTime & " : " & time of (current date) & " : " & time of useTimeEndTime)
+	if (useTime = false) then
+		return true
+	else
+		set starttime to time of useTimeStartTime
+		set endTime to time of useTimeEndTime
+		set curTime to time of (current date)
+		if (endTime ≥ starttime) then
+			if (curTime ≤ endTime and curTime ≥ starttime) then
+				return true
+			else
+				return false
+			end if
+		else
+			if (curTime ≥ starttime or curTime ≤ endTime) then
+				return true
+			else
+				return false
+			end if
+		end if
+	end if
+end shouldDownloadNow
+
 
 on create_playlist()
 	set playlist_name to "TiVo Shows"
@@ -2484,11 +2563,13 @@ on idle
 	end if
 	if enabled of button "ConnectButton" of window "iTiVo" is true then
 		my ConnectTiVo()
-		tell window "iTiVo"
-			my debug_log("starting download")
-			set enabled of button "decodeQueue" of view "bottomLeftView" of split view "splitView2" of box "bottomBox" of split view "splitView1" to true
-			tell button "decodeQueue" of view "bottomLeftView" of split view "splitView2" of box "bottomBox" of split view "splitView1" to perform action
-		end tell
+		if (my shouldDownloadNow()) then
+			tell window "iTiVo"
+				my debug_log("starting download")
+				set enabled of button "decodeQueue" of view "bottomLeftView" of split view "splitView2" of box "bottomBox" of split view "splitView1" to true
+				tell button "decodeQueue" of view "bottomLeftView" of split view "splitView2" of box "bottomBox" of split view "splitView1" to perform action
+			end tell
+		end if
 	else
 		my debug_log("probably downloading things right now")
 	end if

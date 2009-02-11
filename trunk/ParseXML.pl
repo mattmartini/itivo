@@ -96,27 +96,29 @@ $output = $output . "$id|";
 
 	    $flags = 0;
 	    if ($show =~ m/<Url>urn:tivo:image:suggestion-recording<\/Url>/) {
-		$flags = 1;
-		$show_type = "suggestion";
+         $flags = 1;
+		     $show_type = "suggestion";
 	    }
 	    if ($show =~ m/<Url>urn:tivo:image:expired-recording<\/Url>/) {
-$flags = 2;
-		$show_type = "expired";
+				$flags = 2;
+		    $show_type = "expired";
 	    }
 	    if ($show =~ m/<Url>urn:tivo:image:expires-soon-recording<\/Url>/) {
-$flags = 3;
-		$show_type = "expires-soon";
+        $flags = 3;
+		    $show_type = "expires-soon";
 	    }
 	    if ($show =~ m/<Url>urn:tivo:image:save-until-i-delete-recording<\/Url>/) {
-    $flags = 4;
-		$show_type = "save-until-delete";
+        $flags = 4;
+		    $show_type = "save-until-delete";
 	    }
+      if ($show =~ m/<CopyProtected>Yes<\/CopyProtected>/) {
+				$flags=5;
+        $show_type = "copyrighted";
+      }
 	    $output = $output . "$flags";
 
 	    if ($show =~ m/<InProgress>Yes<\/InProgress>/) {
 		$show_type = "in_progress";
-	    } elsif ($show =~ m/<CopyProtected>Yes<\/CopyProtected>/) {
-		$show_type = "copyrighted";
 	    } else {
 		$output = $output .  "\n";
 		$final_result = $final_result . $output;
