@@ -61,6 +61,7 @@
 		536575ED0EE2791800B68A56 /* suggestion-recording.png in Resources */ = {isa = PBXBuildFile; fileRef = 536575E30EE2791800B68A56 /* suggestion-recording.png */; };
 		536F4DDF0EE5EEA200743C2C /* HandBrakeCLI in Resources */ = {isa = PBXBuildFile; fileRef = 536F4DDE0EE5EEA200743C2C /* HandBrakeCLI */; };
 		537B18CF0EFEEB9C005E4191 /* ParseXML.pl in Resources */ = {isa = PBXBuildFile; fileRef = 537B18CE0EFEEB9C005E4191 /* ParseXML.pl */; };
+		5393FA700F425DDD0025D17A /* copyright.png in Resources */ = {isa = PBXBuildFile; fileRef = 5393FA6F0F425DDD0025D17A /* copyright.png */; };
 		53960E460EF240DF0068EE27 /* AtomicParsley in Resources */ = {isa = PBXBuildFile; fileRef = 53960E450EF240DF0068EE27 /* AtomicParsley */; };
 		53A16DC10ED5DC95004A33E4 /* elgato.applescript in AppleScript */ = {isa = PBXBuildFile; fileRef = 53A16DC00ED5DC95004A33E4 /* elgato.applescript */; settings = {ATTRIBUTES = (Debug, ); }; };
 		53AF175F0EB6936100C68D2E /* http-fetcher.pl in Resources */ = {isa = PBXBuildFile; fileRef = 53AF175E0EB6936100C68D2E /* http-fetcher.pl */; };
@@ -133,6 +134,7 @@
 		536575E30EE2791800B68A56 /* suggestion-recording.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "suggestion-recording.png"; sourceTree = "<group>"; };
 		536F4DDE0EE5EEA200743C2C /* HandBrakeCLI */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; name = HandBrakeCLI; path = "External Software/HandBrakeCLI"; sourceTree = "<group>"; };
 		537B18CE0EFEEB9C005E4191 /* ParseXML.pl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.perl; path = ParseXML.pl; sourceTree = "<group>"; };
+		5393FA6F0F425DDD0025D17A /* copyright.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = copyright.png; sourceTree = "<group>"; };
 		53960E450EF240DF0068EE27 /* AtomicParsley */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; name = AtomicParsley; path = "External Software/AtomicParsley"; sourceTree = "<group>"; };
 		53A16DC00ED5DC95004A33E4 /* elgato.applescript */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.applescript; path = elgato.applescript; sourceTree = "<group>"; };
 		53AF175E0EB6936100C68D2E /* http-fetcher.pl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.perl; path = "http-fetcher.pl"; sourceTree = "<group>"; };
@@ -250,6 +252,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				5393FA6F0F425DDD0025D17A /* copyright.png */,
 				536575DA0EE2791800B68A56 /* empty-check.png */,
 				536575DB0EE2791800B68A56 /* empty.png */,
 				536575DC0EE2791800B68A56 /* expired-recording-check.png */,
@@ -379,6 +382,7 @@
 				53960E460EF240DF0068EE27 /* AtomicParsley in Resources */,
 				534115830EF72E000011FFF6 /* pytivo_txt.xslt in Resources */,
 				537B18CF0EFEEB9C005E4191 /* ParseXML.pl in Resources */,
+				5393FA700F425DDD0025D17A /* copyright.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -396,7 +400,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "#!/bin/bash\n\nset -o errexit\n\n[ $BUILD_STYLE = Release ] || { echo Distribution target requires \"'Release'\" build style; false; }\n\nVERSION=$(defaults read \"$BUILT_PRODUCTS_DIR/$PROJECT_NAME.app/Contents/Info\" CFBundleVersion)\nDOWNLOAD_BASE_URL=\"http://itivo.googlecode.com/files\"\nRELEASENOTES_URL=\"http://itivo.googlecode.com/svn/trunk/www/changelog.html\"\n\nARCHIVE_FILENAME=\"$PROJECT_NAME-$VERSION.zip\"\nDOWNLOAD_URL=\"$DOWNLOAD_BASE_URL/$ARCHIVE_FILENAME\"\n\nWD=$PWD\ncd \"$BUILT_PRODUCTS_DIR\"\nrm -f \"$PROJECT_NAME\"*.zip\nzip -qr \"$ARCHIVE_FILENAME\" \"$PROJECT_NAME.app\" \"faac LGPL License.txt\" \"gpl-3.0.txt\" \"iTiVo Read Me.rtf\" \"mencoder:xvid GPL License.txt\"\n\nSIZE=$(stat -f %z \"$ARCHIVE_FILENAME\")\nPUBDATE=$(date +\"%a, %d %b %G %T %z\")\nSIGNATURE=$(\n\topenssl dgst -sha1 -binary < \"$ARCHIVE_FILENAME\" \\\n\t| openssl dgst -dss1 -sign \"$WD/keys/dsa_priv.pem\" \\\n\t| openssl enc -base64\n)\n\n[ $SIGNATURE ] || { echo Unable to load signing private key with name \"'$KEYCHAIN_PRIVKEY_NAME'\" from keychain; false; }\n\ncat <<EOF\n\t\t<item>\n\t\t\t<title>Version $VERSION</title>\n\t\t\t<sparkle:releaseNotesLink>$RELEASENOTES_URL</sparkle:releaseNotesLink>\n\t\t\t<pubDate>$PUBDATE</pubDate>\n\t\t\t<enclosure\n\t\t\t\turl=\"$DOWNLOAD_URL\"\n\t\t\t\tsparkle:version=\"$VERSION\"\n\t\t\t\ttype=\"application/octet-stream\"\n\t\t\t\tlength=\"$SIZE\"\n\t\t\t\tsparkle:dsaSignature=\"$SIGNATURE\"\n\t\t\t/>\n\t\t</item>\nEOF\n";
+			shellScript = "#!/bin/bash\n\nset -o errexit\n\n[ $BUILD_STYLE = Release ] || { echo Distribution target requires \"'Release'\" build style; false; }\n\nVERSION=$(defaults read \"$BUILT_PRODUCTS_DIR/$PROJECT_NAME.app/Contents/Info\" CFBundleVersion)\nDOWNLOAD_BASE_URL=\"http://itivo.googlecode.com/files\"\ncase \"$VERSION\" in\n *b*)\n    RELEASENOTES_URL=\"http://itivo.googlecode.com/svn/trunk/www/changelog-beta.html\"\n    ;;\n *)\n    RELEASENOTES_URL=\"http://itivo.googlecode.com/svn/trunk/www/changelog.html\"\n    ;;\nesac\n\nARCHIVE_FILENAME=\"$PROJECT_NAME-$VERSION.zip\"\nDOWNLOAD_URL=\"$DOWNLOAD_BASE_URL/$ARCHIVE_FILENAME\"\n\nWD=$PWD\ncd \"$BUILT_PRODUCTS_DIR\"\nrm -f \"$PROJECT_NAME\"*.zip\nzip -qr \"$ARCHIVE_FILENAME\" \"$PROJECT_NAME.app\" \"faac LGPL License.txt\" \"gpl-3.0.txt\" \"iTiVo Read Me.rtf\" \"mencoder:xvid GPL License.txt\"\n\nSIZE=$(stat -f %z \"$ARCHIVE_FILENAME\")\nPUBDATE=$(date +\"%a, %d %b %G %T %z\")\nSIGNATURE=$(\n\topenssl dgst -sha1 -binary < \"$ARCHIVE_FILENAME\" \\\n\t| openssl dgst -dss1 -sign \"$WD/keys/dsa_priv.pem\" \\\n\t| openssl enc -base64\n)\n\n[ $SIGNATURE ] || { echo Unable to load signing private key with name \"'$KEYCHAIN_PRIVKEY_NAME'\" from keychain; false; }\n\ncat <<EOF\n\t\t<item>\n\t\t\t<title>Version $VERSION</title>\n\t\t\t<sparkle:releaseNotesLink>$RELEASENOTES_URL</sparkle:releaseNotesLink>\n\t\t\t<pubDate>$PUBDATE</pubDate>\n\t\t\t<enclosure\n\t\t\t\turl=\"$DOWNLOAD_URL\"\n\t\t\t\tsparkle:version=\"$VERSION\"\n\t\t\t\ttype=\"application/octet-stream\"\n\t\t\t\tlength=\"$SIZE\"\n\t\t\t\tsparkle:dsaSignature=\"$SIGNATURE\"\n\t\t\t/>\n\t\t</item>\nEOF\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
