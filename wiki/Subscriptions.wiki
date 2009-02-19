@@ -4,7 +4,7 @@ A common use for iTiVo is to download your favorite shows to your iPhone automat
 
   # Set up iTiVo, including inputting your tivo's MAK. Instructions are at http://code.google.com/p/itivo/wiki/Installation
   # In the Prefs pane:
-    * Select a format such as 'iPhone low-res'.
+    * Select the 'iPhone' format.
     * Select 'Import to Itunes'.  This will automatically add your show as a 'tv show' to iTunes after it's done downloading.
     * Select 'Sync (itunes) after import'.  This will attempt to run a 'sync' between your iphone and itunes after the download is done.  If itunes is configured to load all tv shows to the iphone (as we will do in the next step) this will automatically load your show to the iPhone if it is hooked to the computer.
   # Select the show you plan on watching regularly.
@@ -13,6 +13,6 @@ A common use for iTiVo is to download your favorite shows to your iPhone automat
   # Once it is done, go to iTunes, and make sure the show appears in the library under 'TV Shows'
   # Hook up the iPhone, and click on the device.  Select the 'Video' tab at the top.  In the "TV Shows" list there, select 'sync' and something like '5 most recent' episodes of: 'All TV shows' (feel free to pick other settings as you feel appropriate).
 
-As long as you leave iTiVo running, it will attempt to download all future episodes of said show, and put them on your iphone.  You MAY want to clean up old episodes if your computer's hard drive is getting full (find them in the download location, and the library/TV shows in itunes).
+As long as you leave iTiVo running, it will attempt to download all future episodes of said show, and put them on your iphone.  You MAY want to delete old episodes if your computer's hard drive is getting full (find them in the download location, and the library/TV shows in itunes).
 
-  If you exit iTivo, it will not attempt to download.  Whenever you run it again though, it will try to catch up on all the past episodes it missed which are still on the tivo.
+  If you quit iTivo, it will not attempt to download.  The next time your start iTiVo it will try to catch up on all the past episodes it missed which are still on the tivo.
