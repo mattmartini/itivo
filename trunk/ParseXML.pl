@@ -78,43 +78,43 @@ while ($anchor < $TotalItems) {
 	    else {
 		$output = $output . "|";
 	    }
-if ($show =~ m/<SourceStation>(.*?)<\/SourceStation>/) {
-$output = $output . "$1|";
-}
-else {
-$output = $output . "|";
-}
+	    if ($show =~ m/<SourceStation>(.*?)<\/SourceStation>/) {
+		$output = $output . "$1|";
+	    }
+	    else {
+		$output = $output . "|";
+	    }
 
-if ($show =~ m/<HighDefinition>Y.*<\/HighDefinition>/) {
-$output = $output . "√|";
-}
-else {
-$output = $output . "|";
-}
+	    if ($show =~ m/<HighDefinition>Y.*<\/HighDefinition>/) {
+		$output = $output . "√|";
+	    }
+	    else {
+		$output = $output . "|";
+	    }
 
-$output = $output . "$id|";
+	    $output = $output . "$id|";
 
 	    $flags = 0;
 	    if ($show =~ m/<Url>urn:tivo:image:suggestion-recording<\/Url>/) {
-         $flags = 1;
-		     $show_type = "suggestion";
+		$flags = 1;
+		$show_type = "suggestion";
 	    }
 	    if ($show =~ m/<Url>urn:tivo:image:expired-recording<\/Url>/) {
-				$flags = 2;
-		    $show_type = "expired";
+		$flags = 2;
+		$show_type = "expired";
 	    }
 	    if ($show =~ m/<Url>urn:tivo:image:expires-soon-recording<\/Url>/) {
-        $flags = 3;
-		    $show_type = "expires-soon";
+		$flags = 3;
+		$show_type = "expires-soon";
 	    }
 	    if ($show =~ m/<Url>urn:tivo:image:save-until-i-delete-recording<\/Url>/) {
-        $flags = 4;
-		    $show_type = "save-until-delete";
+		$flags = 4;
+		$show_type = "save-until-delete";
 	    }
-      if ($show =~ m/<CopyProtected>Yes<\/CopyProtected>/) {
-				$flags=5;
-        $show_type = "copyrighted";
-      }
+	    if ($show =~ m/<CopyProtected>Yes<\/CopyProtected>/) {
+		$flags=5;
+		$show_type = "copyrighted";
+	    }
 	    $output = $output . "$flags";
 
 	    if ($show =~ m/<InProgress>Yes<\/InProgress>/) {

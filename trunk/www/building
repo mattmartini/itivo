@@ -111,6 +111,10 @@ LAME=lame
   fi
   cp ./mencoder ../binaries/mencoder-i386
 
+   export CFLAGS='-isysroot /Developer/SDKs/MacOSX10.4u.sdk -arch i386 -O2 -fomit-frame-pointer'
+   export CXXFLAGS='-isysroot /Developer/SDKs/MacOSX10.4u.sdk -arch i386 -O2 -fomit-frame-pointer'
+   export CPPFLAGS='-arch i386'
+   export LDFLAGS='-arch i386 -Wl,-syslibroot,/Developer/SDKs/MacOSX10.4u.sdk/usr/lib'
    export CFLAGS='-arch i386'
    export CXXFLAGS='-arch i386'
    export CPPFLAGS='-arch i386'
@@ -194,10 +198,15 @@ if ($arg eq "-p") {
   rm uname
   cp ./mencoder ../binaries/mencoder-ppc
 
+   export CFLAGS='-arch ppc7400 -isysroot /Developer/SDKs/MacOSX10.4u.sdk'
+   export CXXFLAGS='-arch ppc7400 -isysroot /Developer/SDKs/MacOSX10.4u.sdk'
+   export CPPFLAGS='-arch ppc7400 -isysroot /Developer/SDKs/MacOSX10.4u.sdk'
+   export LDFLAGS='-arch ppc7400 -Wl,-syslibroot,/Developer/SDKs/MacOSX10.4u.sdk/usr/lib'
    export CFLAGS='-arch ppc7400'
    export CXXFLAGS='-arch ppc7400'
    export CPPFLAGS='-arch ppc7400'
    export LDFLAGS='-arch ppc7400'
+ 
    cd $SRCDIR/ffmpeg
    make distclean
    ./configure --arch=ppc --cpu=G4 --disable-vhook --enable-shared --disable-static --enable-pthreads --disable-mmx --enable-gpl --enable-libmp3lame --enable-libfaac --enable-libfaad --enable-libx264 --enable-swscale --extra-cflags="-DHAVE_LLRINT -I$SRCDIR/$LAME/include -I$SRCDIR/faad2/include -I$SRCDIR/faac/include -I$SRCDIR/x264" --extra-ldflags="-L$SRCDIR/$LAME/libmp3lame/.libs -L$SRCDIR/faad2/libfaad/.libs -L$SRCDIR/faac/libfaac/.libs -L$SRCDIR/x264/" && make

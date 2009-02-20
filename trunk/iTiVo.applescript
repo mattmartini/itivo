@@ -40,6 +40,7 @@ property queue_len : 0
 property MAK : ""
 property DL : ""
 property makeSubdirs : false
+property APMetaData : true
 property txtMetaData : false
 property tivoMetaData : false
 property iTunes : ""
@@ -363,6 +364,7 @@ on setupPrefsTab(tabName)
 			else
 				set title of popup button "icon" of view "DownloadingView" of tab view "TopTab" to first item of iTunesIcons
 			end if
+			set state of button "APMetaData" of view "DownloadingView" of tab view "TopTab" to APMetaData
 			set state of button "txtMetaData" of view "DownloadingView" of tab view "TopTab" to txtMetaData
 			set state of button "tivoMetaData" of view "DownloadingView" of tab view "TopTab" to tivoMetaData
 		else if (tabName = "ComSkipTab") then
@@ -415,6 +417,7 @@ on recordPrefsTab()
 			set iTunes to state of button "iTunes" of view "DownloadingView" of tab view "TopTab"
 			set iTunesSync to state of button "iTunesSync" of view "DownloadingView" of tab view "TopTab"
 			set iTunesIcon to title of popup button "icon" of view "DownloadingView" of tab view "TopTab"
+			set APMetaData to state of button "APMetaData" of view "DownloadingView" of tab view "TopTab" as boolean
 			set txtMetaData to state of button "txtMetaData" of view "DownloadingView" of tab view "TopTab" as boolean
 			set tivoMetaData to state of button "tivoMetaData" of view "DownloadingView" of tab view "TopTab" as boolean
 		else if (currentPrefsTab = "ComSkipTab") then
@@ -480,6 +483,7 @@ on registerSettings()
 		make new default entry at end of default entries with properties {name:"iTunes", contents:""}
 		make new default entry at end of default entries with properties {name:"iTunesSync", contents:""}
 		make new default entry at end of default entries with properties {name:"iTunesIcon", contents:""}
+		make new default entry at end of default entries with properties {name:"APMetaData", contents:APMetaData}
 		make new default entry at end of default entries with properties {name:"txtMetaData", contents:txtMetaData}
 		make new default entry at end of default entries with properties {name:"tivoMetaData", contents:tivoMetaData}
 		make new default entry at end of default entries with properties {name:"comSkip", contents:comSkip}
@@ -546,6 +550,7 @@ on readSettings()
 			set useTime to contents of default entry "useTime"
 			set useTimeStartTime to contents of default entry "useTimeStartTime"
 			set useTimeEndTime to contents of default entry "useTimeEndTime"
+			set APMetaData to contents of default entry "APMetaData"
 		end try
 		try
 			set debugLog to contents of default entry "debugLog"
@@ -641,6 +646,7 @@ on writeSettings()
 			set contents of default entry "iTunes" to iTunes as string
 			set contents of default entry "iTunesSync" to iTunesSync as string
 			set contents of default entry "iTunesIcon" to iTunesIcon as string
+			set contents of default entry "APMetaData" to APMetaData
 			set contents of default entry "txtMetaData" to txtMetaData
 			set contents of default entry "tivoMetaData" to tivoMetaData
 			set contents of default entry "comSkip" to comSkip
@@ -988,8 +994,14 @@ end clicked
 
 
 on should select row theObject row theRow
+	tell window "iTiVo" to update
 	if name of theObject = "ShowListTable" then
-		set myvalue to contents of data cell "IDVal" of data row theRow of data source of theObject
+		if ((count of sorted data rows of data source of theObject) > 0) then
+			set myRows to get sorted data rows of data source of theObject
+			set myvalue to contents of data cell "IDVal" of item theRow of myRows
+		else
+			set myvalue to contents of data cell "IDVal" of data row theRow of data source of theObject
+		end if
 		if (myvalue = "copyright") then
 			return false
 		else
@@ -1194,6 +1206,7 @@ on column clicked theObject table column tableColumn
 		set sortColumn to name of tableColumn
 		set sort column of targetData to data column sortColumn of targetData
 		set data source of theObject to targetData
+		set selected rows of theObject to {}
 		update theObject
 	end if
 end column clicked
@@ -1384,6 +1397,22 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 	set cancelDownload to 0
 	set timeRemaining to 0
 	set totalSteps to 0
+	
+	if (showID = "copyright") then
+		my debug_log("Attempted to download copyrighted show " & oShowName)
+		if GrowlAppName = "GrowlHelperApp.app" then
+			try
+				tell application GrowlAppName
+					using terms from application "GrowlHelperApp"
+						notify with name "Can't Download" title "Downloading Failure 
+" & (oShowName) description "is marked copyrighted by your tivo" application name "iTiVo"
+					end using terms from
+				end tell
+			end try
+		end if
+		return 1
+	end if
+	
 	repeat while ((not (my isDownloadComplete(filePath, fullFileSize, currentTry) and (timeRemaining ≤ 5 * (retryCount + 1)))) and currentTry < retryCount and cancelDownload = 0)
 		my performCancelDownload()
 		tell window "iTiVo"
@@ -1468,7 +1497,7 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 			set starttime to ((do shell script "date +%s") as integer) - 10
 			
 			-- Download, decrypt, and potentially re-encode in one pipeline
-			repeat while timeoutCount < 480 and cancelDownload as integer = 0 and downloadExists as integer = 1 and cancelAllDownloads as integer = 0
+			repeat while timeoutCount < 1200 and cancelDownload as integer = 0 and downloadExists as integer = 1 and cancelAllDownloads as integer = 0
 				if (debug_level ≥ 3) then
 					my debug_log("timeout: " & timeoutCount & "   currentFileSize: " & currentFileSize & "  fullFileSize:" & fullFileSize)
 				end if
@@ -1556,7 +1585,7 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 				do shell script ShellScriptCommand
 				set currentStep to currentStep + 1
 				set integer value of control "StatusLevel" to currentStep
-				repeat while timeoutCount < 120 and cancelDownload as integer = 0 and downloadExists as integer = 1 and cancelAllDownloads as integer = 0
+				repeat while timeoutCount < 1200 and cancelDownload as integer = 0 and downloadExists as integer = 1 and cancelAllDownloads as integer = 0
 					if (debug_level ≥ 3) then
 						my debug_log("comskip timeout: " & timeoutCount & " download:" & downloadExists & "   frameOn: " & frameOn & "  timeOn:" & timeOn & "   currentPercent: " & currentPercent)
 					end if
@@ -1588,6 +1617,12 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 					end try
 					delay 0.5
 				end repeat
+				if (timeoutCount ≥ 1200) then
+					my debug_log("Time out on comskip ...  Resetting EDL list")
+					set shellCmd to "rm -f /tmp/iTiVo-" & UserName & "/iTiVoDLPipe2.edl"
+					my debug_log(ShellScriptCommand)
+					do shell script shellCmd
+				end if
 				tell progress indicator "Status" to increment by -1 * currentProgress
 			end if
 			
@@ -1611,7 +1646,7 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 				do shell script ShellScriptCommand
 				set currentStep to currentStep + 1
 				set integer value of control "StatusLevel" to currentStep
-				repeat while timeoutCount < 120 and cancelDownload as integer = 0 and downloadExists as integer = 1 and cancelAllDownloads as integer = 0
+				repeat while timeoutCount < 1200 and cancelDownload as integer = 0 and downloadExists as integer = 1 and cancelAllDownloads as integer = 0
 					if (debug_level ≥ 3) then
 						my debug_log("mencoder timeout: " & timeoutCount & " download:" & downloadExists & "   timeRemaining: " & timeRemaining & "  timeOn:" & timeOn & "   currentPercent: " & currentPercent)
 					end if
@@ -1664,9 +1699,16 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 					end try
 					delay 0.5
 				end repeat
-				set ShellScriptCommand to "mv /tmp/iTiVo-" & UserName & "/iTiVoDLPipe3.mpg /tmp/iTiVo-" & UserName & "/iTiVoDLPipe2.mpg"
-				my debug_log(ShellScriptCommand)
-				do shell script ShellScriptCommand
+				if (timeoutCount ≥ 1200) then
+					my debug_log("Time out on pre-cutting commercials, just using original movie instead")
+					set shellCmd to "rm -f /tmp/iTiVo-" & UserName & "/iTiVoDLPipe3.mpg"
+					my debug_log(shellCmd)
+					do shell script shellCmd
+				else
+					set ShellScriptCommand to "mv /tmp/iTiVo-" & UserName & "/iTiVoDLPipe3.mpg /tmp/iTiVo-" & UserName & "/iTiVoDLPipe2.mpg"
+					my debug_log(ShellScriptCommand)
+					do shell script ShellScriptCommand
+				end if
 				tell progress indicator "Status" to increment by -1 * currentProgress
 			end if
 			
@@ -1688,7 +1730,7 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 				do shell script ShellScriptCommand
 				set currentStep to currentStep + 1
 				set integer value of control "StatusLevel" to currentStep
-				repeat while timeoutCount < 120 and cancelDownload as integer = 0 and downloadExists as integer = 1 and cancelAllDownloads as integer = 0
+				repeat while timeoutCount < 1200 and cancelDownload as integer = 0 and downloadExists as integer = 1 and cancelAllDownloads as integer = 0
 					if (debug_level ≥ 3) then
 						my debug_log("mencoder timeout: " & timeoutCount & " download:" & downloadExists & "   timeRemaining: " & timeRemaining & "  timeOn:" & timeOn & "   currentPercent: " & currentPercent)
 					end if
@@ -1861,37 +1903,41 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 		end try
 	end if
 	
-	if ((complete = true) and ((filenameExtension = ".mp4") or (filenameExtension = ".m4v"))) then
-		my debug_log("Making Atomic Parsley metadata")
-		tell window "iTiVo"
-			set contents of text field "status" to "Using AtomicParsley"
-		end tell
-		set shellCmd to "" & myPath & "Contents/Resources/AtomicParsley " & my prepareCommand(newFile) as string
-		if (isMovie = true) then
-			set shellCmd to shellCmd & " --title " & quoted form of oShowName
-			set shellCmd to shellCmd & " --stik Movie"
+	if (complete = true and APMetaData = true) then
+		if ((filenameExtension = ".mp4") or (filenameExtension = ".m4v") or (filenameExtension = ".mov") or (filenameExtension = ".3gp")) then
+			my debug_log("Making Atomic Parsley metadata")
+			tell window "iTiVo"
+				set contents of text field "status" to "Using AtomicParsley"
+			end tell
+			set shellCmd to "" & myPath & "Contents/Resources/AtomicParsley " & my prepareCommand(newFile) as string
+			if (isMovie = true) then
+				set shellCmd to shellCmd & " --title " & quoted form of oShowName
+				set shellCmd to shellCmd & " --stik Movie"
+			else
+				set shellCmd to shellCmd & " --title " & quoted form of showEpisode
+				set shellCmd to shellCmd & " --stik \"TV Show\""
+				set shellCmd to shellCmd & " --TVShowName " & quoted form of oShowName
+				if not (oShowEpisode = "") then
+					set shellCmd to shellCmd & " --TVEpisode " & quoted form of oShowEpisode
+				end if
+				if not (showEpisodeNum = "") then
+					set shellCmd to shellCmd & " --TVEpisodeNum " & quoted form of showEpisodeNum
+				end if
+			end if
+			if not (showDescription = "") then
+				set shellCmd to shellCmd & " --description " & quoted form of showDescription
+			end if
+			if not (showChannelCall = "") then
+				set shellCmd to shellCmd & " --TVNetwork " & quoted form of showChannelCall
+			end if
+			set shellCmd to shellCmd & " --overWrite "
+			my debug_log("Running: " & shellCmd)
+			try
+				set shellCmdResult to do shell script shellCmd
+			end try
 		else
-			set shellCmd to shellCmd & " --title " & quoted form of showEpisode
-			set shellCmd to shellCmd & " --stik \"TV Show\""
-			set shellCmd to shellCmd & " --TVShowName " & quoted form of oShowName
-			if not (oShowEpisode = "") then
-				set shellCmd to shellCmd & " --TVEpisode " & quoted form of oShowEpisode
-			end if
-			if not (showEpisodeNum = "") then
-				set shellCmd to shellCmd & " --TVEpisodeNum " & quoted form of showEpisodeNum
-			end if
+			my debug_log("Not tagging with AtomicParsley, filename extension unknown: " & filenameExtension)
 		end if
-		if not (showDescription = "") then
-			set shellCmd to shellCmd & " --description " & quoted form of showDescription
-		end if
-		if not (showChannelCall = "") then
-			set shellCmd to shellCmd & " --TVNetwork " & quoted form of showChannelCall
-		end if
-		set shellCmd to shellCmd & " --overWrite "
-		my debug_log("Running: " & shellCmd)
-		try
-			set shellCmdResult to do shell script shellCmd
-		end try
 	end if
 	
 	tell window "iTiVo"
@@ -2019,7 +2065,7 @@ on ConnectTiVo()
 			if total_memory < (tivoSize * 1024) then
 				set total_memory to tivoSize * 1024
 			else
-				my debug_log("fixing: " & tivoSize * 1024 & " , " & total_memory)
+				my debug_log("updating TiVo's known HD space: " & tivoSize * 1024 & " , " & total_memory)
 				set tivoSize to (total_memory / 1024) as integer
 			end if
 			set contents of text field "tivoName" of drawer "Drawer1" to title of popup button "MyTiVos"
