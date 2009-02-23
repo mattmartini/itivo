@@ -60,4 +60,5 @@
 {{{
   mv "$file" ~/.Trash
 }}}
+    (That is a tilde next to the word trash: ~ ,  NOT a minus sign.)
     This will put the file into the trash AFTER itunes copies it out. (the quotes around the $file are important, since there may be spaces in the show name).
