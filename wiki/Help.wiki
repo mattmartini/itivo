@@ -31,6 +31,9 @@ Once the media access key is set (see above), bring up the main window of iTiVo
   * Update from TiVo
     Clicking this button will attempt to connect to your tivo, and download show information.  This goes much faster if you are using a wired instead of wireless connection, and can also be slow if this is an old tivo with a LOT of shows.
 
+  * Info
+    Clicking this will alternate between the 'show info' sidetab,  the 'tivo info' sidetab, and nothing.
+
 === Now Playing ===
   This part of the window is dedicated to the shows currently available to download from your tivo.
 
@@ -88,8 +91,20 @@ To access the preferences window, click on the 'Prefs' button at the bottom of t
   * Sync (iTunes) after import
     If a download is successfully added, then selecting this will tell iTunes to 'sync' to all attached devices.  If you had earlier configured your iTunes to add all TV shows to you iPhone, then a completed download will automatically be downloaded to your iPhone if it is connected.
 
+  * MetaData buttons
+    MetaData is information about the contents of your 'file'.  For example, name of the show, actors, genre, length, rating, etc.  There are several ways to store such data, and this section lets you select which ways you want to use.
+      * AtomicParsley will insert the metadata into the file directly, but will only try on mp4 and quicktime files (other formats dont support it).
+      * pyTivo creates another file alongside the movie file, which contains text descriptions of all the tags. This is used by programs like [http://code.google.com/p/pytivox/ pyTiVoX] when making the shows available back to the tivo for downloading or viewing.
+      * .tivo is an XML formatted entries list directly from the tivo, with no processing.
+
   * Commercial Skip
     If enabled, it will attempt to use a program named "comskip" to detect where commercials are in your show, and remove them.  Turning this option on slows down downloads considerably. It also takes up a LOT of hard drive space on your Main Drive for temporary data.  And most importantly, it does its best to figure out what a commercial is, but can make mistakes (leaving commercials in, or worse, cutting out parts of your show).  You can read up on comskip on [http://www.kaashoek.com/comskip/ its homepage].
+
+  * Scheduling
+    Can be used to control during what time automatic recordings are started.
+
+  * Advanced
+    Can be used to control advanced options like encoder settings.
 
 = Download Queue =
 The download queue is simply a list of shows scheduled for downloading.  Since the tivo only allows you to download one show at a time, it's sometimes easier to make a list of shows you want downloaded, and then have them all go at once while you go out for a while.  The list is processed top-to-bottom.  Even if you do not select to 'download queue', if the program has been idle, it will attempt to download the queue (this is to support subscriptions).
