@@ -32,7 +32,7 @@
 
 == Issues With Specific Formats ==
   # The Handbrake AppleTV format is creating files that AppleTV still cannot play.
-    It has been reported that the following may help:  Open the preferences.  Select the _Handbrake AppleTV_ format.  Select the _Advanced Tab_.  Change the value {{{-Z "AppleTV"}}} to {{{-Z "AppleTV" --rate 29.97}}}.  Encode away.
+    It has been reported that the following may help:  Open the preferences.  Select the _Handbrake AppleTV_ format.  Select the _Advanced Tab_.  Change the value *{{{-Z "AppleTV"}}}*  to  *{{{-Z "AppleTV" --rate 29.97}}}*   .  Encode away.
 
 == Which Download Format to use? ==
   # I want the original mpeg-2 from the tivo.
