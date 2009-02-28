@@ -62,6 +62,7 @@ property shouldAutoConnect : true
 property useTime : false
 property useTimeStartTime : date "Tuesday, February 10, 2009 1:00:00 AM"
 property useTimeEndTime : date "Tuesday, February 10, 2009 3:00:00 AM"
+property schedulingSleep : false
 
 property panelWIndow : missing value
 property currentPrefsTab : "DownloadingTab"
@@ -376,15 +377,18 @@ on setupPrefsTab(tabName)
 			end if
 			set state of button "comSkip" of view "comSkipView" of tab view "TopTab" to comSkip
 		else if (tabName = "SchedulingTab") then
-			set state of button useTime of view "SchedulingView" of tab view "TopTab" to useTime
+			set state of button "useTime" of view "SchedulingView" of tab view "TopTab" to useTime
 			set content of control "useTimeStartTime" of view "SchedulingView" of tab view "TopTab" to useTimeStartTime
 			set content of control "useTimeEndTime" of view "SchedulingView" of tab view "TopTab" to useTimeEndTime
+			set state of button "schedulingSleep" of view "SchedulingView" of tab view "TopTab" to schedulingSleep
 			if (useTime = true) then
 				set enabled of control "useTimeStartTime" of view "SchedulingView" of tab view "TopTab" to true
 				set enabled of control "useTimeEndTime" of view "SchedulingView" of tab view "TopTab" to true
+				set transparent of button "schedulingSleep" of view "SchedulingView" of tab view "TopTab" to false
 			else
 				set enabled of control "useTimeStartTime" of view "SchedulingView" of tab view "TopTab" to false
 				set enabled of control "useTimeEndTime" of view "SchedulingView" of tab view "TopTab" to false
+				set transparent of button "schedulingSleep" of view "SchedulingView" of tab view "TopTab" to true
 			end if
 		else if (tabName = "AdvancedTab") then
 			set contents of text field "postDownloadCmd" of view "AdvancedView" of tab view "TopTab" to postDownloadCmd
@@ -423,9 +427,10 @@ on recordPrefsTab()
 		else if (currentPrefsTab = "ComSkipTab") then
 			set comSkip to state of button "comSkip" of view "comSkipView" of tab view "TopTab"
 		else if (currentPrefsTab = "SchedulingTab") then
-			set useTime to state of button useTime of view "SchedulingView" of tab view "TopTab" as boolean
+			set useTime to state of button "useTime" of view "SchedulingView" of tab view "TopTab" as boolean
 			set useTimeStartTime to content of control "useTimeStartTime" of view "SchedulingView" of tab view "TopTab"
 			set useTimeEndTime to content of control "useTimeEndTime" of view "SchedulingView" of tab view "TopTab"
+			set schedulingSleep to state of button "schedulingSleep" of view "SchedulingView" of tab view "TopTab" as boolean
 		else if (currentPrefsTab = "AdvancedTab") then
 			set postDownloadCmd to contents of text field "postDownloadCmd" of view "AdvancedView" of tab view "TopTab"
 			set debugLog to state of button "debugLog" of view "AdvancedView" of tab view "TopTab" as boolean
@@ -504,6 +509,7 @@ on registerSettings()
 		make new default entry at end of default entries with properties {name:"useTime", contents:useTime}
 		make new default entry at end of default entries with properties {name:"useTimeStartTime", contents:useTimeStartTime}
 		make new default entry at end of default entries with properties {name:"useTimeEndTime", contents:useTimeEndTime}
+		make new default entry at end of default entries with properties {name:"schedulingSleep", contents:schedulingSleep}
 		register
 	end tell
 end registerSettings
@@ -550,6 +556,7 @@ on readSettings()
 			set useTime to contents of default entry "useTime"
 			set useTimeStartTime to contents of default entry "useTimeStartTime"
 			set useTimeEndTime to contents of default entry "useTimeEndTime"
+			set schedulingSleep to contents of default entry "schedulingSleep"
 			set APMetaData to contents of default entry "APMetaData"
 		end try
 		try
@@ -667,6 +674,7 @@ on writeSettings()
 			set contents of default entry "useTime" to useTime
 			set contents of default entry "useTimeStartTime" to useTimeStartTime
 			set contents of default entry "useTimeEndTime" to useTimeEndTime
+			set contents of default entry "schedulingSleep" to schedulingSleep
 		end tell
 	on error
 		my debug_log("Failed to write out initial settings")
@@ -917,6 +925,9 @@ on clicked theObject
 				set enabled of button "subscribeButton" of box "topBox" of split view "splitView1" to true
 			end if
 			set enabled of button "queueButton" of box "topBox" of split view "splitView1" to true
+			if success > 0 and cancelAllDownloads = 0 and schedulingSleep = true then
+				tell application "Finder" to sleep
+			end if
 		else if theObjectName = "DownloadButton" then
 			try
 				set enabled of button "DownloadButton" of box "topBox" of split view "splitView1" to false
@@ -969,9 +980,11 @@ on clicked theObject
 			if (useTime = true) then
 				set enabled of control "useTimeStartTime" of view "SchedulingView" of tab view "TopTab" of panelWIndow to true
 				set enabled of control "useTimeEndTime" of view "SchedulingView" of tab view "TopTab" of panelWIndow to true
+				set transparent of button "schedulingSleep" of view "SchedulingView" of tab view "TopTab" of panelWIndow to false
 			else
 				set enabled of control "useTimeStartTime" of view "SchedulingView" of tab view "TopTab" of panelWIndow to false
 				set enabled of control "useTimeEndTime" of view "SchedulingView" of tab view "TopTab" of panelWIndow to false
+				set transparent of button "schedulingSleep" of view "SchedulingView" of tab view "TopTab" of panelWIndow to true
 			end if
 		else if theObjectName = "customFormat" then
 			set temp to display dialog "Enter a name for the custom format" default answer "Custom Format"
@@ -2616,7 +2629,7 @@ on idle
 		my ConnectTiVo()
 		if (my shouldDownloadNow()) then
 			tell window "iTiVo"
-				my debug_log("starting download")
+				my debug_log("starting automated download")
 				set enabled of button "decodeQueue" of view "bottomLeftView" of split view "splitView2" of box "bottomBox" of split view "splitView1" to true
 				tell button "decodeQueue" of view "bottomLeftView" of split view "splitView2" of box "bottomBox" of split view "splitView1" to perform action
 			end tell
