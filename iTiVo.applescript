@@ -1941,7 +1941,11 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 	end if
 	
 	tell window "iTiVo"
-		set contents of text field "status" to "Finished at " & (current date)
+		if (complete = true) then
+			set contents of text field "status" to "Finished at " & (current date)
+		else
+			set contents of text field "status" to "Couldn't Download " & oShowName & " - " & oShowEpisode
+		end if
 		set contents of text field "status2" to ""
 		set visible of progress indicator "Status" to false
 		set visible of control "StatusLevel" to false
@@ -1963,7 +1967,7 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 		end if
 	end tell
 	
-	if (not postDownloadCmd = "") then
+	if (complete = true and not postDownloadCmd = "") then
 		try
 			set shellCmd to ("file=" & my prepareCommand(newFile) as string) & "; "
 			set shellCmd to shellCmd & "show=" & quoted form of oShowName & "; "
@@ -2554,7 +2558,8 @@ on addSelectionToQueue(currentProcessSelection)
 end addSelectionToQueue
 
 on isDownloadComplete(filePath, fullFileSize, tryCount)
-	if (my getCurrentFilesize(filePath)) as real < (((fullFileSize * (1 - (0.25 * tryCount))) as real) - 5) then
+	set currentSize to (my getCurrentFilesize(filePath) as real)
+	if ((currentSize < (((fullFileSize * (1 - (0.25 * tryCount))) as real) - 5)) or (currentSize < 1 as real)) then
 		return false
 	else
 		return true
