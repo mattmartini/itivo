@@ -101,7 +101,8 @@ To access the preferences window, click on the 'Prefs' button at the bottom of t
     If enabled, it will attempt to use a program named "comskip" to detect where commercials are in your show, and remove them.  Turning this option on slows down downloads considerably. It also takes up a LOT of hard drive space on your Main Drive for temporary data.  And most importantly, it does its best to figure out what a commercial is, but can make mistakes (leaving commercials in, or worse, cutting out parts of your show).  You can read up on comskip on [http://www.kaashoek.com/comskip/ its homepage].
 
   * Scheduling
-    Can be used to control during what time automatic recordings are started.
+    Here you can set the program to only start automatic queue processing during certain times.  Keep in mind that this is when queue processing STARTS.  It will keep running until it clears the queue no matter how long it takes.
+    You can also set the computer to be put to sleep whenever queue processing is done.  This will put the computer to sleep both after scheduled OR manual queue processing.
 
   * Advanced
     Can be used to control advanced options like encoder settings.
