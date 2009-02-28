@@ -925,7 +925,7 @@ on clicked theObject
 				set enabled of button "subscribeButton" of box "topBox" of split view "splitView1" to true
 			end if
 			set enabled of button "queueButton" of box "topBox" of split view "splitView1" to true
-			if success > 0 and cancelAllDownloads = 0 and schedulingSleep = true then
+			if success > 0 and cancelAllDownloads = 0 and useTime = true and schedulingSleep = true then
 				tell application "Finder" to sleep
 			end if
 		else if theObjectName = "DownloadButton" then

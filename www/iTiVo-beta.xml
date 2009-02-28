@@ -11,13 +11,13 @@
 		<item>
 			<title>Version 1.7.4</title>
 			<sparkle:releaseNotesLink>http://itivo.googlecode.com/svn/trunk/www/changelog.html</sparkle:releaseNotesLink>
-			<pubDate>Fri, 27 Feb 2009 23:43:38 -0800</pubDate>
+			<pubDate>Fri, 27 Feb 2009 23:53:11 -0800</pubDate>
 			<enclosure
 				url="http://itivo.googlecode.com/files/iTiVo-1.7.4.zip"
 				sparkle:version="1.7.4"
 				type="application/octet-stream"
-				length="17611556"
-				sparkle:dsaSignature="MCwCFBZTq3gdjoHLzh+SLfjDc1DxRlWEAhQM0aAV74WC+3Lig9YyZ8iEzW5C9w=="
+				length="17611555"
+				sparkle:dsaSignature="MCwCFCpbbr782PVGCteitfIcQON+b/wfAhRDGcR0XPM+LJSKp9RVIJK51TCQJw=="
 			/>
 		</item>
  </channel>
