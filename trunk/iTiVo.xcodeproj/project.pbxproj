@@ -49,6 +49,9 @@
 		532226E40EB0698400062D5F /* PrefsPanel.xib in Resources */ = {isa = PBXBuildFile; fileRef = 532226E30EB0698400062D5F /* PrefsPanel.xib */; };
 		534115830EF72E000011FFF6 /* pytivo_txt.xslt in Resources */ = {isa = PBXBuildFile; fileRef = 534115820EF72E000011FFF6 /* pytivo_txt.xslt */; };
 		5352F8690EC6752400A83D95 /* formats.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5352F8680EC6752400A83D95 /* formats.plist */; };
+		535A80C40F5A287B00F149FC /* t2sami in Resources */ = {isa = PBXBuildFile; fileRef = 535A80C30F5A287B00F149FC /* t2sami */; };
+		535A80C60F5A2AA000F149FC /* generate_subtitles.pl in Resources */ = {isa = PBXBuildFile; fileRef = 535A80C50F5A2AA000F149FC /* generate_subtitles.pl */; };
+		535A80D70F5A3F6300F149FC /* subtitlesSize.pl in Resources */ = {isa = PBXBuildFile; fileRef = 535A80D60F5A3F6300F149FC /* subtitlesSize.pl */; };
 		536575E40EE2791800B68A56 /* empty-check.png in Resources */ = {isa = PBXBuildFile; fileRef = 536575DA0EE2791800B68A56 /* empty-check.png */; };
 		536575E50EE2791800B68A56 /* empty.png in Resources */ = {isa = PBXBuildFile; fileRef = 536575DB0EE2791800B68A56 /* empty.png */; };
 		536575E60EE2791800B68A56 /* expired-recording-check.png in Resources */ = {isa = PBXBuildFile; fileRef = 536575DC0EE2791800B68A56 /* expired-recording-check.png */; };
@@ -122,6 +125,9 @@
 		532226E30EB0698400062D5F /* PrefsPanel.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PrefsPanel.xib; sourceTree = "<group>"; };
 		534115820EF72E000011FFF6 /* pytivo_txt.xslt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = pytivo_txt.xslt; sourceTree = "<group>"; };
 		5352F8680EC6752400A83D95 /* formats.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = formats.plist; sourceTree = "<group>"; };
+		535A80C30F5A287B00F149FC /* t2sami */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; name = t2sami; path = "External Software/t2sami"; sourceTree = "<group>"; };
+		535A80C50F5A2AA000F149FC /* generate_subtitles.pl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.perl; path = generate_subtitles.pl; sourceTree = "<group>"; };
+		535A80D60F5A3F6300F149FC /* subtitlesSize.pl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.perl; path = subtitlesSize.pl; sourceTree = "<group>"; };
 		536575DA0EE2791800B68A56 /* empty-check.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "empty-check.png"; sourceTree = "<group>"; };
 		536575DB0EE2791800B68A56 /* empty.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = empty.png; sourceTree = "<group>"; };
 		536575DC0EE2791800B68A56 /* expired-recording-check.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "expired-recording-check.png"; sourceTree = "<group>"; };
@@ -227,6 +233,9 @@
 		29B97315FDCFA39411CA2CEA /* Other Sources */ = {
 			isa = PBXGroup;
 			children = (
+				535A80D60F5A3F6300F149FC /* subtitlesSize.pl */,
+				535A80C50F5A2AA000F149FC /* generate_subtitles.pl */,
+				535A80C30F5A287B00F149FC /* t2sami */,
 				537B18CE0EFEEB9C005E4191 /* ParseXML.pl */,
 				534115820EF72E000011FFF6 /* pytivo_txt.xslt */,
 				53960E450EF240DF0068EE27 /* AtomicParsley */,
@@ -383,6 +392,9 @@
 				534115830EF72E000011FFF6 /* pytivo_txt.xslt in Resources */,
 				537B18CF0EFEEB9C005E4191 /* ParseXML.pl in Resources */,
 				5393FA700F425DDD0025D17A /* copyright.png in Resources */,
+				535A80C40F5A287B00F149FC /* t2sami in Resources */,
+				535A80C60F5A2AA000F149FC /* generate_subtitles.pl in Resources */,
+				535A80D70F5A3F6300F149FC /* subtitlesSize.pl in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

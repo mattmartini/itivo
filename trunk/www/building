@@ -7,6 +7,7 @@
 
 SRCDIR=/Users/yoav/src
 LAME=lame
+BOOST=boost_1_38_0
 
   cd $SRCDIR
   mkdir binaries
@@ -15,8 +16,16 @@ LAME=lame
   export CPPFLAGS=""
   export LDFLAGS="-arch i386 -arch ppc7400 -Wl,-syslibroot,/Developer/SDKs/MacOSX10.4u.sdk"
 
+  cd $SRCDIR/$BOOST
+  ./tools/jam/src/bin.macosxx86/bjam  --user-config=user-config-yoav.jam --with-system --with-filesystem architecture=combined link=static
+
+  cd $SRCDIR/t2sami-2.0.0033-pre2
+  ./configure --without-boost  --disable-dependency-tracking
+  make BOOST_CPPFLAGS="-I../$BOOST/" BOOST_LDFLAGS="-L../$BOOST/" BOOST_FILESYSTEM_LIB="../$BOOST/bin.v2/libs/filesystem/build/darwin-4.0.1/release/architecture-combined/link-static/threading-multi/libboost_filesystem-xgcc40-mt-1_38.a ../$BOOST/bin.v2/libs/system/build/darwin-4.0.1/release/architecture-combined/link-static/threading-multi/libboost_system-xgcc40-mt-1_38.a"
+  cp t2sami ../binaries/
+
   cd $SRCDIR/streambaby
-#  find . -name \*.java | xargs -n 1 $SRCDIR/remove_override.pl
+  find . -name \*.java | xargs -n 1 $SRCDIR/remove_override.pl
   ant clean
   ant
   if [ "$?" -ne "0" ]; then
@@ -29,6 +38,8 @@ LAME=lame
   unzip streambaby*.zip
   rm streambaby*.zip
   mv streambaby* ../../binaries/streambaby
+  cd ..
+  svn info . | grep Revision | cut -d ' ' -f 2 > ../binaries/streambaby/VERSION.txt
 
   cd $SRCDIR/tivodecode-0.2pre4
   make distclean
@@ -231,9 +242,9 @@ if ($arg eq "-p") {
   for x in libavutil libavformat libavcodec libavdevice libswscale;  do  echo $x 
      lipo -create $x.dylib.ppc $x.dylib.i386 -output $x.dylib
   done
-  cp comskip mencoder tivodecode AtomicParsley "../itivo/External Software/"
+  cp t2sami comskip mencoder tivodecode AtomicParsley "../itivo/External Software/"
   (cd "../itivo/External Software" && strip *)
   cp ffmpeg "../pytivox/External Software/ffmpeg.bin"
   cp *.dylib "../pytivox/External Software/"
   (cd "../pytivox/External Software/" && strip ffmpeg.bin)
-  
+  (cd "../pytivox/pyTivo-wmcbrine/" && git log --summary | head -10 | grep Date | cut -d ' ' -f 5-6,8 > VERSION.txt)
