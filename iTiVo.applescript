@@ -54,6 +54,7 @@ property encoderOtherOptions : ""
 property postDownloadCmd : ""
 property filenameExtension : ".mp4"
 property comSkip : 0
+property subtitles : 0
 property SUFeedURL : "http://itivo.googlecode.com/svn/trunk/www/iTiVo.xml"
 property debugLog : false
 property downloadFirst : false
@@ -371,11 +372,15 @@ on setupPrefsTab(tabName)
 		else if (tabName = "ComSkipTab") then
 			if (not my formatCompatComSkip(format)) then
 				set comSkip to 0
+				set subtitles to 0
 				set enabled of button "comSkip" of view "comSkipView" of tab view "TopTab" to false
+				set enabled of button "subtitles" of view "comSkipView" of tab view "TopTab" to false
 			else
 				set enabled of button "comSkip" of view "comSkipView" of tab view "TopTab" to true
+				set enabled of button "subtitles" of view "comSkipView" of tab view "TopTab" to true
 			end if
 			set state of button "comSkip" of view "comSkipView" of tab view "TopTab" to comSkip
+			set state of button "subtitles" of view "comSkipView" of tab view "TopTab" to subtitles
 		else if (tabName = "SchedulingTab") then
 			set state of button "useTime" of view "SchedulingView" of tab view "TopTab" to useTime
 			set content of control "useTimeStartTime" of view "SchedulingView" of tab view "TopTab" to useTimeStartTime
@@ -426,6 +431,7 @@ on recordPrefsTab()
 			set tivoMetaData to state of button "tivoMetaData" of view "DownloadingView" of tab view "TopTab" as boolean
 		else if (currentPrefsTab = "ComSkipTab") then
 			set comSkip to state of button "comSkip" of view "comSkipView" of tab view "TopTab"
+			set subtitles to state of button "subtitles" of view "comSkipView" of tab view "TopTab"
 		else if (currentPrefsTab = "SchedulingTab") then
 			set useTime to state of button "useTime" of view "SchedulingView" of tab view "TopTab" as boolean
 			set useTimeStartTime to content of control "useTimeStartTime" of view "SchedulingView" of tab view "TopTab"
@@ -492,6 +498,7 @@ on registerSettings()
 		make new default entry at end of default entries with properties {name:"txtMetaData", contents:txtMetaData}
 		make new default entry at end of default entries with properties {name:"tivoMetaData", contents:tivoMetaData}
 		make new default entry at end of default entries with properties {name:"comSkip", contents:comSkip}
+		make new default entry at end of default entries with properties {name:"subtitles", contents:subtitles}
 		make new default entry at end of default entries with properties {name:"postDownloadCmd", contents:postDownloadCmd}
 		make new default entry at end of default entries with properties {name:"debugLog", contents:debugLog}
 		make new default entry at end of default entries with properties {name:"downloadFirst", contents:downloadFirst}
@@ -558,6 +565,7 @@ on readSettings()
 			set useTimeEndTime to contents of default entry "useTimeEndTime"
 			set schedulingSleep to contents of default entry "schedulingSleep"
 			set APMetaData to contents of default entry "APMetaData"
+			set subtitles to contents of default entry "subtitles"
 		end try
 		try
 			set debugLog to contents of default entry "debugLog"
@@ -657,6 +665,7 @@ on writeSettings()
 			set contents of default entry "txtMetaData" to txtMetaData
 			set contents of default entry "tivoMetaData" to tivoMetaData
 			set contents of default entry "comSkip" to comSkip
+			set contents of default entry "subtitles" to subtitles
 			set contents of default entry "postDownloadCmd" to postDownloadCmd
 			set contents of default entry "encoderUsed" to encoderUsed
 			set contents of default entry "encoderVideoOptions" to encoderVideoOptions
@@ -1236,6 +1245,7 @@ on choose menu item theObject
 		set contents of text field "formatDescription" of view "DownloadingView" of tab view "TopTab" of panelWIndow to my formatDescription(myformat)
 		if (not my formatCompatComSkip(myformat)) then
 			set comSkip to 0
+			set subtitles to 0
 		end if
 		if (my formatCompatItunes(myformat)) then
 			set enabled of button "iTunes" of view "DownloadingView" of tab view "TopTab" of panelWIndow to true
@@ -1390,6 +1400,7 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 		set showNameP to my replace_chars(showName, "/", ":")
 		set showNameCheck to showName & filenameExtension
 		set filePath to (my prepareCommand(DL & showNameP & filenameExtension) as string)
+		set subFilePath to (my prepareCommand(DL & showNameP & ".srt") as string)
 		if (overrideDLCheck < 1) then
 			if my checkDLFile(showNameCheck) then
 				return 0
@@ -1434,19 +1445,15 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 				my debug_log(shellCmd)
 				do shell script shellCmd
 			end try
-			if (comSkip = 0 and downloadFirst = false and my formatMustDownloadFirst(format) = false) then
+			if (comSkip = 0 and subtitles = 0 and downloadFirst = false and my formatMustDownloadFirst(format) = false) then
 				set shellCmd to "mkfifo /tmp/iTiVo-" & UserName & "/iTiVoDLPipe /tmp/iTiVo-" & UserName & "/iTiVoDLPipe2.mpg"
 				set totalSteps to 1
 			else
 				set shellCmd to "mkfifo /tmp/iTiVo-" & UserName & "/iTiVoDLPipe ; touch /tmp/iTiVo-" & UserName & "/iTiVoDLPipe{2,3}.mpg"
-				if (comSkip = 1) then
-					if (not encoderUsed = "mencoder") then
-						set totalSteps to 4
-					else
-						set totalSteps to 3
-					end if
+				if (comSkip = 1 and (subtitles = 1 or (not encoderUsed = "mencoder"))) then
+					set totalSteps to 3 + comSkip + subtitles
 				else
-					set totalSteps to 2
+					set totalSteps to 2 + comSkip + subtitles
 				end if
 			end if
 			call method "setMaxValue:" of control "StatusLevel" with parameters {totalSteps}
@@ -1460,7 +1467,7 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 			set ShellScriptCommand to ShellScriptCommand & " >> " & debug_file & " 2>&1 & echo $! ;exit 0"
 			my debug_log(ShellScriptCommand)
 			do shell script ShellScriptCommand
-			if (comSkip = 0 and downloadFirst = false and my formatMustDownloadFirst(format) = false) then
+			if (comSkip = 0 and subtitles = 0 and downloadFirst = false and my formatMustDownloadFirst(format) = false) then
 				set ShellScriptCommand to "perl " & myPath & "Contents/Resources/re-encoder.pl " & myPath2 & " " & myHomePathP2 & " " & showFullNameEncoded & filenameExtension & " "
 				set ShellScriptCommand to ShellScriptCommand & quoted form of encoderUsed & " " & quoted form of encoderVideoOptions & " "
 				set ShellScriptCommand to ShellScriptCommand & quoted form of encoderAudioOptions & " " & quoted form of encoderOtherOptions & " "
@@ -1579,6 +1586,11 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 			
 			-- The following are only done if above didnt do everything in one pipeline
 			-- Scan for Commercials
+			set shellCmdString to "touch /tmp/iTiVo-" & UserName & "/iTiVoDLPipe3.mpg"
+			try
+				my debug_log("Running : " & shellCmdString)
+				do shell script shellCmdString
+			end try
 			if (my isDownloadComplete(filePath, fullFileSize, currentTry) and comSkip = 1) then
 				set currentProgresss to 0
 				set downloadExistsCmdString to "du -k -d 0 /tmp/iTiVo-" & UserName & "/iTiVoDLPipe3.mpg ;exit 0"
@@ -1639,10 +1651,9 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 				tell progress indicator "Status" to increment by -1 * currentProgress
 			end if
 			
-			-- Cut out the commercials using mencoder for other encoders
-			
-			if (my isDownloadComplete(filePath, fullFileSize, currentTry) and (comSkip = 1 and (not encoderUsed = "mencoder"))) then
-				my debug_log("Cutting Commercials")
+			-- Cut out the commercials using mencoder for other encoders or if we need subtitles
+			if (my isDownloadComplete(filePath, fullFileSize, currentTry) and (comSkip = 1 and (subtitles = 1 or not encoderUsed = "mencoder"))) then
+				my debug_log("Pre-Cutting Commercials")
 				set currentProgresss to 0
 				set downloadExistsCmdString to "du -k -d 0 /tmp/iTiVo-" & UserName & "/iTiVoDLPipe2.mpg ;exit 0"
 				set timeRemaining to 200
@@ -1722,11 +1733,73 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 					my debug_log(ShellScriptCommand)
 					do shell script ShellScriptCommand
 				end if
+				my debug_log("Pre-cut commercials, Resetting EDL list")
+				set shellCmd to "rm -f /tmp/iTiVo-" & UserName & "/iTiVoDLPipe2.edl"
+				my debug_log(ShellScriptCommand)
+				do shell script shellCmd
+				tell progress indicator "Status" to increment by -1 * currentProgress
+			end if
+			
+			set shellCmdString to "touch /tmp/iTiVo-" & UserName & "/iTiVoDLPipe3.mpg"
+			try
+				my debug_log("Running : " & shellCmdString)
+				do shell script shellCmdString
+			end try
+			
+			-- Subtitles
+			if (my isDownloadComplete(filePath, fullFileSize, currentTry) and (subtitles = 1)) then
+				set currentProgresss to 0
+				set downloadExistsCmdString to "du -k -d 0 /tmp/iTiVo-" & UserName & "/iTiVoDLPipe3.mpg ;exit 0"
+				set timeoutCount to 0
+				set downloadExists to 1
+				set currentPercent to 0
+				set prevPercent to 0
+				set ShellScriptCommand to "perl " & myPath & "Contents/Resources/generate_subtitles.pl " & myPath2 & " " & myHomePathP2 & " " & showFullNameEncoded
+				set ShellScriptCommand to ShellScriptCommand & " >> " & debug_file & " 2>&1  & echo $! ;exit 0"
+				my debug_log(ShellScriptCommand)
+				do shell script ShellScriptCommand
+				set currentStep to currentStep + 1
+				set integer value of control "StatusLevel" to currentStep
+				repeat while timeoutCount < 1200 and cancelDownload as integer = 0 and downloadExists as integer = 1 and cancelAllDownloads as integer = 0
+					if (debug_level ≥ 3) then
+						my debug_log("subtitles currentPercent: " & currentPercent)
+					end if
+					set {currentPercent} to my getSubtitlesProgress()
+					set downloadExistsCmd to do shell script downloadExistsCmdString
+					if downloadExistsCmd is not equal to "" then
+						set downloadExists to 1
+					else
+						set downloadExists to 0
+					end if
+					if currentPercent as integer > prevPercent as integer then
+						set prevPercent to currentPercent
+						set timeoutCount to 0
+						set contents of text field "status" to "(phase " & currentStep & "/" & totalSteps & ") Subtitle Extraction " & showName
+					else
+						set timeoutCount to timeoutCount + 1
+						if timeoutCount = 20 then
+							set contents of text field "status" to "(phase " & currentStep & "/" & totalSteps & ") Subtitle Extraction " & oShowName & " (stalled)"
+						end if
+					end if
+					try
+						set progressDifference to currentPercent - currentProgress
+						tell progress indicator "Status" to increment by progressDifference
+						set currentProgress to currentPercent as integer
+						if currentProgress > 100 then
+							set currentProgress to 100
+						end if
+						set contents of text field "status2" to " processing      (" & (currentPercent as string) & "% )"
+					end try
+					delay 0.5
+				end repeat
+				if (timeoutCount ≥ 1200) then
+					my debug_log("Time out on subtitles")
+				end if
 				tell progress indicator "Status" to increment by -1 * currentProgress
 			end if
 			
 			-- Finally run the encoder
-			if (my isDownloadComplete(filePath, fullFileSize, currentTry) and (comSkip = 1 or downloadFirst = true or my formatMustDownloadFirst(format) = true)) then
+			if (my isDownloadComplete(filePath, fullFileSize, currentTry) and (comSkip = 1 or subtitles = 1 or downloadFirst = true or my formatMustDownloadFirst(format) = true)) then
 				set currentProgresss to 0
 				set downloadExistsCmdString to "du -k -d 0 /tmp/iTiVo-" & UserName & "/iTiVoDLPipe2.mpg ;exit 0"
 				set timeRemaining to 200
@@ -1871,10 +1944,14 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 			my debug_log("Moving to subdir")
 			set DLDest to DL & safeOShowName
 			set newFile to (DLDest & "/" & safeName & filenameExtension)
+			set newSubFile to (DLDest & "/" & safeName & ".srt")
 			tell window "iTiVo"
 				set contents of text field "status" to "Moving file to subdirectory " & DLDest
 			end tell
 			set shellCmd to "mkdir -p " & my prepareCommand(DLDest) as string
+			if (subtitles = 1) then
+				set shellCmd to shellCmd & "; mv " & subFilePath & " " & my prepareCommand(newSubFile) as string
+			end if
 			set shellCmd to shellCmd & ";  mv " & filePath & " " & my prepareCommand(newFile) as string
 			my debug_log("Running: " & shellCmd)
 			set shellCmdResult to do shell script shellCmd
@@ -2448,6 +2525,16 @@ on getcomskip()
 		return {first word of myresult, second word of myresult, "" & third word of myresult & ":" & fourth word of myresult & ":" & fifth word of myresult}
 	end if
 end getcomskip
+
+on getSubtitlesProgress()
+	set myPath to my prepareCommand(POSIX path of (path to me))
+	set myresult to (do shell script "perl " & myPath & "Contents/Resources/subtitlesSize.pl")
+	if (myresult = "") then
+		return {0}
+	else
+		return words in myresult
+	end if
+end getSubtitlesProgress
 
 on getEncoderProgress(encoderUsed)
 	set myPath to my prepareCommand(POSIX path of (path to me))
