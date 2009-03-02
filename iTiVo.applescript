@@ -159,7 +159,7 @@ end will finish launching
 
 on launched theObject
 	if LaunchCount > 100 or LaunchCount ≤ 0 then
-		display dialog "This program is under active development. Some features may not work. *Do not distribute copyrighted material*" buttons {"OK"} default button "OK" attached to window "iTiVo"
+		display dialog "This program is under active development. Some features may not work. *Do not distribute copyrighted material*" buttons {"OK"} default button "OK" attached to window "iTiVo" giving up after 20
 		set LaunchCount to 0
 	end if
 	set LaunchCount to LaunchCount + 1
