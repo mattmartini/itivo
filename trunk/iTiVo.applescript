@@ -1537,8 +1537,13 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 					set timeoutCount to 0
 					set contents of text field "status" to "(phase " & currentStep & "/" & totalSteps & ") Downloading " & showName
 				else
-					set timeoutCount to timeoutCount + 1
-					if timeoutCount = 20 then
+					if (currentFileSize > 9500) then
+						-- curl starts reporting progress in gigs, so we have to allow more time for 0.1G updates.
+						set timeoutCount to timeoutCount + 0.1
+					else
+						set timeoutCount to timeoutCount + 1
+					end if
+					if timeoutCount > 20 then
 						set contents of text field "status" to "(phase " & currentStep & "/" & totalSteps & ") Downloading " & oShowName & " (waiting for TiVo)"
 					end if
 				end if
