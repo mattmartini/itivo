@@ -42,7 +42,7 @@
 
 == Which Download Format to use? ==
   # I want the original mpeg-2 from the tivo.
-    The tivo stores its movies as an mpeg-2 transport stream (TS).  It also encrypts it with your MAK.  If you want to simply decrypt, choose the 'Decrypt' format.  However, keep in mind that quicktime can't play such a file.  You will need to install [http://www.videolan.org/vlc/download-macosx.html VLC] or [http://mplayerosx.sttz.ch/#downloads MplayerOSX] (free) to view it.  Media managers like [http://elan.plexapp.com/ Plex ] can also read it.
+    The tivo encrypts your show with your MAK.  If you want to simply decrypt, choose the 'Decrypt' format.  However, keep in mind that quicktime can't play such a file.  You will need to install [http://www.videolan.org/vlc/download-macosx.html VLC] or [http://mplayerosx.sttz.ch/#downloads MplayerOSX] (free) to view it.  Media managers like [http://elan.plexapp.com/ Plex ] can also read it.
   # I want the original mpeg-2 but without commercials.
     Decrypt/Copy will cut up the file appropriately.  However, you will most likely end up with horrible audio/video sync issues.
   # What is iphone super-res?
