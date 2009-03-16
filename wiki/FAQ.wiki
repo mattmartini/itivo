@@ -30,7 +30,7 @@
     * The quality of your Tivo->computer network.  Wired 100Mbps will not be fully utilized, but is your best connection.  Wireless will slow it down somewhat.
     Over a wired connection, from a TiVo S3, converting to iPhone, I can usually get a 1000 megabyte 30 minute show down in about 20 mins. Use those settings as a starting point to see.  If you're seeing MUCH worse times, then something is wrong.
   # What should I do if I need it to download faster?
-    If you really need the faster downloads and are ok with using up more hard drive space, you should probably select the 'decrypt' format.  And install [http://www.videolan.org/vlc/download-macosx.html VLC] to view the downloaded movie.  It will download as fast as the tivo will allow, and do no conversion whatsoever.
+    If you really need the faster downloads and are ok with using up more hard drive space, you should probably select the 'decrypt' format.  And install [http://mplayerosx.sttz.ch/#downloads MPlayer OSX] or [http://www.videolan.org/vlc/download-macosx.html VLC] to view the downloaded movie.  It will download as fast as the tivo will allow, and do no conversion whatsoever.
 
 == Issues With Specific Formats ==
   # The Handbrake AppleTV format is creating files that AppleTV still cannot play.
@@ -42,7 +42,7 @@
 
 == Which Download Format to use? ==
   # I want the original mpeg-2 from the tivo.
-    The tivo stores its movies as an mpeg-2 transport stream (TS).  It also encrypts it with your MAK.  If you want to simply decrypt, choose the 'Decrypt' format.  However, keep in mind that quicktime can't play such a file.  You will need to install [http://www.videolan.org/vlc/download-macosx.html VLC] or [http://mplayerosx.sourceforge.net/ MplayerOSX] (free) to view it.  Media managers like [http://elan.plexapp.com/ Plex ] can also read it.
+    The tivo stores its movies as an mpeg-2 transport stream (TS).  It also encrypts it with your MAK.  If you want to simply decrypt, choose the 'Decrypt' format.  However, keep in mind that quicktime can't play such a file.  You will need to install [http://www.videolan.org/vlc/download-macosx.html VLC] or [http://mplayerosx.sttz.ch/#downloads MplayerOSX] (free) to view it.  Media managers like [http://elan.plexapp.com/ Plex ] can also read it.
   # I want the original mpeg-2 but without commercials.
     Decrypt/Copy will cut up the file appropriately.  However, you will most likely end up with horrible audio/video sync issues.
   # What is iphone super-res?
@@ -52,7 +52,7 @@
   # PSP ?
     Aimed at the Sony PSP handheld:  Connect your PSP via usb or insert the memory stick into a reader. Create a folder named "VIDEO" at the toplevel, and copy the movie into it.  Your PSP will now play your movie for you.
   # I want to keep my movies as a library on my hard drive... What settings?
-    I'd personally use H.264 at 5mbps.  If you want to get the best quality AND the fastest download, you can simply keep whatever tivo encoded by using the 'decrypt' format, but then to view it you will have to install a viewer like [http://www.videolan.org/vlc/download-macosx.html VLC].  If you later decide you prefer h.264, you can always re-encode your movie with a tool like [[http://trac.handbrake.fr/ HandBrake].
+    I'd personally use H.264 at 5mbps.  If you want to get the best quality AND the fastest download, you can simply keep whatever tivo encoded by using the 'decrypt' format, but then to view it you will have to install a viewer like [http://www.videolan.org/vlc/download-macosx.html VLC] or [http://mplayerosx.sttz.ch/#downloads MPlayer OSX].  If you later decide you prefer h.264, you can always re-encode your movie with a tool like [[http://trac.handbrake.fr/ HandBrake].
   # What is HandBrake?
     A popular mac encoding tool that is an alternative to mencoder.  Some people prefer the speed or the quality of handbrake.  (Even though a lot of code is shared between the two encoders).  If you are seeing a lot of mencoder crashes, it's worth trying out HandBrake instead.
   # I use HandBrake, but I want to use different options from what you chose.
