@@ -126,7 +126,7 @@ on will open theObject
 			set shellCmd to "mkdir -p /tmp/iTiVo-" & UserName
 			do shell script shellCmd
 		end try
-		my debug_log("     ================    Starting   ===================")
+		my init_log()
 		getTiVos()
 		update
 		readSettings()
@@ -2344,7 +2344,7 @@ end create_playlist
 
 
 on generate_text_metadata(this_item, srcXML, xsltFile)
-	set ShellScriptCommand to "/usr/bin/xsltproc " & quoted form of xsltFile & " " & quoted form of srcXML & " > " & quoted form of this_item
+	set ShellScriptCommand to "/usr/bin/xsltproc " & xsltFile & " " & srcXML & " > " & quoted form of this_item
 	my debug_log("Running: " & ShellScriptCommand)
 	try
 		set scriptResult to (do shell script ShellScriptCommand)
@@ -2684,13 +2684,20 @@ on growlIsRunning()
 	return (myRunning > 0)
 end growlIsRunning
 
+on init_log()
+	set debug_file to "/dev/null"
+	if (debug_level ≥ 1) then
+		set debug_file to "/tmp/iTiVo-" & UserName & "/iTiVo.log"
+		try
+			do shell script "mv -f " & debug_file & " " & debug_file & ".old ; touch " & debug_file
+		end try
+	end if
+	my debug_log(" =========== Starting ==========")
+end init_log
+
 on debug_log(log_string)
 	try
-		if (debug_level ≤ 1) then
-			set debug_file to "/dev/null"
-		end if
 		if (debug_level ≥ 1) then
-			set debug_file to "/tmp/iTiVo-" & UserName & "/iTiVo.log"
 			log log_string
 		end if
 		if (debug_level ≥ 2) then
