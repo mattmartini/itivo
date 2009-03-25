@@ -64,6 +64,7 @@ property useTime : false
 property useTimeStartTime : date "Tuesday, February 10, 2009 1:00:00 AM"
 property useTimeEndTime : date "Tuesday, February 10, 2009 3:00:00 AM"
 property schedulingSleep : false
+property downloadRetries : 3
 
 property panelWIndow : missing value
 property currentPrefsTab : "DownloadingTab"
@@ -404,6 +405,7 @@ on setupPrefsTab(tabName)
 			end if
 			set state of button "debugLog" of view "AdvancedView" of tab view "TopTab" to debugLog
 			set state of button "downloadFirst" of view "AdvancedView" of tab view "TopTab" to downloadFirst
+			set contents of text field "downloadRetries" of view "AdvancedView" of tab view "TopTab" to downloadRetries
 			set contents of text field "filenameExtension" of view "AdvancedView" of tab view "TopTab" to filenameExtension
 			set contents of text field "encoderUsed" of view "AdvancedView" of tab view "TopTab" to encoderUsed
 			set contents of text field "encoderVideoOptions" of view "AdvancedView" of tab view "TopTab" to encoderVideoOptions
@@ -449,6 +451,7 @@ on recordPrefsTab()
 			else
 				set SUFeedURL to "http://itivo.googlecode.com/svn/trunk/www/iTiVo.xml"
 			end if
+			set downloadRetries to contents of text field "downloadRetries" of view "AdvancedView" of tab view "TopTab" as integer
 			set filenameExtension to contents of text field "filenameExtension" of view "AdvancedView" of tab view "TopTab"
 			set encoderUsed to contents of text field "encoderUsed" of view "AdvancedView" of tab view "TopTab"
 			set encoderVideoOptions to contents of text field "encoderVideoOptions" of view "AdvancedView" of tab view "TopTab"
@@ -517,6 +520,7 @@ on registerSettings()
 		make new default entry at end of default entries with properties {name:"useTimeStartTime", contents:useTimeStartTime}
 		make new default entry at end of default entries with properties {name:"useTimeEndTime", contents:useTimeEndTime}
 		make new default entry at end of default entries with properties {name:"schedulingSleep", contents:schedulingSleep}
+		make new default entry at end of default entries with properties {name:"downloadRetries", contents:downloadRetries}
 		register
 	end tell
 end registerSettings
@@ -566,6 +570,7 @@ on readSettings()
 			set schedulingSleep to contents of default entry "schedulingSleep"
 			set APMetaData to contents of default entry "APMetaData"
 			set subtitles to contents of default entry "subtitles"
+			set downloadRetries to contents of default entry "downloadRetries" as integer
 		end try
 		try
 			set debugLog to contents of default entry "debugLog"
@@ -684,6 +689,7 @@ on writeSettings()
 			set contents of default entry "useTimeStartTime" to useTimeStartTime
 			set contents of default entry "useTimeEndTime" to useTimeEndTime
 			set contents of default entry "schedulingSleep" to schedulingSleep
+			set contents of default entry "downloadRetries" to downloadRetries as integer
 		end tell
 	on error
 		my debug_log("Failed to write out initial settings")
@@ -891,7 +897,7 @@ on clicked theObject
 					set shellCmd to "rm /tmp/iTiVo-" & UserName & "/iTiVoDL{,2,3}"
 					do shell script shellCmd
 				end try
-				set success to my downloadItem(currentProcessSelectionQ2, 1, 4)
+				set success to my downloadItem(currentProcessSelectionQ2, 1, downloadRetries)
 				if success > 0 and cancelAllDownloads = 0 then
 					set processInfoRecordTemp to content of targetDataQ
 					set processInfoRecord to {}
@@ -963,7 +969,7 @@ on clicked theObject
 				set fullFileSize to (first word of fullFileSize as integer)
 				
 				set success to 1
-				set success to my downloadItem(currentProcessSelection, 0, 4)
+				set success to my downloadItem(currentProcessSelection, 0, downloadRetries)
 				if (count of (selected data rows of table view "ShowListTable" of scroll view "ShowList" of box "topBox" of split view "splitView1")) = 1 then
 					set enabled of button "DownloadButton" of box "topBox" of split view "splitView1" to true
 					set enabled of button "subscribeButton" of box "topBox" of split view "splitView1" to true
@@ -1437,7 +1443,7 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 		return 1
 	end if
 	
-	repeat while ((not (my isDownloadComplete(filePath, fullFileSize, currentTry) and (timeRemaining ≤ 5 * (retryCount + 1)))) and currentTry < retryCount and cancelDownload = 0)
+	repeat while ((not (my isDownloadComplete(filePath, fullFileSize, currentTry, retryCount) and (timeRemaining ≤ 5 * (retryCount + 1)))) and currentTry ≤ retryCount and cancelDownload = 0)
 		my performCancelDownload()
 		tell window "iTiVo"
 			try
@@ -1596,7 +1602,7 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 				my debug_log("Running : " & shellCmdString)
 				do shell script shellCmdString
 			end try
-			if (my isDownloadComplete(filePath, fullFileSize, currentTry) and comSkip = 1) then
+			if (my isDownloadComplete(filePath, fullFileSize, currentTry, retryCount) and comSkip = 1) then
 				set currentProgresss to 0
 				set downloadExistsCmdString to "du -k -d 0 /tmp/iTiVo-" & UserName & "/iTiVoDLPipe3.mpg ;exit 0"
 				set timeoutCount to 0
@@ -1657,7 +1663,7 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 			end if
 			
 			-- Cut out the commercials using mencoder for other encoders or if we need subtitles
-			if (my isDownloadComplete(filePath, fullFileSize, currentTry) and (comSkip = 1 and (subtitles = 1 or not encoderUsed = "mencoder"))) then
+			if (my isDownloadComplete(filePath, fullFileSize, currentTry, retryCount) and (comSkip = 1 and (subtitles = 1 or not encoderUsed = "mencoder"))) then
 				my debug_log("Pre-Cutting Commercials")
 				set currentProgresss to 0
 				set downloadExistsCmdString to "du -k -d 0 /tmp/iTiVo-" & UserName & "/iTiVoDLPipe2.mpg ;exit 0"
@@ -1752,7 +1758,7 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 			end try
 			
 			-- Subtitles
-			if (my isDownloadComplete(filePath, fullFileSize, currentTry) and (subtitles = 1)) then
+			if (my isDownloadComplete(filePath, fullFileSize, currentTry, retryCount) and (subtitles = 1)) then
 				set currentProgresss to 0
 				set downloadExistsCmdString to "du -k -d 0 /tmp/iTiVo-" & UserName & "/iTiVoDLPipe3.mpg ;exit 0"
 				set timeoutCount to 0
@@ -1804,7 +1810,7 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 			end if
 			
 			-- Finally run the encoder
-			if (my isDownloadComplete(filePath, fullFileSize, currentTry) and (comSkip = 1 or subtitles = 1 or downloadFirst = true or my formatMustDownloadFirst(format) = true)) then
+			if (my isDownloadComplete(filePath, fullFileSize, currentTry, retryCount) and (comSkip = 1 or subtitles = 1 or downloadFirst = true or my formatMustDownloadFirst(format) = true)) then
 				set currentProgresss to 0
 				set downloadExistsCmdString to "du -k -d 0 /tmp/iTiVo-" & UserName & "/iTiVoDLPipe2.mpg ;exit 0"
 				set timeRemaining to 200
@@ -1882,7 +1888,7 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 			try
 				tell application GrowlAppName
 					using terms from application "GrowlHelperApp"
-						if (my isDownloadComplete(filePath, fullFileSize, currentTry)) then
+						if (my isDownloadComplete(filePath, fullFileSize, currentTry, retryCount)) then
 							notify with name "Ending Download" title "Finished
 " & (oShowName) description (showEpisode) application name "iTiVo"
 						else
@@ -1897,7 +1903,7 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 	end repeat
 	
 	set complete to false
-	if cancelDownload = 0 and my isDownloadComplete(filePath, fullFileSize, currentTry) then
+	if cancelDownload = 0 and my isDownloadComplete(filePath, fullFileSize, currentTry, retryCount) then
 		set complete to true
 	end if
 	
@@ -2067,7 +2073,7 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 			set shellCmd to ("file=" & my prepareCommand(newFile) as string) & "; "
 			set shellCmd to shellCmd & "show=" & quoted form of oShowName & "; "
 			set shellCmd to shellCmd & "episode=" & quoted form of showEpisode & "; "
-			if isDownloadComplete(my prepareCommand(newFile) as string, fullFileSize, currentTry) then
+			if isDownloadComplete(my prepareCommand(newFile) as string, fullFileSize, currentTry, retryCount) then
 				set shellCmd to shellCmd & "success=1; "
 			else
 				set shellCmd to shellCmd & "success=0; "
@@ -2662,9 +2668,18 @@ on addSelectionToQueue(currentProcessSelection)
 	end if
 end addSelectionToQueue
 
-on isDownloadComplete(filePath, fullFileSize, tryCount)
+on isDownloadComplete(filePath, fullFileSize, tryCount, retryCount)
+	my debug_log("is download complete " & tryCount & " / " & retryCount)
 	set currentSize to (my getCurrentFilesize(filePath) as real)
-	if ((currentSize < (((fullFileSize * (1 - (0.25 * tryCount))) as real) - 5)) or (currentSize < 1 as real)) then
+	if (retryCount = 0) then
+		if (currentSize > 1) then
+			return true
+		else
+			return false
+		end if
+	end if
+	set fractional to (1.0 / (retryCount + 1.0))
+	if ((currentSize < (((fullFileSize * (1 - (fractional * tryCount))) as real) - 5)) or (currentSize < 1 as real)) then
 		return false
 	else
 		return true
