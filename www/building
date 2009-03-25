@@ -8,6 +8,8 @@
 SRCDIR=/Users/yoav/src
 LAME=lame
 BOOST=boost_1_38_0
+FAAD=faad2-2.7
+FAAC=faac-1.28
 
   cd $SRCDIR
   mkdir binaries
@@ -40,15 +42,6 @@ BOOST=boost_1_38_0
   mv streambaby* ../../binaries/streambaby
   cd ..
   svn info . | grep Revision | cut -d ' ' -f 2 > ../binaries/streambaby/VERSION.txt
-
-  cd $SRCDIR/tivodecode-0.2pre4
-  make distclean
-  ./configure --disable-dependency-tracking && make
-  if [ "$?" -ne "0" ]; then
-      echo "Failed to build tivodecode"
-      exit 1
-  fi
-  cp tivodecode ../binaries/tivodecode
 
   cd $SRCDIR/etv-comskip/src/comskip
   make clean; rm -f ../../comskip
@@ -84,7 +77,7 @@ BOOST=boost_1_38_0
       exit 1
   fi
 
-  cd $SRCDIR/faac
+  cd $SRCDIR/$FAAC
   make clean
   ./configure --without-mp4v2 --enable-shared=no --enable-static=yes && make
   if [ "$?" -ne "0" ]; then
@@ -92,7 +85,7 @@ BOOST=boost_1_38_0
       exit 1
   fi
 
-  cd $SRCDIR/faad2
+  cd $SRCDIR/$FAAD
   make clean
   ./configure --enable-shared=no --enable-static=yes && make
   if [ "$?" -ne "0" ]; then
@@ -108,14 +101,23 @@ BOOST=boost_1_38_0
       exit 1
   fi
 
-   export CFLAGS='-isysroot /Developer/SDKs/MacOSX10.4u.sdk -arch i386 -O2 -fomit-frame-pointer'
-   export CXXFLAGS='-isysroot /Developer/SDKs/MacOSX10.4u.sdk -arch i386 -O2 -fomit-frame-pointer'
-   export CPPFLAGS='-arch i386'
-   export LDFLAGS='-arch i386 -Wl,-syslibroot,/Developer/SDKs/MacOSX10.4u.sdk'
+  cd $SRCDIR/tivodecode-0.2pre4
+  make distclean
+  ./configure --disable-dependency-tracking && make
+  if [ "$?" -ne "0" ]; then
+      echo "Failed to build tivodecode"
+      exit 1
+  fi
+  cp tivodecode ../binaries/tivodecode-i386
+
+  export CFLAGS='-isysroot /Developer/SDKs/MacOSX10.4u.sdk -arch i386 -O2 -fomit-frame-pointer'
+  export CXXFLAGS='-isysroot /Developer/SDKs/MacOSX10.4u.sdk -arch i386 -O2 -fomit-frame-pointer'
+  export CPPFLAGS='-arch i386'
+  export LDFLAGS='-arch i386 -Wl,-syslibroot,/Developer/SDKs/MacOSX10.4u.sdk'
   cd $SRCDIR/mplayer
   make distclean
   rm ./uname
-  ./configure --disable-png --enable-mp3lame --enable-x264 --disable-mplayer --enable-faac --enable-faad-internal --disable-freetype --with-extraincdir=$SRCDIR/faac/include/:$SRCDIR/x264:$SRCDIR/$LAME/include --with-extralibdir=$SRCDIR/faac/libfaac/.libs/:$SRCDIR/x264:$SRCDIR/$LAME/libmp3lame/.libs --extra-libs-mencoder="-lx264 $SRCDIR/faac/libfaac/.libs/libfaac.a" && make
+  ./configure --disable-png --enable-mp3lame --enable-x264 --disable-mplayer --enable-faac --enable-faad-internal --disable-freetype --extra-cflags="-I$SRCDIR/$FAAC/include/ -I$SRCDIR/x264 -I$SRCDIR/$LAME/include" --extra-ldflags="-L$SRCDIR/$FAAC/libfaac/.libs/ -L$SRCDIR/x264 -L$SRCDIR/$LAME/libmp3lame/.libs" --extra-libs-mencoder="-lx264 $SRCDIR/$FAAC/libfaac/.libs/libfaac.a" && make
   if [ "$?" -ne "0" ]; then
       echo "Failed to build i386 mencoder"
       exit 1
@@ -132,7 +134,7 @@ BOOST=boost_1_38_0
    export LDFLAGS='-arch i386'
   cd $SRCDIR/ffmpeg
   make distclean
-  ./configure --arch=i386 --cpu=i686 --disable-vhook --disable-static --enable-shared --enable-pthreads --enable-gpl --enable-libmp3lame --enable-libfaac --enable-libfaad --enable-libx264 --enable-swscale --extra-cflags="-I$SRCDIR/$LAME/include -I$SRCDIR/faad2/include -I$SRCDIR/faac/include -I$SRCDIR/x264" --extra-ldflags="-L$SRCDIR/$LAME/libmp3lame/.libs -L$SRCDIR/faad2/libfaad/.libs -L$SRCDIR/faac/libfaac/.libs -L$SRCDIR/x264/" && make
+  ./configure --arch=i386 --cpu=i686 --disable-static --enable-shared --enable-pthreads --enable-gpl --enable-libmp3lame --enable-libfaac --enable-libfaad --enable-libx264 --extra-cflags="-I$SRCDIR/$LAME/include -I$SRCDIR/$FAAD/include -I$SRCDIR/$FAAC/include -I$SRCDIR/x264" --extra-ldflags="-L$SRCDIR/$LAME/libmp3lame/.libs -L$SRCDIR/$FAAD/libfaad/.libs -L$SRCDIR/$FAAC/libfaac/.libs -L$SRCDIR/x264/" && make
   if [ "$?" -ne "0" ]; then
       echo "Failed to build i386 ffmpeg"
       exit 1
@@ -161,7 +163,7 @@ BOOST=boost_1_38_0
       exit 1
   fi
 
-  cd $SRCDIR/faac
+  cd $SRCDIR/$FAAC
   make distclean
    ./configure --host=ppc-apple-darwin --without-mp4v2 --enable-shared=no --enable-static=yes && make
   if [ "$?" -ne "0" ]; then
@@ -169,7 +171,7 @@ BOOST=boost_1_38_0
       exit 1
   fi
 
-  cd $SRCDIR/faad2
+  cd $SRCDIR/$FAAD
   make clean
   ./configure --host=ppc-apple-darwin --enable-shared=no --enable-static=yes && make
   if [ "$?" -ne "0" ]; then
@@ -184,6 +186,15 @@ BOOST=boost_1_38_0
       echo "Failed to build ppc lame-mp3"
       exit 1
   fi
+
+  cd $SRCDIR/tivodecode-0.2pre4
+  make distclean
+  ./configure --disable-dependency-tracking && make
+  if [ "$?" -ne "0" ]; then
+      echo "Failed to build tivodecode"
+      exit 1
+  fi
+  cp tivodecode ../binaries/tivodecode-ppc
 
   cd $SRCDIR/mplayer
   make distclean
@@ -200,7 +211,7 @@ if ($arg eq "-p") {
 }
 ' > uname
   chmod a+rx uname
-  ./configure --disable-png --enable-mp3lame --enable-x264 --disable-mplayer --enable-faac --enable-faad-internal --disable-freetype --with-extraincdir=$SRCDIR/faac/include/:$SRCDIR/x264:$SRCDIR/$LAME/include --with-extralibdir=$SRCDIR/faac/libfaac/.libs/:$SRCDIR/x264:$SRCDIR/$LAME/libmp3lame/.libs --extra-libs-mencoder="-lx264 $SRCDIR/faac/libfaac/.libs/libfaac.a" && make
+  ./configure --disable-png --enable-mp3lame --enable-x264 --disable-mplayer --enable-faac --enable-faad-internal --disable-freetype --extra-cflags="-I$SRCDIR/$FAAC/include/ -I$SRCDIR/x264 -I$SRCDIR/$LAME/include" --extra-ldflags="-L$SRCDIR/$FAAC/libfaac/.libs/ -L$SRCDIR/x264 -L$SRCDIR/$LAME/libmp3lame/.libs" --extra-libs-mencoder="-lx264 $SRCDIR/$FAAC/libfaac/.libs/libfaac.a" && make
   if [ "$?" -ne "0" ]; then
       echo "Failed to build ppc mencoder"
       exit 1
@@ -220,7 +231,7 @@ if ($arg eq "-p") {
  
    cd $SRCDIR/ffmpeg
    make distclean
-   ./configure --arch=ppc --cpu=G4 --disable-vhook --enable-shared --disable-static --enable-pthreads --disable-mmx --enable-gpl --enable-libmp3lame --enable-libfaac --enable-libfaad --enable-libx264 --enable-swscale --extra-cflags="-DHAVE_LLRINT -I$SRCDIR/$LAME/include -I$SRCDIR/faad2/include -I$SRCDIR/faac/include -I$SRCDIR/x264" --extra-ldflags="-L$SRCDIR/$LAME/libmp3lame/.libs -L$SRCDIR/faad2/libfaad/.libs -L$SRCDIR/faac/libfaac/.libs -L$SRCDIR/x264/" && make
+   ./configure --arch=ppc --cpu=G4 --enable-shared --disable-static --enable-pthreads --disable-mmx --enable-gpl --enable-libmp3lame --enable-libfaac --enable-libfaad --enable-libx264 --extra-cflags="-DHAVE_LLRINT -I$SRCDIR/$LAME/include -I$SRCDIR/$FAAD/include -I$SRCDIR/$FAAC/include -I$SRCDIR/x264" --extra-ldflags="-L$SRCDIR/$LAME/libmp3lame/.libs -L$SRCDIR/$FAAD/libfaad/.libs -L$SRCDIR/$FAAC/libfaac/.libs -L$SRCDIR/x264/" && make
   if [ "$?" -ne "0" ]; then
       echo "Failed to build ppc ffmpeg shared libraries"
       exit 1
@@ -235,6 +246,8 @@ if ($arg eq "-p") {
   cd $SRCDIR/binaries
   rm -rf "../pytivox/streambaby"
   cp -R streambaby "../pytivox/"
+  lipo -create tivodecode-i386 tivodecode-ppc -output tivodecode
+  rm -f tivodecode-*
   lipo -create mencoder-i386 mencoder-ppc -output mencoder
   rm -f mencoder-*
   lipo -create ffmpeg-i386 ffmpeg-ppc -output ffmpeg
