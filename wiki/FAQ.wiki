@@ -47,6 +47,8 @@
     The tivo encrypts your show with your MAK.  If you want to simply decrypt, choose the 'Decrypt' format.  However, keep in mind that quicktime can't play such a file.  You will need to install [http://www.videolan.org/vlc/download-macosx.html VLC] or [http://mplayerosx.sttz.ch/#downloads MplayerOSX] (free) to view it.  Media managers like [http://elan.plexapp.com/ Plex ] can also read it.
   # I want the original mpeg-2 but without commercials.
     Decrypt/Copy will cut up the file appropriately.  However, you will most likely end up with horrible audio/video sync issues.
+  # Why isn't the DVD format making a burnable DVD image?
+    The DVD format simply creates an mpeg-2 file with specifications appropriate for DVD burning software.  It will not make a DVD image, nor burn one for you.  If you plan on making a DVD, you should then load up the resulting movie into another program like [http://burn-osx.sourceforge.net/Pages/English/home.html Burn].
   # What is iphone super-res?
     The iphone can play movies up to 720x480, although its display is only 480x320.  You can hook up a video cable to hook up your iphone to a TV, and that's the main reason for super-res..  It also uses a much higher bitrate for people who think the iphone setting isn't of a high enough quality.
   # Audio-only?
