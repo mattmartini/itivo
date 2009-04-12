@@ -6,6 +6,7 @@
 
 property turboAppName : ""
 property logFile : "/dev/null"
+property date_diff : 0
 
 on wait_until_turbo264_idle()
 	set startdate to (current date)
