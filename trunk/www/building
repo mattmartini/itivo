@@ -10,6 +10,7 @@ LAME=lame
 BOOST=boost_1_38_0
 FAAD=faad2-2.7
 FAAC=faac-1.28
+FFMPEG_LIBS="libavutil libavformat libavcodec libavdevice libswscale"
 
   cd $SRCDIR
   mkdir binaries
@@ -139,11 +140,10 @@ FAAC=faac-1.28
       echo "Failed to build i386 ffmpeg"
       exit 1
   fi
-  cp ./libavutil/libavutil.dylib ../binaries/libavutil.dylib.i386
-  cp ./libavformat/libavformat.dylib ../binaries/libavformat.dylib.i386
-  cp ./libavcodec/libavcodec.dylib ../binaries/libavcodec.dylib.i386
-  cp ./libavdevice/libavdevice.dylib ../binaries/libavdevice.dylib.i386
-  cp ./libswscale/libswscale.dylib ../binaries/libswscale.dylib.i386
+  for libname in $FFMPEG_LIBS; do
+    cp ./$libname/$libname.dylib ../binaries/$libname.dylib.i386
+    install_name_tool -change /usr/local/lib/$libname.dylib @executable_path/$libname.dylib ./ffmpeg
+  done
   cp ./ffmpeg ../binaries/ffmpeg-i386
 
   if [ x"$ONLYX86" = x"yes" ] ; then
@@ -236,11 +236,10 @@ if ($arg eq "-p") {
       echo "Failed to build ppc ffmpeg shared libraries"
       exit 1
   fi
-  cp ./libavutil/libavutil.dylib ../binaries/libavutil.dylib.ppc
-  cp ./libavformat/libavformat.dylib ../binaries/libavformat.dylib.ppc
-  cp ./libavcodec/libavcodec.dylib ../binaries/libavcodec.dylib.ppc
-  cp ./libavdevice/libavdevice.dylib ../binaries/libavdevice.dylib.ppc
-  cp ./libswscale/libswscale.dylib ../binaries/libswscale.dylib.ppc
+  for libname in $FFMPEG_LIBS; do
+    cp ./$libname/$libname.dylib ../binaries/$libname.dylib.ppc
+    install_name_tool -change /usr/local/lib/$libname.dylib @executable_path/$libname.dylib ./ffmpeg
+  done
   cp ./ffmpeg ../binaries/ffmpeg-ppc
 
   cd $SRCDIR/binaries
@@ -252,7 +251,7 @@ if ($arg eq "-p") {
   rm -f mencoder-*
   lipo -create ffmpeg-i386 ffmpeg-ppc -output ffmpeg
   rm -f ffmpeg-*
-  for x in libavutil libavformat libavcodec libavdevice libswscale;  do  echo $x 
+  for x in $FFMPEG_LIBS;  do  echo $x 
      lipo -create $x.dylib.ppc $x.dylib.i386 -output $x.dylib
   done
   cp t2sami comskip mencoder tivodecode AtomicParsley "../itivo/External Software/"
