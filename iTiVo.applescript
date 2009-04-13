@@ -1525,7 +1525,7 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 			-- Download, decrypt, and potentially re-encode in one pipeline
 			repeat while timeoutCount < 1200 and cancelDownload as integer = 0 and downloadExists as integer = 1 and cancelAllDownloads as integer = 0
 				if (debug_level ≥ 3) then
-					my debug_log("timeout: " & timeoutCount & "   currentFileSize: " & currentFileSize & "  fullFileSize:" & fullFileSize)
+					my debug_log("curl++ timeout: " & timeoutCount & "   currentFileSize: " & currentFileSize & "  fullFileSize:" & fullFileSize)
 				end if
 				if currentFileSize = 0 then
 					set starttime to do shell script "date +%s"
@@ -1683,7 +1683,7 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 				set integer value of control "StatusLevel" to currentStep
 				repeat while timeoutCount < 1200 and cancelDownload as integer = 0 and downloadExists as integer = 1 and cancelAllDownloads as integer = 0
 					if (debug_level ≥ 3) then
-						my debug_log("mencoder timeout: " & timeoutCount & " download:" & downloadExists & "   timeRemaining: " & timeRemaining & "  timeOn:" & timeOn & "   currentPercent: " & currentPercent)
+						my debug_log("mencoder commercial-cut timeout: " & timeoutCount & " download:" & downloadExists & "   timeRemaining: " & timeRemaining & "  timeOn:" & timeOn & "   currentPercent: " & currentPercent)
 					end if
 					set {timeOn, currentPercent, timeRemaining} to my getEncoderProgress(encoderUsed)
 					set downloadExistsCmd to do shell script downloadExistsCmdString
@@ -1829,7 +1829,7 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 				set integer value of control "StatusLevel" to currentStep
 				repeat while timeoutCount < 1200 and cancelDownload as integer = 0 and downloadExists as integer = 1 and cancelAllDownloads as integer = 0
 					if (debug_level ≥ 3) then
-						my debug_log("mencoder timeout: " & timeoutCount & " download:" & downloadExists & "   timeRemaining: " & timeRemaining & "  timeOn:" & timeOn & "   currentPercent: " & currentPercent)
+						my debug_log("Encoder timeout: " & timeoutCount & " download:" & downloadExists & "   timeRemaining: " & timeRemaining & "  timeOn:" & timeOn & "   currentPercent: " & currentPercent)
 					end if
 					set {timeOn, currentPercent, timeRemaining} to my getEncoderProgress(encoderUsed)
 					set downloadExistsCmd to do shell script downloadExistsCmdString

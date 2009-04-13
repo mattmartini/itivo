@@ -19,9 +19,9 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.7.6b6</string>
+	<string>1.7.6b7</string>
 	<key>CFBundleVersion</key>
-	<string>1.7.6b6</string>
+	<string>1.7.6b7</string>
 	<key>NSAppleScriptEnabled</key>
 	<string>YES</string>
 	<key>NSMainNibFile</key>

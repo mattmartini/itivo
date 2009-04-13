@@ -6,6 +6,7 @@
 
 property turboAppName : ""
 property logFile : "/dev/null"
+property format : "default"
 property date_diff : 0
 
 on wait_until_turbo264_idle()
@@ -14,7 +15,7 @@ on wait_until_turbo264_idle()
 		using terms from application "Turbo.264"
 			repeat while isEncoding
 				set date_diff to (current date) - startdate
-				do shell script "echo " & date_diff & "-1 300 " & lastErrorCode & " >> " & logFile
+				do shell script "echo " & date_diff & " -1 300 " & lastErrorCode & " >>" & logFile
 				delay 10
 			end repeat
 		end using terms from
@@ -27,11 +28,11 @@ on run argv
 	set destfile to second item of argv
 	set logFile to third item of argv
 	set format to fourth item of argv
+	
 	try
 		tell application "Finder" to set turboAppName to name of application file id "com.elgato.Turbo"
 	end try
-	
-	do shell script "echo " & (current date) as string & " : Starting ElGato>> " & logFile
+	do shell script "echo " & (current date) & " : Starting ElGato >" & logFile
 	if not turboAppName = "" then
 		my wait_until_turbo264_idle()
 		tell application turboAppName
@@ -56,10 +57,10 @@ on run argv
 			end using terms from
 		end tell
 		my wait_until_turbo264_idle()
-		do shell script "echo " & date_diff & "100 0 >> " & logFile
+		do shell script "echo " & date_diff & " 100 0 >>" & logFile
 		delay 1
 		tell application turboAppName to quit
 	else
-		do shell script "echo " & (current date) as string & " : Couldn't find Turbo.264 >> " & logFile
+		do shell script "echo " & (current date) & " : Couldn't find Turbo.264 >>" & logFile
 	end if
 end run
