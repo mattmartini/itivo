@@ -34,10 +34,15 @@ if ($encoder eq "mencoder") {
 	}
 } elsif ($encoder eq "turbo.264") {
 	while ($line = <CURLFILE>) {
-    if ($line =~ /^([\.[:digit:]]+)\s+(\d+)\s+(\d+)/) {
+    if ($line =~ /^([\.[:digit:]]+)\s+(\d+)\s+(\d+)\s(\d+)/) {
 			$lasttime=$1;
 			$lastpercent=$2;
 			$lasttimeremain=$3;
+			$errorcode=$4;
+			if ($errorcode != 0) {
+			    $lasttime = 0;
+			    $lastpercent=0;
+			}
     }
 	}
 } elsif ($encoder eq "ffmpeg") {
