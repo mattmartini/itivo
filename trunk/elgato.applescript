@@ -34,9 +34,10 @@ on run argv
 	end try
 	do shell script "echo " & (current date) & " : Starting ElGato >" & logFile
 	if not turboAppName = "" then
+	       tell application turboAppName to activate
+	       delay 5
 		my wait_until_turbo264_idle()
 		tell application turboAppName
-			activate
 			using terms from application "Turbo.264"
 				ignoring case
 					if (format = "ipodH") then
