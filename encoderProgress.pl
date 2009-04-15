@@ -34,7 +34,7 @@ if ($encoder eq "mencoder") {
 	}
 } elsif ($encoder eq "turbo.264") {
 	while ($line = <CURLFILE>) {
-    if ($line =~ /^([\.[:digit:]]+)\s+(\d+)\s+(\d+)\s(\d+)/) {
+    if ($line =~ /^(\d+)\s+([\-[:digit:]]+)\s+(\d+)\s(\d+)/) {
 			$lasttime=$1;
 			$lastpercent=$2;
 			$lasttimeremain=$3;

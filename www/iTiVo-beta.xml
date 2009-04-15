@@ -9,15 +9,15 @@
     <description>A MAC interface to your TiVo</description>
     <language>en-us</language>
 		<item>
-			<title>Version 1.7.6b8</title>
+			<title>Version 1.7.6b9</title>
 			<sparkle:releaseNotesLink>http://itivo.googlecode.com/svn/trunk/www/changelog-beta.html</sparkle:releaseNotesLink>
-			<pubDate>Mon, 13 Apr 2009 20:04:08 -0700</pubDate>
+			<pubDate>Tue, 14 Apr 2009 22:00:12 -0700</pubDate>
 			<enclosure
 				url="http://itivo.googlecode.com/files/iTiVo-beta.dmg"
-				sparkle:version="1.7.6b8"
+				sparkle:version="1.7.6b9"
 				type="application/octet-stream"
-				length="18813676"
-				sparkle:dsaSignature="MCwCFAGXTZBHHbQUjeDMtUYnkrbuNQVzAhQR1+WO54g2seO2uOGRJOinfYSLFg=="
+				length="18836885"
+				sparkle:dsaSignature="MC0CFQCmKBv0ctE0SB8yr35DR+vcsaLpMQIUaa6rXWlhKzBg7wANkUDver0/sq8="
 			/>
 		</item>
  </channel>

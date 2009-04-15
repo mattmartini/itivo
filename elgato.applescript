@@ -34,8 +34,8 @@ on run argv
 	end try
 	do shell script "echo " & (current date) & " : Starting ElGato >" & logFile
 	if not turboAppName = "" then
-	       tell application turboAppName to activate
-	       delay 5
+		tell application turboAppName to activate
+		delay 5
 		my wait_until_turbo264_idle()
 		tell application turboAppName
 			using terms from application "Turbo.264"
@@ -58,8 +58,8 @@ on run argv
 			end using terms from
 		end tell
 		my wait_until_turbo264_idle()
-		do shell script "echo " & date_diff & " 100 0 >>" & logFile
-		delay 1
+		do shell script "echo " & date_diff & " 100 0 0 >>" & logFile
+		delay 5
 		tell application turboAppName to quit
 	else
 		do shell script "echo " & (current date) & " : Couldn't find Turbo.264 >>" & logFile
