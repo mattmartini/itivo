@@ -184,6 +184,28 @@
 		</dict>
 		<dict>
 			<key>formatDescription</key>
+			<string>for fast encode (lower quality) video: original size DivX (mpeg4) at 1500kbps audio: mp3 at 128kbs  NOTE: *MUST* install a codec (http://perian.org/)</string>
+			<key>comSkip</key>
+			<true/>
+			<key>filenameExtension</key>
+			<string>.avi</string>
+			<key>encoderUsed</key>
+			<string>mencoder</string>
+			<key>name</key>
+			<string>Quicktime (DivX 5)</string>
+			<key>encoderVideoOptions</key>
+			<string>-ovc lavc -lavcopts vcodec=mpeg4:vbitrate=1500:autoaspect</string>
+			<key>encoderAudioOptions</key>
+			<string>-oac mp3lame -lameopts br=128</string>
+			<key>encoderOtherOptions</key>
+			<string>-of lavf -lavfopts format=mov -hr-edl-seek</string>
+			<key>iTunes</key>
+			<true/>
+			<key>mustDownloadFirst</key>
+			<false/>
+		</dict>
+		<dict>
+			<key>formatDescription</key>
 			<string>for faster encode (worse quality) video: 640x480 DivX 3 at 3000mbps audio: mp3 at 128kbs  NOTE: *MUST* install a codec (http://perian.org/)</string>
 			<key>comSkip</key>
 			<true/>
@@ -450,7 +472,7 @@
 		</dict>
 		<dict>
 			<key>formatDescription</key>
-			<string>External Encoder:  ffmpeg video: original resolution h.264 audio: aac 128kbps  NOTE:  Must have pyTivoX installed for ffmpeg support NOTE: for testing purposes.. Not stable...</string>
+			<string>External Encoder:  ffmpeg video: original resolution h.264 audio: aac 128kbps  NOTE:  Must have pyTivoX installed</string>
 			<key>comSkip</key>
 			<true/>
 			<key>filenameExtension</key>
@@ -464,9 +486,31 @@
 			<key>encoderAudioOptions</key>
 			<string>-acodec libfaac -ab 128k</string>
 			<key>encoderOtherOptions</key>
-			<string>-threads 0</string>
+			<string>-threads 2</string>
 			<key>iTunes</key>
 			<true/>
+			<key>mustDownloadFirst</key>
+			<false/>
+		</dict>
+		<dict>
+			<key>formatDescription</key>
+			<string>External Encoder:  ffmpeg video: original resolution mpeg-2 audio: mp2 128kbps  NOTE:  Must have pyTivoX installed NOTE: Will not play in quicktime</string>
+			<key>comSkip</key>
+			<true/>
+			<key>filenameExtension</key>
+			<string>.mpg</string>
+			<key>encoderUsed</key>
+			<string>ffmpeg</string>
+			<key>name</key>
+			<string>FFmpeg (mpeg-2)</string>
+			<key>encoderVideoOptions</key>
+			<string>-vcodec mpeg2video -sameq</string>
+			<key>encoderAudioOptions</key>
+			<string>-acodec mp2 -ab 128k</string>
+			<key>encoderOtherOptions</key>
+			<string>-threads 2</string>
+			<key>iTunes</key>
+			<false/>
 			<key>mustDownloadFirst</key>
 			<false/>
 		</dict>

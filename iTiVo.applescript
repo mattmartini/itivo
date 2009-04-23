@@ -4,8 +4,8 @@
 --  Created by David Benesch on 12/03/06.
 --  Updated by Yoav Yerushalmi.
 --  Copyright 2006-2008 David Benesch, Yoav Yerushalmi. All rights reserved.
-property debug_level : 1
-property debug_file : "~/iTiVo.log"
+property debug_level : 3
+property debug_file : "~/Library/Logs/iTiVo.log"
 property already_launched : 0
 property targetData : missing value
 property targetDataQ : missing value
@@ -56,7 +56,6 @@ property filenameExtension : ".mp4"
 property comSkip : 0
 property subtitles : 0
 property SUFeedURL : "http://itivo.googlecode.com/svn/trunk/www/iTiVo.xml"
-property debugLog : false
 property downloadFirst : false
 property tivoSize : 1
 property shouldAutoConnect : true
@@ -403,7 +402,6 @@ on setupPrefsTab(tabName)
 			else
 				set state of button "betaUpdate" of view "AdvancedView" of tab view "TopTab" to false
 			end if
-			set state of button "debugLog" of view "AdvancedView" of tab view "TopTab" to debugLog
 			set state of button "downloadFirst" of view "AdvancedView" of tab view "TopTab" to downloadFirst
 			set contents of text field "downloadRetries" of view "AdvancedView" of tab view "TopTab" to downloadRetries
 			set contents of text field "filenameExtension" of view "AdvancedView" of tab view "TopTab" to filenameExtension
@@ -441,10 +439,6 @@ on recordPrefsTab()
 			set schedulingSleep to state of button "schedulingSleep" of view "SchedulingView" of tab view "TopTab" as boolean
 		else if (currentPrefsTab = "AdvancedTab") then
 			set postDownloadCmd to contents of text field "postDownloadCmd" of view "AdvancedView" of tab view "TopTab"
-			set debugLog to state of button "debugLog" of view "AdvancedView" of tab view "TopTab" as boolean
-			if (debugLog is true) then
-				set debug_level to 3
-			end if
 			set downloadFirst to state of button "downloadFirst" of view "AdvancedView" of tab view "TopTab" as boolean
 			if (state of button "betaUpdate" of view "AdvancedView" of tab view "TopTab" = 1) then
 				set SUFeedURL to "http://itivo.googlecode.com/svn/trunk/www/iTiVo-beta.xml"
@@ -452,6 +446,9 @@ on recordPrefsTab()
 				set SUFeedURL to "http://itivo.googlecode.com/svn/trunk/www/iTiVo.xml"
 			end if
 			set downloadRetries to contents of text field "downloadRetries" of view "AdvancedView" of tab view "TopTab" as integer
+			if (downloadRetries < 1) then
+				set downloadRetries to 1
+			end if
 			set filenameExtension to contents of text field "filenameExtension" of view "AdvancedView" of tab view "TopTab"
 			set encoderUsed to contents of text field "encoderUsed" of view "AdvancedView" of tab view "TopTab"
 			set encoderVideoOptions to contents of text field "encoderVideoOptions" of view "AdvancedView" of tab view "TopTab"
@@ -503,7 +500,6 @@ on registerSettings()
 		make new default entry at end of default entries with properties {name:"comSkip", contents:comSkip}
 		make new default entry at end of default entries with properties {name:"subtitles", contents:subtitles}
 		make new default entry at end of default entries with properties {name:"postDownloadCmd", contents:postDownloadCmd}
-		make new default entry at end of default entries with properties {name:"debugLog", contents:debugLog}
 		make new default entry at end of default entries with properties {name:"downloadFirst", contents:downloadFirst}
 		make new default entry at end of default entries with properties {name:"SUFeedURL", contents:SUFeedURL}
 		make new default entry at end of default entries with properties {name:"filenameExtension", contents:filenameExtension}
@@ -570,14 +566,11 @@ on readSettings()
 			set schedulingSleep to contents of default entry "schedulingSleep"
 			set APMetaData to contents of default entry "APMetaData"
 			set subtitles to contents of default entry "subtitles"
-			set downloadRetries to contents of default entry "downloadRetries" as integer
-		end try
-		try
-			set debugLog to contents of default entry "debugLog"
-			if (debugLog = true) then
-				set debug_level to 3
-			end if
 			set downloadFirst to contents of default entry "downloadFirst"
+			set downloadRetries to contents of default entry "downloadRetries" as integer
+			if (downloadRetries < 1) then
+				set downloadRetries to 1
+			end if
 		end try
 	end tell
 	try
@@ -681,7 +674,6 @@ on writeSettings()
 			set contents of default entry "openDetail" to (openDetail as integer)
 			set contents of default entry "DLHistory" to DLHistory as list
 			set contents of default entry "targetDataSList" to targetDataSList as list
-			set contents of default entry "debugLog" to debugLog
 			set contents of default entry "downloadFirst" to downloadFirst
 			set contents of default entry "tivoSize" to tivoSize
 			set contents of default entry "shouldAutoConnect" to shouldAutoConnect
@@ -1363,6 +1355,7 @@ on checkProcess()
 end checkProcess
 
 on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
+	set retryCount to retryCount + 1
 	my debug_log("downloadItem called: " & overrideDLCheck & "," & retryCount)
 	tell window "iTiVo"
 		if not (my checkDL()) then
@@ -2702,7 +2695,7 @@ end growlIsRunning
 on init_log()
 	set debug_file to "/dev/null"
 	if (debug_level ≥ 1) then
-		set debug_file to "/tmp/iTiVo-" & UserName & "/iTiVo.log"
+		set debug_file to "~/Library/Logs/iTiVo.log"
 		try
 			do shell script "mv -f " & debug_file & " " & debug_file & ".old ; touch " & debug_file
 		end try
