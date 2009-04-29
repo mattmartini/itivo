@@ -961,6 +961,7 @@ on clicked theObject
 				set fullFileSize to (first word of fullFileSize as integer)
 				
 				set success to 1
+				my debug_log("downloadRetries is " & downloadRetries)
 				set success to my downloadItem(currentProcessSelection, 0, downloadRetries)
 				if (count of (selected data rows of table view "ShowListTable" of scroll view "ShowList" of box "topBox" of split view "splitView1")) = 1 then
 					set enabled of button "DownloadButton" of box "topBox" of split view "splitView1" to true
@@ -1355,7 +1356,7 @@ on checkProcess()
 end checkProcess
 
 on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
-	set retryCount to retryCount + 1
+	set retryCount to retryCount - 1
 	my debug_log("downloadItem called: " & overrideDLCheck & "," & retryCount)
 	tell window "iTiVo"
 		if not (my checkDL()) then
