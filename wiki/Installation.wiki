@@ -1,8 +1,8 @@
 = Installation =
   # Make sure to update your operating system to include the latest updates (top menu apple logo, Sofware Update...).
-  # Download the zip file containing the application from:
+  # Download the file containing the application from:
      http://code.google.com/p/itivo/downloads/list
-  # Unzip the file and open the resulting folder.
+  # Open the result.
   # Drag the iTiVo Application to your "Applications" folder
 
 
