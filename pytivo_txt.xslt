@@ -2,10 +2,26 @@
 xmlns="http://www.w3.org/1999/XSL/Transform">
 <output method="text"/>
 
-<template match="originalAirDate|episodeTitle|title|time|movieYear|seriesTitle|description|isEpisode|seriesId|episodeNumber|displayMajorNumber|callsign|displayMinorNumber|startTime|stopTime|partCount|partIndex">
+<template match="originalAirDate|episodeTitle|title|time|movieYear|seriesTitle|isEpisode|seriesId|episodeNumber|displayMajorNumber|callsign|displayMinorNumber|startTime|stopTime|partCount|partIndex">
   <value-of select="name()"/>
   <text> : </text>
   <value-of select="."/>
+  <text>
+</text>
+
+</template>
+
+<template match="description">
+  <value-of select="name()"/>
+  <text> : </text>
+  <choose>
+    <when test="contains(.,' Copyright Tribune Media Services, Inc.')">
+      <value-of select="substring-before(.,' Copyright Tribune Media Services, Inc.')" />
+    </when>
+    <otherwise>
+      <value-of select="." />
+    </otherwise>
+  </choose>
   <text>
 </text>
 

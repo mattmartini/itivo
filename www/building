@@ -135,7 +135,7 @@ FFMPEG_LIBS="libavutil libavformat libavcodec libavdevice libswscale"
    export LDFLAGS='-arch i386'
   cd $SRCDIR/ffmpeg
   make distclean
-  ./configure --arch=i386 --cpu=i686 --disable-static --enable-shared --enable-pthreads --enable-gpl --enable-libmp3lame --enable-libfaac --enable-libfaad --enable-libx264 --extra-cflags="-I$SRCDIR/$LAME/include -I$SRCDIR/$FAAD/include -I$SRCDIR/$FAAC/include -I$SRCDIR/x264" --extra-ldflags="-L$SRCDIR/$LAME/libmp3lame/.libs -L$SRCDIR/$FAAD/libfaad/.libs -L$SRCDIR/$FAAC/libfaac/.libs -L$SRCDIR/x264/" && make
+  ./configure --shlibdir="@executable_path" --arch=i386 --cpu=i686 --disable-static --enable-shared --enable-pthreads --enable-gpl --enable-libmp3lame --enable-libfaac --enable-nonfree --enable-libfaad --enable-libx264 --extra-cflags="-I$SRCDIR/$LAME/include -I$SRCDIR/$FAAD/include -I$SRCDIR/$FAAC/include -I$SRCDIR/x264" --extra-ldflags="-L$SRCDIR/$LAME/libmp3lame/.libs -L$SRCDIR/$FAAD/libfaad/.libs -L$SRCDIR/$FAAC/libfaac/.libs -L$SRCDIR/x264/" && make
   if [ "$?" -ne "0" ]; then
       echo "Failed to build i386 ffmpeg"
       exit 1
@@ -231,7 +231,7 @@ if ($arg eq "-p") {
  
    cd $SRCDIR/ffmpeg
    make distclean
-   ./configure --arch=ppc --cpu=G4 --enable-shared --disable-static --enable-pthreads --disable-mmx --enable-gpl --enable-libmp3lame --enable-libfaac --enable-libfaad --enable-libx264 --extra-cflags="-DHAVE_LLRINT -I$SRCDIR/$LAME/include -I$SRCDIR/$FAAD/include -I$SRCDIR/$FAAC/include -I$SRCDIR/x264" --extra-ldflags="-L$SRCDIR/$LAME/libmp3lame/.libs -L$SRCDIR/$FAAD/libfaad/.libs -L$SRCDIR/$FAAC/libfaac/.libs -L$SRCDIR/x264/" && make
+   ./configure --shlibdir="@executable_path" --arch=ppc --cpu=G4 --enable-shared --disable-static --enable-pthreads --disable-mmx --enable-gpl --enable-libmp3lame --enable-libfaac  --enable-nonfree --enable-libfaad --enable-libx264 --extra-cflags="-DHAVE_LLRINT -I$SRCDIR/$LAME/include -I$SRCDIR/$FAAD/include -I$SRCDIR/$FAAC/include -I$SRCDIR/x264" --extra-ldflags="-L$SRCDIR/$LAME/libmp3lame/.libs -L$SRCDIR/$FAAD/libfaad/.libs -L$SRCDIR/$FAAC/libfaac/.libs -L$SRCDIR/x264/" && make
   if [ "$?" -ne "0" ]; then
       echo "Failed to build ppc ffmpeg shared libraries"
       exit 1
