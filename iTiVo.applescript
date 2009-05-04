@@ -11,6 +11,7 @@ property targetData : missing value
 property targetDataQ : missing value
 property targetDataS : missing value
 property targetDataSList : {}
+property targetDataQueue : {}
 property IPA : ""
 property LaunchCount : 0
 property currentProgress : 0
@@ -81,6 +82,7 @@ on awake from nib theObject
 			make new data column at end of data columns with properties {name:"IDVal", sort order:descending, sort type:numerical, sort case sensitivity:case sensitive}
 		end tell
 		set data source of theObject to targetDataQ
+		set content of targetDataQ to targetDataQueue
 	else if name of theObject is "ShowListTable" then
 		set targetData to make new data source at end of data sources with properties {name:"ShowListTable"}
 		tell targetData
@@ -510,6 +512,7 @@ on registerSettings()
 		make new default entry at end of default entries with properties {name:"openDetail", contents:""}
 		make new default entry at end of default entries with properties {name:"DLHistory", contents:""}
 		make new default entry at end of default entries with properties {name:"targetDataSList", contents:{}}
+		make new default entry at end of default entries with properties {name:"targetDataQueue", contents:{}}
 		make new default entry at end of default entries with properties {name:"tivoSize", contents:1}
 		make new default entry at end of default entries with properties {name:"shouldAutoConnect", contents:shouldAutoConnect}
 		make new default entry at end of default entries with properties {name:"useTime", contents:useTime}
@@ -547,7 +550,6 @@ on readSettings()
 			set SUFeedURL to contents of default entry "SUFeedURL"
 			set openDetail to contents of default entry "openDetail"
 			set DLHistory to contents of default entry "DLHistory"
-			set targetDataSList to contents of default entry "targetDataSList"
 			set comSkip to contents of default entry "comSkip"
 			set postDownloadCmd to contents of default entry "postDownloadCmd"
 			set encoderUsed to contents of default entry "encoderUsed"
@@ -571,6 +573,8 @@ on readSettings()
 			if (downloadRetries < 1) then
 				set downloadRetries to 1
 			end if
+			set targetDataSList to contents of default entry "targetDataSList"
+			set targetDataQueue to contents of default entry "targetDataQueue"
 		end try
 	end tell
 	try
@@ -648,6 +652,7 @@ on writeSettings()
 	try
 		set TiVo to title of current menu item of popup button "MyTiVos" of window "iTiVo"
 		set targetDataSList to content of targetDataS
+		set targetDataQueue to content of targetDataQ
 		tell user defaults
 			set contents of default entry "IPA" to IPA
 			set contents of default entry "MAK" to MAK
@@ -673,7 +678,6 @@ on writeSettings()
 			set contents of default entry "SUFeedURL" to SUFeedURL
 			set contents of default entry "openDetail" to (openDetail as integer)
 			set contents of default entry "DLHistory" to DLHistory as list
-			set contents of default entry "targetDataSList" to targetDataSList as list
 			set contents of default entry "downloadFirst" to downloadFirst
 			set contents of default entry "tivoSize" to tivoSize
 			set contents of default entry "shouldAutoConnect" to shouldAutoConnect
@@ -682,6 +686,8 @@ on writeSettings()
 			set contents of default entry "useTimeEndTime" to useTimeEndTime
 			set contents of default entry "schedulingSleep" to schedulingSleep
 			set contents of default entry "downloadRetries" to downloadRetries as integer
+			set contents of default entry "targetDataSList" to targetDataSList as list
+			set contents of default entry "targetDataQueue" to targetDataQueue as list
 		end tell
 	on error
 		my debug_log("Failed to write out initial settings")
@@ -921,6 +927,7 @@ on clicked theObject
 					set rowCountQ to 0
 					set enabled of button "decodeQueue" of view "bottomLeftView" of split view "splitView2" of box "bottomBox" of split view "splitView1" to true
 				end if
+				my writeSettings()
 			end repeat
 			if success > 0 and cancelAllDownloads = 0 then
 				set currentProcessSelectionQ to {}
