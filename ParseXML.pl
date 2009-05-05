@@ -1,13 +1,40 @@
 #!/usr/bin/perl
-use POSIX qw(ceil floor);
+use POSIX qw(ceil floor setsid);
 
 $IP = $ARGV[0];
 $MAK = $ARGV[1];
 $anchor = 0;
 
-$shellScript = "curl -s 'https://" . $IP .  ":443/TiVoConnect?Command=QueryContainer&Container=%2FNowPlaying&Recurse=Yes&AnchorOffset=" . $anchor . "' -k --digest -u tivo:" . $MAK;
+$CacheDir = "$ENV{'HOME'}/Library/Caches/iTiVo";
+$CacheFile = "$CacheDir/XMLCache-$IP";
+$usedCache = 0;
 
-$file =  `$shellScript`;
+# Make sure we have a place to cache the results
+`mkdir -p $CacheDir`;
+
+$fetchScript = "curl -s 'https://" . $IP .  ":443/TiVoConnect?Command=QueryContainer&Container=%2FNowPlaying&Recurse=Yes&AnchorOffset=" . $anchor . "' -k --digest -u tivo:" . $MAK;
+
+if ((-e $CacheFile) && (((-M $CacheFile) * 24 * 60) < 5)) {
+    # We have already fetched the list from this tivo within the last five minutes, so just use the cached value
+    $file =  `cat $CacheFile`;
+#    if (((-M $CacheFile) * 24 * 60 * 60) > 5) {
+#	# Fetch the new version in the background
+#	unless ($pid = fork) {
+#	    unless (fork) {
+#		setsid;
+#		exec "touch -c $CacheFile && $fetchScript > $CacheFile.$^T && mv $CacheFile.$^T $CacheFile";
+#		exit 0;
+#	    }
+#	    exit 0;
+#	}
+#	waitpid($pid,0);
+#    }
+} else {
+    $file = `$fetchScript`;
+    open (RESULT, ">$CacheFile");
+    print RESULT "$file";
+    close (RESULT);
+}
 
 $file =~ m/<TotalItems>(.*?)<\/TotalItems>/g;
 $TotalItems = $1;
