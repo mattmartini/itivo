@@ -36,6 +36,7 @@ property formatsList : {}
 property tableImages : {}
 property haveOS1050 : false
 property queue_len : 0
+property filterValue : ""
 
 (* User-controlled properties *)
 property MAK : ""
@@ -1119,11 +1120,9 @@ on selection changed theObject
 					if tempStatus ≠ "Downloading" then
 						if rowCount = 1 then
 							set enabled of button "DownloadButton" of box "topBox" of split view "splitView1" to true
-							set title of button "queueButton" of box "topBox" of split view "splitView1" to "Add Show to Queue"
 							set enabled of button "subscribeButton" of box "topBox" of split view "splitView1" to true
 						else
 							set enabled of button "DownloadButton" of box "topBox" of split view "splitView1" to false
-							set title of button "queueButton" of box "topBox" of split view "splitView1" to "Add Shows to Queue"
 							set enabled of button "subscribeButton" of box "topBox" of split view "splitView1" to false
 						end if
 					end if
@@ -1294,6 +1293,20 @@ on changed theObject
 		set title of popup button "MyTiVos" of window "iTiVo" to "My TiVos"
 	end if
 end changed
+
+on end editing theObject
+	if name of theObject = "tivoSpace" then
+		set tivoSize to contents of text field "tivoSpace" of drawer "Drawer1" of window "iTiVo"
+		if enabled of button "ConnectButton" of window "iTiVo" is true then
+			my ConnectTiVo()
+		end if
+	end if
+	if name of theObject = "filterField" then
+		set filterValue to contents of text field "filterField" of window "iTiVo"
+		my debug_log("Set filter value to " & filterValue)
+		my ConnectTiVo()
+	end if
+end end editing
 
 on will close theObject
 	if name of theObject = "Drawer2" then
@@ -2213,7 +2226,6 @@ on ConnectTiVo()
 			set update views of targetData to false
 			delete every data row of targetData
 			repeat with currentLine in item_list
-				set theDataRow to make new data row at end of data rows of targetData
 				set the parts to every text item of currentLine
 				if (count of parts) = 10 then
 					set showName to item 2 of parts
@@ -2267,15 +2279,19 @@ on ConnectTiVo()
 							set end of addedItems to {showName, showDate}
 						end if
 					end if
-					set contents of data cell "DLVal" of theDataRow to downloadImage
-					set contents of data cell "ShowVal" of theDataRow to showName
-					set contents of data cell "EpisodeVal" of theDataRow to episodeVal
-					set contents of data cell "DateVal" of theDataRow to showDate
-					set contents of data cell "LengthVal" of theDataRow to showLength
-					set contents of data cell "SizeVal" of theDataRow to showSize
-					set contents of data cell "ChannelVal" of theDataRow to showStation
-					set contents of data cell "HDVal" of theDataRow to showHD
-					set contents of data cell "IDVal" of theDataRow to showID
+					set filterString to ";" & showName & ";" & episodeVal & ";" & showDate & ";" & showLength & ";" & showStation
+					if (filterValue = "") or (offset of filterValue in filterString) > 0 then
+						set theDataRow to make new data row at end of data rows of targetData
+						set contents of data cell "DLVal" of theDataRow to downloadImage
+						set contents of data cell "ShowVal" of theDataRow to showName
+						set contents of data cell "EpisodeVal" of theDataRow to episodeVal
+						set contents of data cell "DateVal" of theDataRow to showDate
+						set contents of data cell "LengthVal" of theDataRow to showLength
+						set contents of data cell "SizeVal" of theDataRow to showSize
+						set contents of data cell "ChannelVal" of theDataRow to showStation
+						set contents of data cell "HDVal" of theDataRow to showHD
+						set contents of data cell "IDVal" of theDataRow to showID
+					end if
 					set showcount to showcount + 1
 				end if
 			end repeat
@@ -2766,12 +2782,3 @@ on should close theObject
 	end if
 	return true
 end should close
-
-on end editing theObject
-	if name of theObject = "tivoSpace" then
-		set tivoSize to contents of text field "tivoSpace" of drawer "Drawer1" of window "iTiVo"
-		if enabled of button "ConnectButton" of window "iTiVo" is true then
-			my ConnectTiVo()
-		end if
-	end if
-end end editing
