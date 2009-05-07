@@ -66,6 +66,7 @@ property useTimeStartTime : date "Tuesday, February 10, 2009 1:00:00 AM"
 property useTimeEndTime : date "Tuesday, February 10, 2009 3:00:00 AM"
 property schedulingSleep : false
 property downloadRetries : 3
+property showCopyProtected : true
 
 property panelWIndow : missing value
 property currentPrefsTab : "DownloadingTab"
@@ -521,6 +522,7 @@ on registerSettings()
 		make new default entry at end of default entries with properties {name:"useTimeEndTime", contents:useTimeEndTime}
 		make new default entry at end of default entries with properties {name:"schedulingSleep", contents:schedulingSleep}
 		make new default entry at end of default entries with properties {name:"downloadRetries", contents:downloadRetries}
+		make new default entry at end of default entries with properties {name:"showCopyProtected", contents:showCopyProtected}
 		register
 	end tell
 end registerSettings
@@ -574,6 +576,7 @@ on readSettings()
 			if (downloadRetries < 1) then
 				set downloadRetries to 1
 			end if
+			set showCopyProtected to contents of default entry "showCopyProtected" as boolean
 			set targetDataSList to contents of default entry "targetDataSList"
 			set targetDataQueue to contents of default entry "targetDataQueue"
 		end try
@@ -642,12 +645,6 @@ on will quit theObject
 	performCancelDownload()
 end will quit
 
-on getSettingsFromUI()
-	tell window "iTiVo"
-		set IPA to contents of text field "IP"
-	end tell
-end getSettingsFromUI
-
 on writeSettings()
 	my debug_log("write_settings")
 	try
@@ -687,6 +684,7 @@ on writeSettings()
 			set contents of default entry "useTimeEndTime" to useTimeEndTime
 			set contents of default entry "schedulingSleep" to schedulingSleep
 			set contents of default entry "downloadRetries" to downloadRetries as integer
+			set contents of default entry "showCopyProtected" to showCopyProtected
 			set contents of default entry "targetDataSList" to targetDataSList as list
 			set contents of default entry "targetDataQueue" to targetDataQueue as list
 		end tell
@@ -695,9 +693,17 @@ on writeSettings()
 	end try
 end writeSettings
 
+on getSettingsFromUI()
+	tell window "iTiVo"
+		set IPA to contents of text field "IP"
+		set showCopyProtected to state of button "showCopyProtected" of box "topBox" of split view "splitView1" as boolean
+	end tell
+end getSettingsFromUI
+
 on setSettingsInUI()
 	tell window "iTiVo"
 		set contents of text field "IP" to IPA
+		set state of button "showCopyProtected" of box "topBox" of split view "splitView1" to showCopyProtected
 	end tell
 end setSettingsInUI
 
@@ -1016,6 +1022,9 @@ on clicked theObject
 				set format to text_user_entered
 				my readFormats()
 			end if
+		else if theObjectName = "showCopyProtected" then
+			set showCopyProtected to state of button "showCopyProtected" of box "topBox" of split view "splitView1" as boolean
+			my ConnectTiVo()
 		end if
 	end tell
 	set AppleScript's text item delimiters to ""
@@ -1031,7 +1040,7 @@ on should select row theObject row theRow
 		else
 			set myvalue to contents of data cell "IDVal" of data row theRow of data source of theObject
 		end if
-		if (myvalue = "copyright") then
+		if (myvalue = "copy-protected") then
 			return false
 		else
 			return true
@@ -1279,6 +1288,8 @@ killall mDNS"
 							end if
 						end try
 					end repeat
+					set filterValue to ""
+					set contents of text field "filterField" of box "topBox" of split view "splitView1" to filterValue
 					my ConnectTiVo()
 				on error
 					display dialog "Unable to connect to TiVo " & title of theObject & ".  It is no longer available on your network."
@@ -1302,7 +1313,7 @@ on end editing theObject
 		end if
 	end if
 	if name of theObject = "filterField" then
-		set filterValue to contents of text field "filterField" of window "iTiVo"
+		set filterValue to contents of text field "filterField" of box "topBox" of split view "splitView1" of window "iTiVo"
 		my debug_log("Set filter value to " & filterValue)
 		my ConnectTiVo()
 	end if
@@ -1442,14 +1453,14 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 	set timeRemaining to 0
 	set totalSteps to 0
 	
-	if (showID = "copyright") then
+	if (showID = "copy-protected") then
 		my debug_log("Attempted to download copyrighted show " & oShowName)
 		if GrowlAppName = "GrowlHelperApp.app" then
 			try
 				tell application GrowlAppName
 					using terms from application "GrowlHelperApp"
 						notify with name "Can't Download" title "Downloading Failure 
-" & (oShowName) description "is marked copyrighted by your tivo" application name "iTiVo"
+" & (oShowName) description "is marked copy-restricted by your tivo" application name "iTiVo"
 					end using terms from
 				end tell
 			end try
@@ -2196,7 +2207,7 @@ on ConnectTiVo()
 			set contents of text field "tivoExpired" of drawer "Drawer1" to (((fifth text item of tivo_usage) as integer) as string) & " MB"
 			set contents of text field "tivoExpiresSoon" of drawer "Drawer1" to (((sixth text item of tivo_usage) as integer) as string) & " MB"
 			set contents of text field "tivoInProgress" of drawer "Drawer1" to (((seventh text item of tivo_usage) as integer) as string) & " MB"
-			set contents of text field "tivoCopyrighted" of drawer "Drawer1" to (((eighth text item of tivo_usage) as integer) as string) & " MB"
+			set contents of text field "tivoCopyProtected" of drawer "Drawer1" to (((eighth text item of tivo_usage) as integer) as string) & " MB"
 			set contents of text field "tivoSaved" of drawer "Drawer1" to (((ninth text item of tivo_usage) as integer) as string) & " MB"
 			set contents of text field "tivoTotal" of drawer "Drawer1" to (my roundThis((text item 2 of tivo_usage) / 1024, 2) as string) & " GB"
 			set theURL to "http://chart.apis.google.com/chart?cht=p3&chs=180x180&chd=t:"
@@ -2214,7 +2225,6 @@ on ConnectTiVo()
 			set myURL to "33CCFF|003300|FF3333|CC9900|33CC00|9900CC|00CC00|999999"
 			set theURL to theURL & "&chco=" & my encode_text(myURL, true, true)
 			set AppleScript's text item delimiters to ""
-			my debug_log("fetching : " & theURL)
 			set URLWithString to call method "URLWithString:" of class "NSURL" with parameter theURL
 			set requestWithURL to call method "requestWithURL:" of class "NSURLRequest" with parameter URLWithString
 			set mainFrame to call method "mainFrame" of object (view "tivoWeb" of drawer "Drawer1")
@@ -2264,7 +2274,7 @@ on ConnectTiVo()
 						end if
 					end if
 					if (flags = "5") then
-						set showID to "copyright"
+						set showID to "copy-protected"
 						set downloadImage to copyright of tableImages
 					else
 						if (my isSubscribed(showName, showDate) = true) then
@@ -2279,18 +2289,20 @@ on ConnectTiVo()
 							set end of addedItems to {showName, showDate}
 						end if
 					end if
-					set filterString to ";" & showName & ";" & episodeVal & ";" & showDate & ";" & showLength & ";" & showStation
-					if (filterValue = "") or (offset of filterValue in filterString) > 0 then
-						set theDataRow to make new data row at end of data rows of targetData
-						set contents of data cell "DLVal" of theDataRow to downloadImage
-						set contents of data cell "ShowVal" of theDataRow to showName
-						set contents of data cell "EpisodeVal" of theDataRow to episodeVal
-						set contents of data cell "DateVal" of theDataRow to showDate
-						set contents of data cell "LengthVal" of theDataRow to showLength
-						set contents of data cell "SizeVal" of theDataRow to showSize
-						set contents of data cell "ChannelVal" of theDataRow to showStation
-						set contents of data cell "HDVal" of theDataRow to showHD
-						set contents of data cell "IDVal" of theDataRow to showID
+					if (not ((showID = "copy-protected") and (showCopyProtected = false))) then
+						set filterString to ";" & showName & ";" & episodeVal & ";" & showDate & ";" & showLength & ";" & showStation
+						if (filterValue = "") or (offset of filterValue in filterString) > 0 then
+							set theDataRow to make new data row at end of data rows of targetData
+							set contents of data cell "DLVal" of theDataRow to downloadImage
+							set contents of data cell "ShowVal" of theDataRow to showName
+							set contents of data cell "EpisodeVal" of theDataRow to episodeVal
+							set contents of data cell "DateVal" of theDataRow to showDate
+							set contents of data cell "LengthVal" of theDataRow to showLength
+							set contents of data cell "SizeVal" of theDataRow to showSize
+							set contents of data cell "ChannelVal" of theDataRow to showStation
+							set contents of data cell "HDVal" of theDataRow to showHD
+							set contents of data cell "IDVal" of theDataRow to showID
+						end if
 					end if
 					set showcount to showcount + 1
 				end if
@@ -2314,6 +2326,11 @@ on ConnectTiVo()
 				set DLHistory to DLHistoryTemp
 			end if
 			set title of button "ConnectButton" to "Update from TiVo"
+		end if
+		set myShowCount to (count data rows of data source of table view "ShowListTable" of scroll view "ShowList" of box "topBox" of split view "splitView1")
+		set myQueueCount to (count data rows of data source of table view "QueueListTable" of scroll view "QueueList" of view "bottomLeftView" of split view "splitView2" of box "bottomBox" of split view "splitView1")
+		if myQueueCount > 0 then
+			set enabled of button "decodeQueue" of view "bottomLeftView" of split view "splitView2" of box "bottomBox" of split view "splitView1" to true
 		end if
 		set enabled of button "DownloadButton" of box "topBox" of split view "splitView1" to false
 		set key equivalent of button "ConnectButton" to ""
