@@ -1,4 +1,5 @@
 = Installation =
+  # iTiVo requires MacOS X 10.4 (Tiger) or newer.
   # Make sure to update your operating system to include the latest updates (top menu apple logo, Sofware Update...).
   # Download the file containing the application from:
      http://code.google.com/p/itivo/downloads/list
