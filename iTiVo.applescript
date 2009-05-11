@@ -2014,13 +2014,13 @@ on downloadItem(currentProcessSelectionParam, overrideDLCheck, retryCount)
 		my generate_text_metadata(newFile & ".txt", "/tmp/iTiVo-" & UserName & "/iTiVoDLMeta.xml", myPath & "Contents/Resources/pytivo_txt.xslt")
 		set AddedData to "(/usr/bin/true"
 		if not (showSeriesID = "") then
-			set AddedData to AddedData & "; echo seriesID = " & quoted form of showSeriesID
+			set AddedData to AddedData & "; echo seriesId : " & quoted form of showSeriesID
 		end if
 		if not (showChannelNum = "") then
-			set AddedData to AddedData & "; echo displayMajorNumber = " & quoted form of showChannelNum
+			set AddedData to AddedData & "; echo displayMajorNumber : " & quoted form of showChannelNum
 		end if
 		if not (showChannelCall = "") then
-			set AddedData to AddedData & "; echo callsign = " & quoted form of showChannelCall
+			set AddedData to AddedData & "; echo callsign : " & quoted form of showChannelCall
 		end if
 		set shellCmd to AddedData & " ) >> " & my prepareCommand(newFile & ".txt") as string
 		my debug_log("Running: " & quoted form of shellCmd)
