@@ -3,13 +3,15 @@
 A common use for iTiVo is to download your favorite shows to your iPhone automatically.  Here is how to set this up:
 
   # Set up iTiVo, including inputting your tivo's MAK. Instructions are at http://code.google.com/p/itivo/wiki/Installation
-  # In the Prefs pane:
+  # Click the Prefs button.  In the Prefs pane:
     * Select the 'iPhone' format.
     * Select 'Import to Itunes'.  This will automatically add your show as a 'tv show' to iTunes after it's done downloading.
     * Select 'Sync (itunes) after import'.  This will attempt to run a 'sync' between your iphone and itunes after the download is done.  If itunes is configured to load all tv shows to the iphone (as we will do in the next step) this will automatically load your show to the iPhone if it is hooked to the computer.
+     * Choose 'OK' to close the prefs panel and save your changes.
   # Select the show you plan on watching regularly.
   # Click 'Subscribe'.  This will add a subscription for future episodes of this show.
-  # Click 'Download Show'.  This will get the episode you selected, and convert it to the format we picked.  When it is done, it will load it into iTunes.
+    http://itivo.googlecode.com/svn/trunk/www/Subs.jpg
+  # Click 'Download'.  This will get the episode you selected, and convert it to the format we picked.  When it is done, it will load it into iTunes.
   # Once it is done, go to iTunes, and make sure the show appears in the library under 'TV Shows'
   # Hook up the iPhone, and click on the device.  Select the 'Video' tab at the top.  In the "TV Shows" list there, select 'sync' and something like '5 most recent' episodes of: 'All TV shows' (feel free to pick other settings as you feel appropriate).
 
