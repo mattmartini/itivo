@@ -1,8 +1,8 @@
 #!/bin/sh
 
 volume_name="iTiVo"
-source_dir="/Users/yoav/src/itivo/build/Release"
-output_dir="/Users/yoav/Desktop/"
+source_dir="$HOME/src/itivo/build/Release"
+output_dir="$HOME/Desktop"
 
 # *** SET VERSION
 if [ $1 ]; then
