@@ -337,7 +337,14 @@
 			isa = PBXProject;
 			buildConfigurationList = 4E71A80908A2C90C0034BBD9 /* Build configuration list for PBXProject "iTiVo" */;
 			compatibilityVersion = "Xcode 3.1";
+			developmentRegion = English;
 			hasScannedForEncodings = 1;
+			knownRegions = (
+				English,
+				Japanese,
+				French,
+				German,
+			);
 			mainGroup = 29B97314FDCFA39411CA2CEA /* TiVoDecode */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -412,7 +419,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "#!/bin/bash\n\nset -o errexit\n\n[ $BUILD_STYLE = Release ] || { echo Distribution target requires \"'Release'\" build style; false; }\n\nVERSION=$(defaults read \"$BUILT_PRODUCTS_DIR/$PROJECT_NAME.app/Contents/Info\" CFBundleVersion)\nBUILD_STRING=$(defaults read \"$BUILT_PRODUCTS_DIR/$PROJECT_NAME.app/Contents/Info\" CFBundleShortVersionString)\nDOWNLOAD_BASE_URL=\"http://itivo.googlecode.com/files\"\ncase \"$VERSION\" in\n *b*)\n    RELEASENOTES_URL=\"http://itivo.googlecode.com/svn/trunk/www/changelog-beta.html\"\n    FILE_VERSION=\"beta\"\n    ;;\n *)\n    RELEASENOTES_URL=\"http://itivo.googlecode.com/svn/trunk/www/changelog.html\"\n    FILE_VERSION=\"$VERSION\"\n    ;;\nesac\n\nRELEASE_DIR=\"/Users/yoav/Desktop/\"\nARCHIVE_FILENAME=\"$PROJECT_NAME-$FILE_VERSION.dmg\"\nDOWNLOAD_URL=\"$DOWNLOAD_BASE_URL/$ARCHIVE_FILENAME\"\nWD=$PWD\n\nrm -f \"$RELEASE_DIR/$ARCHIVE_FILENAME\"\n./create_dmg.sh \"$FILE_VERSION\"\n\n# cd \"$BUILT_PRODUCTS_DIR\"\n# rm -f \"$PROJECT_NAME\"*.zip\n# zip -qr \"$ARCHIVE_FILENAME\" \"$PROJECT_NAME.app\" \"faac LGPL License.txt\" \"gpl-3.0.txt\" \"iTiVo Read Me.rtf\" \"mencoder:xvid GPL License.txt\"\n\nSIZE=$(stat -f %z \"$RELEASE_DIR/$ARCHIVE_FILENAME\")\nPUBDATE=$(date +\"%a, %d %b %G %T %z\")\nSIGNATURE=$(\n\topenssl dgst -sha1 -binary < \"$RELEASE_DIR/$ARCHIVE_FILENAME\" \\\n\t| openssl dgst -dss1 -sign \"$WD/keys/dsa_priv.pem\" \\\n\t| openssl enc -base64\n)\n\n[ $SIGNATURE ] || { echo Unable to load signing private key with name \"'$KEYCHAIN_PRIVKEY_NAME'\" from keychain; false; }\n\ncat <<EOF\n\t\t<item>\n\t\t\t<title>Version $VERSION</title>\n\t\t\t<sparkle:releaseNotesLink>$RELEASENOTES_URL</sparkle:releaseNotesLink>\n\t\t\t<pubDate>$PUBDATE</pubDate>\n\t\t\t<enclosure\n\t\t\t\turl=\"$DOWNLOAD_URL\"\n\t\t\t\tsparkle:version=\"$VERSION\"\n\t\t\t\ttype=\"application/octet-stream\"\n\t\t\t\tlength=\"$SIZE\"\n\t\t\t\tsparkle:dsaSignature=\"$SIGNATURE\"\n\t\t\t/>\n\t\t</item>\nEOF\n";
+			shellScript = "#!/bin/bash\n\nset -o errexit\n\n[ $BUILD_STYLE = Release ] || { echo Distribution target requires \"'Release'\" build style; false; }\n\nVERSION=$(defaults read \"$BUILT_PRODUCTS_DIR/$PROJECT_NAME.app/Contents/Info\" CFBundleVersion)\nBUILD_STRING=$(defaults read \"$BUILT_PRODUCTS_DIR/$PROJECT_NAME.app/Contents/Info\" CFBundleShortVersionString)\nDOWNLOAD_BASE_URL=\"http://itivo.googlecode.com/files\"\ncase \"$VERSION\" in\n *b*)\n    RELEASENOTES_URL=\"http://itivo.googlecode.com/svn/trunk/www/changelog-beta.html\"\n    FILE_VERSION=\"beta\"\n    ;;\n *)\n    RELEASENOTES_URL=\"http://itivo.googlecode.com/svn/trunk/www/changelog.html\"\n    FILE_VERSION=\"$VERSION\"\n    ;;\nesac\n\nRELEASE_DIR=\"$HOME/Desktop/\"\nARCHIVE_FILENAME=\"$PROJECT_NAME-$FILE_VERSION.dmg\"\nDOWNLOAD_URL=\"$DOWNLOAD_BASE_URL/$ARCHIVE_FILENAME\"\nWD=$PWD\n\nrm -f \"$RELEASE_DIR/$ARCHIVE_FILENAME\"\n./create_dmg.sh \"$FILE_VERSION\"\n\n# cd \"$BUILT_PRODUCTS_DIR\"\n# rm -f \"$PROJECT_NAME\"*.zip\n# zip -qr \"$ARCHIVE_FILENAME\" \"$PROJECT_NAME.app\" \"faac LGPL License.txt\" \"gpl-3.0.txt\" \"iTiVo Read Me.rtf\" \"mencoder:xvid GPL License.txt\"\n\nSIZE=$(stat -f %z \"$RELEASE_DIR/$ARCHIVE_FILENAME\")\nPUBDATE=$(date +\"%a, %d %b %G %T %z\")\nSIGNATURE=$(\n\topenssl dgst -sha1 -binary < \"$RELEASE_DIR/$ARCHIVE_FILENAME\" \\\n\t| openssl dgst -dss1 -sign \"$WD/keys/dsa_priv.pem\" \\\n\t| openssl enc -base64\n)\n\n[ $SIGNATURE ] || { echo Unable to load signing private key with name \"'$KEYCHAIN_PRIVKEY_NAME'\" from keychain; false; }\n\ncat <<EOF\n\t\t<item>\n\t\t\t<title>Version $VERSION</title>\n\t\t\t<sparkle:releaseNotesLink>$RELEASENOTES_URL</sparkle:releaseNotesLink>\n\t\t\t<pubDate>$PUBDATE</pubDate>\n\t\t\t<enclosure\n\t\t\t\turl=\"$DOWNLOAD_URL\"\n\t\t\t\tsparkle:version=\"$VERSION\"\n\t\t\t\ttype=\"application/octet-stream\"\n\t\t\t\tlength=\"$SIZE\"\n\t\t\t\tsparkle:dsaSignature=\"$SIGNATURE\"\n\t\t\t/>\n\t\t</item>\nEOF\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -518,6 +525,7 @@
 		4E71A80A08A2C90C0034BBD9 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_VERSION = 4.0;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				PREBINDING = NO;
@@ -528,6 +536,7 @@
 		4E71A80B08A2C90C0034BBD9 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_VERSION = 4.0;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				PREBINDING = NO;

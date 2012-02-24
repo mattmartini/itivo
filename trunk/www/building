@@ -5,7 +5,7 @@
 # 
 # sudo ln -s /Developer/SDKs/MacOSX10.4u.sdk/usr/lib/crt1.o /Developer/SDKs/MacOSX10.4u.sdk/usr/lib/crt1.10.5.o
 
-SRCDIR=/Users/yoav/src
+SRCDIR=$HOME/src
 LAME=lame
 BOOST=boost_1_38_0
 FAAD=faad2-2.7
