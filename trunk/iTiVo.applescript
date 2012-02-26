@@ -2239,7 +2239,7 @@ on ConnectTiVo()
 				set the parts to every text item of currentLine
 				if (count of parts) = 10 then
 					set showName to item 2 of parts
-					set episodeVal to item 3 of parts
+					set showEpisode to item 3 of parts
 					set showDate to item 4 of parts
 					set showLength to item 5 of parts
 					set showSize to (item 6 of parts & " MB")
@@ -2280,7 +2280,7 @@ on ConnectTiVo()
 						if (my isSubscribed(showName, showDate) = true) then
 							set currentProcessSelectionQ to {}
 							set end of currentProcessSelectionQ to showName
-							set end of currentProcessSelectionQ to episodeVal
+							set end of currentProcessSelectionQ to showEpisode
 							set end of currentProcessSelectionQ to showDate
 							set end of currentProcessSelectionQ to showLength
 							set end of currentProcessSelectionQ to showSize
@@ -2290,12 +2290,12 @@ on ConnectTiVo()
 						end if
 					end if
 					if (not ((showID = "copy-protected") and (showCopyProtected = false))) then
-						set filterString to ";" & showName & ";" & episodeVal & ";" & showDate & ";" & showLength & ";" & showStation
+						set filterString to ";" & showName & ";" & showEpisode & ";" & showDate & ";" & showLength & ";" & showStation
 						if (filterValue = "") or (offset of filterValue in filterString) > 0 then
 							set theDataRow to make new data row at end of data rows of targetData
 							set contents of data cell "DLVal" of theDataRow to downloadImage
 							set contents of data cell "ShowVal" of theDataRow to showName
-							set contents of data cell "EpisodeVal" of theDataRow to episodeVal
+							set contents of data cell "EpisodeVal" of theDataRow to showEpisode
 							set contents of data cell "DateVal" of theDataRow to showDate
 							set contents of data cell "LengthVal" of theDataRow to showLength
 							set contents of data cell "SizeVal" of theDataRow to showSize
