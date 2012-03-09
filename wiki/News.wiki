@@ -1,0 +1,4 @@
+=News=
+
+Feb. 26, 2012:
+Added a developer to the team.  Tony1athome is an experienced developer and longtime TiVo addict, but a complete newbie to Applescript.  Put up a test image that has a fix for bug 129 (bad episode name when running the queue).  Your feedback is welcome, and your patience is appreciated.  Better yet, more help would be welcome.
