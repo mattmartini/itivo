@@ -1,5 +1,8 @@
 =News=
 
+Apr. 26, 2012:
+Yesterday's fix for issue 196 was incomplete.  There were a number of other images included that were dynamically linked as well.  Replaced.  Also tried to use 'curl -q' to address issue 187.
+
 Apr. 25, 2012: 
 Put a new test image that has a fix for issue 196.  In the previous test image, I tried to build a new mencoder, but didn't realize that the version was dynamically linked.  This works fine on my system, but not on anyone else's.  Replaced it with the previous version of mencoder.
 
