@@ -10,7 +10,7 @@ $TivoDir = "$ENV{'USER'}";
 $TivoDir =~ tr/ :\//_../;
 $TivoDir = "/tmp/iTiVo-$TivoDir";
 
-$shellScript = "curl \'http://$tivoip\:80/download/$showNAME\.TiVo?Container=%2FNowPlaying&id=$showID\' -c /tmp/cookies.txt --retry 12 --retry-delay 10 --digest -u tivo:$MAK -o $target --stderr $TivoDir/iTiVoDL";
+$shellScript = "curl -q \'http://$tivoip\:80/download/$showNAME\.TiVo?Container=%2FNowPlaying&id=$showID\' -c /tmp/cookies.txt --retry 12 --retry-delay 10 --digest -u tivo:$MAK -o $target --stderr $TivoDir/iTiVoDL";
 
 print "$shellScript\n";
 

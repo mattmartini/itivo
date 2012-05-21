@@ -12,7 +12,7 @@ $usedCache = 0;
 # Make sure we have a place to cache the results
 `mkdir -p $CacheDir`;
 
-$fetchScript = "curl -s 'https://" . $IP .  ":443/TiVoConnect?Command=QueryContainer&Container=%2FNowPlaying&Recurse=Yes&AnchorOffset=" . $anchor . "' -k --digest -u tivo:" . $MAK;
+$fetchScript = "curl -q -s 'https://" . $IP .  ":443/TiVoConnect?Command=QueryContainer&Container=%2FNowPlaying&Recurse=Yes&AnchorOffset=" . $anchor . "' -k --digest -u tivo:" . $MAK;
 
 if ((-e $CacheFile) && (((-M $CacheFile) * 24 * 60) < 5)) {
     # We have already fetched the list from this tivo within the last five minutes, so just use the cached value
