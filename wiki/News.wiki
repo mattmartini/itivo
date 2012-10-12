@@ -1,5 +1,8 @@
 =News=
 
+Oct. 11, 2012:
+A potential fix for issues 198 and 214 has been posted.  Testing is incomplete at this time, so use with caution.  All credit to Drew Moseley for the fixes, and apologies for the delay on my part.  This release drops support for MacOS X prior to 10.6.
+
 Apr. 26, 2012:
 Yesterday's fix for issue 196 was incomplete.  There were a number of other images included that were dynamically linked as well.  Replaced.  Also tried to use 'curl -q' to address issue 187.
 
