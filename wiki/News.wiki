@@ -1,5 +1,8 @@
 =News=
 
+Dec. 16, 2012:
+Thanks to Gene Civillico, we believe we've been able to sort out the last problem.  The test image from 12/12/2012 is the latest and greatest and seems to work on Mountain Lion.
+
 Oct. 11, 2012:
 A potential fix for issues 198 and 214 has been posted.  Testing is incomplete at this time, so use with caution.  All credit to Drew Moseley for the fixes, and apologies for the delay on my part.  This release drops support for MacOS X prior to 10.6.
 
