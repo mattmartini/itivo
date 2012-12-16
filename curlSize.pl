@@ -5,47 +5,21 @@ $TivoDir =~ tr/ :\//_../;
 $TivoDir = "/tmp/iTiVo-$TivoDir";
 
 $file = "$TivoDir/iTiVoDL";
-open (CURLFILE, $file);
 
-$line = "";
-$prevLine = "";
+my $downloadedSize = `cat $file | tr '\r' '\n' | awk 'NF > 0 {print \$4}' | tail -n 1`;
+chomp ($downloadedSize);
+my $unit = substr $downloadedSize,-1,1;
+my $base = chop($downloadedSize);
 
-<CURLFILE>;
-<CURLFILE>;
-$file = <CURLFILE>;
-
-close(CURLFILE);
-
-my @lines = split('\r', $file);
-
-$line = pop(@lines);
-$prevLine = pop(@lines);
-
-if ($line =~ /^\s*\S+\s+\S+\s+\S+\s+([0-9.]+)([kMG]?)\s+\S+\s+\S+\s+[0-9.]+[kMG]?\s+\d\s+[0-9\-:]+\s+[0-9\-:]+\s+[0-9\-:]+\s+[0-9.]+[kMG]?/) {
-	if ($2 eq "k") {
-		print $1 / 1024;
-	}
-	elsif ($2 eq "M") {
-		print $1;
-	}
-	elsif ($2 eq "G") {
-		print $1 * 1024;
-	}
-	else {
-		print $1 / (1024 * 1024);
-	}
+if ($unit eq "k") {
+    printf ("%.1f", $downloadedSize / 1024);
 }
-elsif ($prevLine =~ /^\s*\S+\s+\S+\s+\S+\s+([0-9.]+)([kMG]?)\s+\S+\s+\S+\s+[0-9.]+[kMG]?\s+\d\s+[0-9\-:]+\s+[0-9\-:]+\s+[0-9\-:]+\s+[0-9.]+[kMG]?/) {
-	if ($2 eq "k") {
-		print $1 / 1024;
-	}
-	elsif ($2 eq "M") {
-		print $1;
-	}
-	elsif ($2 eq "G") {
-		print $1 * 1024;
-	}
-	else {
-		print $1 / (1024 * 1024);
-	}
+elsif ($unit eq "M") {
+    printf ("%.1f", $downloadedSize);
+}
+elsif ($unit eq "G") {
+    printf ("%.1f", $downloadedSize * 1024);
+}
+else {
+    printf ("%.1f", $downloadedSize / (1024 * 1024));
 }

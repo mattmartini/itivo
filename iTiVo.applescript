@@ -615,19 +615,13 @@ on readSettings()
 		if TiVo ≠ "My TiVos" then
 			set title of popup button "MyTiVos" of window "iTiVo" to TiVo
 			try
-				set theScript to "mDNS -L \"" & TiVo & "\" _tivo-videos._tcp local | colrm 1 42 &
-sleep 2
-killall mDNS"
-				set hostList to paragraphs 1 thru -1 of (do shell script theScript)
-				repeat with j in hostList
-					try
-						if text 17 thru 19 of j is "443" then
-							set IPA to first word of j
-							set contents of text field "IP" of window "iTiVo" to IPA
-							set canAutoConnect to true
-						end if
-					end try
-				end repeat
+				set myPath to my prepareCommand(POSIX path of (path to me))
+				set theScript to "sh " & myPath & "Contents/Resources/findLocalTivoIPAddress.sh \"" & TiVo & "\""
+				my debug_log(theScript)
+				set IPA to first word of (do shell script theScript)
+				my debug_log("IPA = " & IPA)
+				set contents of text field "IP" of window "iTiVo" to IPA
+				set canAutoConnect to true
 			on error
 				display dialog "Unable to connect to TiVo " & TiVo & ".  It is no longer available on your network."
 			end try
@@ -708,9 +702,8 @@ on setSettingsInUI()
 end setSettingsInUI
 
 on getTiVos()
-	set theScript to "mDNS -B _tivo-videos._tcp local | colrm 1 74| grep -v 'Instance Name' |sort | uniq & 
-sleep 2
-killall mDNS"
+	set myPath to my prepareCommand(POSIX path of (path to me))
+	set theScript to "sh " & myPath & "Contents/Resources/findLocalTivos.sh"
 	tell window "iTiVo"
 		my debug_log(theScript)
 		set scriptResult to (do shell script theScript)
@@ -722,6 +715,7 @@ killall mDNS"
 			repeat with i in nameList
 				if length of i > 1 then
 					make new menu item at the end of menu items of menu of popup button "MyTiVos" with properties {title:i, enabled:true}
+					my debug_log("Adding '" & i & "' to the MyTivos list")
 				end if
 			end repeat
 		end if
@@ -1276,18 +1270,12 @@ on choose menu item theObject
 		if title of theObject ≠ "My TiVos" then
 			tell window "iTiVo"
 				try
-					set theScript to "mDNS -L \"" & title of theObject & "\" _tivo-videos._tcp local | colrm 1 42 &
-sleep 2
-killall mDNS"
-					set hostList to paragraphs 1 thru -1 of (do shell script theScript)
-					repeat with j in hostList
-						try
-							if text 17 thru 19 of j is "443" then
-								set IPA to first word of j
-								set contents of text field "IP" to IPA
-							end if
-						end try
-					end repeat
+					set myPath to my prepareCommand(POSIX path of (path to me))
+					set theScript to "sh " & myPath & "Contents/Resources/findLocalTivoIPAddress.sh \"" & title of theObject & "\""
+					my debug_log(theScript)
+					set IPA to first word of (do shell script theScript)
+					my debug_log("IPA = " & IPA)
+					set contents of text field "IP" to IPA
 					set filterValue to ""
 					set contents of text field "filterField" of box "topBox" of split view "splitView1" to filterValue
 					my ConnectTiVo()
@@ -2728,7 +2716,7 @@ on setDockTile(message)
 end setDockTile
 
 on growlIsRunning()
-	tell application "System Events" to set myRunning to ((application processes whose (name is equal to "GrowlHelperApp")) count)
+	tell application "System Events" to set myRunning to ((application processes whose (name is equal to "GrowlHelperApp.app")) count)
 	my debug_log("growlisrun: " & myRunning)
 	return (myRunning > 0)
 end growlIsRunning
